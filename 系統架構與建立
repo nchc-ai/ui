@@ -1,9 +1,42 @@
-A1. Server and Computed Node
+A1. Server and Computed Nodes
   1. Docker版本：docker-ce安裝
      #cd /etc/apt
      #vim source.list
      deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+     #apt-get install docker-ce
   2. 修改docker安全協定
      #vim /etc/default/docker
      DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock"
+     #systemctl restart docker
      
+A2. Server Node
+  1. 處理Apache - ref https://www.digitalocean.com/community/tutorials/how-to-use-apache-as-a-reverse-proxy-with-mod_proxy-on-ubuntu-16-04
+     To enable these four modules, execute the following commands in succession.
+     #a2enmod proxy
+     #a2enmod proxy_http
+     #a2enmod proxy_balancer
+     #a2enmod lbmethod_byrequests
+     #systemctl restart apache2
+  2. 安裝php, DB, curl
+     #apt-get install php7.0
+     #apt-get install php7.0-mysql
+     #apt-get install php-curl
+  3. 安裝Apache2
+  4. 撰寫清除不必要資訊檔案於/etc/apache2
+     #vim /etc/apache2/clean.sh
+        #!/bin/bash
+        rm -f /etc/apache2/conf-enabled/500*
+        rm -f /etc/apache2/proxy_users/.500*
+  
+ A3. Server and Computed Nodes
+    1.請複製所撰寫好的/var/www/html/*_config於每個節點上
+    2.請複製所撰寫好的/var/www/html/mk_home.php於每個節點上
+    3.請複製所撰寫好的/var/www/html/scripts於每個節點上
+    4.請複製所撰寫好的/var/www/html/lib於每個節點上
+    5.修改visudo的執行權限
+      #visudo
+        www-data ALL=(root) NOPASSWD:/bin/bash scripts/config_gateway.sh * * * * * * * *
+        www-data ALL=(root) NOPASSWD:/bin/bash scripts/delete_gateway.sh * *
+        www-data ALL=(root) NOPASSWD:/bin/bash scripts/update_gateway.sh * * * * *
+ A4. 目前尚未整合ckan自動化
+ A5. 需使用TLS也需要CA
