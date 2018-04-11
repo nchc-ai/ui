@@ -1,0 +1,12 @@
+備註：目前開發環境Server與Computed Node於140.110.16.29 <-> ai-lab.nchc.org.tw
+B1. 資料庫
+    1. https://140.110.16.29/phpmyadmin
+    2. 帳號與密碼 - 請連線至140.110.16.29
+       #cat /var/www/html/db.php
+
+B2. 網頁
+    1. 入口網站主頁
+       #vim /var/www/html/index.php
+    2. 目前需要跟IAM系統進行整合，但是目前會希望設計可以彈性化調整
+
+    
