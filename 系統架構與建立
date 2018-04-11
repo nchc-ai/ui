@@ -1,0 +1,9 @@
+A1. Server and Computed Node
+  1. Docker版本：docker-ce安裝
+     #cd /etc/apt
+     #vim source.list
+     deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable
+  2. 修改docker安全協定
+     #vim /etc/default/docker
+     DOCKER_OPTS="--dns 8.8.8.8 --dns 8.8.4.4 -H tcp://127.0.0.1:2375 -H unix:///var/run/docker.sock"
+     
