@@ -10,4 +10,6 @@
 
 5. [連線資訊](./doc/connection.txt)
 
-3. [RBAC setting](./doc/rbac.md)
+6. [build and run sample](./doc/build-run.md)
+
+7. [RBAC setting](./doc/rbac.md)
