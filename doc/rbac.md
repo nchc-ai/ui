@@ -2,7 +2,9 @@
 
 ## Kubectl user permission
 
-Goal: We create a `cht` user and a corresponding kubeconfig. User permission is restricted in `cht-demo` namespace.
+ **Goal :**
+
+ We create a `cht` user and a corresponding kubeconfig. User permission is restricted in `cht-demo` namespace.
 
 ### Create user
 
@@ -116,6 +118,115 @@ Error from server (Forbidden): pods is forbidden: User "cht" cannot list pods in
 ```
 
 ## Service Account
+
+**Goal :**
+
+We create a deployment in `cht-demo` namespace, and permission is restricted in `cht-demo` namespace.
+
+### No ServiceAccount
+
+Because RBAC enabled cluster use default service account for pod, pod can not access any kubernetes api.
+
+```sh
+$ kubectl create -f deployment-no-rbac.yaml
+
+$ k logs demo-78998b6cdb-bn2zc                                                                                                                     (kubernetes/cht-demo)
+panic: pods is forbidden: User "system:serviceaccount:cht-demo:default" cannot list pods in the namespace "cht-demo"
+```
+
+We have two options to make pod can access kubernetes api:
+
+1. Grant permission to `default` service account
+
+2. Grant Permission to an application-specific service account  (best practice)
+
+### Grant Permission to default service account
+
+We bind default ClusterRole "edit" to `default` service account, and only grants permissions within the "cht-demo" namespace.
+Because we use default ClusterRole "edit", we don't need to create ClusterRole manually.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: demo-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  namespace: cht-demo
+  name: default
+```
+
+If `serviceAccountName` is not defined in Pod template, `default` service account is used by default.
+
+We can see demo pod with `default` service account is restricted in `cht-demo` namespace, and is forbidden in `default` namespace.
+
+```sh
+$ kubectl create -f deployment-default-sa.yaml
+
+$k logs demo-78998b6cdb-cxpw7                                                                                                                     (kubernetes/cht-demo)
+There are 3 pods in the cluster
+Error getting pod pods "example-xxxxx" is forbidden: User "system:serviceaccount:cht-demo:default" cannot get pods in the namespace "default"
+```
+
+### Grant Permission to an application-specific service account  (best practice)
+
+
+Create `demo-sa` service account
+
+```yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: demo-sa
+```
+
+
+We bind default ClusterRole "edit" to service account `demo-sa`, and only grants permissions within the "cht-demo" namespace.
+Because we use default ClusterRole "edit", we don't need to create ClusterRole manually.
+
+```yaml
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: RoleBinding
+metadata:
+  name: demo-rolebinding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: edit
+subjects:
+- kind: ServiceAccount
+  namespace: cht-demo
+  name: demo-sa
+```
+
+Then, use `demo-sa` service account in Pod template:
+
+```yaml
+...
+    spec:
+      serviceAccountName: demo-sa
+      containers:
+      - name: demo
+        image: ogre0403/in-cluster:cht
+        imagePullPolicy: Always
+...
+```
+
+
+We can see demo pod with `demo-sa` service account is restricted in `cht-demo` namespace, and is forbidden in `default` namespace.
+
+```sh
+$ kubectl create -f deployment-app-sa.yaml
+
+$k logs demo-7447445996-ksljq                                                                                                                     (kubernetes/cht-demo)
+There are 3 pods in the cluster
+Error getting pod pods "example-xxxxx" is forbidden: User "system:serviceaccount:cht-demo:demo-sa" cannot get pods in the namespace "default"
+```
+
 
 
 ## Reference

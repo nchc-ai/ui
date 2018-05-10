@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo
+  namespace: cht-demo
+spec:
+  selector:
+    matchLabels:
+      app: demo
+  replicas: 1
+  template:
+    metadata:
+      name: demo-pod
+      labels:
+        app: demo
+    spec:
+      containers:
+      - name: demo
+        image: ogre0403/in-cluster:cht
+        imagePullPolicy: Always

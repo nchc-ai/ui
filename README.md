@@ -4,4 +4,10 @@
 
 2. 網頁伺服器端
 
+3. [系統架構與建立](./doc/arch.txt)
+
+4. [資料庫與網頁設計](./doc/web.txt)
+
+5. [連線資訊](./doc/connection.txt)
+
 3. [RBAC setting](./doc/rbac.md)
