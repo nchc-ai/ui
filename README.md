@@ -13,3 +13,5 @@
 6. [build and run sample](./doc/build-run.md)
 
 7. [RBAC setting](./doc/rbac.md)
+
+8. [Install dashboard with different Permission](./doc/dashboard.md)

@@ -193,6 +193,7 @@ apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: RoleBinding
 metadata:
   name: demo-rolebinding
+  namespace: cht-demo
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
