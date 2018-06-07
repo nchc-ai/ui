@@ -17,6 +17,7 @@ import (
 	"net/http"
 	"k8s.io/client-go/kubernetes"
 	"fmt"
+	"github.com/argoproj/argo/pkg/apis/workflow/v1alpha1"
 )
 
 var router *gin.Engine
@@ -61,14 +62,16 @@ func main() {
 func initializeRoutes() {
 	router.GET("/getPod", getPod)
 	router.POST("/createDeploy", createDeploy)
+	router.OPTIONS("/createDeploy", createOption)
 
 	router.GET("/getWorkflow", getWorkflow)
-
-	//TODO:
 	router.POST("/createWorkflow", createWorkflow)
+	router.OPTIONS("/createWorkflow", createOption)
 }
 
 func getWorkflow(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+
 	list, err := WFClient.ArgoprojV1alpha1().Workflows("default").List(metav1.ListOptions{})
 	if err != nil {
 		panic(err.Error())
@@ -83,6 +86,8 @@ func getWorkflow(c *gin.Context) {
 
 func getPod(c *gin.Context) {
 
+	c.Header("Access-Control-Allow-Origin", "*")
+
 	pods, err := clientset.CoreV1().Pods("default").List(metav1.ListOptions{})
 	if err != nil {
 		panic(err.Error())
@@ -96,10 +101,60 @@ func getPod(c *gin.Context) {
 }
 
 func createWorkflow(c *gin.Context) {
-	c.JSON(http.StatusOK, "ok")
+	c.Header("Access-Control-Allow-Origin", "*")
+
+	var req response
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": true,
+			"cause": "Failed to parse spec request request: " + err.Error(),
+		})
+		return
+	}
+
+	client := WFClient.ArgoprojV1alpha1().Workflows("default")
+
+	wf := &v1alpha1.Workflow{
+		ObjectMeta: metav1.ObjectMeta{
+			GenerateName: "aaa-bbb-",
+		},
+
+		Spec: v1alpha1.WorkflowSpec{
+			Entrypoint: "whalesax",
+			Templates: []v1alpha1.Template{
+				{
+					Name: "whalesax",
+					Container: &apiv1.Container{
+						Image:   "docker/whalesay",
+						Command: []string{"cowsay"},
+						Args:    []string{req.Message},
+					},
+				},
+			},
+		},
+	}
+
+	result, err := client.Create(wf)
+	if err != nil {
+		panic(err)
+	}
+
+	r := response{
+		Message: fmt.Sprintf("Created workflow %s", result.Name),
+	}
+	c.JSON(http.StatusOK, r)
+}
+
+func createOption(c *gin.Context) {
+	//	setup headers
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
+	c.Status(http.StatusOK)
 }
 
 func createDeploy(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
 
 	deploymentsClient := clientset.AppsV1().Deployments("default")
 
