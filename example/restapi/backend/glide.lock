@@ -1,5 +1,5 @@
 hash: c943884eecc4ee5588d5299d6a37192949dd3ed4aa17979610f8f84f8a3db7e6
-updated: 2018-06-07T14:53:36.085826573+08:00
+updated: 2018-06-08T09:16:14.817164924+08:00
 imports:
 - name: github.com/argoproj/argo
   version: f103894843e9ed8cbaf4212e765c10311bec5989
@@ -156,7 +156,6 @@ imports:
   - pkg/api/errors
   - pkg/api/meta
   - pkg/api/resource
-  - pkg/api/resource
   - pkg/apis/meta/v1
   - pkg/apis/meta/v1/unstructured
   - pkg/apis/meta/v1beta1
@@ -165,8 +164,6 @@ imports:
   - pkg/fields
   - pkg/labels
   - pkg/runtime
-  - pkg/runtime
-  - pkg/runtime/schema
   - pkg/runtime/schema
   - pkg/runtime/serializer
   - pkg/runtime/serializer/json
@@ -176,11 +173,9 @@ imports:
   - pkg/runtime/serializer/versioning
   - pkg/selection
   - pkg/types
-  - pkg/types
   - pkg/util/clock
   - pkg/util/errors
   - pkg/util/framer
-  - pkg/util/intstr
   - pkg/util/intstr
   - pkg/util/json
   - pkg/util/net
@@ -249,5 +244,4 @@ imports:
   version: 50ae88d24ede7b8bad68e23c805b5d3da5c8abaf
   subpackages:
   - pkg/common
-  - pkg/util/proto
 testImports: []

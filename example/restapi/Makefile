@@ -2,10 +2,13 @@ install_deps:
 	glide install
 
 run-backend:
-	rm -rf bin/*
-	go build -o bin/app ./backend
-	./bin/app --OutCluster=true
+	rm -rf backend/bin/*
+	go build -o backend/bin/app ./backend
+	./backend/bin/app --OutCluster=true
 
+
+run-frontend:
+	npm  --prefix frontend start
 
 clean:
-	rm -rf bin/*
+	rm -rf backend/bin/*

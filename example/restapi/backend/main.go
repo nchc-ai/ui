@@ -90,7 +90,11 @@ func getPod(c *gin.Context) {
 
 	pods, err := clientset.CoreV1().Pods("default").List(metav1.ListOptions{})
 	if err != nil {
-		panic(err.Error())
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": true,
+			"cause": "Failed to parse spec request request: " + err.Error(),
+		})
+		return
 	}
 
 	r := response{
@@ -170,8 +174,6 @@ func createDeploy(c *gin.Context) {
 
 	replica := req.Replica
 
-	fmt.Println(replica)
-
 	deployment := &appsv1.Deployment{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: "demo-deployment",
@@ -210,7 +212,11 @@ func createDeploy(c *gin.Context) {
 
 	result, err := deploymentsClient.Create(deployment)
 	if err != nil {
-		panic(err)
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": true,
+			"cause": "Create deployment fail: " + err.Error(),
+		})
+		return
 	}
 
 	r := response{
