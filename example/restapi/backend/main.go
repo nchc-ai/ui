@@ -55,7 +55,7 @@ func main() {
 
 	router = gin.Default()
 	initializeRoutes()
-	router.Run()
+	router.Run(":38080")
 
 }
 
