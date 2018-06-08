@@ -15,3 +15,6 @@
 7. [RBAC setting](./doc/rbac.md)
 
 8. [Install dashboard with different Permission](./doc/dashboard.md)
+
+
+https://blog.openshift.com/kubernetes-deep-dive-code-generation-customresources/
