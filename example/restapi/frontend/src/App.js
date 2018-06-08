@@ -19,20 +19,20 @@ class App extends Component {
 
 
   handleClick1() {
-    axios.get('http://127.0.0.1:38080/getPod')
+    axios.get('/getPod')
       .then(response => this.setState({message: response.data.message}))
   }
 
 
   handleClick2() {
-    axios.get('http://127.0.0.1:38080/getWorkflow')
+    axios.get('/getWorkflow')
       .then(response => this.setState({message: response.data.message}))
   }
 
   handleClick3() {
 
     axios.post(
-      'http://127.0.0.1:38080/createDeploy',
+      '/createDeploy',
       {
         replica: 3
       })
@@ -43,7 +43,7 @@ class App extends Component {
 
   handleClick4() {
     axios.post(
-      'http://127.0.0.1:38080/createWorkflow',
+      '/createWorkflow',
       {
         message: "shit world!!!"
       })
