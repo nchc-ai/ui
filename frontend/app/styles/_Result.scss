@@ -1,0 +1,11 @@
+.result-bg {
+
+  @include card-4;
+  @include rect(100%,initial);
+
+  .table {
+    tr {
+      font-size: 12px;
+    }
+  }
+}

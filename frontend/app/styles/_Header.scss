@@ -1,0 +1,102 @@
+
+
+$nav-bar-height: 80px;
+
+// Index -------------------------------------------------
+
+.header-comp{
+  overflow: hidden;
+
+  .con-grp{
+    height:100%;
+  }
+
+  .logo-con{
+    margin-left: 70px;
+    display: inline-block;
+    img{
+        display: inline;
+        vertical-align: middle;
+    }
+  }
+
+  .header-container{
+    @include rect(100%,$nav-bar-height);
+    position: fixed;
+    box-shadow: 0px 5px 13px 0px rgba(50,50,50,0.05);
+    z-index: 50;
+    overflow: hidden;
+
+    .logo-svg{
+        position: relative;
+        width: 100px;
+        margin-top: 21px;
+        pointer-events:none;
+    }
+  }
+}
+
+// NavBar -------------------------------------------------
+
+.nav-bar-comp{
+  @include rect(100%,$nav-bar-height);
+  position: fixed;
+  background-image: linear-gradient(118deg, #00aae3, #0cfdfb);
+ 
+  .navbar-ul{
+    margin-left: 50px;
+    height: 110%;
+
+    li {
+      margin-top: 25px;
+      float: left;
+    }
+
+    .navbar-li{
+      display:inline;
+      // padding:10px 20px;
+      position:relative;
+
+     
+  
+      .main-link{
+        padding: 0px 20px;
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: 300;
+        cursor: pointer;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .navbar-li-disabled{
+      &:hover{
+        &:after {
+          display:none;
+        }
+      }
+    }
+  }
+
+  //右
+  .navbar-vice-ul{
+    margin-right: 70px;
+    margin-top: 22px;
+    float: right;
+    li{
+      a{
+        img{
+          @include square(24px);
+          @include margin(5px); 
+        }
+      }
+    }
+
+    .notify-badge{
+      margin-right: -3px;
+      margin-top: -4px;
+    }
+  }
+}
