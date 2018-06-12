@@ -43,7 +43,7 @@ func ReadConfig(fileConfig string) (*viper.Viper, error) {
 	viper.SetConfigType("json")
 
 	if fileConfig == "" {
-		viper.SetConfigName("api-config.json")
+		viper.SetConfigName("api-config")
 		viper.AddConfigPath("/etc/api-server")
 	} else {
 		viper.SetConfigFile(fileConfig)
