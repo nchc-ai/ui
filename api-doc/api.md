@@ -1,3 +1,22 @@
+* [Authentication](#authentication)
+  * [Login](#login)
+  * [Logout](#logout)
+  * [Register](#register)
+  * [Delete](#delete)
+* [Course](#course)
+  * [List](#list)
+  * [Add](#add)
+  * [Launch](#launch)
+  * [Delete](#delete-1)
+  * [List basic course](#list-basic-course)
+  * [List advanced course](#list-advanced-course)
+* [Job](#job)
+  * [List](#list-1)
+  * [Delete](#delete-2)
+* [Health Check](#health-check)
+  * [check kubernetes](#check-kubernetes)
+  * [check database](#check-database)
+
 # Authentication
 
 ## Login
@@ -12,7 +31,7 @@
 
 * **URL**
 
-  /v1/login
+  /v1/auth/login
 
 * **Method:**
 
@@ -78,7 +97,7 @@
 
 * **URL**
 
-  /v1/logout
+  /v1/auth/logout
 
 * **Method:**
 
@@ -122,6 +141,133 @@
       {
         "error": false,
         "message" : "Logout successfully"
+      }
+   ```
+
+## Register
+
+* **TODO**
+
+  require authorization ?
+
+* **Description**
+
+  create a new user
+
+* **URL**
+
+  /v1/auth/register
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+    ```json
+    {
+        "username": "username",
+        "password": "password"
+    }
+    ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error" : false,
+        "message" : "register successfully"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
+
+      {
+        "error" : false,
+        "message" : "login successfully"
+      }
+   ```
+
+## Delete
+
+* **TODO**
+
+  require authorization ?
+
+* **Description**
+
+  Delete a user
+
+* **URL**
+
+  /v1/auth/delete
+
+* **Method:**
+
+  `DELETE`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+    ```json
+    {
+        "id": "user-id",
+    }
+    ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error" : false,
+        "message" : "user <user-id> is deleted successfully"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:** 401 Unauthorized <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Unauthorized User login"
+    }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
+
+      {
+        "error" : false,
+        "message" : "login successfully"
       }
    ```
 
@@ -396,14 +542,168 @@
       }
    ```
 
+## List basic course
+
+* **TODO** 
+
+  list course by user ?
+
+* **Description**
+ 
+  List all basic courses
+
+* **URL**
+
+  /v1/course/basic
+
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "courses":[
+          {
+            "level", "basic",
+            "course_id": 1,
+            "course_name":"影像處理",
+            "image":"nvidia/caffe:latest", 
+            "dataset":[
+              "cifar-10","mnist"
+            ]
+          },
+          {
+            "level", "basic",
+            "course_id": 2,
+            "course_name":"影像處理",
+            "image":"nvidia/caffe:latest", 
+            "dataset":[
+              "cifar-10","mnist"
+            ]
+          }
+        ]
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  <br />
+    **Content:**
+
+    ```json
+
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/course/basic
+
+      {
+
+      }
+   ```
+
+
+## List advanced course
+
+* **TODO** 
+
+  
+
+* **Description**
+ 
+  List all advanced courses
+
+* **URL**
+
+  /v1/course/advanced
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+      {
+        "error": false,
+        "courses":[
+          {
+            "level", "advanced",
+            "course_id": 1,
+            "course_name":"影像處理",
+            "image":"nvidia/caffe:latest", 
+            "dataset":[
+              "cifar-10","mnist"
+            ]
+          },
+          {
+            "level", "advanced",
+            "course_id": 2,
+            "course_name":"影像處理",
+            "image":"nvidia/caffe:latest", 
+            "dataset":[
+              "cifar-10","mnist"
+            ]
+          }
+        ]
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  <br />
+    **Content:**
+
+    ```json
+
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/course/advanced
+
+      {
+
+      }
+   ```
+
+
 # Job
 
 ## List
 
 * **TODO** 
-
-  what we have in status?
-  do we need job id ?
 
 
 * **Description**
@@ -535,4 +835,123 @@
       {
 
       }
+   ```
+
+# Health Check
+
+## check kubernetes
+
+* **Description**
+
+  check backend kubernetes in running
+
+* **URL**
+
+  /v1/health/kubernetes
+
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "List Node fail: error message"
+     }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/health/kubernetes
+
+      {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      }
+   ```
+
+## check database
+
+* **TODO**
+
+* **Description**
+
+  Check backend database is running
+
+* **URL**
+
+  /v1/health/database
+
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "message" : "databse is running"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  <br />
+    **Content:**
+
+    ```json
+
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+    $ curl http://localhost:8080/v1/health/database
+
+   {
+        "error": false,
+        "message" : "databse is running"
+    }
    ```
