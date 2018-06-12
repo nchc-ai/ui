@@ -8,6 +8,7 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"log"
 	"net/http"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 )
 
 type KClients struct {
@@ -51,11 +52,11 @@ func (kclient *KClients) AddRoute(router *gin.Engine) {
 }
 
 func (kclient *KClients) checkK8s(c *gin.Context) {
-	statusList := []Node{}
+	statusList := []model.Node{}
 	nList, err := kclient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, GenericResponse{
+		c.JSON(http.StatusInternalServerError, model.GenericResponse{
 			Error:   true,
 			Message: "List Node fail: " + err.Error(),
 		})
@@ -64,13 +65,13 @@ func (kclient *KClients) checkK8s(c *gin.Context) {
 
 	for _, n := range nList.Items {
 		a := n.Status.Conditions[len(n.Status.Conditions)-1]
-		statusList = append(statusList, Node{
+		statusList = append(statusList, model.Node{
 			Name:   n.Name,
 			Status: a.Type,
 		})
 	}
 
-	resp := HealthKubernetesResponse{
+	resp := model.HealthKubernetesResponse{
 		Error:   false,
 		Message: statusList,
 	}

@@ -900,8 +900,6 @@
 
 ## check database
 
-* **TODO**
-
 * **Description**
 
   Check backend database is running
@@ -931,17 +929,20 @@
     ```json
     {
         "error": false,
-        "message" : "databse is running"
+        "message" : ["course"]
      }
     ```
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  500 <br />
     **Content:**
 
     ```json
-
+    {
+        "error": true,
+        "message" : "Query all table name fail: error-message"
+     }
     ```
 
 
@@ -952,6 +953,6 @@
 
    {
         "error": false,
-        "message" : "databse is running"
+        "message" : ["course"]
     }
    ```
