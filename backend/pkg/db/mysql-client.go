@@ -38,16 +38,36 @@ func NewDBClient(config *viper.Viper) (*DBClient, error) {
 	}, nil
 }
 
+func (dbclient *DBClient) handleOption(c *gin.Context) {
+	//	setup headers
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
+	c.Status(http.StatusOK)
+}
+
 func (dbclient *DBClient) AddRoute(router *gin.Engine) {
 
 	clusterGroup := router.Group("/v1").Group("/health")
 	{
-		clusterGroup.GET("/database", dbclient.checkDatabase)
+		clusterGroup.POST("/database", dbclient.checkDatabase)
+		clusterGroup.OPTIONS("/database", dbclient.handleOption)
 	}
 
 }
 
 func (dbclient *DBClient) checkDatabase(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+
+	var req model.GenericRequest
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": true,
+			"cause": "Failed to parse spec request request: " + err.Error(),
+		})
+		return
+	}
+	msg := req.Message
 
 	tNameList := []string{}
 
@@ -64,9 +84,7 @@ func (dbclient *DBClient) checkDatabase(c *gin.Context) {
 	}
 
 	for rows.Next() {
-
 		var name string
-
 		if err := rows.Scan(&name); err != nil {
 			log.Fatal("Scan table name fail: " + err.Error())
 			c.JSON(http.StatusInternalServerError, model.GenericResponse{
@@ -75,13 +93,15 @@ func (dbclient *DBClient) checkDatabase(c *gin.Context) {
 			})
 			return
 		}
-		fmt.Printf("%s \n", name)
 		tNameList = append(tNameList, name)
 	}
 
 	resp := model.HealthDatabaseResponse{
-		Error:   false,
-		Message: tNameList,
+		GenericResponse: model.GenericResponse{
+			Error:   false,
+			Message: msg,
+		},
+		Tables: tNameList,
 	}
 
 	c.JSON(http.StatusOK, resp)

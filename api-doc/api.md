@@ -911,7 +911,7 @@
 
 * **Method:**
 
-  `GET`
+  `POST`
 
 * **URL Params**
 
@@ -919,7 +919,11 @@
 
 * **Data Params**
 
-  None
+  ```json
+  {
+    "message": "test"
+  }
+  ```
 
 * **Success Response:**
 
@@ -929,8 +933,11 @@
     ```json
     {
         "error": false,
-        "message" : ["course"]
-     }
+        "message": "test",
+        "tables": [
+            "course"
+        ]
+    }
     ```
 
 * **Error Response:**
@@ -949,10 +956,7 @@
 * **Sample Call:**
 
   ```sh
-    $ curl http://localhost:8080/v1/health/database
+    $ curl -X POST -d '{"message": "xs"}' http://localhost:8080/v1/health/database
 
-   {
-        "error": false,
-        "message" : ["course"]
-    }
+    {"error":false,"message":"xs","tables":["course"]}
    ```
