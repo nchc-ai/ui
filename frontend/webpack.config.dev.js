@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const WebpackStrip = require('strip-loader');
 // const autoprefixer = require('autoprefixer');
-const JxsLoader = ['babel?presets[]=es2015&presets[]=react&presets[]=stage-1',WebpackStrip.loader('debug', 'console.log')];
+const JxsLoader = ['babel?presets[]=es2015&presets[]=react&presets[]=stage-1'];
 const bower_dir = __dirname + '/bower_components';
 
 const extractSass = new ExtractTextPlugin({

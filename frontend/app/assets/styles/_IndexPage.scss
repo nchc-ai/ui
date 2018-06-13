@@ -1,10 +1,23 @@
 .index-bg {
 
-  .section-01 {
+
+  .section-grp {
     @include rect(100%,initial);
+    position: relative;
     min-height: 600px;
-    background-image: url('../images/index/section01-bg.png');
     overflow: hidden;
+    
+
+    .img-grp {
+      position: absolute;
+      z-index: 10;
+    }
+  }
+
+  .section-01 {
+    padding-top: 1px;
+    background-image: url('../images/index/section01-bg.png');
+    overflow: initial;
 
     .title {
       @include rect-center(740px,180px);
@@ -28,11 +41,33 @@
       }
     }
 
+    .img-tree {
+      @include margin-leftop(200px, 50px);
+    }
+
+    .img-train {
+      width: 800px;
+      top: 380px;
+      right: 0px;
+    }
+
 
   }
 
+  .section-02 {
+    height: 1127px;
+    background-image: url('../images/index/section02-bg.png');
+  
+    .section-02-thumb {
+      margin-top: 90px;
+    }
+    
+  }
 
-
+  .section-03 {
+    height: 1555px;
+    background-image: url('../images/index/section03-bg.png');
+  }
 
 
 }

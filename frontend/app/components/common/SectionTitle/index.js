@@ -1,9 +1,9 @@
 import React from 'react';
 
-const Index = ({ title, subTitle, children, isUnderline, isImg, titleImgUrl }) => (
+const Index = ({ title, subTitle, children, isUnderline, isTitleImg, titleImgUrl }) => (
   <div className="common-title-con">
     {
-      isImg ?
+      isTitleImg ?
         <img alt="" src={titleImgUrl} />
       :
         <h1>{title}</h1>

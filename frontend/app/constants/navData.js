@@ -12,28 +12,32 @@ export const mainNav = [
     key: 0,
     name: 'navbar.class',
     nameCh: '課程介紹',
-    url: '/intro/class',
+    url: '/',
+    // url: '/intro/class',
     isCate: true
   },
   {
     key: 1,
     name: 'navbar.intro',
     nameCh: '中心介紹',
-    url: '/intro/intro',
+    url: '/',
+    // url: '/intro/intro',
     isCate: true
   },
   {
     key: 2,
     name: 'navbar.survey',
     nameCh: '需求調查表',
-    url: '/intro/survey',
+    url: '/',
+    // url: '/intro/survey',
     isCate: true
   },
   {
     key: 3,
     name: 'navbar.contact',
     nameCh: '聯絡我們',
-    url: '/intro/contact',
+    url: '/',
+    // url: '/intro/contact',
     isCate: true
   }
 ];

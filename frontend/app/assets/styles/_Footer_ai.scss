@@ -3,7 +3,7 @@ $footer-col-width: 215px;
 
 
 $footer-top-height: 120px;
-$footer-bottom-height: 60px;
+$footer-bottom-height: 50px;
 
 $text-color: #333;
 $footer-top-bg: #333;
@@ -26,7 +26,7 @@ $footer-bottom-bg: #00aae3;
   .top-part-bg{
     @include rect(100%, $footer-top-height);
     border-bottom: 1px solid rgba(151, 151, 151, 0.67);
-    background-color: #f4f9fd;
+    background-color: #6ec7cf;
 
     .top-part-con{
       vertical-align: middle;
@@ -39,7 +39,7 @@ $footer-bottom-bg: #00aae3;
 
       .footer-top-text{
         padding: 0px 70px;
-        background-color: #ffca00;
+        background-color: #fcec65;
         margin-left: 20px;
         color:$primary-color;
         text-decoration: none;
@@ -204,7 +204,7 @@ $footer-bottom-bg: #00aae3;
     @include rect(100%,$footer-bottom-height);
     position: relative;
     line-height: 30px;
-    background-color: #00aae3;
+    background-color: #379488;
     font-size: 20px;
     color: #fff;
     z-index: 5;
@@ -224,7 +224,7 @@ $footer-bottom-bg: #00aae3;
         li{
           float: left;
           margin-right: 20px;
-          line-height: 66px;
+          line-height: 53px;
           font-size: 20px;
 
           .link-format-comp {
@@ -251,7 +251,7 @@ $footer-bottom-bg: #00aae3;
       color:#fff;
       text-align: right;
       padding-right: $footer-left-margin;
-      line-height: 60px;
+      line-height: 50px;
       
 
       span {

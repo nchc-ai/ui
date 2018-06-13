@@ -1,0 +1,39 @@
+.thumbnails-comp {
+
+  .thumb-col {
+    .thumb-title{
+      @include rect-center(230px, initial);
+      font-size: 30px;
+      font-weight: bold;
+    }
+  
+    .thumb-img {
+      @include center;
+      margin-top: 10px;
+    }
+  
+    .thumb-sub-title {
+      @include rect-center(400px, initial);
+      margin-top: 25px;
+      font-size: 24px;
+      font-weight: bold;
+      line-height: 36px;
+    }
+
+    .thumb-info {
+      @include rect-center(400px, initial);
+      font-size: 20px;
+
+      li {
+        margin-bottom: 20px;
+        list-style-type: disc;
+      }
+    }
+  
+    .line-v {
+      @include rect(3px, 400px);
+      background-color: #fff;
+    }
+  }
+ 
+}

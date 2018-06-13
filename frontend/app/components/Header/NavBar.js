@@ -26,7 +26,7 @@ const NavBar = ({ offline, t, dropDownPos, offlineWarning }) => (
                     to={d.url}
                     className="main-link"
                   >
-                    {t(d.name)}
+                    {d.nameCh}
                   </Link>
                 </div>
             }

@@ -1,0 +1,34 @@
+
+$thumb-title-line-height: 40px;
+$thumb-devider-color: $primary-color;
+
+.thumbnails-comp {
+
+  .thumb-col {
+    .thumb-title, .thumb-sub-title, .thumb-info {
+      text-align: center;
+    }
+
+    .thumb-sub-title, .thumb-info {
+      text-align: justify;
+    }
+    
+    .thumb-title {
+      line-height: $thumb-title-line-height;
+    }
+
+    .thumb-img {
+      @include center;
+    }
+  
+    .line-v {
+      @include rect(3px, initial);
+      position: absolute;
+      background-color: $thumb-devider-color;
+      z-index: 20;
+      right: 0px;
+      top: 0px;
+    }
+  }
+ 
+}

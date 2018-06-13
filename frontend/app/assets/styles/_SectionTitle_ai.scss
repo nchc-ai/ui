@@ -1,0 +1,34 @@
+
+
+
+// Index
+.index-bg {
+  .section-02 {
+    .common-title-con {
+      @include margin-leftop(130px, 210px);
+  
+      h6 {
+        margin-top: 20px;
+        font-size: 36px;
+      }
+    }
+  }
+  
+  .section-03, .section-04 {
+    
+    .common-title-con {
+      @include rect-center(130px, 210px);
+      img {
+        @include center;
+      }
+  
+      h6 {
+        margin-top: 20px;
+        font-size: 36px;
+      }
+    }
+
+  }
+
+
+}
