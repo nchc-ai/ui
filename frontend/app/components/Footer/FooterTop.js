@@ -12,7 +12,7 @@ const FooterTop = ({ offline, offlineWarning }) => (
         offline ?
           <span className="footer-top-text" onClick={offlineWarning}>需求調查表</span>
           :
-          <Link className="footer-top-text" to="/intro/survey">需求調查表</Link>
+          <Link className="footer-top-text" to="/">需求調查表</Link>
       }
       
     </div>
