@@ -102,6 +102,7 @@
     .line-h {
       @include rect-center(80%, 1px);
       background-color: #000;
+      transform: translateY(9px);
     }
     
   }

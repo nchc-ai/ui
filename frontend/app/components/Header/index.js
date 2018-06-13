@@ -6,6 +6,7 @@ import NavBar from './NavBar.js';
 import IconList from './IconList';
 import { mainNav } from '../../constants/navData';
 import logoImg from '../../../public/images/header/header-logo.png';
+import GlobalSearch from './GlobalSearch';
 // import IconList from './IconList';
 
 const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning }) => (
@@ -19,7 +20,7 @@ const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlin
     <div className="header-container">
       {/* <TopBar userInfo={userInfo} isLogin={isLogin} offline={offline} /> */}
       <Row>
-        <Col md={8} >
+        <Col md={{ size: 7 }} >
           <NavBar
             data={mainNav}
             offline={offline}
@@ -28,9 +29,17 @@ const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlin
             offlineWarning={offlineWarning}
           />
         </Col>
-        <Col md={2} >
+        {/* <Col md={2} >
           { offline ? null : <IconList />}
+        </Col> */}
+
+        <Col md={{ size: 5 }} >
+          <GlobalSearch />
+
+          <button className="login-btn">登入</button>
         </Col>
+       
+        
       </Row>
     </div>
   </div>

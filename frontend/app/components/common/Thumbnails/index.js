@@ -13,7 +13,7 @@ const Index = ({ className, data, col, isDivide }) => (
             <ul className="thumb-info">
               {
                 thumb.infos.map(info => (
-                  <li className="thumb-info-li">{info}</li>
+                  <li key={info.key} className="thumb-info-li">{info.text}</li>
                 ))
               }
             </ul>

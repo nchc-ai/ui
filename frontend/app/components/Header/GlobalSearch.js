@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Form, Control } from 'react-redux-form';
 import bindActionCreatorHoc from '../../libraries/bindActionCreatorHoc';
-// import searchBtnIcon from '../../images/common/header-search-m.png';
+import searchBtnIcon from '../../../public/images/header/search-icon.png';
 
 class GlobalSearch extends React.Component {
   static propTypes = {
@@ -21,6 +21,7 @@ class GlobalSearch extends React.Component {
   render = () => {
     return (
       <Form
+        className="global-search-comp"
         model="forms.globalSearch"
         onSubmit={this.onSubmit}
       >
@@ -28,13 +29,13 @@ class GlobalSearch extends React.Component {
           type="text"
           className="global-search"
           model="forms.globalSearch.searchText"
-          placeholder="搜尋KNOMO商品"
+          placeholder="Search"
         />
         <button
           type="submit"
           className="global-search-btn"
         >
-          {/* <img alt="" src={searchBtnIcon} /> */}
+          <img alt="" src={searchBtnIcon} />
         </button>
       </Form>
     );
@@ -44,8 +45,7 @@ class GlobalSearch extends React.Component {
 
 const mapStateToProps = ({ Auth }) => ({
   userInfo: Auth.userInfo,
-  isLogin: Auth.isLogin,
-  cartSum: 0
+  isLogin: Auth.isLogin
 });
 
 export default compose(

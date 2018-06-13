@@ -52,7 +52,7 @@ $nav-bar-height: 80px;
     height: 110%;
 
     li {
-      margin-top: 25px;
+      margin-top: 30px;
       float: left;
     }
 
@@ -101,6 +101,64 @@ $nav-bar-height: 80px;
     .notify-badge{
       margin-right: -3px;
       margin-top: -4px;
+    }
+  }
+}
+
+
+// GlobalSearch -------------------------------------------------
+
+.global-search-comp {
+
+  @include rect(240px, 40px);
+  position: relative;
+  margin-top: 24px;
+  float: left;
+
+  .global-search{
+    @include rect(240px, 40px);
+    font-size: 14px;
+    border-radius: 20px;
+    padding-left: 30px;
+    background-color: #D6DCDC;
+    box-shadow: inset 0 1px 3px 0 #D6DCDC;
+    outline: none;
+    float: left;
+  }
+  
+  .global-search-btn{
+
+    @include margin-leftop(5px, 11px);
+    position: absolute;
+    background-color: rgba(0,0,0,0);
+    height: 20px;
+    float: left;
+    pointer-events: none;
+    img{
+      width:14px;
+    }
+  }
+}
+
+
+// LoginButton -------------------------------------------------
+
+.header-container {
+  .login-btn {
+    @include rect(150px, 40px);
+    margin-left: 20px;
+    border-radius: 20px;
+    margin-top: 22px;
+    background-color: #ffd94a;
+    float: left;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    outline: none;
+
+    &:hover {
+      opacity: 1;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
     }
   }
 }

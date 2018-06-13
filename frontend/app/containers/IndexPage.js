@@ -15,7 +15,6 @@ import imgTrain from '../../public/images/index/section02-train.png';
 import * as models from '../constants/models';
 
 class IndexPage extends Component {
-
   render() {
     return (
       <div className="index-bg global-content">
