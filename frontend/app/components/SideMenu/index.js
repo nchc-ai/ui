@@ -15,7 +15,7 @@ class Index extends Component {
   };
 
   offlineWarning = () => {
-    notify.show('如對商品有興趣，可親洽KNOMO概念店(萬豪酒店中城廣場)', 'success', 1800);
+    notify.show('如對課程有興趣，可親洽AI_LAB', 'success', 1800);
   }
 
   closeMenu = () => {

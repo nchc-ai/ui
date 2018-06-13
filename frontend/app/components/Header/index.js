@@ -1,12 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
-
-// import logoImg from '../../images/common/knomo-logo.svg';
 // import TopBar from './TopBar.js';
 import NavBar from './NavBar.js';
 import IconList from './IconList';
-
+import logoImg from '../../../public/images/header/header-logo.png';
 // import IconList from './IconList';
 
 const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning }) => (
@@ -14,7 +12,7 @@ const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlin
 
     <Link to="/" className="logo-con con-grp fl">
       <span className="v-helper" />
-      {/* <embed className="logo-svg" src={logo} /> */}
+      <img alt="AI_LAB" className="logo-svg" src={logoImg} />
     </Link>
 
     <div className="header-container">

@@ -8,7 +8,7 @@ import { I18nextProvider } from 'react-i18next';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
-import './styles/style.scss';
+import './assets/styles/style.scss';
 
 import i18n from './i18n';
 import store from './store';
@@ -25,7 +25,7 @@ ReactDOM.render((
       <div id="outer-container" style={{ height: '100%' }}>
         <Router>
           <div>
-            <SideMenu />
+            {/* <SideMenu /> */}
             <div id="page-wrap" className="global-bg">
               <DocumentMeta {...metaObj} />
               <Switch>

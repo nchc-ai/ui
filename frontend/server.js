@@ -38,20 +38,6 @@ if (isDev) {
 	host = '127.0.0.1';
 	port = 80;
 }
-// -------------------  DB Connection  -------------------------//
-require('./db')(app);
-// 1. 套用express應用程式
-app.use(morgan('dev'));  // 把每個請求都顯示在 console
-app.use(cookieParser()); // 認證需要用到
-
-// -------------------  Use middleware  -------------------------//
-
-// app.use('/api', require('./routers/apiRoutes'));
-// app.use('/', require('./routers/payment'));
-app.use('/', require('./routers/website'));
-// app.use('/', require('./routers/mailer'));
-// app.use('/auth', require('./routers/auth'));
-// app.use('/admin', require('./routers/admin'));
 
 // -------------------  DEV vs RELEASE  -------------------------//
 
@@ -62,7 +48,7 @@ if (isDev) {
 		contentBase: 'src',
 		stats: 'errors-only',
 	});
-	app.use(express.static('public'));
+	app.use('/', express.static('public'));
 	app.use(middleware);
 	app.use(webpackHotMiddleware(compiler));
 	app.get('*', (req, res) => {
@@ -93,35 +79,3 @@ app.listen(port, host, (err) => {
 	}
 	console.info('==> 🌎 Listening on port %s. Open up http://localhost:%s/ in your browser.', port, port);
 });
-
-
-
-// var express = require('express');
-// var app = express();
-
-// // set the port of our application
-// // process.env.PORT lets the port be set by Heroku
-// var port = process.env.PORT || 8080;
-
-// // set the view engine to ejs
-// app.set('view engine', 'ejs');
-
-// // make express look in the public directory for assets (css/js/img)
-// app.use(express.static(__dirname + '/public'));
-
-// // set the home page route
-// app.get('/', function(req, res) {
-
-// 	// ejs render automatically looks in the views folder
-// 	res.render('index');
-// });
-
-// app.get('/result', function(req, res) {
-
-// 	// ejs render automatically looks in the views folder
-// 	res.render('result');
-// });
-
-// app.listen(port, function() {
-// 	console.log('Our app is running on http://localhost:' + port);
-// });

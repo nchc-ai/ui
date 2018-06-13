@@ -1,0 +1,38 @@
+.index-bg {
+
+  .section-01 {
+    @include rect(100%,initial);
+    min-height: 600px;
+    background-image: url('../images/index/section01-bg.png');
+    overflow: hidden;
+
+    .title {
+      @include rect-center(740px,180px);
+      margin-top: 60px;
+    }
+
+    .info {
+      @include rect-center(830px,70px);
+      margin-top: 36px;
+    }
+
+    .highlight {
+      @include rect-center(1000px,145px);
+      margin-top: 18px;
+      background-image: url('../images/index/section01-highlight.png');
+      span {
+        @include rect(730px,145px);
+        @include margin-leftop(170px,20px);
+        font-size: 32px;
+        display: inline-block;
+      }
+    }
+
+
+  }
+
+
+
+
+
+}

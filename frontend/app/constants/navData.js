@@ -11,24 +11,28 @@ export const mainNav = [
   {
     key: 0,
     name: 'navbar.class',
+    nameCh: '課程介紹',
     url: '/intro/class',
     isCate: true
   },
   {
     key: 1,
     name: 'navbar.intro',
+    nameCh: '中心介紹',
     url: '/intro/intro',
     isCate: true
   },
   {
     key: 2,
     name: 'navbar.survey',
+    nameCh: '需求調查表',
     url: '/intro/survey',
     isCate: true
   },
   {
     key: 3,
     name: 'navbar.contact',
+    nameCh: '聯絡我們',
     url: '/intro/contact',
     isCate: true
   }
@@ -145,3 +149,36 @@ export const footerBottomRightArr = [
   }
 ];
 
+export const sideNav = [
+  {
+    key: 0,
+    url: null,
+    text: '首頁',
+    isMain: true,
+    isLink: false
+  }, {
+    key: 1,
+    url: '/cate-1',
+    text: '內頁一',
+    isMain: false,
+    isLink: true
+  }, {
+    key: 2,
+    url: '/cate-2',
+    text: '內頁二',
+    isMain: false,
+    isLink: true
+  }, {
+    key: 3,
+    url: '/cate-3',
+    text: '內頁三',
+    isMain: false,
+    isLink: true
+  }, {
+    key: 4,
+    url: '/cate-4',
+    text: '內頁四',
+    isMain: false,
+    isLink: true
+  }
+]
