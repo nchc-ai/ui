@@ -9,6 +9,7 @@ import section02Title from '../../public/images/index/section02-title.png';
 import section03Title from '../../public/images/index/section03-title.png';
 import section03Title02 from '../../public/images/index/section04-title.png';
 import imgServer from '../../public/images/index/section03-img.png';
+import imgTitle from '../../public/images/index/section03-title-logo.png';
 import imgTree from '../../public/images/index/section02-tree.png';
 import imgTrain from '../../public/images/index/section02-train.png';
 import * as models from '../constants/models';
@@ -29,6 +30,7 @@ class IndexPage extends Component {
           </div>
           <img className="img-tree img-grp" alt="train" src={imgTree} />
           <img className="img-train  img-grp" alt="train" src={imgTrain} />
+          <img className="img-tree-02 img-grp" alt="train" src={imgTree} />
         </div>
 
         <div className="section-02 section-grp">
@@ -43,6 +45,7 @@ class IndexPage extends Component {
             className="section-02-thumb"
             data={models.indexPage.section02.thumbs}
             col={3}
+            isDivide
           />
           
 
@@ -55,27 +58,32 @@ class IndexPage extends Component {
             titleImgUrl={section03Title}
           />
           
-          <Row>
+          <Row className="section-03-container">
             <Col md={{ size: 6 }}>
-              <img alt="intro-img" src={imgServer} />
+              <img className="intro-img" alt="intro-img" src={imgServer} />
             
             </Col>
             <Col md={{ size: 6 }}>
-              <img alt="intro-img" src={imgServer} />
-              <div className="devide-line" />
+              <img alt="intro-title-img" src={imgTitle} />
+              <div className="line-h" />
               <div className="content">
-                {}
+                <p>{models.indexPage.section03.info01}</p>
+                <p>{models.indexPage.section03.info02}</p>
               </div>
             </Col>
 
           </Row>
+          
+          <div className="line-h" />
 
           <SectionTitle
             isTitleImg
             titleImgUrl={section03Title02}
+            subTitle={models.indexPage.section04.subTitle}
           />
           
           <Thumbnails
+            className="section-03-thumb"
             data={models.indexPage.section04.thumbs}
             col={3}
           />

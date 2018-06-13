@@ -1,16 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Row, Col } from 'reactstrap';
 import { translate } from 'react-i18next';
 
-import { mainNav } from '../../constants/navData';
-// import logo from '../../images/common/knomo-logo.svg';
-
-const NavBar = ({ offline, t, dropDownPos, offlineWarning }) => (
+const NavBar = ({ data, offline, t, dropDownPos, offlineWarning }) => (
   <div className="nav-bar-comp">
-    <ul className="navbar-main-ul navbar-ul con-grp fl" >
+    <ul className="navbar-main-ul navbar-ul con-grp" >
       {
-        mainNav.map(d => (
+        data.map(d => (
           <li key={d.key}>
             {
               offline ?

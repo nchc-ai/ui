@@ -1,13 +1,15 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
-import { footerMidInfoArr } from '../../constants/navData';
+import { footer } from '../../constants/navData';
+import footerLogo from '../../../public/images/index/footer-logo.png';
 import LinkFormat from '../common/LinkFormat/index';
+import NavBar from '../Header/NavBar';
 
 const FooterMid = ({ offline, offlineWarning }) => (
   <div className="middle-part-bg">
     <Row className="middle-part-ul">
-      {
-        footerMidInfoArr.map((d, i) => (
+      {/* {
+        footer.midInfoArr.map((d, i) => (
           <Col key={i} className={`footer-part footer-part-${i} ${d.className}`}>
             <div className="part-container">
               <h5 className="title">{d.title}</h5>
@@ -29,7 +31,7 @@ const FooterMid = ({ offline, offlineWarning }) => (
             </div>
           </Col>
         ))
-      }
+      } */}
       {/* 兩個icon */}
       {/* <Col className="col-xs-12 col-sm-12 col-md-2 col-md-offset-2 col-12">
         <div className="icon-ul">
@@ -44,6 +46,18 @@ const FooterMid = ({ offline, offlineWarning }) => (
           }
         </div>
       </Col> */}
+
+      <img alt="" className="footer-logo" src={footerLogo} />
+
+      <div className="line-h" />
+      
+      <NavBar
+        data={footer.midBriefArr}
+        offlineWarning={offlineWarning}
+      />
+
+
+
     </Row>
   </div>
 );

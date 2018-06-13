@@ -72,30 +72,24 @@ export const indexPage = {
     thumbs: [
       {
         key: 1,
-        title: 'NVIDIA認證國際DLI講師陣容',
-        subTitle: '與實務應用結合AI講師群',
+        title: 'AI雲端平台',
         imgUrl: section04Icon01,
         infos: [
-          '結合既有專長研究領域, 例如：醫工、3D視覺、平行計算等',
-          '數十場不同領域的講課經驗'
+          '協助各型產業在建置AI系統架構時可信賴的基礎設施'
         ]
       }, {
         key: 2,
-        title: '彈性課程設計符合產業需求',
-        subTitle: '搭配課前需求訪談，客製化產業需求課程內容。',
+        title: 'AI教育',
         imgUrl: section04Icon02,
         infos: [
-          '基礎學程：以AI 架構的使用規畫課程內容，讓學員能快速使用於實際場域中。',
-          '進階學程：因應不同場域實際需要，以應用案例作為設計課程內容的主軸。'
+          'NVIDIA認證國際DLI講師陣容。結合虛擬主機hands-on課程，到廠授課，就地協助建立AI能力'
         ]
       }, {
         key: 3,
-        title: 'Hands-on 課程強調實作環境',
-        subTitle: '提供虛擬主機帳號，在公司就能開課。',
+        title: 'AI企業應用服務',
         imgUrl: section04Icon03,
         infos: [
-          '學員擁有獨立一張GPU做練習，不須與人共享。',
-          'Hands-on Lab線上實作介面，結合講師製作的課程講義，學習效果加倍。'
+          '備完整機器學習功能模組，整合性服務加速產業於AI相關應用的開發'
         ]
       }
     ]

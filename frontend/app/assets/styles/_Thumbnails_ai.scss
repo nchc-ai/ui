@@ -13,7 +13,7 @@
     }
   
     .thumb-sub-title {
-      @include rect-center(400px, initial);
+      @include rect-center(330px, initial);
       margin-top: 25px;
       font-size: 24px;
       font-weight: bold;
@@ -21,7 +21,7 @@
     }
 
     .thumb-info {
-      @include rect-center(400px, initial);
+      @include rect-center(310px, initial);
       font-size: 20px;
 
       li {
@@ -31,9 +31,28 @@
     }
   
     .line-v {
-      @include rect(3px, 400px);
+      @include rect(3px, 600px);
       background-color: #fff;
     }
+
+    &:nth-last-child(1) {
+      .line-v {
+        display: none;
+      }
+    }
   }
+
+  
  
+}
+
+
+
+.section-03 {
+  .thumbnails-comp .thumb-col .thumb-info {
+    width: 290px;
+    li {
+      list-style-type: none;
+    }
+  }
 }

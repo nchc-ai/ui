@@ -45,6 +45,11 @@
       @include margin-leftop(200px, 50px);
     }
 
+    .img-tree-02 {
+      margin-top: 320px;
+      right: 190px;
+    }
+
     .img-train {
       width: 800px;
       top: 380px;
@@ -59,6 +64,7 @@
     background-image: url('../images/index/section02-bg.png');
   
     .section-02-thumb {
+      @include rect-center(80%, initial);
       margin-top: 90px;
     }
     
@@ -67,6 +73,37 @@
   .section-03 {
     height: 1555px;
     background-image: url('../images/index/section03-bg.png');
+    
+    .section-03-container {
+
+      @include rect-center(1200px, initial);
+      margin-bottom: 70px;
+      .intro-img {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+      }
+
+      .line-h {
+        @include rect-center(100%, 1px);
+        @include margin-v(35px);
+        background-color: #000;
+      }
+
+      .content {
+        line-height: 36px;
+
+        p {
+          font-size: 20px;
+          margin-bottom: 30px;
+        }
+      }
+    }
+    
+    .line-h {
+      @include rect-center(80%, 1px);
+      background-color: #000;
+    }
+    
   }
 
 

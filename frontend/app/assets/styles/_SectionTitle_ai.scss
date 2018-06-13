@@ -14,18 +14,26 @@
     }
   }
   
-  .section-03, .section-04 {
+  .section-03{
     
     .common-title-con {
-      @include rect-center(130px, 210px);
+      @include rect-center(80%, initial);
+      margin-top: 40px;
+      margin-bottom: 40px;
       img {
         @include center;
       }
   
       h6 {
-        margin-top: 20px;
-        font-size: 36px;
+        @include rect-center(1000px, initial);
+        margin-top: 30px;
+        font-size: 24px;
+        line-height: 40px;
       }
+    }
+
+    .section-03-thumb {
+      margin-top: 80px;
     }
 
   }

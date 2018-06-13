@@ -1,0 +1,6 @@
+.middle-part-bg .nav-bar-comp {
+  height: 70px;
+  .navbar-ul {
+    @include rect-center(384px, 50px);
+  }
+}

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 
-const Index = ({ className, data, col }) => (
+const Index = ({ className, data, col, isDivide }) => (
   <div className={`thumbnails-comp ${className || ''}`}>
     <Row>
       {
@@ -17,7 +17,7 @@ const Index = ({ className, data, col }) => (
                 ))
               }
             </ul>
-            <div className="line-v" />
+            { isDivide ? <div className="line-v" /> : null}
           </Col>
         ))
       }

@@ -44,8 +44,12 @@ $footer-bottom-bg: #00aae3;
         color:$primary-color;
         text-decoration: none;
         border-radius: 50px;
-        box-shadow: 0 20px 30px 0 rgba(37, 15, 138, 0.2);
+        transition: all .2s ease-in-out;
         cursor: pointer;
+
+        &:hover {
+          box-shadow: 0 20px 30px 0 rgba(37, 15, 138, 0.2);
+        }
       }
     }
   }
@@ -57,14 +61,7 @@ $footer-bottom-bg: #00aae3;
     overflow: hidden;
     // @include rect-center(1200px,initial);
     // display: inline-block;
-    
-    .middle-part-ul {
-      margin-top: 36px;
-      margin-bottom: 20px;
-    }
-
-
-
+  
     .footer-part{
 
       @include rect($footer-col-width,initial);

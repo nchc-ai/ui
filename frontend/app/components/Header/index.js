@@ -4,6 +4,7 @@ import { Row, Col } from 'reactstrap';
 // import TopBar from './TopBar.js';
 import NavBar from './NavBar.js';
 import IconList from './IconList';
+import { mainNav } from '../../constants/navData';
 import logoImg from '../../../public/images/header/header-logo.png';
 // import IconList from './IconList';
 
@@ -20,6 +21,7 @@ const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlin
       <Row>
         <Col md={8} >
           <NavBar
+            data={mainNav}
             offline={offline}
             dropDownPos={dropDownPos}
             setDropdownPos={setDropdownPos}
