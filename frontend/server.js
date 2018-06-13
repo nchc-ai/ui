@@ -42,25 +42,25 @@ if (isDev) {
 // -------------------  DEV vs RELEASE  -------------------------//
 
 if (isDev) {
-	const compiler = webpack(config);
-	const middleware = webpackMiddleware(compiler, {
-		publicPath: config.output.publicPath,
-		contentBase: 'src',
-		stats: 'errors-only',
-	});
-	app.use('/', express.static('public'));
-	app.use(middleware);
-	app.use(webpackHotMiddleware(compiler));
-	app.get('*', (req, res) => {
-		res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'build/index.html')));
-		res.end();
-	});
+  const compiler = webpack(config);
+  const middleware = webpackMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+    contentBase: 'src',
+    stats: 'errors-only'
+  });
+  app.use('/', express.static('public'));
+  app.use(middleware);
+  app.use(webpackHotMiddleware(compiler));
+  app.get('*', (req, res) => {
+    res.write(middleware.fileSystem.readFileSync(path.join(__dirname, 'build/index.html')));
+    res.end();
+  });
 } else {
-	app.use(express.static('public'));
-	app.use(express.static(`${__dirname}/app/dist`));
-	app.get('*', (req, res) => {
-		res.sendFile(path.join(__dirname, 'app/dist/index.html'));
-	});
+  app.use(express.static('public'));
+  app.use(express.static(`${__dirname}/app/dist`));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'app/dist/index.html'));
+  });
 }
 // -------------------  Error Handler -------------------------//
 app.use((req, res) => {
