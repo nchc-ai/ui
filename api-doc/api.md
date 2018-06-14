@@ -1,148 +1,23 @@
-* [Authentication](#authentication)
-  * [Register](#register)
-  * [Delete](#delete)
-* [Course](#course)
-  * [List](#list)
-  * [Add](#add)
-  * [Launch](#launch)
-  * [Delete](#delete-1)
-  * [List basic course](#list-basic-course)
-  * [List advanced course](#list-advanced-course)
-* [Job](#job)
-  * [List](#list-1)
-  * [Delete](#delete-2)
-* [Health Check](#health-check)
-  * [check kubernetes](#check-kubernetes)
-  * [check database](#check-database)
+<!--ts-->
+   * [Course](#course)
+      * [List](#list)
+      * [Add](#add)
+      * [Launch](#launch)
+      * [Delete](#delete)
+      * [List basic course](#list-basic-course)
+      * [List advanced course](#list-advanced-course)
+   * [Job](#job)
+      * [List](#list-1)
+      * [Delete](#delete-1)
+   * [Health Check](#health-check)
+      * [check kubernetes](#check-kubernetes)
+      * [check kubernetes with token](#check-kubernetes-with-token)
+      * [check database](#check-database)
+      * [check database with token](#check-database-with-token)
 
-# Authentication
+<!-- Added by: ogre0403, at:  -->
 
-## Register
-
-* **TODO**
-
-  require authorization ?
-
-* **Description**
-
-  create a new user
-
-* **URL**
-
-  /v1/auth/register
-
-* **Method:**
-
-  `POST`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-    ```json
-    {
-        "username": "username",
-        "password": "password"
-    }
-    ```
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error" : false,
-        "message" : "register successfully"
-     }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
-
-      {
-        "error" : false,
-        "message" : "login successfully"
-      }
-   ```
-
-## Delete
-
-* **TODO**
-
-  require authorization ?
-
-* **Description**
-
-  Delete a user
-
-* **URL**
-
-  /v1/auth/delete
-
-* **Method:**
-
-  `DELETE`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-    ```json
-    {
-        "id": "user-id",
-    }
-    ```
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error" : false,
-        "message" : "user <user-id> is deleted successfully"
-     }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message": "Unauthorized User login"
-    }
-    ```
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
-
-      {
-        "error" : false,
-        "message" : "login successfully"
-      }
-   ```
+<!--te-->
 
 # Course
 
@@ -771,6 +646,98 @@
       }
    ```
 
+
+## check kubernetes with token
+
+* **Description**
+
+  check backend kubernetes in running, but required token authentication
+
+* **URL**
+
+  /v1/health/kubernetesAuth
+
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   `token=[token-string]`
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "List Node fail: error message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token validate fail:: error message"
+     }
+    ```
+
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/health/kubernetesAuth?token=b86b2893-b876-45c2-a3f6-5e099c15d638
+
+      {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      }
+   ```
+
+
 ## check database
 
 * **Description**
@@ -830,6 +797,101 @@
 
   ```sh
     $ curl -X POST -d '{"message": "xs"}' http://localhost:8080/v1/health/database
+
+    {"error":false,"message":"xs","tables":["course"]}
+   ```
+
+
+
+## check database with token
+
+* **Description**
+
+  Check backend database is running, but required token authentication
+
+* **URL**
+
+  /v1/health/databaseAuth
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   `token=[token-string]`
+
+* **Data Params**
+
+  ```json
+  {
+    "message": "test"
+  }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "message": "test",
+        "tables": [
+            "course"
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Query all table name fail: error-message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token validate fail:: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+    $ curl -X POST -d '{"message": "xs"}' http://localhost:8080/v1/health/databaseAuth?token=b86b2893-b876-45c2-a3f6-5e099c15d638
 
     {"error":false,"message":"xs","tables":["course"]}
    ```
