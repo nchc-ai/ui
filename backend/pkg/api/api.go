@@ -9,8 +9,10 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/db"
-	"fmt"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/validate"
+	"net/http"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+	"fmt"
 )
 
 type APIServer struct {
@@ -35,9 +37,15 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 	}
 
 	var verifier validate.Validate
-	verifier = validate.NewGithubValidate(config)
-
-	//var i validate.Validate =
+	switch oauthProvider := config.GetString("api-server.validate.type"); oauthProvider {
+	case "go-oauth":
+		verifier = validate.NewGoAuthValidate(config)
+	case "github":
+		verifier = validate.NewGithubValidate(config)
+	default:
+		log.Println(fmt.Sprintf("%s is a not supported provider type, use dummy validater", oauthProvider))
+		verifier = validate.NewDummyValidate(config)
+	}
 
 	return &APIServer{
 		config:    config,
@@ -52,10 +60,12 @@ func (server *APIServer) RunServer() error {
 
 	defer server.dbClient.DB.Close()
 
-	//server.router.Use(server.AuthMiddleware())
+	// add middleware
+	server.router.Use(server.CORSHeaderMiddleware())
 
-	server.k8sClient.AddRoute(server.router)
-	server.dbClient.AddRoute(server.router)
+	// add route
+	server.k8sClient.AddRoute(server.router, server.AuthMiddleware())
+	server.dbClient.AddRoute(server.router, server.AuthMiddleware())
 
 	err := server.router.Run(":" + strconv.Itoa(server.config.GetInt("api-server.port")))
 	if err != nil {
@@ -64,12 +74,42 @@ func (server *APIServer) RunServer() error {
 	return nil
 }
 
+func respondWithError(code int, message string, c *gin.Context) {
+	resp := model.GenericResponse{
+		Error:   true,
+		Message: message,
+	}
+	c.JSON(code, resp)
+	c.Abort()
+}
+
 func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		fmt.Println("check auth")
-		token := "aaa"
-		server.verifier.Validate(token)
+		token := c.Request.FormValue("token")
 
+		if token == "" {
+			respondWithError(http.StatusUnauthorized, "token is missing", c)
+			return
+		}
+
+		validated, err := server.verifier.Validate(token)
+		if err != nil {
+			respondWithError(http.StatusInternalServerError, fmt.Sprintf("token validate fail: %s", err.Error()), c)
+			return
+		}
+
+		if !validated {
+			respondWithError(http.StatusUnauthorized, "Invalid API token", c)
+			return
+		}
+
+		c.Next()
+	}
+}
+
+func (server *APIServer) CORSHeaderMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Access-Control-Allow-Origin", "*")
 		c.Next()
 	}
 }

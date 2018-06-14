@@ -40,23 +40,30 @@ func NewDBClient(config *viper.Viper) (*DBClient, error) {
 
 func (dbclient *DBClient) handleOption(c *gin.Context) {
 	//	setup headers
-	c.Header("Access-Control-Allow-Origin", "*")
+	//c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
 	c.Status(http.StatusOK)
 }
 
-func (dbclient *DBClient) AddRoute(router *gin.Engine) {
+func (dbclient *DBClient) AddRoute(router *gin.Engine, authMiddleware gin.HandlerFunc) {
 
+	// health check
 	clusterGroup := router.Group("/v1").Group("/health")
 	{
 		clusterGroup.POST("/database", dbclient.checkDatabase)
 		clusterGroup.OPTIONS("/database", dbclient.handleOption)
 	}
 
+	// health check require token
+	authGroup := router.Group("/v1").Group("/health").Use(authMiddleware)
+	{
+		authGroup.POST("/databaseAuth", dbclient.checkDatabase)
+		authGroup.OPTIONS("/databaseAuth", dbclient.handleOption)
+	}
 }
 
 func (dbclient *DBClient) checkDatabase(c *gin.Context) {
-	c.Header("Access-Control-Allow-Origin", "*")
+	//c.Header("Access-Control-Allow-Origin", "*")
 
 	var req model.GenericRequest
 	err := c.BindJSON(&req)
