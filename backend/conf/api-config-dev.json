@@ -1,7 +1,13 @@
 {
   "api-server": {
     "isOutsideCluster": true,
-    "port": 38080
+    "port": 38080,
+    "validate": {
+      "type": "go-oauth",
+      "url": "http://140.110.5.22:30010/v1/oauth/introspect",
+      "client_id": "test_client_1",
+      "client_secret": "test_secret"
+    }
   },
   "database": {
     "host": "140.110.5.22",

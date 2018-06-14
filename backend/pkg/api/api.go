@@ -9,13 +9,16 @@ import (
 
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/db"
+	"fmt"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/validate"
 )
 
 type APIServer struct {
-	K8sClient *kubernetes.KClients
 	config    *viper.Viper
 	router    *gin.Engine
+	k8sClient *kubernetes.KClients
 	dbClient  *db.DBClient
+	verifier  validate.Validate
 }
 
 func NewAPIServer(config *viper.Viper) *APIServer {
@@ -31,11 +34,17 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 		return nil
 	}
 
+	var verifier validate.Validate
+	verifier = validate.NewGithubValidate(config)
+
+	//var i validate.Validate =
+
 	return &APIServer{
 		config:    config,
-		K8sClient: kclient,
+		k8sClient: kclient,
 		dbClient:  dbclient,
 		router:    gin.Default(),
+		verifier:  verifier,
 	}
 }
 
@@ -43,7 +52,9 @@ func (server *APIServer) RunServer() error {
 
 	defer server.dbClient.DB.Close()
 
-	server.K8sClient.AddRoute(server.router)
+	//server.router.Use(server.AuthMiddleware())
+
+	server.k8sClient.AddRoute(server.router)
 	server.dbClient.AddRoute(server.router)
 
 	err := server.router.Run(":" + strconv.Itoa(server.config.GetInt("api-server.port")))
@@ -51,4 +62,14 @@ func (server *APIServer) RunServer() error {
 		return err
 	}
 	return nil
+}
+
+func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		fmt.Println("check auth")
+		token := "aaa"
+		server.verifier.Validate(token)
+
+		c.Next()
+	}
 }
