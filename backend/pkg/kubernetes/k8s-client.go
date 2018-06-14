@@ -42,16 +42,26 @@ func NewKClients(config *viper.Viper) (*KClients, error) {
 	}, nil
 }
 
+func (kclient *KClients) handleOption(c *gin.Context) {
+	//	setup headers
+	c.Header("Access-Control-Allow-Origin", "*")
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
+	c.Status(http.StatusOK)
+}
+
 func (kclient *KClients) AddRoute(router *gin.Engine) {
 
 	clusterGroup := router.Group("/v1").Group("/health")
 	{
 		clusterGroup.GET("/kubernetes", kclient.checkK8s)
+		clusterGroup.OPTIONS("/kubernetes", kclient.handleOption)
 	}
 
 }
 
 func (kclient *KClients) checkK8s(c *gin.Context) {
+	c.Header("Access-Control-Allow-Origin", "*")
+
 	statusList := []model.Node{}
 	nList, err := kclient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
 
