@@ -17,6 +17,20 @@ if ( isset($_GET['course_id'])){
     header("Location:course.php");
     exit;
 }
+$ds_array=scandir("/home/chou/mntest/datasets/".$_SESSION['username']);
+$ds_num=count($ds_array);
+for ($i=0;$i<$ds_num;$i++){
+        if ($ds_array[$i]!='.' && $ds_array[$i]!='..'){
+                $sql = "select * from `data_upload` where `userid`='".$_SESSION['aid']."' and `name`='".$ds_array[$i]."';";
+                $sqlresult = mysqli_query($conn, $sql);
+                $sqlrow=mysqli_fetch_assoc($sqlresult);
+                if ($sqlrow == NULL){
+                        $sqlinsert= "insert into `data_upload` ( `name`,`userid`) values('".$ds_array[$i]."','".$_SESSION['aid']."')";
+                        mysqli_query($conn,$sqlinsert);
+                }
+        }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -190,6 +204,9 @@ function __doPostBack(eventTarget, eventArgument) {
 
 <input type="submit" name="Button_Submit" value="修改" id="Button_Submit" class="btn btn-xl u-btn-primary g-font-size-default" />
 <!--<a class="btn btn-xl u-btn-primary g-font-size-default" href="course_del.php"/>刪除</a>-->
+<?php
+echo '<a class="btn btn-xl u-btn-primary g-font-size-default" href="job_del.php?course_id='.$course_id.'">刪除</a>&nbsp;'
+?>
 <a class="btn btn-xl u-btn-primary g-font-size-default" href="course.php">回上頁</a>
 </div></div></form>
 

@@ -22,7 +22,8 @@ $PageName=basename($_SERVER["SCRIPT_FILENAME"],'.php');
 		<div class="container">
 			<div class="d-sm-flex text-center">
 				<div class="align-self-center">
-					<h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md"><b><?php echo $_SESSION['username']?>的工作清單</b> <a href=job_create.php class='btn u-btn-red g-mb-2'>新增</a></h2>
+					<h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md"><b><?php echo $_SESSION['username']?>的工作清單</b>
+<!--<a href=job_create.php class='btn u-btn-red g-mb-2'>新增</a></h2>-->
 				</div>
 				
 				<div class="align-self-center ml-auto">
@@ -83,9 +84,13 @@ Sys.WebForms.PageRequestManager._initialize('ctl01', 'ctl00', ['tctl02','ctl02']
 			$Port10000=$row['job_id']+10000;
                         $mode="";
                         if($row['mode'] == '1' ){
-                              $mode='<a target=_blank href=http://140.110.16.29:'.$Port5000.'>Digits</a>';
+#				$mode="<a target=_blank href=http://140.110.16.29:".$Port5000.">Digits</a>";
+                              $mode="<a target=_blank href=http://140.110.16.29:".$Port5000.">Digits</a>&emsp;<a target=_blank href=terminal.php?server=".$row['docker_server']."&id=".$row['job_id']."&mode=".$row['mode'].">Terminal</a>";
                         }elseif($row['mode'] == '2'){
                               $mode='<a target=_blank href=http://140.110.16.29:'.$Port8000.'>Jupyter</a>';
+                         //'&nbsp;&nbsp;<a target=_blank href=http://140.110.16.29:'.$Port6000.'>Dashboard</a>';
+                        }elseif($row['mode'] == '3'){
+                              $mode="<a target=_blank href=http://140.110.16.29:".$Port5000.">Digits</a>&emsp;<a target=_blank href=terminal.php?server=".$row['docker_server']."&id=".$row['job_id']."&mode=".$row['mode'].">Jupyterlab</a>";
                          //'&nbsp;&nbsp;<a target=_blank href=http://140.110.16.29:'.$Port6000.'>Dashboard</a>';
                         }else{
                               $mode='<a target=_blank href=http://140.110.16.29:'.$Port10000.'>Terminal</a>';
@@ -97,7 +102,8 @@ Sys.WebForms.PageRequestManager._initialize('ctl01', 'ctl00', ['tctl02','ctl02']
                         if ( $row['status'] == 'start' ){
 	                    echo '<tr><td>'.$job_num.'</td><td><span>'.$ReplaseStrArr[$row['status']].'<a href=job_stop.php?job_id='.$row['job_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">停止</a> &nbsp;<a href=job_edit.php?job_id='.$row['job_id'].'&di='.$row['di_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">編輯</a> &nbsp;'.$mode.'</span></td><td><span>'.$row_course['course_name'].'</span></td><td><span>'.$row['di_id'].'</span></td><td><span>'.$row['dataset'].'</span></td><td>'.$row['id'].'</td><td>'.$row['dt_create'].'</td></tr>'."\n";
                         }elseif( $row['status'] == 'stop' ){
-                            echo '<tr><td>'.$job_num.'</td><td><span>'.$ReplaseStrArr[$row['status']].'<a href=job_del.php?job_id='.$row['job_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">刪除</a> &nbsp;<a href=job_edit.php?job_id='.$row['job_id'].'&di='.$row['di_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">編輯</a> &nbsp; </td><td><span>'.$row_course['course_name'].'</span></td><td><span>'.$row['di_id'].'</span></td><td><span>'.$row['dataset'].'</span></td><td>'.$row['id'].'</td><td>'.$row['dt_create'].'</td></tr>'."\n";
+                            echo '<tr><td>'.$job_num.'</td><td><span>'.$ReplaseStrArr[$row['status']].'<a href=job_del.php?job_id='.$row['job_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">刪除</a> &nbsp;<a href=job_start.php?job_id='.$row['job_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">啟動</a> &nbsp;<a href=job_edit.php?job_id='.$row['job_id'].'&di='.$row['di_id'].' class="btn btn-sm u-btn-primary g-mr-0 g-mb-0">編輯</a> &nbsp; </td><td><span>'.$row_course['course_name'].'</span></td><td><span>'.$row['di_id'].'</span></td><td><span>'.$row['dataset'].'</span></td><td>'.$row['id'].'</td><td>'.$row['dt_create'].'</td></tr>'."\n";
+
                         }
   		$job_num+=1;
                     }

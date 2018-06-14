@@ -1,16 +1,91 @@
 <?php
-function docker_exec($id){
-    $url = "http://localhost/containers/".$id."/exec";
-    $ch=curl_init();
-    curl_setopt($ch,CURLOPT_URL, $url);
-    curl_setopt($ch,CURLOPT_CUSTOMREQUEST, "POST");
-    curl_setopt($ch,CURLOPT_RETURNTRANSFER,true);
-    if( ! $result = curl_exec($ch)){
-        trigger_error(curl_error($ch));
-    }
-    curl_close($ch);
-    return json_decode($result);
+
+function docker_exec($server,$id,$mode){
+
+$curl = curl_init();
+
+if ($mode==3){
+curl_setopt_array($curl, array(
+  CURLOPT_PORT => "2375",
+  CURLOPT_URL => "http://".$server.":2375/containers/".$id."/exec",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\r\n\"Cmd\": [\r\n\"/bin/sh\",\"-c\",\"jupyter lab --ip=0.0.0.0 --allow-root\"\r\n]\r\n}",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",
+    "postman-token: 2b30948f-364e-40f4-d996-bff9154f0a37"
+  ),
+));
+}else{
+curl_setopt_array($curl, array(
+  CURLOPT_PORT => "2375",
+  CURLOPT_URL => "http://".$server.":2375/containers/".$id."/exec",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\r\n\"Cmd\": [\r\n\"/bin/sh\",\"-c\",\"ttyd -p 5566 bash\"\r\n]\r\n}",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",
+    "postman-token: 2b30948f-364e-40f4-d996-bff9154f0a37"
+  ),
+));
+
 }
+
+$response = curl_exec($curl);
+
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+  echo "cURL Error #:" . $err;
+} else {
+  echo $response;
+}
+$res=json_decode($response);
+
+return $res->{"Id"};
+
+}
+
+function docker_exec_start($server,$id){
+
+$curl = curl_init();
+
+curl_setopt_array($curl, array(
+  CURLOPT_PORT => "2375",
+  CURLOPT_URL => "http://".$server.":2375/exec/".$id."/start",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "POST",
+  CURLOPT_POSTFIELDS => "{\r\n\"Detach\": false,\r\n\"Tty\": false\r\n}",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "content-type: application/json",
+    "postman-token: 5a8f5bf0-287b-2463-d5f4-cf7e0f5bc043"
+  ),
+));
+
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+}
+
 function ifckandata($dataname){
 
     $url = curl_init();
