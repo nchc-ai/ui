@@ -1,0 +1,16 @@
+{
+  "api-server": {
+    "isOutsideCluster": true,
+    "port": 38080
+  },
+  "database": {
+    "host": "140.110.5.22",
+    "port": 13306,
+    "username": "twgc",
+    "password": "twgc@NCHC",
+    "database": "twgc"
+  },
+  "kubernetes": {
+    "kubeconfig": "./conf/openstack-kubeconfig"
+  }
+}
