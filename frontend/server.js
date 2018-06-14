@@ -32,7 +32,7 @@ app.use(cookieParser()); // 認證需要用到
 
 // -------------------  Mode Selection  -------------------------//
 if (isDev) {
-  host = '0.0.0.0';
+  host = '127.0.0.1';
   port = 3010;
 } else {
   host = '127.0.0.1';

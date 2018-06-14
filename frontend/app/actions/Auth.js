@@ -18,8 +18,41 @@ export const logout = () => ({
   type: types.LOGOUT
 });
 
-// 登入
 
+// 檢查健康狀況
+export const healthCheck = () => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: 'http://localhost:38080/v1/health/kubernetes',
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+      types: types.HEALTH_CHECK
+    }
+  });
+
+  if (_.isUndefined(response) || !response.payload.success) {
+    console.error('healthCheck 失敗');
+  }
+};
+
+// 檢查DB狀況
+export const checkDatabase = () => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: 'http://localhost:38080/v1/health/database',
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'test' }),
+      types: types.CHECK_DATABASE
+    }
+  });
+
+  if (_.isUndefined(response) || !response.payload.success) {
+    console.error('checkDatabase 失敗');
+  }
+};
+
+// 登入
 export const manualLogin = (user, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
