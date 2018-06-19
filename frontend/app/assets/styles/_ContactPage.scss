@@ -1,0 +1,43 @@
+.contact-bg {
+
+  .section-01-bg {
+    background-image: url('../../../public/images/contact/contact-bg.png');
+    background-size: cover;
+    overflow: hidden;
+
+    .section-01-container {
+
+      @include rect-center(1200px, initial);
+      margin-top: 90px;
+      margin-bottom: 120px;
+
+
+      .intro-img {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+      }
+      
+      .intro-title-img {
+        @include center;
+      }
+      .line-h {
+        @include rect-center(600px, 1px);
+        @include margin-v(35px);
+        background-color: #000;
+      }
+
+      .content {
+        @include rect-center(500px, initial);
+        line-height: 36px;
+        margin-bottom: 50px;
+
+        p {
+          font-size: 20px;
+        }
+      }
+    }
+  
+  }
+
+
+}

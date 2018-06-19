@@ -48,7 +48,8 @@ if (isDev) {
     contentBase: 'src',
     stats: 'errors-only'
   });
-  app.use('/', express.static('public'));
+
+  app.use(express.static('public'));
   app.use(middleware);
   app.use(webpackHotMiddleware(compiler));
   app.get('*', (req, res) => {

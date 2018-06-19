@@ -17,18 +17,24 @@ export const mainNav = [
     isCate: true
   },
   {
-    key: 1,
+    key: 2,
     name: 'navbar.intro',
-    nameCh: '中心介紹',
+    nameCh: '基礎課程',
     anchorTarget: 'intro',
-    url: '/',
+    url: '/course/basic',
     // url: '/intro/intro',
-    isCate: true,
-    isAnchor: true,
-    offset: -80
+    isCate: true
   },
   {
-    key: 2,
+    key: 3,
+    name: 'navbar.intro',
+    nameCh: '進階課程',
+    anchorTarget: 'intro',
+    url: '/course/advance',
+    // url: '/intro/intro',
+    isCate: true
+  }, {
+    key: 4,
     name: 'navbar.survey',
     nameCh: '需求調查表',
     url: '/',
@@ -36,7 +42,7 @@ export const mainNav = [
     isCate: true
   },
   {
-    key: 3,
+    key: 5,
     name: 'navbar.contact',
     nameCh: '聯絡我們',
     url: '/contact',

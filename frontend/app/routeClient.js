@@ -6,6 +6,7 @@ import Client from './containers/Client';
 import IndexPage from './containers/IndexPage';
 import CoursePage from './containers/CoursePage';
 import ContactPage from './containers/ContactPage';
+import AuthPage from './containers/AuthPage';
 import StaticPage from './containers/StaticPage';
 
 // import { isItemExistInLocalStorage } from './libraries/utils';
@@ -15,8 +16,10 @@ const routeClient = ({ offline }) => (
     <Switch>
       { offline ? <Route path="*" component={StaticPage} /> : null }
       <Route exact path="/" component={IndexPage} />
+      <Route exact path="/course/:type" component={CoursePage} />
       <Route exact path="/course" component={CoursePage} />
       <Route exact path="/contact" component={ContactPage} />
+      <Route exact path="/login" component={AuthPage} />
     </Switch>
   </Client>
 );

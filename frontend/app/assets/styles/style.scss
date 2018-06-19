@@ -1,8 +1,6 @@
 @import "base";
 @import "global";
 
-@import "_Result";
-
 // Skeleton
 @import "_Header";
 @import "_Footer";
@@ -10,10 +8,15 @@
 @import "_Thumbnails";
 
 // Custom
+@import "_IndexPage";
+@import "_ContactPage";
+
+@import "_Course";
+
+
 @import "_Footer_ai";
 @import "_SectionTitle_ai";
-@import "_IndexPage";
 
 @import "_Thumbnails_ai";
 
-@import "_NavBar_ai";
+@import "_Header_ai";

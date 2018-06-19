@@ -1,0 +1,44 @@
+.course-bg {
+  min-height: 800px !important;
+  .section-01 {
+
+    .title { 
+      @include center;
+      text-align: center;
+      font-size: 36px;
+      margin-top: 70px;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      @include rect-center(1000px, initial);
+      thead {
+        background-color: #2a9b9d;
+        border-left: 1px solid #2a9b9d;
+        border-right: 1px solid #2a9b9d;
+        color: #fff;
+
+        th {
+          font-weight: 300;
+        }
+        
+      }
+
+      tbody {
+        tr{
+        
+          border-left: 1px solid #eaeaea;
+          border-right: 1px solid #eaeaea;
+          cursor: default;
+
+          &:nth-last-child(1) {
+            border-bottom: 1px solid #eaeaea;
+          }
+        }
+      }
+    }
+  }
+
+
+
+}

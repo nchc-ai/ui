@@ -37,7 +37,9 @@ const Index = ({ match, t, userInfo, isLogin, offline, dropDownPos, setDropdownP
         <Col md={{ size: 5 }} >
           <GlobalSearch />
 
-          <button className="login-btn">登入</button>
+          <Link to="/login">
+            <button className="login-btn">登入</button>
+          </Link>
         </Col>
        
         

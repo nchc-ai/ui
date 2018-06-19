@@ -37,9 +37,6 @@ class Client extends Component {
       children,
       t,
     } = this.props;
-
-    console.log('match', match);
-
     return (
       <div className="normal-outer-bg">
         {/* <GAInitiailizer /> */}
