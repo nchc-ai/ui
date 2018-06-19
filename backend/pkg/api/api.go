@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"fmt"
+	"strings"
 )
 
 type APIServer struct {
@@ -85,23 +86,33 @@ func respondWithError(code int, message string, c *gin.Context) {
 
 func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		token := c.Request.FormValue("token")
+		//token := c.Request.FormValue("token")
 
-		if token == "" {
-			respondWithError(http.StatusUnauthorized, "token is missing", c)
+		authHeader := c.GetHeader("Authorization")
+		if authHeader == "" {
+			respondWithError(http.StatusUnauthorized, "Authorization header is missing", c)
 			return
 		}
 
-		validated, err := server.verifier.Validate(token)
+		bearerToken := strings.Split(authHeader, " ")
+
+		if len(bearerToken) != 2 || bearerToken[0] != "Bearer" {
+			respondWithError(http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing", c)
+			return
+		}
+
+		validated, err := server.verifier.Validate(bearerToken[1])
 		if err != nil {
-			respondWithError(http.StatusInternalServerError, fmt.Sprintf("token validate fail: %s", err.Error()), c)
+			respondWithError(http.StatusInternalServerError, fmt.Sprintf("verify token process fail: %s", err.Error()), c)
 			return
 		}
 
 		if !validated {
-			respondWithError(http.StatusUnauthorized, "Invalid API token", c)
+			respondWithError(http.StatusForbidden, "Invalid API token", c)
 			return
 		}
+
+		// todo: verify if token is expire
 
 		c.Next()
 	}

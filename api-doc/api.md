@@ -662,9 +662,12 @@
 
   `GET`
 
+* **Header:**
+  `Authorization=Bearer <token-string>`
+
 * **URL Params**
 
-   `token=[token-string]`
+  None
 
 * **Data Params**
 
@@ -700,10 +703,19 @@
     ```json
     {
         "error": true,
-        "message" : "token validate fail:: error message"
+        "message" : "verify token process fail: error message"
      }
     ```
 
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Authorization header is missing"
+       }
+    ```
 
   * **Code:**  401 <br />
     **Content:**
@@ -711,11 +723,12 @@
     ```json
     {
         "error": true,
-        "message" : "token is missing"
+        "message" : "Authorization header is not Bearer Token format or token is missing"
      }
     ```
 
-  * **Code:**  401 <br />
+
+  * **Code:**  403 <br />
     **Content:**
 
     ```json
@@ -729,7 +742,7 @@
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/health/kubernetesAuth?token=b86b2893-b876-45c2-a3f6-5e099c15d638
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
 
       {
         "error": false,
@@ -813,6 +826,8 @@
 
   /v1/health/databaseAuth
 
+* **Header:**
+  `Authorization=Bearer <token-string>`
 
 * **Method:**
 
@@ -820,7 +835,7 @@
 
 * **URL Params**
 
-   `token=[token-string]`
+   None
 
 * **Data Params**
 
@@ -863,7 +878,7 @@
     ```json
     {
         "error": true,
-        "message" : "token validate fail:: error message"
+        "message" : "verify token process fail: error message"
      }
     ```
 
@@ -881,6 +896,16 @@
     **Content:**
 
     ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
       {
           "error": true,
           "message" : "Invalid API token"
@@ -891,7 +916,7 @@
 * **Sample Call:**
 
   ```sh
-    $ curl -X POST -d '{"message": "xs"}' http://localhost:8080/v1/health/databaseAuth?token=b86b2893-b876-45c2-a3f6-5e099c15d638
+    $ curl -X POST -d '{"message": "xs"}' -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/databaseAuth
 
     {"error":false,"message":"xs","tables":["course"]}
    ```
