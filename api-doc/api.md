@@ -9,6 +9,8 @@
    * [Job](#job)
       * [List](#list-1)
       * [Delete](#delete-1)
+   * [Data Set](#data-set)
+      * [List](#list-2)
    * [Health Check](#health-check)
       * [check kubernetes](#check-kubernetes)
       * [check kubernetes with token](#check-kubernetes-with-token)
@@ -584,6 +586,112 @@
 
       }
    ```
+
+# DataSet
+
+## List
+
+* **Description**
+
+  List all available data set stored in PV
+
+* **URL**
+
+  /v1/datasets/
+
+
+* **Method:**
+
+  `GET`
+
+* **Header:**
+  `Authorization=Bearer <token-string>`
+
+* **URL Params**
+
+  None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : {"dataset":["mnist", "caltech256"]}
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "XXXXXXXXX"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "verify token process fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Authorization header is missing"
+       }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
+
+      {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      }
+   ```
+
 
 # Health Check
 

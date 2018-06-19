@@ -18,7 +18,7 @@ type DBClient struct {
 func NewDBClient(config *viper.Viper) (*DBClient, error) {
 
 	dbArgs := fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s",
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True",
 		config.GetString("database.username"),
 		config.GetString("database.password"),
 		config.GetString("database.host"),
@@ -33,14 +33,28 @@ func NewDBClient(config *viper.Viper) (*DBClient, error) {
 		return nil, err
 	}
 
-	return &DBClient{
+	// create tables
+	dbclient := DBClient{
 		DB: db,
-	}, nil
+	}
+	dbclient.migration()
+
+	return &dbclient, nil
+}
+
+func (dbclient *DBClient) migration() {
+	course := &model.Course{}
+	job := &model.Job{}
+	dateset := &model.Dataset{}
+	dbclient.DB.AutoMigrate(course)
+	dbclient.DB.AutoMigrate(job)
+	dbclient.DB.AutoMigrate(dateset)
+
+	dbclient.DB.Model(job).AddForeignKey("course_id","courses(id)","RESTRICT","RESTRICT")
 }
 
 func (dbclient *DBClient) handleOption(c *gin.Context) {
 	//	setup headers
-	//c.Header("Access-Control-Allow-Origin", "*")
 	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
 	c.Status(http.StatusOK)
 }
@@ -63,8 +77,6 @@ func (dbclient *DBClient) AddRoute(router *gin.Engine, authMiddleware gin.Handle
 }
 
 func (dbclient *DBClient) checkDatabase(c *gin.Context) {
-	//c.Header("Access-Control-Allow-Origin", "*")
-
 	var req model.GenericRequest
 	err := c.BindJSON(&req)
 	if err != nil {
