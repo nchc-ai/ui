@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
-import Course from '../components/Course/index';
-import CourseList from '../components/Course/CourseList';
+import Login from '../components/Auth/Login';
+import Signup from '../components/Auth/Signup';
 
 class AuthPage extends Component {
   render() {
     return (
-      <div className="course-bg global-content">
+      <div className="auth-bg global-content">
         <Switch>
-          <Route exact path="/login" component={Course} />
-          <Route exact path="/signup" component={CourseList} />
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/signup" component={Signup} />
         </Switch>
       </div>
     );
