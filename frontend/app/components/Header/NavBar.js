@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router';
+import { Link as ScrollLink } from 'react-scroll';
 import { translate } from 'react-i18next';
+import _ from 'lodash';
 
-const NavBar = ({ data, offline, t, dropDownPos, offlineWarning }) => (
+const NavBar = ({ match, data, offline, t, dropDownPos, offlineWarning }) => (
   <div className="nav-bar-comp">
     <ul className="navbar-main-ul navbar-ul con-grp" >
       {
@@ -18,12 +21,25 @@ const NavBar = ({ data, offline, t, dropDownPos, offlineWarning }) => (
                 </div>
               :
                 <div className="navbar-li fl">
-                  <Link
-                    to={d.url}
-                    className="main-link"
-                  >
-                    {d.nameCh}
-                  </Link>
+                  {
+                    d.isAnchor ?
+                      <ScrollLink
+                        to={d.anchorTarget}
+                        className="main-link"
+                        duration={1000}
+                        offset={d.offset}
+                        smooth
+                      >
+                        {d.nameCh}
+                      </ScrollLink>
+                    :
+                      <Link
+                        to={d.url}
+                        className={d.url === _.get(match, 'url') ? 'main-link li-active' : 'main-link'}
+                      >
+                        {d.nameCh}
+                      </Link>
+                  }
                 </div>
             }
           </li>
@@ -34,4 +50,4 @@ const NavBar = ({ data, offline, t, dropDownPos, offlineWarning }) => (
 );
 
 
-export default (translate())(NavBar);
+export default (withRouter(NavBar));

@@ -51,7 +51,7 @@ class IndexPage extends Component {
         </div>
 
 
-        <div name="intro" className="section-03 section-grp">
+        <div className="section-03 section-grp">
           <SectionTitle
             isTitleImg
             titleImgUrl={section03Title}

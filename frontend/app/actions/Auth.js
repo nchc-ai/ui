@@ -2,6 +2,7 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import * as types from './actionTypes';
+import { API_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem } from '../libraries/utils';
 
 // 設定userInfo
@@ -23,14 +24,14 @@ export const logout = () => ({
 export const healthCheck = () => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: 'http://localhost:38080/v1/health/kubernetes',
+      endpoint: `${API_URL}/v1/health/kubernetes`,
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       types: types.HEALTH_CHECK
     }
   });
 
-  if (_.isUndefined(response) || !response.payload.success) {
+  if (_.isUndefined(response) || response.payload.error) {
     console.error('healthCheck 失敗');
   }
 };
@@ -39,7 +40,7 @@ export const healthCheck = () => async (dispatch) => {
 export const checkDatabase = () => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: 'http://localhost:38080/v1/health/database',
+      endpoint: `${API_URL}/v1/health/database`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'test' }),
@@ -47,19 +48,23 @@ export const checkDatabase = () => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || !response.payload.success) {
+  // console.log("response", response);
+  if (_.isUndefined(response) || response.payload.error) {
     console.error('checkDatabase 失敗');
   }
 };
 
 // 登入
-export const manualLogin = (user, next) => async (dispatch) => {
+export const manualLogin = (formData, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: '/login',
+      endpoint: `${API_URL}/v1/auth/login`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user }),
+      body: JSON.stringify({
+        username: formData.username,
+        password: formData.password
+      }),
       types: types.MANUAL_LOGIN
     }
   });
@@ -67,17 +72,20 @@ export const manualLogin = (user, next) => async (dispatch) => {
   if (_.isUndefined(response) || !response.payload.success) {
     console.error('manual Login 失敗');
   }
-  next(response.payload.result[0]);
+  // next(response.payload.result[0]);
 };
 
 // 註冊
-export const manualSignup = (user, next) => async (dispatch) => {
+export const manualSignup = (formData, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: '/signup',
+      endpoint: `${API_URL}/v1/auth/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user }),
+      body: JSON.stringify({
+        username: formData.username,
+        password: formData.password
+      }),
       types: types.MANUAL_SIGNUP
     }
   });
@@ -86,7 +94,7 @@ export const manualSignup = (user, next) => async (dispatch) => {
     console.error('manual Signup 失敗');
   }
 
-  next(response.payload.result[0]);
+  // next(response.payload.result[0]);
 };
 
 
@@ -127,30 +135,4 @@ export const updateUserInfoInDB = (email, formData, next) => async (dispatch) =>
   setLocalStorageItem('userInfo', formData);
   dispatch(setUserInfo(formData));
   next();
-};
-
-// 未整理
-export const thirdPartyLoginLoading = () => ({
-  type: types.THIRD_PARTY_LOGIN_LOADING
-});
-export const thirdPartyLoginSuccess = () => ({
-  type: types.THIRD_PARTY_LOGIN_SUCCESS
-});
-export const thirdPartyLogin = email => (dispatch) => {
-  dispatch(thirdPartyLoginLoading());
-  return makeUserRequest('post', '/thirdPartyLogin', { email })
-  .then((response) => {
-    if (response && response.data.success) {
-      const userObj = response.data.result;
-      // cookie.save('auth', userObj, { path: '/' });
-      dispatch(thirdPartyLoginSuccess());
-      dispatch(setUserInfo(userObj));
-    }
-    return response.data;
-  })
-  .catch((response) => {
-    if (response instanceof Error) {
-      console.error('Error', response);
-    }
-  });
 };

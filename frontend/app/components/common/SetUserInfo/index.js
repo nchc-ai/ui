@@ -21,7 +21,7 @@ class SetUserInfo extends Component {
     // ga('create', 'UA-112418828-2', 'auto');
     // ga('send', 'pageview');
 
-    authAction.healthCheck();
+    // authAction.healthCheck();
     authAction.checkDatabase();
 
     const userInfo = getLocalStorageItem('userInfo');

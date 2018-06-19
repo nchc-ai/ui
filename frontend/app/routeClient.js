@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router';
 import Client from './containers/Client';
 import IndexPage from './containers/IndexPage';
+import CoursePage from './containers/CoursePage';
+import ContactPage from './containers/ContactPage';
 import StaticPage from './containers/StaticPage';
 
 // import { isItemExistInLocalStorage } from './libraries/utils';
@@ -13,6 +15,8 @@ const routeClient = ({ offline }) => (
     <Switch>
       { offline ? <Route path="*" component={StaticPage} /> : null }
       <Route exact path="/" component={IndexPage} />
+      <Route exact path="/course" component={CoursePage} />
+      <Route exact path="/contact" component={ContactPage} />
     </Switch>
   </Client>
 );

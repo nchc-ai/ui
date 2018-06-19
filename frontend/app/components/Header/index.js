@@ -9,7 +9,7 @@ import logoImg from '../../../public/images/header/header-logo.png';
 import GlobalSearch from './GlobalSearch';
 // import IconList from './IconList';
 
-const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning }) => (
+const Index = ({ match, t, userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning }) => (
   <div className="header-comp">
 
     <Link to="/" className="logo-con con-grp fl">
@@ -27,6 +27,7 @@ const Index = ({ userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlin
             dropDownPos={dropDownPos}
             setDropdownPos={setDropdownPos}
             offlineWarning={offlineWarning}
+            t={t}
           />
         </Col>
         {/* <Col md={2} >

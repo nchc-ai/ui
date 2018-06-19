@@ -1,6 +1,7 @@
 
 import React, { Component } from 'react';
 import createReactClass from 'create-react-class';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { translate } from 'react-i18next';
@@ -28,6 +29,7 @@ class Client extends Component {
   
   render() {
     const {
+      match,
       userInfo,
       isLogin,
       offline,
@@ -35,6 +37,8 @@ class Client extends Component {
       children,
       t,
     } = this.props;
+
+    console.log('match', match);
 
     return (
       <div className="normal-outer-bg">
@@ -47,6 +51,8 @@ class Client extends Component {
           setDropdownPos={this.setDropdownPos}
           offline={offline}
           offlineWarning={this.offlineWarning}
+          match={match}
+          t={t}
         />
         <Notifications />
         {children}
@@ -71,5 +77,5 @@ export default compose(
   translate(),
   connect(mapStateToProps),
   bindActionCreatorHoc
-)(Client);
+)(withRouter(Client));
 

@@ -12,7 +12,7 @@ export const mainNav = [
     key: 0,
     name: 'navbar.class',
     nameCh: '課程介紹',
-    url: '/',
+    url: '/course',
     // url: '/intro/class',
     isCate: true
   },
@@ -20,9 +20,12 @@ export const mainNav = [
     key: 1,
     name: 'navbar.intro',
     nameCh: '中心介紹',
+    anchorTarget: 'intro',
     url: '/',
     // url: '/intro/intro',
-    isCate: true
+    isCate: true,
+    isAnchor: true,
+    offset: -80
   },
   {
     key: 2,
@@ -36,7 +39,7 @@ export const mainNav = [
     key: 3,
     name: 'navbar.contact',
     nameCh: '聯絡我們',
-    url: '/',
+    url: '/contact',
     // url: '/intro/contact',
     isCate: true
   }
