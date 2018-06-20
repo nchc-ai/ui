@@ -15,9 +15,9 @@ type Course struct {
 	Intro string `gorm:"size:3000"`
 	Image string `gorm:"not null"`
 	Gpu   uint8  `gorm:"not null;default:0"`
-
+	Level string `gorm:"not null;default:'basic';size:10"`
 	//gorm many-to-many associations
-	Datasets []Dataset `gorm:"many2many:course_dataset;"`
+	//Datasets []Dataset `gorm:"many2many:course_dataset;"`
 
 	//gorm has-many associations
 	Jobs []Job
@@ -42,9 +42,18 @@ func (Job) TableName() string {
 	return "jobs"
 }
 
+//todo: dataset info is retrived from k8s PVC or from DB
+// from DB: need sync to db at some time
+// from PVC: can not use gorm many-to-many association directly
+
+//type Dataset struct {
+//	gorm.Model
+//	Name string `gorm:"not null"`
+//}
+
 type Dataset struct {
-	gorm.Model
-	Name string `gorm:"not null"`
+	CourseID    uint   `gorm:"primary_key"`
+	DatasetName string `gorm:"primary_key"`
 }
 
 func (Dataset) TableName() string {

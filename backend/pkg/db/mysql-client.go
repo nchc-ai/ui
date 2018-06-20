@@ -50,7 +50,8 @@ func (dbclient *DBClient) migration() {
 	dbclient.DB.AutoMigrate(job)
 	dbclient.DB.AutoMigrate(dateset)
 
-	dbclient.DB.Model(job).AddForeignKey("course_id","courses(id)","RESTRICT","RESTRICT")
+	dbclient.DB.Model(job).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
+	dbclient.DB.Model(dateset).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
 }
 
 func (dbclient *DBClient) handleOption(c *gin.Context) {

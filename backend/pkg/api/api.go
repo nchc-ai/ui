@@ -101,6 +101,8 @@ func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		// todo: do we support different provider at the same time ?
+		// if so, we need verify token with all supported provider
 		validated, err := server.verifier.Validate(bearerToken[1])
 		if err != nil {
 			respondWithError(http.StatusInternalServerError, fmt.Sprintf("verify token process fail: %s", err.Error()), c)

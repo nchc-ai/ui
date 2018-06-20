@@ -24,6 +24,7 @@ CREATE TABLE `courses` (
   `name` varchar(255) NOT NULL,
   `intro` varchar(3000) DEFAULT NULL,
   `image` varchar(255) NOT NULL,
+  `level` varchar(10) NOT NULL DEFAULT 'basic',
   `gpu` tinyint(3) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_courses_deleted_at` (`deleted_at`)
@@ -52,27 +53,28 @@ CREATE TABLE `jobs` (
 ```
 
 
+<!-- ## datasets -->
+
+<!-- ```sql -->
+<!-- CREATE TABLE `datasets` ( -->
+  <!-- `id` int(10) unsigned NOT NULL AUTO_INCREMENT, -->
+  <!-- `created_at` timestamp NULL DEFAULT NULL, -->
+  <!-- `updated_at` timestamp NULL DEFAULT NULL, -->
+  <!-- `deleted_at` timestamp NULL DEFAULT NULL, -->
+  <!-- `name` varchar(255) NOT NULL, -->
+  <!-- PRIMARY KEY (`id`), -->
+  <!-- KEY `idx_datasets_deleted_at` (`deleted_at`) -->
+<!-- ) -->
+<!-- ``` -->
+
 ## datasets
 
 ```sql
 CREATE TABLE `datasets` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `deleted_at` timestamp NULL DEFAULT NULL,
-  `name` varchar(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `idx_datasets_deleted_at` (`deleted_at`)
-)
-```
-
-## course_dataset
-
-```sql
-CREATE TABLE `course_dataset` (
   `course_id` int(10) unsigned NOT NULL,
-  `dataset_id` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`course_id`,`dataset_id`)
+  `dataset_name` varchar(255) unsigned NOT NULL,
+  PRIMARY KEY (`course_id`,`dataset_name`),
+  CONSTRAINT `datasets_course_id_courses_id_foreign` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`)
 )
 ```
 
