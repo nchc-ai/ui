@@ -1,37 +1,41 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
-	"github.com/spf13/viper"
-	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/kubernetes"
 	"strconv"
-	"log"
-
-	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/db"
-	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/validate"
-	"net/http"
-	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"fmt"
 	"strings"
+	"log"
+	"net/http"
+
+	"k8s.io/client-go/kubernetes"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/validate"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+	"github.com/jinzhu/gorm"
+	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 )
 
+type ResourceClient struct {
+	K8sClient *kubernetes.Clientset
+	DB        *gorm.DB
+}
+
 type APIServer struct {
-	config    *viper.Viper
-	router    *gin.Engine
-	k8sClient *kubernetes.KClients
-	dbClient  *db.DBClient
-	verifier  validate.Validate
+	config         *viper.Viper
+	router         *gin.Engine
+	verifier       validate.Validate
+	resourceClient *ResourceClient
 }
 
 func NewAPIServer(config *viper.Viper) *APIServer {
-	kclient, err := kubernetes.NewKClients(config)
+	kclient, err := NewKClients(config)
 	if err != nil {
 		log.Fatalf("Create kubernetes client fail: %s", err.Error())
 		return nil
 	}
 
-	dbclient, err := db.NewDBClient(config)
+	dbclient, err := NewDBClient(config)
 	if err != nil {
 		log.Fatalf("Create database client fail: %s", err.Error())
 		return nil
@@ -49,24 +53,25 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 	}
 
 	return &APIServer{
-		config:    config,
-		k8sClient: kclient,
-		dbClient:  dbclient,
-		router:    gin.Default(),
-		verifier:  verifier,
+		config: config,
+		resourceClient: &ResourceClient{
+			DB:        dbclient,
+			K8sClient: kclient,
+		},
+		router:   gin.Default(),
+		verifier: verifier,
 	}
 }
 
 func (server *APIServer) RunServer() error {
 
-	defer server.dbClient.DB.Close()
+	defer server.resourceClient.DB.Close()
 
 	// add middleware
 	server.router.Use(server.CORSHeaderMiddleware())
 
 	// add route
-	server.k8sClient.AddRoute(server.router, server.AuthMiddleware())
-	server.dbClient.AddRoute(server.router, server.AuthMiddleware())
+	server.resourceClient.AddRoute(server.router, server.AuthMiddleware())
 
 	err := server.router.Run(":" + strconv.Itoa(server.config.GetInt("api-server.port")))
 	if err != nil {
@@ -124,5 +129,32 @@ func (server *APIServer) CORSHeaderMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Next()
+	}
+}
+
+func (resourceClient *ResourceClient) handleOption(c *gin.Context) {
+	//	setup headers
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
+	c.Status(http.StatusOK)
+}
+
+func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddleware gin.HandlerFunc) {
+
+	// health check
+	clusterGroup := router.Group("/v1").Group("/health")
+	{
+		clusterGroup.GET("/kubernetes", resourceClient.checkK8s)
+		clusterGroup.OPTIONS("/kubernetes", resourceClient.handleOption)
+		clusterGroup.POST("/database", resourceClient.checkDatabase)
+		clusterGroup.OPTIONS("/database", resourceClient.handleOption)
+	}
+
+	// health check require token
+	authGroup := router.Group("/v1").Group("/health").Use(authMiddleware)
+	{
+		authGroup.GET("/kubernetesAuth", resourceClient.checkK8s)
+		authGroup.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
+		authGroup.POST("/databaseAuth", resourceClient.checkDatabase)
+		authGroup.OPTIONS("/databaseAuth", resourceClient.handleOption)
 	}
 }

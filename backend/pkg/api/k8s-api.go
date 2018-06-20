@@ -1,26 +1,18 @@
-package kubernetes
+package api
 
 import (
+	"log"
+	"net/http"
+
 	"k8s.io/client-go/kubernetes"
 	"github.com/spf13/viper"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"log"
-	"net/http"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 )
 
-type KClients struct {
-	K8sClient *kubernetes.Clientset
-	// deployment
-
-	// service
-
-	// node
-}
-
-func NewKClients(config *viper.Viper) (*KClients, error) {
+func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 
 	kConfig, err := util.GetConfig(
 		config.GetBool("api-server.isOutsideCluster"),
@@ -37,38 +29,14 @@ func NewKClients(config *viper.Viper) (*KClients, error) {
 		return nil, err
 	}
 
-	return &KClients{
-		K8sClient: clientset,
-	}, nil
+	return clientset, nil
 }
 
-func (kclient *KClients) handleOption(c *gin.Context) {
-	//	setup headers
-	//c.Header("Access-Control-Allow-Origin", "*")
-	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
-	c.Status(http.StatusOK)
-}
-
-func (kclient *KClients) AddRoute(router *gin.Engine, authMiddleware gin.HandlerFunc) {
-
-	clusterGroup := router.Group("/v1").Group("/health")
-	{
-		clusterGroup.GET("/kubernetes", kclient.checkK8s)
-		clusterGroup.OPTIONS("/kubernetes", kclient.handleOption)
-	}
-
-	authGroup := router.Group("/v1").Group("/health").Use(authMiddleware)
-	{
-		authGroup.GET("/kubernetesAuth", kclient.checkK8s)
-		authGroup.OPTIONS("/kubernetesAuth", kclient.handleOption)
-	}
-}
-
-func (kclient *KClients) checkK8s(c *gin.Context) {
+func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	//c.Header("Access-Control-Allow-Origin", "*")
 
 	statusList := []model.Node{}
-	nList, err := kclient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
+	nList, err := resourceClient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
 
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.GenericResponse{
