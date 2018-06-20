@@ -9,8 +9,8 @@ class ContactPage extends Component {
   render() {
     return (
       <div className="contact-bg global-content">
-        <div className="section-bn">
-          <img alt="" src={contactBn} />
+        <div className="section-bn section-grp">
+          <img className="bg-grp" alt="" src={contactBn} />
         </div>
         <div className="section-01-bg">
           <Row className="section-01-container">

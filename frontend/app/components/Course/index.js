@@ -6,17 +6,17 @@ import courseSection03 from '../../../public/images/course/course-section-3.png'
 
 const Index = () => (
   <div>
-    <div className="section-01">
-      <img alt="" src={courseBn} />
+    <div className="section-01 section-grp">
+      <img className="bg-grp" alt="" src={courseBn} />
     </div>
-    <div className="section-02">
-      <img alt="" src={courseSection01} />
+    <div className="section-02 section-grp">
+      <img className="bg-grp" alt="" src={courseSection01} />
     </div>
-    <div className="section-03">
-      <img alt="" src={courseSection02} />
+    <div className="section-03 section-grp">
+      <img className="bg-grp" alt="" src={courseSection02} />
     </div>
-    <div className="section-04">
-      <img alt="" src={courseSection03} />
+    <div className="section-04 section-grp">
+      <img className="bg-grp" alt="" src={courseSection03} />
     </div>
   </div>
 );

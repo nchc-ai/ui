@@ -9,11 +9,11 @@ const itemsHeaders = ['課程名稱', '講師名稱', '訓練資料', '建立日
 
 const CourseList = ({ match }) => (
   <div className="course-list-comp">
-    <div className="section-bn">
-      <img alt="" src={_.get(match, 'params.type') === 'basic' ? courseBasicBn : courseAdvanceBn} />
+    <div className="section-bn section-grp">
+      <img className="bg-grp" alt="" src={_.get(match, 'params.type') === 'basic' ? courseBasicBn : courseAdvanceBn} />
     </div>
 
-    <div className="section-01">
+    <div className="section-01 section-grp">
       <h4 className="title">{_.get(match, 'params.type') === 'basic' ? '基礎課程列表' : '進階課程列表' }</h4>
 
       <div className="table-container">
