@@ -10,6 +10,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+	"github.com/google/uuid"
 )
 
 func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
@@ -34,12 +35,20 @@ func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
 	course := &model.Course{}
 	job := &model.Job{}
 	dateset := &model.Dataset{}
+	student := &model.StudentTake{}
+	proxy := &model.Proxy{}
+
 	db.AutoMigrate(course)
 	db.AutoMigrate(job)
 	db.AutoMigrate(dateset)
+	db.AutoMigrate(student)
+	db.AutoMigrate(proxy)
 
+	// add foreign key
 	db.Model(job).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
 	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
+	db.Model(student).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
+	db.Model(proxy).AddForeignKey("job_id", "jobs(id)", "RESTRICT", "RESTRICT")
 
 	return db, nil
 }
@@ -92,4 +101,135 @@ func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, resp)
+}
+
+func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
+	provider := c.GetHeader("Provider")
+	user := c.Param("user")
+	level := c.Param("level")
+
+	course := model.Course{
+		OauthUser: model.OauthUser{
+			User:     user,
+			Provider: provider,
+		},
+		Level: level,
+	}
+
+	results := []model.Course{}
+	err := resourceClient.DB.Where(&course).Find(&results).Error
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": true,
+			"cause": "Query courses table fail: " + err.Error(),
+		})
+		return
+	}
+
+	resp := []model.CourseInfo{}
+
+	for _, result := range results {
+
+		dataset := model.Dataset{
+			CourseID: result.ID,
+		}
+		datasetResult := []model.Dataset{}
+		err = resourceClient.DB.Where(&dataset).Find(&datasetResult).Error
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": true,
+				"cause": "Query datasets table fail: " + err.Error(),
+			})
+			return
+		}
+
+		courseDataset := []string{}
+
+		for _, s := range datasetResult {
+			courseDataset = append(courseDataset, s.DatasetName)
+		}
+
+		resp = append(resp, model.CourseInfo{
+			Id:           result.ID,
+			Name:         result.Name,
+			Introduction: result.Introduction,
+			Image:        result.Image,
+			Level:        result.Level,
+			GPU:          result.Gpu,
+			Datasets:     courseDataset,
+		})
+	}
+
+	c.JSON(http.StatusOK, model.ListCourseResponse{
+		Error:   false,
+		Courses: resp,
+	})
+
+}
+
+func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
+
+	var req model.CourseInfo
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": true,
+			"cause": "Failed to parse spec request request: " + err.Error(),
+		})
+		return
+	}
+
+	// add course information in DB
+	courseID := uuid.New().String()
+
+	provider := c.GetHeader("Provider")
+	user := c.Param("user")
+
+	newCourse := model.Course{
+		Model: model.Model{
+			ID: courseID,
+		},
+		OauthUser: model.OauthUser{
+			User:     user,
+			Provider: provider,
+		},
+		Introduction: req.Introduction,
+		Name:         req.Name,
+		Image:        req.Image,
+		Level:        req.Level,
+		Gpu:          req.GPU,
+	}
+
+	err = resourceClient.DB.Create(&newCourse).Error
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": true,
+			"cause": "Failed to create course information: " + err.Error(),
+		})
+		return
+	}
+
+	// add dataset required by course in DB
+	datasets := req.Datasets
+	for _, data := range datasets {
+		newDataset := model.Dataset{
+			CourseID:    courseID,
+			DatasetName: data,
+		}
+		err = resourceClient.DB.Create(&newDataset).Error
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{
+				"error": true,
+				"cause": "Failed to create course-dataset information in DB: " + err.Error(),
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusOK, model.GenericResponse{
+		Error:   false,
+		Message: fmt.Sprintf("Course %s created successfully", req.Name),
+	}, )
+
 }

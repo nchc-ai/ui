@@ -119,6 +119,9 @@ func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		// todo: add provider name in header
+		//c.Header("Provider", "provider-name")
+
 		// todo: verify if token is expire
 
 		c.Next()
@@ -140,7 +143,7 @@ func (resourceClient *ResourceClient) handleOption(c *gin.Context) {
 
 func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddleware gin.HandlerFunc) {
 
-	// health check
+	// health check api
 	clusterGroup := router.Group("/v1").Group("/health")
 	{
 		clusterGroup.GET("/kubernetes", resourceClient.checkK8s)
@@ -157,4 +160,22 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 		authGroup.POST("/databaseAuth", resourceClient.checkDatabase)
 		authGroup.OPTIONS("/databaseAuth", resourceClient.handleOption)
 	}
+
+	// list advance and basic course, do not required token
+	bb := router.Group("/v1").Group("/course")
+	{
+		bb.GET("/level/:level", resourceClient.ListCourse)
+		bb.OPTIONS("/level/:level", resourceClient.handleOption)
+	}
+
+	// list/add course under specific user, token is required
+	aa := router.Group("/v1").Group("/course") //.Use(authMiddleware)
+	{
+		aa.OPTIONS("/create/:user", resourceClient.handleOption)
+		aa.POST("/create/:user", resourceClient.AddCourse)
+
+		aa.OPTIONS("/list/:user", resourceClient.handleOption)
+		aa.GET("/list/:user", resourceClient.ListCourse)
+	}
+
 }

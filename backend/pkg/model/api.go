@@ -25,3 +25,18 @@ type HealthKubernetesResponse struct {
 type GenericRequest struct {
 	Message string `json:"message"`
 }
+
+type CourseInfo struct {
+	Id           string   `json:"id"`
+	Name         string   `json:"name"`
+	Introduction string   `json:"introduction"`
+	Image        string   `json:"image"`
+	Level        string   `json:"level"`
+	GPU          uint8    `json:"gpu"`
+	Datasets     []string `json:"datasets"`
+}
+
+type ListCourseResponse struct {
+	Error   bool         `json:"error"`
+	Courses []CourseInfo `json:"courses"`
+}
