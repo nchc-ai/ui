@@ -26,7 +26,7 @@ ReactDOM.render((
         <Router>
           <div>
             {/* <SideMenu /> */}
-            <div id="page-wrap" className="global-bg">
+            <div className="global-bg">
               <DocumentMeta {...metaObj} />
               <Switch>
                 <Route path="/manage" component={routeAdmin} />

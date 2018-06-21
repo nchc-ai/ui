@@ -1,0 +1,29 @@
+.dog-tag-comp {
+  @include rect(100%, 60px);
+  padding: 0px 10px;
+
+  .con-grp {
+    height: 100%;
+  }
+
+  .avatar-container {
+    img {
+      @include square(40px);
+      display: inline;
+      vertical-align: middle;
+    }
+  }
+
+  .content-container {
+    padding-left: 10px;
+    h5 {
+      font-size: 18px;
+      margin-top: 9px;
+      margin-bottom: 0px;
+    }
+
+    p {
+      font-size: 14px;
+    }
+  }
+}

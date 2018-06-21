@@ -4,7 +4,7 @@ import courseSection01 from '../../../public/images/course/course-section-1.png'
 import courseSection02 from '../../../public/images/course/course-section-2.png';
 import courseSection03 from '../../../public/images/course/course-section-3.png';
 
-const Index = () => (
+const CourseIntro = () => (
   <div>
     <div className="section-01 section-grp">
       <img className="bg-grp" alt="" src={courseBn} />
@@ -21,4 +21,4 @@ const Index = () => (
   </div>
 );
 
-export default Index;
+export default CourseIntro;

@@ -149,3 +149,11 @@ export const contactPage = {
     }
   ]
 };
+
+
+export const selfInfo = {
+  name: 'Serena Pan',
+  imgUrl: '',
+  title: 'Serena Pan',
+  info: '開課講師'
+};

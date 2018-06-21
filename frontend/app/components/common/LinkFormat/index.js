@@ -5,7 +5,8 @@ const LinkFormat = ({ textObj, isMain, offline, offlineWarning, onClick }) => (
   <div className="link-format-comp">
     {
       offline ?
-        <div>
+        <div className="link-format-container">
+          <span className="v-helper" />
           {
             textObj.isLink ?
               <Link to="#" className="link-text" offlineWarning={offlineWarning}>
@@ -18,7 +19,8 @@ const LinkFormat = ({ textObj, isMain, offline, offlineWarning, onClick }) => (
           }
         </div>
       :
-        <div>
+        <div className="link-format-container">
+          <span className="v-helper" />
           {
             textObj.isLink ?
               <Link to={textObj.url} className="link-text" onClick={onClick}>

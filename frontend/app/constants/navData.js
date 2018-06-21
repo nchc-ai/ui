@@ -201,32 +201,32 @@ export const footer = {
 export const sideNav = [
   {
     key: 0,
-    url: null,
-    text: '首頁',
+    url: '/user/course',
+    text: '課程列表',
     isMain: true,
-    isLink: false
+    isLink: true
   }, {
     key: 1,
-    url: '/cate-1',
-    text: '內頁一',
+    url: '/user/work',
+    text: '工作清單',
     isMain: false,
     isLink: true
   }, {
     key: 2,
-    url: '/cate-2',
-    text: '內頁二',
+    url: '/user/info',
+    text: '個人資料',
     isMain: false,
     isLink: true
   }, {
     key: 3,
-    url: '/cate-3',
-    text: '內頁三',
+    url: '/user/member',
+    text: '計畫人員',
     isMain: false,
     isLink: true
   }, {
     key: 4,
-    url: '/cate-4',
-    text: '內頁四',
+    url: '/logout',
+    text: '登出',
     isMain: false,
     isLink: true
   }
