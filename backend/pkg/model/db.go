@@ -6,31 +6,32 @@ import (
 )
 
 type OauthUser struct {
-	User     string `gorm:"size:50;not null"`
-	Provider string `gorm:"size:30;not null"`
+	User     string `gorm:"size:50;not null" json:"-"`
+	Provider string `gorm:"size:30;not null" json:"-"`
 }
 
 type Model struct {
-	ID        string     `gorm:"primary_key;size:36"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	DeletedAt *time.Time `sql:"index"`
+	ID        string     `gorm:"primary_key;size:36" json:"id"`
+	CreatedAt time.Time  `json:"-"`
+	UpdatedAt time.Time  `json:"-"`
+	DeletedAt *time.Time `sql:"index" json:"-"`
 }
 
 type Course struct {
 	Model
 	OauthUser
 
-	Name         string `gorm:"not null"`
-	Introduction string `gorm:"size:3000"`
-	Image        string `gorm:"not null"`
-	Gpu          uint8  `gorm:"not null;default:0"`
-	Level        string `gorm:"not null;default:'basic';size:10"`
+	Name         string `gorm:"not null" json:"name"`
+	Introduction string `gorm:"size:3000" json:"introduction"`
+	Image        string `gorm:"not null" json:"image"`
+	Gpu          uint8  `gorm:"not null;default:0" json:"gpu"`
+	Level        string `gorm:"not null;default:'basic';size:10" json:"level"`
+
 	//gorm many-to-many associations
-	//Datasets []Dataset `gorm:"many2many:course_dataset;"`
+	Datasets []string `gorm:"-" json:"datasets"`
 
 	//gorm has-many associations
-	Jobs []Job
+	Jobs []Job `json:"-"`
 }
 
 func (Course) TableName() string {
@@ -45,7 +46,7 @@ type Job struct {
 	Deployment string `gorm:"not null"`
 	Service    string `gorm:"not null"`
 	//ProxyUrl   string `gorm:"not null"`
-	Status     string `gorm:"not null"`
+	Status string `gorm:"not null"`
 }
 
 func (Job) TableName() string {

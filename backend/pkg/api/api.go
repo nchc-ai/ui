@@ -169,7 +169,7 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 	}
 
 	// list/add course under specific user, token is required
-	aa := router.Group("/v1").Group("/course") .Use(authMiddleware)
+	aa := router.Group("/v1").Group("/course").Use(authMiddleware)
 	{
 		aa.OPTIONS("/create/:user", resourceClient.handleOption)
 		aa.POST("/create/:user", resourceClient.AddCourse)

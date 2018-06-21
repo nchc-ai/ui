@@ -126,7 +126,7 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 		return
 	}
 
-	resp := []model.CourseInfo{}
+	resp := []model.Course{}
 
 	for _, result := range results {
 
@@ -149,13 +149,15 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 			courseDataset = append(courseDataset, s.DatasetName)
 		}
 
-		resp = append(resp, model.CourseInfo{
-			Id:           result.ID,
+		resp = append(resp, model.Course{
+			Model: model.Model{
+				ID: result.ID,
+			},
 			Name:         result.Name,
 			Introduction: result.Introduction,
 			Image:        result.Image,
 			Level:        result.Level,
-			GPU:          result.Gpu,
+			Gpu:          result.Gpu,
 			Datasets:     courseDataset,
 		})
 	}
@@ -169,7 +171,7 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 
-	var req model.CourseInfo
+	var req model.Course
 	err := c.BindJSON(&req)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -197,7 +199,7 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 		Name:         req.Name,
 		Image:        req.Image,
 		Level:        req.Level,
-		Gpu:          req.GPU,
+		Gpu:          req.Gpu,
 	}
 
 	err = resourceClient.DB.Create(&newCourse).Error
