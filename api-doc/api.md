@@ -1,283 +1,30 @@
-* [Authentication](#authentication)
-  * [Login](#login)
-  * [Logout](#logout)
-  * [Register](#register)
-  * [Delete](#delete)
-* [Course](#course)
-  * [List](#list)
-  * [Add](#add)
-  * [Launch](#launch)
-  * [Delete](#delete-1)
-  * [List basic course](#list-basic-course)
-  * [List advanced course](#list-advanced-course)
-* [Job](#job)
-  * [List](#list-1)
-  * [Delete](#delete-2)
-* [Health Check](#health-check)
-  * [check kubernetes](#check-kubernetes)
-  * [check database](#check-database)
-
-# Authentication
-
-## Login
-
-* **TODO** 
-
-  plain password text ?
-
-* **Description**
- 
-  User login
-
-* **URL**
-
-  /v1/auth/login
-
-* **Method:**
-
-  `POST`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-    ```json
-    {
-        "username": "username",
-        "password": "password"
-    }
-    ```
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error" : false,
-        "message" : "login successfully"
-     }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message": "Unauthorized User login"
-    }
-    ```
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
-
-      {
-        "error" : false,
-        "message" : "login successfully"
-      }
-   ```
-## Logout
-
-* **TODO** 
-
-  do we have session id ?
-
-* **Description**
- 
-  User logout
-
-* **URL**
-
-  /v1/auth/logout
-
-* **Method:**
-
-  `GET`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error": false,
-        "message" : "Logout successfully"
-     }
-    ```
-
-* **Error Response:**
-
-  * **Code:**  <br />
-    **Content:**
-
-    ```json
-
-    ```
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl http://localhost:8080/v1/logout
-
-      {
-        "error": false,
-        "message" : "Logout successfully"
-      }
-   ```
-
-## Register
-
-* **TODO**
-
-  require authorization ?
-
-* **Description**
-
-  create a new user
-
-* **URL**
-
-  /v1/auth/register
-
-* **Method:**
-
-  `POST`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-    ```json
-    {
-        "username": "username",
-        "password": "password"
-    }
-    ```
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error" : false,
-        "message" : "register successfully"
-     }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
-
-      {
-        "error" : false,
-        "message" : "login successfully"
-      }
-   ```
-
-## Delete
-
-* **TODO**
-
-  require authorization ?
-
-* **Description**
-
-  Delete a user
-
-* **URL**
-
-  /v1/auth/delete
-
-* **Method:**
-
-  `DELETE`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-    ```json
-    {
-        "id": "user-id",
-    }
-    ```
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error" : false,
-        "message" : "user <user-id> is deleted successfully"
-     }
-    ```
-
-* **Error Response:**
-
-  * **Code:** 401 Unauthorized <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message": "Unauthorized User login"
-    }
-    ```
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -X POST -d '{"username": "username", "password": "password" }' http://127.0.0.1:8080/v1/login
-
-      {
-        "error" : false,
-        "message" : "login successfully"
-      }
-   ```
+<!--ts-->
+   * [Course](#course)
+      * [List](#list)
+      * [Create](#create)
+      * [Launch](#launch)
+      * [Delete](#delete)
+      * [List different level course](#list-different-level-course)
+   * [Job](#job)
+      * [List](#list-1)
+      * [Delete](#delete-1)
+   * [DataSet](#dataset)
+      * [List](#list-2)
+   * [Health Check](#health-check)
+      * [check kubernetes](#check-kubernetes)
+      * [check kubernetes with token](#check-kubernetes-with-token)
+      * [check database](#check-database)
+      * [check database with token](#check-database-with-token)
+
+<!-- Added by: ogre0403, at:  -->
+
+<!--te-->
 
 # Course
 
 ## List
 
 * **TODO** 
-
-  Check course detail information ?
 
   how to get student course list? Do we have different query logic for teacher and student 
   
@@ -287,7 +34,11 @@
 
 * **URL**
 
-  /v1/course/:user
+  /v1/course/list/:user
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
 
 * **Method:**
 
@@ -311,19 +62,25 @@
         "error": false,
         "courses":[
           {
-            "course_id": 1,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "name":"image process",
+            "introduction" : "markdown text with escape",
+            "image":"nvidia/caffe:latest",
+            "gpu": 1,
+            "level": "basic",
+            "datasets":[
+              "cifar-10"
             ]
           },
           {
-            "course_id": 2,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "name":"image process",
+            "introduction" : "markdown text with escape",
+            "image":"nvidia/caffe:latest",
+            "gpu": 1,
+            "level": "advance",
+            "datasets":[
+              "cifar-10", "caltech256"
             ]
           }
         ]
@@ -332,29 +89,103 @@
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  500 <br />
     **Content:**
 
     ```json
-
+    {
+        "error": true,
+        "cause": "Query datasets table fail: error-message"
+     }
     ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "cause": "Query courses table fail: error-message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "verify token process fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
 
 
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/course/serena
-
-      {
-
-      }
+    $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+      http://localhost:8080/v1/course/list/jimmy
+    {
+        "error": false,
+        "courses":[
+          {
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "name":"image process",
+            "introduction" : "markdown text with escape",
+            "image":"nvidia/caffe:latest",
+            "gpu": 1,
+            "level": "basic",
+            "datasets":[
+              "cifar-10"
+            ]
+          },
+          {
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "name":"image process",
+            "introduction" : "markdown text with escape",
+            "image":"nvidia/caffe:latest",
+            "gpu": 1,
+            "level": "advance",
+            "datasets":[
+              "cifar-10", "caltech256"
+            ]
+          }
+        ]
+     }
    ```
 
-## Add
-
-* **TODO** 
-
-  description is long markdown, not short plain text ?
+## Create
 
 * **Description**
  
@@ -362,7 +193,12 @@
 
 * **URL**
 
-  /v1/course/:user
+  /v1/course/create/:user
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
 
 * **Method:**
 
@@ -370,16 +206,18 @@
 
 * **URL Params**
 
-   None
+  None
 
 * **Data Params**
 
   ```json
   {
-    "course_name":"",
-    "description":"",
-    "image":"",
-    "dataset":[
+    "name":"course name",
+    "introduction":"markdown text with escape",
+    "image":"course docker image",
+    "level": "basic",
+    "GPU": 1,
+    "datasets":[
       "mnist",
       "caltech256"
     ]
@@ -394,28 +232,95 @@
     ```json
      {
         "error": false,
-        "message" : "course <id> is create successfully"
+        "message" : "course <course-name> create successfully"
      }
     ```
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
+    {
+        "error": true,
+        "cause": "Failed to parse spec request request: error-message"
+     }
+    ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "cause": "Failed to create course information: error-message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "cause": "Failed to create course-dataset information in DB: error-message"
+     }
+    ```
+
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "verify token process fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
     ```
 
 
 * **Sample Call:**
 
   ```sh
-      $ curl -X POST -d '{"",""} 'http://localhost:8080/v1/course
-
-      {
-
-      }
+   $ curl -X POST \
+     -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+     -d '{"name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
+     http://localhost:8080/v1/course/create/jimmy
+   {
+       "error": false,
+       "message": "Course course name created successfully"
+   }
    ```
 
 ## Launch
@@ -542,20 +447,16 @@
       }
    ```
 
-## List basic course
+## List different level course
 
-* **TODO** 
-
-  list course by user ?
 
 * **Description**
  
-  List all basic courses
+  List basic or advance courses information
 
 * **URL**
 
-  /v1/course/basic
-
+  /v1/level/:level
 
 * **Method:**
 
@@ -575,126 +476,92 @@
     **Content:**
 
     ```json
-     {
+    {
         "error": false,
-        "courses":[
-          {
-            "level", "basic",
-            "course_id": 1,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
-            ]
-          },
-          {
-            "level", "basic",
-            "course_id": 2,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
-            ]
-          }
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
         ]
-     }
+    }
     ```
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  500 <br />
     **Content:**
 
     ```json
-
-    ```
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl http://localhost:8080/v1/course/basic
-
-      {
-
-      }
-   ```
-
-
-## List advanced course
-
-* **TODO** 
-
-  
-
-* **Description**
- 
-  List all advanced courses
-
-* **URL**
-
-  /v1/course/advanced
-
-* **Method:**
-
-  `GET`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-      {
-        "error": false,
-        "courses":[
-          {
-            "level", "advanced",
-            "course_id": 1,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
-            ]
-          },
-          {
-            "level", "advanced",
-            "course_id": 2,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
-            ]
-          }
-        ]
+    {
+        "error": true,
+        "cause": "Query datasets table fail: error-message"
      }
     ```
 
-* **Error Response:**
-
-  * **Code:**  <br />
+  * **Code:**  500 <br />
     **Content:**
 
     ```json
-
+    {
+        "error": true,
+        "cause": "Query courses table fail: error-message"
+     }
     ```
-
 
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/course/advanced
+      $ curl http://localhost:8080/v1/level/advance
 
       {
-
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
       }
    ```
 
@@ -837,6 +704,112 @@
       }
    ```
 
+# DataSet
+
+## List
+
+* **Description**
+
+  List all available data set stored in PV
+
+* **URL**
+
+  /v1/datasets/
+
+
+* **Method:**
+
+  `GET`
+
+* **Header:**
+  `Authorization=Bearer <token-string>`
+
+* **URL Params**
+
+  None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : {"dataset":["mnist", "caltech256"]}
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "XXXXXXXXX"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "verify token process fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Authorization header is missing"
+       }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
+
+      {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      }
+   ```
+
+
 # Health Check
 
 ## check kubernetes
@@ -898,6 +871,111 @@
       }
    ```
 
+
+## check kubernetes with token
+
+* **Description**
+
+  check backend kubernetes in running, but required token authentication
+
+* **URL**
+
+  /v1/health/kubernetesAuth
+
+
+* **Method:**
+
+  `GET`
+
+* **Header:**
+  `Authorization=Bearer <token-string>`
+
+* **URL Params**
+
+  None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "List Node fail: error message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "verify token process fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Authorization header is missing"
+       }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
+
+      {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      }
+   ```
+
+
 ## check database
 
 * **Description**
@@ -957,6 +1035,113 @@
 
   ```sh
     $ curl -X POST -d '{"message": "xs"}' http://localhost:8080/v1/health/database
+
+    {"error":false,"message":"xs","tables":["course"]}
+   ```
+
+
+
+## check database with token
+
+* **Description**
+
+  Check backend database is running, but required token authentication
+
+* **URL**
+
+  /v1/health/databaseAuth
+
+* **Header:**
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+  {
+    "message": "test"
+  }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "message": "test",
+        "tables": [
+            "course"
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Query all table name fail: error-message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "verify token process fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "token is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+    $ curl -X POST -d '{"message": "xs"}' -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/databaseAuth
 
     {"error":false,"message":"xs","tables":["course"]}
    ```

@@ -4,8 +4,6 @@ import "k8s.io/api/core/v1"
 
 type HealthDatabaseResponse struct {
 	GenericResponse
-	//Error   bool     `json:"error"`
-	//Message string   `json:"message"`
 	Tables []string `json:"tables"`
 }
 
@@ -26,4 +24,9 @@ type HealthKubernetesResponse struct {
 
 type GenericRequest struct {
 	Message string `json:"message"`
+}
+
+type ListCourseResponse struct {
+	Error   bool     `json:"error"`
+	Courses []Course `json:"courses"`
 }
