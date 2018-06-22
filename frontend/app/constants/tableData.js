@@ -1,5 +1,5 @@
 export const courseData = {
-  header: [
+  headers: [
     {
       key: 1,
       text: '課程名稱'
@@ -14,7 +14,7 @@ export const courseData = {
       text: '建立日期'
     }
   ],
-  row: [
+  cols: [
     {
       key: 1,
       text: 'courseName'
@@ -33,7 +33,7 @@ export const courseData = {
 
 
 export const userCourseData = {
-  header: [
+  headers: [
     {
       key: 1,
       text: '課程名稱'
@@ -51,7 +51,7 @@ export const userCourseData = {
       text: ''
     }
   ],
-  row: [
+  cols: [
     {
       key: 1,
       text: 'name'
@@ -63,10 +63,12 @@ export const userCourseData = {
       text: 'date'
     }, {
       key: 4,
-      text: ''
+      text: '',
+      type: 'toggle'
     }, {
       key: 5,
-      text: ''
+      text: '',
+      type: 'more'
     }
   ]
 };

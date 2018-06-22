@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
+import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import SideMenu from '../components/SideMenu/index';
 import TableList from '../components/common/TableList/index';
@@ -27,7 +28,7 @@ class UserPage extends Component {
                 <Row>
                   <Col>課程列表</Col>
                   <Col>
-                    <button>+ 新增 </button>
+                    <Link to="/user/course/add"><button>+ 新增 </button></Link>
                   </Col>
                 </Row>
                 <TableList
@@ -38,6 +39,13 @@ class UserPage extends Component {
               </div>
             </Route>
             
+            <Route exact path="/user/course/add">
+              <div className="user-course-edit-bg">
+                {/* TODO: FormGroups */}
+
+              </div>
+            </Route>
+
           </Switch>
         </div>
         

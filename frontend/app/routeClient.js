@@ -22,6 +22,7 @@ const routeClient = ({ offline }) => (
       <Route exact path="/contact" component={ContactPage} />
       <Route exact path="/login" component={AuthPage} />
       <Route exact path="/signup" component={AuthPage} />
+      <Route exact path="/user/:part/:action" component={UserPage} />
       <Route exact path="/user/:part" component={UserPage} />
     </Switch>
   </Client>

@@ -2,7 +2,7 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import * as types from './actionTypes';
-import { API_URL } from '../config/api';
+import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem } from '../libraries/utils';
 
 // 設定userInfo
@@ -12,6 +12,24 @@ export const setUserInfo = (userInfo, isLogin) => ({
   userInfo,
   isLogin
 });
+
+//
+
+export const login = () => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${AUTH_PROVIDER_URL}/client_id=test_client_1`,
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      types: types.LOGIN
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('login 失敗');
+  }
+};
+
 
 // 登出
 
