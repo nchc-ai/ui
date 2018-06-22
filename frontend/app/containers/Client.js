@@ -4,7 +4,7 @@ import createReactClass from 'create-react-class';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { translate } from 'react-i18next';
+// import { translate } from 'react-i18next';
 import { notify } from 'react-notify-toast';
 // import ga from 'react-google-analytics';
 import Notifications from 'react-notify-toast';
@@ -71,7 +71,6 @@ const mapStateToProps = ({ Auth, Ui }) => ({
 });
 
 export default compose(
-  translate(),
   connect(mapStateToProps),
   bindActionCreatorHoc
 )(withRouter(Client));

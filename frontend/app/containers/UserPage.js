@@ -15,7 +15,8 @@ class UserPage extends Component {
   componentDidMount() {
     window.scrollTo(0, 0);
     const token = getToken();
-    this.props.courseAction.getCourseList(token);    
+    console.log('token', token);
+    this.props.userAction.getCourseList('jimmy', token);    
   }
   render() {
     const {

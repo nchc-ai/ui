@@ -64,12 +64,12 @@ export function toQuery(params, delimiter = '&') {
 
 export const setToken = (idToken) => {
   // Saves user token to localStorage
-  localStorage.setItem('id_token', idToken)
+  localStorage.setItem('id_token', idToken);
 };
 
-export const getToken = () =>{
+export const getToken = () => {
   // Retrieves the user token from localStorage
-  return localStorage.getItem('id_token')
+  return localStorage.getItem('id_token');
 };
 
 /*---------------------------

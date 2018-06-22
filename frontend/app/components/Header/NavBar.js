@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { Link as ScrollLink } from 'react-scroll';
-import { translate } from 'react-i18next';
+// import { translate } from 'react-i18next';
 import _ from 'lodash';
 
 const NavBar = ({ match, data, offline, t, dropDownPos, offlineWarning }) => (

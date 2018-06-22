@@ -10,28 +10,12 @@ import DogTag from '../common/DogTag';
 import { selfInfo } from '../../constants/models';
 
 class Index extends Component {
-  state = {
-    currentMenu: 'slide',
-    side: 'left',
-    isOpen: true
-  };
 
   offlineWarning = () => {
     notify.show('如對課程有興趣，可親洽AI_LAB', 'success', 1800);
   }
 
-  closeMenu = () => {
-    this.setState({
-      isOpen: false
-    });
-  }
-
   render() {
-    const {
-      isOpen,
-      currentMenu,
-      offline
-    } = this.state;
 
     const {
       match
@@ -41,11 +25,7 @@ class Index extends Component {
     return (
       <div
         className="side-menu-comp"
-        id={currentMenu}
         width={200}
-        isOpen={isOpen}
-        pageWrapId="page-wrap"
-        outerContainerId="outer-container"
       >
         <DogTag data={selfInfo} />
 
@@ -58,7 +38,7 @@ class Index extends Component {
               <LinkFormat
                 textObj={d}
                 isMain={d.isMain}
-                offline={offline}
+                offline={false}
                 offlineWarning={this.offlineWarning}
                 onClick={this.closeMenu}
               />

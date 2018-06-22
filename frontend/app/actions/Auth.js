@@ -20,7 +20,7 @@ export const login = () => async (dispatch) => {
     [RSAA]: {
       endpoint: `${AUTH_PROVIDER_URL}/client_id=test_client_1`,
       method: 'GET',
-      headers: { 'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*' },
+      headers: { 'Content-Type': 'application/json'},
       types: types.LOGIN
     }
   });
@@ -114,8 +114,6 @@ export const manualSignup = (formData, next) => async (dispatch) => {
 
   // next(response.payload.result[0]);
 };
-
-
 
 export const getUserInfo = (email, next) => async (dispatch) => {
   const response = await dispatch({
