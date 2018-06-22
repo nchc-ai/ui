@@ -6,6 +6,7 @@ import (
 	"strings"
 	"log"
 	"net/http"
+	"encoding/json"
 
 	"k8s.io/client-go/kubernetes"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -14,6 +15,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 )
 
 type ResourceClient struct {
@@ -24,32 +26,60 @@ type ResourceClient struct {
 type APIServer struct {
 	config         *viper.Viper
 	router         *gin.Engine
-	verifier       validate.Validate
+	verifiers      map[string]validate.Validate
 	resourceClient *ResourceClient
 }
 
 func NewAPIServer(config *viper.Viper) *APIServer {
 	kclient, err := NewKClients(config)
 	if err != nil {
-		log.Fatalf("Create kubernetes client fail: %s", err.Error())
+		log.Fatalf("Create kubernetes client fail, Stop...: %s", err.Error())
 		return nil
 	}
 
 	dbclient, err := NewDBClient(config)
 	if err != nil {
-		log.Fatalf("Create database client fail: %s", err.Error())
+		log.Fatalf("Create database client fail, Stop...: %s", err.Error())
 		return nil
 	}
 
-	var verifier validate.Validate
-	switch oauthProvider := config.GetString("api-server.validate.type"); oauthProvider {
-	case "go-oauth":
-		verifier = validate.NewGoAuthValidate(config)
-	case "github":
-		verifier = validate.NewGithubValidate(config)
-	default:
-		log.Println(fmt.Sprintf("%s is a not supported provider type, use dummy validater", oauthProvider))
-		verifier = validate.NewDummyValidate(config)
+	validateConfig := config.GetStringMap("api-server.validate")
+	verifiers := make(map[string]validate.Validate)
+
+	// convert each validate config json to ValidateConfig struct
+	// we need two phase conversion, map[string]interface{} -> json -> struct
+	// https://www.cnblogs.com/liang1101/p/6741262.html
+	for k, v := range validateConfig {
+
+		var vconf model.ValidateConfig
+
+		// map[string]interface{} -> json
+		jsonStr, err := json.Marshal(v)
+		if err != nil {
+			log.Fatalf(fmt.Sprintf(":%s", err.Error()))
+			return nil
+		}
+
+		// json -> struct
+		err = json.Unmarshal([]byte(jsonStr), &vconf)
+		if err != nil {
+			log.Fatalf(fmt.Sprintf(":%s", err.Error()))
+			return nil
+		}
+
+		switch oauthProvider := vconf.Type; oauthProvider {
+		case "go-oauth":
+			verifiers[k] = validate.NewGoAuthValidate(vconf)
+		case "github":
+			verifiers[k] = validate.NewGithubValidate(vconf)
+		default:
+			log.Println(fmt.Sprintf("%s is a not supported provider type", oauthProvider))
+		}
+	}
+
+	if len(verifiers) == 0 {
+		log.Fatalf("There is no validater to verify token, Stop...")
+		return nil
 	}
 
 	return &APIServer{
@@ -58,8 +88,8 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 			DB:        dbclient,
 			K8sClient: kclient,
 		},
-		router:   gin.Default(),
-		verifier: verifier,
+		router:    gin.Default(),
+		verifiers: verifiers,
 	}
 }
 
@@ -80,51 +110,55 @@ func (server *APIServer) RunServer() error {
 	return nil
 }
 
-func respondWithError(code int, message string, c *gin.Context) {
-	resp := model.GenericResponse{
-		Error:   true,
-		Message: message,
-	}
-	c.JSON(code, resp)
-	c.Abort()
-}
-
 func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//token := c.Request.FormValue("token")
 
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			respondWithError(http.StatusUnauthorized, "Authorization header is missing", c)
+			util.RespondWithError(http.StatusUnauthorized, "Authorization header is missing", c)
 			return
 		}
 
 		bearerToken := strings.Split(authHeader, " ")
 
 		if len(bearerToken) != 2 || bearerToken[0] != "Bearer" {
-			respondWithError(http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing", c)
+			util.RespondWithError(http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing", c)
 			return
 		}
 
-		// todo: do we support different provider at the same time ?
-		// if so, we need verify token with all supported provider
-		validated, err := server.verifier.Validate(bearerToken[1])
-		if err != nil {
-			respondWithError(http.StatusInternalServerError, fmt.Sprintf("verify token process fail: %s", err.Error()), c)
-			return
+		var validated bool
+		var err error
+
+		// todo: better solution to check token in different provider
+		// return when we find token is validated or expired in any one provider
+		for providerName, v := range server.verifiers {
+			token := bearerToken[1]
+
+			validated, err = v.Validate(token)
+
+			// Because the probability of token collision is very small,
+			// return when we find token is validated with any one provider.
+			if validated {
+				c.Set("Provider", providerName)
+				c.Next()
+				return
+			}
+
+			if err != nil {
+				log.Println(fmt.Sprintf("verify token validated with provider {%s} fail: %s", providerName, err.Error()))
+				if err.Error() == "Access token expired" {
+					util.RespondWithError(http.StatusForbidden, "Access token expired", c)
+					return
+				}
+			}
 		}
 
+		// if token is not found in ALL provider, return invalid
 		if !validated {
-			respondWithError(http.StatusForbidden, "Invalid API token", c)
+			util.RespondWithError(http.StatusForbidden, "Invalid API token", c)
 			return
 		}
-
-		// todo: add provider name in header
-		//c.Header("Provider", "provider-name")
-
-		// todo: verify if token is expire
-
-		c.Next()
 	}
 }
 

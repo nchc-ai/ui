@@ -1,11 +1,13 @@
 package validate
 
-import "github.com/spf13/viper"
+import (
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+)
 
 type Dummy struct {
 }
 
-func NewDummyValidate(config *viper.Viper) *Dummy {
+func NewDummyValidate(config model.ValidateConfig) *Dummy {
 	return &Dummy{}
 }
 

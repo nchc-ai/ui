@@ -6,6 +6,8 @@ import (
 	"path/filepath"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/rest"
+	"github.com/gin-gonic/gin"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 )
 
 func homeDir() string {
@@ -51,4 +53,13 @@ func GetConfig(isOutOfCluster bool, kubeConfigPath string) (*rest.Config, error)
 	}
 
 	return config, nil
+}
+
+func RespondWithError(code int, message string, c *gin.Context) {
+	resp := model.GenericResponse{
+		Error:   true,
+		Message: message,
+	}
+	c.JSON(code, resp)
+	c.Abort()
 }
