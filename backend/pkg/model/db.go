@@ -6,8 +6,8 @@ import (
 )
 
 type OauthUser struct {
-	User     string `gorm:"size:50;not null" json:"-"`
-	Provider string `gorm:"size:30;not null" json:"-"`
+	User     string `gorm:"size:50;not null" json:"user,omitempty"`
+	Provider string  `gorm:"size:30;not null" json:"-"`
 }
 
 type Model struct {
