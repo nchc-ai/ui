@@ -251,7 +251,7 @@ func (resourceClient *ResourceClient) GetToke(c *gin.Context) {
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.GenericResponse{
 			Error:   true,
-			Message: "Get Token fail",
+			Message: "Get Token fail" + err.Error(),
 		})
 		return
 	}
