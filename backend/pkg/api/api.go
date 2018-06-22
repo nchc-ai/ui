@@ -131,13 +131,14 @@ func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 func (server *APIServer) CORSHeaderMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
+		c.Header("Access-Control-Allow-Credentials", "true")
 		c.Next()
 	}
 }
 
 func (resourceClient *ResourceClient) handleOption(c *gin.Context) {
 	//	setup headers
-	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin")
+	c.Header("Access-Control-Allow-Headers", "Content-Type, Access-Control-Allow-Origin, Access-Control-Allow-Credentials")
 	c.Status(http.StatusOK)
 }
 
