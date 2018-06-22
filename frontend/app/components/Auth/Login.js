@@ -22,10 +22,10 @@ const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
         clientId="test_client_1"
         onSuccess={onSuccess}
         onFailure={onFailure}
-        redirectUri={'http://localhost:8881/login'}
+        scope={"read_write"}
+        redirectUri={'http://localhost:8881/user/course'}
       >
         <img alt="" src={localBtnImg} />
-        
       </MyoauthButton>
       <h4>OR</h4>
       <button className="btn-login-github btn-grp">
@@ -34,9 +34,6 @@ const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
 
       <p className="policy-word">By continuing, you agree to NCHC.ai’s Terms of Service, Privacy Policy</p>
     </div>
-    
-
-    
 
     <div className="line-h" />
 

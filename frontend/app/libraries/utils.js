@@ -29,7 +29,7 @@ export function enterWithoutAuth() {
 
 
 /*---------------------------
-// 組OAuth字串
+// 組OAuth字串 for <MyoauthButton />
 ----------------------------*/
 
 export function toParams(query) {
@@ -58,6 +58,19 @@ export function toQuery(params, delimiter = '&') {
   }, '');
 }
 
+/*---------------------------
+// 存取token至localStorage
+----------------------------*/
+
+export const setToken = (idToken) => {
+  // Saves user token to localStorage
+  localStorage.setItem('id_token', idToken)
+};
+
+export const getToken = () =>{
+  // Retrieves the user token from localStorage
+  return localStorage.getItem('id_token')
+};
 
 /*---------------------------
   顯示 Hi~訪客 字樣

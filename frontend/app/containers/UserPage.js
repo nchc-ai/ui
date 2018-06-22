@@ -1,13 +1,22 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
 import { Switch, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
+import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import SideMenu from '../components/SideMenu/index';
 import TableList from '../components/common/TableList/index';
 import { userCourseList } from '../constants/fakeData';
 import { userCourseData } from '../constants/tableData';
+import { getToken } from '../libraries/utils';
 
 class UserPage extends Component {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    const token = getToken();
+    this.props.courseAction.getCourseList(token);    
+  }
   render() {
     const {
       match
@@ -54,4 +63,10 @@ class UserPage extends Component {
   }
 }
 
-export default UserPage;
+const mapStateToProps = ({  }) => ({
+});
+
+export default compose(
+  connect(mapStateToProps),
+  bindActionCreatorHoc
+)(UserPage);

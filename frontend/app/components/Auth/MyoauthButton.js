@@ -35,7 +35,7 @@ class MyoauthButton extends Component {
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
-      `${AUTH_PROVIDER_URL}/web/authorize?${search}`,
+      `${AUTH_PROVIDER_URL}/web/authorize?response_type=code&${search}`,
       { height: 1000, width: 600 }
     );
 

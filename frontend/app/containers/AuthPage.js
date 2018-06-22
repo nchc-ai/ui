@@ -2,24 +2,31 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import { setToken } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
 
 class AuthPage extends Component {
 
+  componentWillMount() {
+    window.scrollTo(0, 0);
+  }
+
   onClickLogin = () => {
-    console.log('click');
+    // console.log('click');
     this.props.authAction.login();
 
   }
 
-  onSuccess = () => {
-    console.log('success');
+  onSuccess = (data) => {
+    // console.log('success', data);
+    setToken(data.code);
+    this.props.history.push('/user/course');
   }
 
-  onFailure = () => {
-    console.log('fail');
+  onFailure = (err) => {
+    console.log('fail', err);
   }
 
   render() {
