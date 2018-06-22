@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import MyoauthButton from './MyoauthButton';
+import { WEBSITE_URL } from '../../config/api';
 import SectionTitle from '../common/SectionTitle/index';
 import logoImg from '../../../public/images/auth/login-logo.png';
 import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
@@ -23,7 +24,7 @@ const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
         onSuccess={onSuccess}
         onFailure={onFailure}
         scope={"read_write"}
-        redirectUri={'http://localhost:8881/user/course'}
+        redirectUri={`${WEBSITE_URL}/user/course`}
       >
         <img alt="" src={localBtnImg} />
       </MyoauthButton>

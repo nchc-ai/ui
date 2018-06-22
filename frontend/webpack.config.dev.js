@@ -97,12 +97,12 @@ const config = {
     },
     runtimeChunk: true
   },
-  devServer: {
-    contentBase: './build',
-    hot: true,
-    inline: true,
-    historyApiFallback: true
-  }
+  // devServer: {
+  //   contentBase: './build',
+  //   hot: true,
+  //   inline: true,
+  //   historyApiFallback: true
+  // }
 };
 
 

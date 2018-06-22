@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "build": "webpack --config webpack.config.dev.js",
-    "dev": "webpack-dev-server --config webpack.config.dev.js --port 8881",
+    "dev": "node server.js",
     "production": "webpack --config webpack.config.prod.js"
   },
   "author": "JF Studio",

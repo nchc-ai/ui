@@ -20,10 +20,10 @@ class AuthPage extends Component {
   }
 
   onSuccess = (data) => {
-    
-    setToken(data.code);
+    this.props.authAction.retrieveToken(data.code, this.redirect);
+  }
 
-    console.log('success', data, getToken());
+  redirect = () => {
     this.props.history.push('/user/course');
   }
 

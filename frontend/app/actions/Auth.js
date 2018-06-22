@@ -13,9 +13,36 @@ export const setUserInfo = (userInfo, isLogin) => ({
   isLogin
 });
 
-//
 
-export const login = () => async (dispatch) => {
+// 用code換取token
+export const retrieveToken = (code, next) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `http://140.110.5.22:30010/v1/oauth/tokens?grant_type=client_credentials&scope=read_write`,
+      method: 'POST',
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Content-Type': 'application/json',
+        'Authorization': `Basic ${btoa('test_client_1' + ':' + 'test_secret')}`
+      },
+      types: types.RETRIEVE_TOKEN
+    }
+  });
+
+  console.log('response', response);
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('retrieveToken 失敗');
+  }
+  next();
+};
+
+
+
+
+
+
+
+export const login = next => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${AUTH_PROVIDER_URL}/client_id=test_client_1`,
