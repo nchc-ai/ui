@@ -151,15 +151,15 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 		clusterGroup.OPTIONS("/kubernetes", resourceClient.handleOption)
 		clusterGroup.POST("/database", resourceClient.checkDatabase)
 		clusterGroup.OPTIONS("/database", resourceClient.handleOption)
+		clusterGroup.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
+		clusterGroup.OPTIONS("/databaseAuth", resourceClient.handleOption)
 	}
 
 	// health check require token
 	authGroup := router.Group("/v1").Group("/health").Use(authMiddleware)
 	{
 		authGroup.GET("/kubernetesAuth", resourceClient.checkK8s)
-		authGroup.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
 		authGroup.POST("/databaseAuth", resourceClient.checkDatabase)
-		authGroup.OPTIONS("/databaseAuth", resourceClient.handleOption)
 	}
 
 	// list advance and basic course, do not required token
@@ -167,15 +167,14 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 	{
 		bb.GET("/level/:level", resourceClient.ListCourse)
 		bb.OPTIONS("/level/:level", resourceClient.handleOption)
+		bb.OPTIONS("/create", resourceClient.handleOption)
+		bb.OPTIONS("/list", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
 	aa := router.Group("/v1").Group("/course").Use(authMiddleware)
 	{
-		aa.OPTIONS("/create", resourceClient.handleOption)
 		aa.POST("/create", resourceClient.AddCourse)
-
-		aa.OPTIONS("/list", resourceClient.handleOption)
 		aa.POST("/list", resourceClient.ListCourse)
 	}
 
