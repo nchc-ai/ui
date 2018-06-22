@@ -175,7 +175,7 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 		aa.POST("/create", resourceClient.AddCourse)
 
 		aa.OPTIONS("/list", resourceClient.handleOption)
-		aa.GET("/list", resourceClient.ListCourse)
+		aa.POST("/list", resourceClient.ListCourse)
 	}
 
 }

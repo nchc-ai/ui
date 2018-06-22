@@ -42,7 +42,7 @@
 
 * **Method:**
 
-  `GET`
+  `POST`
 
 * **URL Params**
 
@@ -158,7 +158,7 @@
 * **Sample Call:**
 
   ```sh
-    $ curl -X GET \
+    $ curl -X POST \
       -d '{"user":"jimmy"}' \
       -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
       http://localhost:8080/v1/course/list
