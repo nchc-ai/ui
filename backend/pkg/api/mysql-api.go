@@ -104,7 +104,7 @@ func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 }
 
 func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
-	provider := c.GetHeader("Provider")
+	provider, _ := c.Get("Provider")
 	level := c.Param("level")
 
 	var req model.Course
@@ -120,7 +120,7 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 	course := model.Course{
 		OauthUser: model.OauthUser{
 			User:     req.User,
-			Provider: provider,
+			Provider: provider.(string),
 		},
 		Level: level,
 	}
@@ -193,7 +193,7 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	// add course information in DB
 	courseID := uuid.New().String()
 
-	provider := c.GetHeader("Provider")
+	provider, _ := c.Get("Provider")
 
 	newCourse := model.Course{
 		Model: model.Model{
@@ -201,7 +201,7 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 		},
 		OauthUser: model.OauthUser{
 			User:     req.User,
-			Provider: provider,
+			Provider: provider.(string),
 		},
 		Introduction: req.Introduction,
 		Name:         req.Name,

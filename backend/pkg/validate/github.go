@@ -1,17 +1,17 @@
 package validate
 
 import (
-	"github.com/spf13/viper"
 	"net/http"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 )
 
 type Github struct {
 	url string
 }
 
-func NewGithubValidate(config *viper.Viper) *Github {
+func NewGithubValidate(config model.ValidateConfig) *Github {
 	return &Github{
-		url: config.GetString("api-server.validate.url"),
+		url: config.Url,
 	}
 }
 

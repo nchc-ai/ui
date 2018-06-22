@@ -5,8 +5,9 @@ import (
 	"net/url"
 	"strings"
 	"io/ioutil"
-	"github.com/spf13/viper"
 	"encoding/json"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+	"errors"
 )
 
 type GoAuth struct {
@@ -24,11 +25,15 @@ type IntrospectResponse struct {
 	Expire    int64  `json:"exp"`
 }
 
-func NewGoAuthValidate(config *viper.Viper) *GoAuth {
+type TokenExpire struct {
+	Error string `json:"error"`
+}
+
+func NewGoAuthValidate(config model.ValidateConfig) *GoAuth {
 	return &GoAuth{
-		url:          config.GetString("api-server.validate.url"),
-		clientId:     config.GetString("api-server.validate.client_id"),
-		clientSecret: config.GetString("api-server.validate.client_secret"),
+		url:          config.Url,
+		clientId:     config.ClientId,
+		clientSecret: config.ClientSecret,
 	}
 }
 
@@ -54,6 +59,22 @@ func (g *GoAuth) Validate(token string) (bool, error) {
 	bodyBytes, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
 		return false, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return false, errors.New("Access token not found")
+	}
+
+	if resp.StatusCode == http.StatusInternalServerError {
+		var tokenExpire TokenExpire
+		err = json.Unmarshal(bodyBytes, &tokenExpire)
+		if err != nil {
+			return false, err
+		}
+
+		if tokenExpire.Error == "Access token expired" {
+			return false, errors.New("Access token expired")
+		}
 	}
 
 	var introspectResp IntrospectResponse

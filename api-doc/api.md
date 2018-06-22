@@ -1,20 +1,20 @@
 <!--ts-->
    * [Course](#course)
-      * [List](#list)
-      * [Create](#create)
-      * [Launch](#launch)
-      * [Delete](#delete)
-      * [List different level course](#list-different-level-course)
+      * [X] [List](#list)
+      * [X] [Create](#create)
+      * [ ] [Launch](#launch)
+      * [ ] [Delete](#delete)
+      * [X] [List different level course](#list-different-level-course)
    * [Job](#job)
-      * [List](#list-1)
-      * [Delete](#delete-1)
+      * [ ] [List](#list-1)
+      * [ ] [Delete](#delete-1)
    * [DataSet](#dataset)
-      * [List](#list-2)
+      * [ ] [List](#list-2)
    * [Health Check](#health-check)
-      * [check kubernetes](#check-kubernetes)
-      * [check kubernetes with token](#check-kubernetes-with-token)
-      * [check database](#check-database)
-      * [check database with token](#check-database-with-token)
+      * [X] [check kubernetes](#check-kubernetes)
+      * [X] [check kubernetes with token](#check-kubernetes-with-token)
+      * [X] [check database](#check-database)
+      * [X] [check database with token](#check-database-with-token)
 
 <!-- Added by: ogre0403, at:  -->
 
@@ -113,23 +113,13 @@
      }
     ```
 
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message" : "verify token process fail: error message"
-     }
-    ```
-
   * **Code:**  401 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message" : "token is missing"
+        "message" : "Authorization header is missing"
      }
     ```
 
@@ -151,6 +141,16 @@
           "error": true,
           "message" : "Invalid API token"
        }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
     ```
 
 
@@ -276,23 +276,13 @@
     ```
 
 
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message" : "verify token process fail: error message"
-     }
-    ```
-
   * **Code:**  401 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message" : "token is missing"
+        "message" : "Authorization header is missing"
      }
     ```
 
@@ -314,6 +304,16 @@
           "error": true,
           "message" : "Invalid API token"
        }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
     ```
 
 
@@ -572,7 +572,6 @@
       }
    ```
 
-
 # Job
 
 ## List
@@ -609,7 +608,7 @@
      {
         "error": false,
         "jobs" : 
-          {
+          [{
             "status": "",
             "job_id": 1,
             "course_name":"影像處理",
@@ -816,7 +815,6 @@
       }
    ```
 
-
 # Health Check
 
 ## check kubernetes
@@ -929,24 +927,14 @@
      }
     ```
 
-  * **Code:**  500 <br />
+  * **Code:**  401 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message" : "verify token process fail: error message"
+        "message" : "Authorization header is missing"
      }
-    ```
-
-  * **Code:**  401 <br />
-    **Content:**
-
-    ```json
-      {
-          "error": true,
-          "message" : "Authorization header is missing"
-       }
     ```
 
   * **Code:**  401 <br />
@@ -959,7 +947,6 @@
      }
     ```
 
-
   * **Code:**  403 <br />
     **Content:**
 
@@ -968,6 +955,16 @@
           "error": true,
           "message" : "Invalid API token"
        }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
     ```
 
 
@@ -1104,23 +1101,13 @@
      }
     ```
 
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message" : "verify token process fail: error message"
-     }
-    ```
-
   * **Code:**  401 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message" : "token is missing"
+        "message" : "Authorization header is missing"
      }
     ```
 
@@ -1142,6 +1129,16 @@
           "error": true,
           "message" : "Invalid API token"
        }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
     ```
 
 
