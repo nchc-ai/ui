@@ -16,6 +16,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
+	"golang.org/x/oauth2"
 )
 
 type ResourceClient struct {
@@ -203,6 +204,8 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 		bb.OPTIONS("/level/:level", resourceClient.handleOption)
 		bb.OPTIONS("/create", resourceClient.handleOption)
 		bb.OPTIONS("/list", resourceClient.handleOption)
+		bb.OPTIONS("/token", resourceClient.handleOption)
+		bb.POST("/token", resourceClient.GetToke)
 	}
 
 	// list/add course under specific user, token is required
@@ -212,4 +215,47 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 		aa.POST("/list", resourceClient.ListCourse)
 	}
 
+}
+
+const OAuthProviderURLPrefix = "http://140.110.5.22:30010"
+
+var endpoint = oauth2.Endpoint{
+	AuthURL:  OAuthProviderURLPrefix + "/web/authorize",
+	TokenURL: OAuthProviderURLPrefix + "/v1/oauth/tokens",
+}
+
+var githubOauthConfig = &oauth2.Config{
+	ClientID:     "test_client_1",
+	ClientSecret: "test_secret",
+	RedirectURL:  "http://127.0.0.1:3010/user/course",
+	Endpoint:     endpoint,
+}
+
+type TokenReq struct {
+	Code string `json:"code"`
+}
+
+func (resourceClient *ResourceClient) GetToke(c *gin.Context) {
+
+	var req TokenReq
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": true,
+			"cause": "Failed to parse spec request request: " + err.Error(),
+		})
+		return
+	}
+
+	token, err := githubOauthConfig.Exchange(oauth2.NoContext, req.Code)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, model.GenericResponse{
+			Error:   true,
+			Message: "Get Token fail",
+		})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"token": token.AccessToken,
+	})
 }
