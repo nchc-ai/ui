@@ -34,7 +34,7 @@
 
 * **URL**
 
-  /v1/course/list/:user
+  /v1/course/list/
 
 * **Header:**
 
@@ -50,7 +50,11 @@
 
 * **Data Params**
 
-  None
+  ```json
+    {
+      "user": "user-name"
+    }
+  ```
 
 * **Success Response:**
 
@@ -154,8 +158,10 @@
 * **Sample Call:**
 
   ```sh
-    $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
-      http://localhost:8080/v1/course/list/jimmy
+    $ curl -X GET \
+      -d '{"user":"jimmy"}' \
+      -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+      http://localhost:8080/v1/course/list
     {
         "error": false,
         "courses":[
@@ -193,7 +199,7 @@
 
 * **URL**
 
-  /v1/course/create/:user
+  /v1/course/create/
 
 * **Header:**
 
@@ -212,7 +218,8 @@
 
   ```json
   {
-    "name":"course name",
+    "user": "user-name",
+    "name": "course name",
     "introduction":"markdown text with escape",
     "image":"course docker image",
     "level": "basic",
@@ -315,8 +322,8 @@
   ```sh
    $ curl -X POST \
      -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
-     -d '{"name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
-     http://localhost:8080/v1/course/create/jimmy
+     -d '{"user":"jimmy", name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
+     http://localhost:8080/v1/course/create
    {
        "error": false,
        "message": "Course course name created successfully"

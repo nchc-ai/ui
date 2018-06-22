@@ -105,19 +105,28 @@ func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 
 func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 	provider := c.GetHeader("Provider")
-	user := c.Param("user")
 	level := c.Param("level")
+
+	var req model.Course
+	err := c.BindJSON(&req)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": true,
+			"cause": "Failed to parse spec request request: " + err.Error(),
+		})
+		return
+	}
 
 	course := model.Course{
 		OauthUser: model.OauthUser{
-			User:     user,
+			User:     req.User,
 			Provider: provider,
 		},
 		Level: level,
 	}
 
 	results := []model.Course{}
-	err := resourceClient.DB.Where(&course).Find(&results).Error
+	err = resourceClient.DB.Where(&course).Find(&results).Error
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": true,
@@ -185,14 +194,13 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	courseID := uuid.New().String()
 
 	provider := c.GetHeader("Provider")
-	user := c.Param("user")
 
 	newCourse := model.Course{
 		Model: model.Model{
 			ID: courseID,
 		},
 		OauthUser: model.OauthUser{
-			User:     user,
+			User:     req.User,
 			Provider: provider,
 		},
 		Introduction: req.Introduction,
