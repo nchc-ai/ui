@@ -227,7 +227,7 @@ var endpoint = oauth2.Endpoint{
 var githubOauthConfig = &oauth2.Config{
 	ClientID:     "test_client_1",
 	ClientSecret: "test_secret",
-	RedirectURL:  "http://127.0.0.1:3010/user/course",
+	RedirectURL:  "http://localhost:3010/user/course",
 	Endpoint:     endpoint,
 }
 
