@@ -247,14 +247,16 @@ func (resourceClient *ResourceClient) GetToke(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(" XXXXXXXXX code = " + req.Code)
 	token, err := githubOauthConfig.Exchange(oauth2.NoContext, req.Code)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, model.GenericResponse{
 			Error:   true,
-			Message: "Get Token fail" + err.Error(),
+			Message: "Get Token fail : " + err.Error(),
 		})
 		return
 	}
+	fmt.Println(" OOOOOOOOOO token = " + token.AccessToken)
 	c.JSON(http.StatusOK, gin.H{
 		"token": token.AccessToken,
 	})
