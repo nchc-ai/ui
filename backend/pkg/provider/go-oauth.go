@@ -1,4 +1,4 @@
-package validate
+package provider
 
 import (
 	"net/http"
@@ -8,12 +8,14 @@ import (
 	"encoding/json"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"errors"
+	"golang.org/x/oauth2"
 )
 
 type GoAuth struct {
-	url          string
-	clientId     string
-	clientSecret string
+	name           string
+	refresh_url    string
+	introspect_url string
+	oauthConfig    *oauth2.Config
 }
 
 type IntrospectResponse struct {
@@ -29,11 +31,25 @@ type TokenExpire struct {
 	Error string `json:"error"`
 }
 
-func NewGoAuthValidate(config model.ValidateConfig) *GoAuth {
+func NewGoAuthProvider(config model.ProviderConfig) *GoAuth {
+
+	var endpoint = oauth2.Endpoint{
+		AuthURL:  config.AuthURL,
+		TokenURL: config.TokenURL,
+	}
+
+	var oauthConfig = &oauth2.Config{
+		ClientID:     config.ClientId,
+		ClientSecret: config.ClientSecret,
+		RedirectURL:  config.RedirectURL,
+		Endpoint:     endpoint,
+	}
+
 	return &GoAuth{
-		url:          config.Url,
-		clientId:     config.ClientId,
-		clientSecret: config.ClientSecret,
+		name:           config.Name,
+		refresh_url:    config.RedirectURL,
+		introspect_url: config.IntrospectURL,
+		oauthConfig:    oauthConfig,
 	}
 }
 
@@ -41,12 +57,12 @@ func (g *GoAuth) Validate(token string) (bool, error) {
 	client := &http.Client{}
 	data := url.Values{}
 	data.Add("token", token)
-	req, err := http.NewRequest("POST", g.url, strings.NewReader(data.Encode()))
+	req, err := http.NewRequest("POST", g.introspect_url, strings.NewReader(data.Encode()))
 	if err != nil {
 		return false, err
 	}
 
-	req.SetBasicAuth(g.clientId, g.clientSecret)
+	req.SetBasicAuth(g.oauthConfig.ClientID, g.oauthConfig.ClientSecret)
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 
 	resp, err := client.Do(req)
@@ -83,4 +99,23 @@ func (g *GoAuth) Validate(token string) (bool, error) {
 		return false, err
 	}
 	return introspectResp.Active, nil
+}
+
+func (g *GoAuth) GetToken(code string) (string, error) {
+
+	token, err := g.oauthConfig.Exchange(oauth2.NoContext, code)
+
+	if err != nil {
+		return "", err
+	}
+
+	return token.AccessToken, nil
+}
+
+func (g *GoAuth) RefreshToken(token string) (string, error) {
+	return "", errors.New("Not implement")
+}
+
+func (g *GoAuth) Name() string {
+	return g.name
 }

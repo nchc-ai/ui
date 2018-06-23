@@ -15,8 +15,11 @@
       * [X] [check kubernetes with token](#check-kubernetes-with-token)
       * [X] [check database](#check-database)
       * [X] [check database with token](#check-database-with-token)
-
-<!-- Added by: ogre0403, at:  -->
+   * [Proxy](#proxy)
+      * [ ] [Token](#token)
+      * [ ] [Refresh](#refresh)
+       
+<!-- Added by: jimmy, at:  -->
 
 <!--te-->
 
@@ -1149,3 +1152,10 @@
 
     {"error":false,"message":"xs","tables":["course"]}
    ```
+
+# Proxy
+
+## Token
+
+
+## Refresh
