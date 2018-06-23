@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"fmt"
 	"net/http"
 
@@ -12,6 +11,7 @@ import (
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"github.com/google/uuid"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
+	log "github.com/golang/glog"
 )
 
 func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
@@ -28,7 +28,7 @@ func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
 	db, err := gorm.Open("mysql", dbArgs)
 
 	if err != nil {
-		log.Fatalf("create database client fail: " + err.Error())
+		log.Fatalf("create database client fail: %s", err.Error())
 		return nil, err
 	}
 
@@ -58,7 +58,8 @@ func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 	var req model.GenericRequest
 	err := c.BindJSON(&req)
 	if err != nil {
-		util.RespondWithError(http.StatusBadRequest, "Failed to parse spec request request: "+err.Error(), c)
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
 		return
 	}
 	msg := req.Message
@@ -68,16 +69,16 @@ func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 	rows, err := resourceClient.DB.Raw("show tables").Rows()
 
 	if err != nil {
-		log.Fatalf("Show all table name fail: %s", err.Error())
-		util.RespondWithError(http.StatusInternalServerError, "Query all table name fail: "+err.Error(), c)
+		log.Errorf("Show all table name fail: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Query all table name fail: %s", err.Error())
 		return
 	}
 
 	for rows.Next() {
 		var name string
 		if err := rows.Scan(&name); err != nil {
-			log.Fatal("Scan table name fail: " + err.Error())
-			util.RespondWithError(http.StatusInternalServerError, "Scan table name fail: "+err.Error(), c)
+			log.Errorf("Scan table name fail: %s", err.Error())
+			util.RespondWithError(c, http.StatusInternalServerError, "Scan table name fail: %s", err.Error())
 			return
 		}
 		tNameList = append(tNameList, name)
@@ -101,7 +102,8 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 	var req model.Course
 	err := c.BindJSON(&req)
 	if err != nil {
-		util.RespondWithError(http.StatusBadRequest, "Failed to parse spec request request: "+err.Error(), c)
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
 		return
 	}
 
@@ -116,7 +118,8 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 	results := []model.Course{}
 	err = resourceClient.DB.Where(&course).Find(&results).Error
 	if err != nil {
-		util.RespondWithError(http.StatusInternalServerError, "Query courses table fail: "+err.Error(), c)
+		log.Errorf("Query courses table fail: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Query courses table fail: %s", err.Error())
 		return
 	}
 
@@ -130,7 +133,8 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 		datasetResult := []model.Dataset{}
 		err = resourceClient.DB.Where(&dataset).Find(&datasetResult).Error
 		if err != nil {
-			util.RespondWithError(http.StatusInternalServerError, "Query datasets table fail: "+err.Error(), c)
+			log.Errorf("Query datasets table fail: %s", err.Error())
+			util.RespondWithError(c, http.StatusInternalServerError, "Query datasets table fail: %s", err.Error())
 			return
 		}
 
@@ -165,14 +169,19 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	var req model.Course
 	err := c.BindJSON(&req)
 	if err != nil {
-		util.RespondWithError(http.StatusBadRequest, "Failed to parse spec request request: "+err.Error(), c)
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
 		return
 	}
 
 	// add course information in DB
 	courseID := uuid.New().String()
 
-	provider, _ := c.Get("Provider")
+	provider, exist := c.Get("Provider")
+	if !exist {
+		log.Warning("Provider is not found in request context, set empty")
+		provider = ""
+	}
 
 	newCourse := model.Course{
 		Model: model.Model{
@@ -192,7 +201,8 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	err = resourceClient.DB.Create(&newCourse).Error
 
 	if err != nil {
-		util.RespondWithError(http.StatusInternalServerError, "Failed to create course information: "+err.Error(), c)
+		log.Errorf("Failed to create course information: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Failed to create course information: %s", err.Error())
 		return
 	}
 
@@ -205,7 +215,8 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 		}
 		err = resourceClient.DB.Create(&newDataset).Error
 		if err != nil {
-			util.RespondWithError(http.StatusInternalServerError, "Failed to create course-dataset information in DB: " + err.Error(), c)
+			log.Errorf("Failed to create course-dataset information in DB: %s", err.Error())
+			util.RespondWithError(c, http.StatusInternalServerError, "Failed to create course-dataset information in DB: %s", err.Error())
 			return
 		}
 	}

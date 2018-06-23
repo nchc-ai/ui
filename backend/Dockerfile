@@ -20,4 +20,4 @@ RUN mkdir -p /etc/api-server
 COPY --from=0 /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/backend/bin/app .
 COPY --from=0 /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/backend/conf/api-config-docker.json /etc/api-server/api-config.json
 COPY --from=0 /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/backend/conf/openstack-kubeconfig /etc/api-server
-CMD ["/app"]
+CMD ["/app", "--logtostderr=true"]

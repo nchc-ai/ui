@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"fmt"
 	"strings"
-	"log"
 	"net/http"
 	"encoding/json"
 
@@ -16,6 +15,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
+	log "github.com/golang/glog"
 )
 
 type ResourceClient struct {
@@ -36,19 +36,20 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 		log.Fatalf("Create kubernetes client fail, Stop...: %s", err.Error())
 		return nil
 	}
+	log.Info("Create Kubernetes Client")
 
 	dbclient, err := NewDBClient(config)
 	if err != nil {
 		log.Fatalf("Create database client fail, Stop...: %s", err.Error())
 		return nil
 	}
-
-	providerConfigstr := config.GetStringMapString("api-server.provider")
+	log.Info("Create Database Client")
 
 	// convert each provider config json to ProviderConfig struct
 	// we need two phase conversion, map[string]interface{} -> json -> struct
 	// https://www.cnblogs.com/liang1101/p/6741262.html
-
+	log.Info("Create Oauth Provider Proxy")
+	providerConfigstr := config.GetStringMapString("api-server.provider")
 	var vconf model.ProviderConfig
 
 	// map[string]string -> json
@@ -70,7 +71,7 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 	case "go-oauth":
 		providerProxy = provider.NewGoAuthProvider(vconf)
 	default:
-		log.Println(fmt.Sprintf("%s is a not supported provider type", oauthProvider))
+		log.Warning(fmt.Sprintf("%s is a not supported provider type", oauthProvider))
 	}
 
 	return &APIServer{
@@ -105,14 +106,16 @@ func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			util.RespondWithError(http.StatusUnauthorized, "Authorization header is missing", c)
+			log.Error("Authorization header is missing")
+			util.RespondWithError(c, http.StatusUnauthorized, "Authorization header is missing")
 			return
 		}
 
 		bearerToken := strings.Split(authHeader, " ")
 
 		if len(bearerToken) != 2 || bearerToken[0] != "Bearer" {
-			util.RespondWithError(http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing", c)
+			log.Errorf("Authorization header is not Bearer Token format or token is missing: %s", authHeader)
+			util.RespondWithError(c, http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing")
 			return
 		}
 
@@ -123,18 +126,19 @@ func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 		validated, err = server.providerProxy.Validate(token)
 
 		if err != nil && err.Error() == "Access token expired" {
-			util.RespondWithError(http.StatusForbidden, "Access token expired", c)
+			log.Error("Access token expired")
+			util.RespondWithError(c, http.StatusForbidden, "Access token expired")
 			return
 		}
 
 		if err != nil {
-			log.Println(fmt.Sprintf("verify token fail: %s", err.Error()))
-			util.RespondWithError(http.StatusInternalServerError, "verify token fail: "+err.Error(), c)
+			log.Errorf("verify token fail: %s", err.Error())
+			util.RespondWithError(c, http.StatusInternalServerError, "verify token fail: %s", err.Error())
 			return
 		}
 
 		if !validated {
-			util.RespondWithError(http.StatusForbidden, "Invalid API token", c)
+			util.RespondWithError(c, http.StatusForbidden, "Invalid API token")
 			return
 		}
 
@@ -210,14 +214,16 @@ func (server *APIServer) GetToken(c *gin.Context) {
 	var req model.TokenReq
 	err := c.BindJSON(&req)
 	if err != nil {
-		util.RespondWithError(http.StatusBadRequest, "Failed to parse spec request request: "+err.Error(), c)
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
 		return
 	}
 
 	token, _ := server.providerProxy.GetToken(req.Code)
 
 	if err != nil {
-		util.RespondWithError(http.StatusInternalServerError, "Exchange Token fail: "+err.Error(), c)
+		log.Errorf("Exchange Token fail: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Exchange Token fail: %s", err.Error())
 		return
 	}
 
