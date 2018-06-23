@@ -39,10 +39,7 @@ func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	nList, err := resourceClient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, model.GenericResponse{
-			Error:   true,
-			Message: "List Node fail: " + err.Error(),
-		})
+		util.RespondWithError(http.StatusInternalServerError, "List Node fail: "+err.Error(), c)
 		return
 	}
 

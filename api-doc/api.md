@@ -16,7 +16,7 @@
       * [X] [check database](#check-database)
       * [X] [check database with token](#check-database-with-token)
    * [Proxy](#proxy)
-      * [ ] [Token](#token)
+      * [X] [Token](#token)
       * [ ] [Refresh](#refresh)
        
 <!-- Added by: jimmy, at:  -->
@@ -102,7 +102,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query datasets table fail: error-message"
+        "message": "Query datasets table fail: error-message"
      }
     ```
 
@@ -112,7 +112,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query courses table fail: error-message"
+        "message": "Query courses table fail: error-message"
      }
     ```
 
@@ -156,7 +156,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
 
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -254,7 +262,7 @@
     ```json
     {
         "error": true,
-        "cause": "Failed to parse spec request request: error-message"
+        "message": "Failed to parse spec request request: error-message"
      }
     ```
 
@@ -264,7 +272,7 @@
     ```json
     {
         "error": true,
-        "cause": "Failed to create course information: error-message"
+        "message": "Failed to create course information: error-message"
      }
     ```
 
@@ -274,7 +282,7 @@
     ```json
     {
         "error": true,
-        "cause": "Failed to create course-dataset information in DB: error-message"
+        "message": "Failed to create course-dataset information in DB: error-message"
      }
     ```
 
@@ -319,6 +327,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -525,7 +542,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query datasets table fail: error-message"
+        "message": "Query datasets table fail: error-message"
      }
     ```
 
@@ -535,7 +552,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query courses table fail: error-message"
+        "message": "Query courses table fail: error-message"
      }
     ```
 
@@ -970,6 +987,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -1144,6 +1170,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -1157,5 +1192,147 @@
 
 ## Token
 
+* **Description**
+
+  Exchange token from Provider
+
+* **URL**
+
+  /v1/proxy/token
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "code": "xxxxxxx"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "token": "token-xxxxxxx"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: error message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Exchange Token fail: error"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -d '"{"code":"xxxxxx"}"' \
+        http://localhost:8080/v1/proxy/token
+
+     {
+        "token": "token-xxxxxxx"
+     }
+   ```
+
+
 
 ## Refresh
+
+* **Description**
+
+  Refresh token with provider
+
+* **URL**
+
+  /v1/proxy/refresh
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "code": "xxxxxxx"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "token": "token-xxxxxxx"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: error message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Exchange Token fail: error"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -d '"{"code":"xxxxxx"}"' \
+        http://localhost:8080/v1/proxy/token
+
+     {
+        "token": "token-xxxxxxx"
+     }
+   ```
+

@@ -210,20 +210,14 @@ func (server *APIServer) GetToken(c *gin.Context) {
 	var req model.TokenReq
 	err := c.BindJSON(&req)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": true,
-			"cause": "Failed to parse spec request request: " + err.Error(),
-		})
+		util.RespondWithError(http.StatusBadRequest, "Failed to parse spec request request: "+err.Error(), c)
 		return
 	}
 
 	token, _ := server.providerProxy.GetToken(req.Code)
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": true,
-			"cause": "Exchange Token fail: " + err.Error(),
-		})
+		util.RespondWithError(http.StatusInternalServerError, "Exchange Token fail: "+err.Error(), c)
 		return
 	}
 
