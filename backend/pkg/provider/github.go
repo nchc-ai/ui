@@ -3,7 +3,8 @@ package provider
 import (
 	"net/http"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
-	"github.com/pkg/errors"
+	"golang.org/x/oauth2"
+	"errors"
 )
 
 type Github struct {
@@ -31,12 +32,12 @@ func (g *Github) Validate(token string) (bool, error) {
 	}
 }
 
-func (g *Github) GetToken(code string) (string, error) {
-	return "", errors.New("Not implement")
+func (g *Github) GetToken(code string) (*oauth2.Token, error) {
+	return nil, errors.New("Not implement")
 }
 
-func (g *Github) RefreshToken(token string) (string, error) {
-	return "",errors.New("Not implement")
+func (g *Github) RefreshToken(token string) (*oauth2.Token, error) {
+	return nil, errors.New("Not implement")
 }
 
 func (g *Github) Name() string {

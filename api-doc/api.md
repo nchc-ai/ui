@@ -17,7 +17,7 @@
       * [X] [check database with token](#check-database-with-token)
    * [Proxy](#proxy)
       * [X] [Token](#token)
-      * [ ] [Refresh](#refresh)
+      * [X] [Refresh](#refresh)
        
 <!-- Added by: jimmy, at:  -->
 
@@ -1287,7 +1287,7 @@
 
   ```json
     {
-      "code": "xxxxxxx"
+      "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
     }
   ```
 
@@ -1298,7 +1298,8 @@
 
     ```json
      {
-        "token": "token-xxxxxxx"
+      "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+      "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
      }
     ```
 
@@ -1328,8 +1329,8 @@
 
   ```sh
       $ curl -X POST \
-        -d '"{"code":"xxxxxx"}"' \
-        http://localhost:8080/v1/proxy/token
+        -d '"{"refresh_token":"7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"}"' \
+        http://localhost:8080/v1/proxy/refresh
 
      {
         "token": "token-xxxxxxx"

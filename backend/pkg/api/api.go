@@ -74,6 +74,7 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 		log.Warning(fmt.Sprintf("%s is a not supported provider type", oauthProvider))
 	}
 
+	log.Info(providerProxy)
 	return &APIServer{
 		config: config,
 		resourceClient: &ResourceClient{
@@ -219,7 +220,7 @@ func (server *APIServer) GetToken(c *gin.Context) {
 		return
 	}
 
-	token, _ := server.providerProxy.GetToken(req.Code)
+	token, err := server.providerProxy.GetToken(req.Code)
 
 	if err != nil {
 		log.Errorf("Exchange Token fail: %s", err.Error())
@@ -229,11 +230,33 @@ func (server *APIServer) GetToken(c *gin.Context) {
 
 	c.JSON(http.StatusOK,
 		model.TokenResp{
-			Token: token,
+			Token:        token.AccessToken,
+			RefreshToken: token.RefreshToken,
 		},
 	)
 }
 
 func (server *APIServer) RefreshToken(c *gin.Context) {
+	var req model.RefreshTokenReq
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
 
+	newToken, err := server.providerProxy.RefreshToken(req.RefreshToken)
+
+	if err != nil {
+		log.Errorf("Refresh Token fail: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Exchange Token fail: %s", err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK,
+		model.TokenResp{
+			Token:        newToken.AccessToken,
+			RefreshToken: newToken.RefreshToken,
+		},
+	)
 }

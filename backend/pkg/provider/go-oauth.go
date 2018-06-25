@@ -27,6 +27,15 @@ type IntrospectResponse struct {
 	Expire    int64  `json:"exp"`
 }
 
+type TokenResponse struct {
+	User         string `json:"user_id"`
+	AccessToken  string `json:"access_token"`
+	expire       int    `json:"expires_in"`
+	TokenType    string `json:"token_type"`
+	Scope        string `json:"scope"`
+	RefreshToken string `json:"refresh_token"`
+}
+
 type TokenExpire struct {
 	Error string `json:"error"`
 }
@@ -47,7 +56,7 @@ func NewGoAuthProvider(config model.ProviderConfig) *GoAuth {
 
 	return &GoAuth{
 		name:           config.Name,
-		refresh_url:    config.RedirectURL,
+		refresh_url:    config.RefreshURL,
 		introspect_url: config.IntrospectURL,
 		oauthConfig:    oauthConfig,
 	}
@@ -101,19 +110,57 @@ func (g *GoAuth) Validate(token string) (bool, error) {
 	return introspectResp.Active, nil
 }
 
-func (g *GoAuth) GetToken(code string) (string, error) {
+func (g *GoAuth) GetToken(code string) (*TokenResponse, error) {
 
 	token, err := g.oauthConfig.Exchange(oauth2.NoContext, code)
 
 	if err != nil {
-		return "", err
+		return nil, err
 	}
 
-	return token.AccessToken, nil
+	return &TokenResponse{
+		AccessToken:  token.AccessToken,
+		RefreshToken: token.RefreshToken,
+	}, nil
 }
 
-func (g *GoAuth) RefreshToken(token string) (string, error) {
-	return "", errors.New("Not implement")
+func (g *GoAuth) RefreshToken(refresh_token string) (*TokenResponse, error) {
+	client := &http.Client{}
+	data := url.Values{
+		"refresh_token": {refresh_token},
+		"grant_type":    {"refresh_token"},
+	}
+	req, err := http.NewRequest("POST", g.refresh_url, strings.NewReader(data.Encode()))
+	if err != nil {
+		return nil, err
+	}
+
+	req.SetBasicAuth(g.oauthConfig.ClientID, g.oauthConfig.ClientSecret)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode == http.StatusNotFound {
+		return nil, errors.New("Refresh token not found")
+	}
+
+	var tokenResp TokenResponse
+	err = json.Unmarshal(bodyBytes, &tokenResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &tokenResp, nil
 }
 
 func (g *GoAuth) Name() string {
