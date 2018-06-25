@@ -74,7 +74,6 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 		log.Warning(fmt.Sprintf("%s is a not supported provider type", oauthProvider))
 	}
 
-	log.Info(providerProxy)
 	return &APIServer{
 		config: config,
 		resourceClient: &ResourceClient{
@@ -253,7 +252,7 @@ func (server *APIServer) RefreshToken(c *gin.Context) {
 
 	if err != nil {
 		log.Errorf("Refresh Token fail: %s", err.Error())
-		util.RespondWithError(c, http.StatusInternalServerError, "Exchange Token fail: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Refresh Token fail: %s", err.Error())
 		return
 	}
 

@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"fmt"
+	"net/http"
 )
 
 func homeDir() string {
@@ -57,10 +58,21 @@ func GetConfig(isOutOfCluster bool, kubeConfigPath string) (*rest.Config, error)
 }
 
 func RespondWithError(c *gin.Context, code int, format string, args ...interface{}) {
-	resp := model.GenericResponse{
-		Error:   true,
-		Message: fmt.Sprintf(format, args ...),
-	}
+	resp := genericResponse(true, format, args ...)
 	c.JSON(code, resp)
 	c.Abort()
+}
+
+func RespondWithOk(c *gin.Context, format string, args ...interface{}) {
+	resp := genericResponse(false, format, args ...)
+	c.JSON(http.StatusOK, resp)
+	c.Abort()
+}
+
+func genericResponse(isError bool, format string, args ...interface{}) model.GenericResponse {
+	resp := model.GenericResponse{
+		Error:   isError,
+		Message: fmt.Sprintf(format, args ...),
+	}
+	return resp
 }

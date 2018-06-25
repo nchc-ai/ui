@@ -445,21 +445,33 @@
     ```json
      {
         "error": false,
-        "message" : "course <name> delete successfully"
+        "message" : "course <name> is deleted successfully"
      }
     ```
 
 * **Error Response:**
+
+  * **Code:** 400  <br />
+    **Content:**
+
+    ```json
+    {
+      "error": true,
+      "message" : "Course Id is not found"
+    }
+    ```
 
   * **Code:** 500  <br />
     **Content:**
 
     ```json
     {
+      "error": true,
+      "message" : "Failed to delete course <course-id> information : <error-message>"
     }
     ```
 
-  * **Code:**  401 <br />
+* **Code:**  401 <br />
     **Content:**
 
     ```json
@@ -474,7 +486,7 @@
 
     ```json
     {
-        "error": true, 
+        "error": true,
         "message" : "Authorization header is not Bearer Token format or token is missing"
      }
     ```
@@ -499,14 +511,24 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
 * **Sample Call:**
 
   ```sh
-      $ curl -X DELETE -d '{"user": "user-name","id": "course-id"}' http://localhost:8080/v1/course/delete
+      $ curl -X DELETE  http://localhost:8080/v1/course/delete/1e5c1de8-26ce-424a-b906-70d8d574e7d3
 
       {
         "error": false,
-        "message" : "course <name> delete successfully"
+        "message" : "Course 1e5c1de8-26ce-424a-b906-70d8d574e7d3 is deleted successfully"
       }
    ```
 

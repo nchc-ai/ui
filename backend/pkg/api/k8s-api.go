@@ -58,5 +58,13 @@ func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+func (resourceClient *ResourceClient) DeleteDeployments(deploymentList []string) {
+
+}
+
+func deleteDeployment(deployment string) {
+
+}
+
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 }

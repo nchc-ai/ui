@@ -46,10 +46,10 @@ func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
 	db.AutoMigrate(proxy)
 
 	// add foreign key
-	db.Model(job).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
-	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
-	db.Model(student).AddForeignKey("course_id", "courses(id)", "RESTRICT", "RESTRICT")
-	db.Model(proxy).AddForeignKey("job_id", "jobs(id)", "RESTRICT", "RESTRICT")
+	db.Model(job).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+	db.Model(student).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+	db.Model(proxy).AddForeignKey("job_id", "jobs(id)", "CASCADE", "RESTRICT")
 
 	return db, nil
 }
@@ -221,22 +221,23 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 		}
 	}
 
-	c.JSON(http.StatusOK, model.GenericResponse{
-		Error:   false,
-		Message: fmt.Sprintf("Course %s created successfully", req.Name),
-	}, )
-
+	util.RespondWithOk(c, "Course %s created successfully", req.Name)
 }
 
 // Step 1: Find all associated Deployment/Service (included launched by student) and stop in kubernetes
 // 		Step 1-1: delete jobs in DB.  (With foreign key, this should be done automatically)
 // 		Step 1-2: delete proxy in DB. (With foreign key, this should be done automatically)
 
-// Step 2: Delete course in DB. (With foreign key, this should be done automatically)
+// Step 2: Delete course in DB.
 
 // Step 3: delete required dataset in DB. (With foreign key, this should be done automatically)
 func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	courseId := c.Param("id")
+
+	if courseId == "" {
+		util.RespondWithError(c, http.StatusBadRequest,
+			"Course Id is not found")
+	}
 
 	course := model.Course{
 		Model: model.Model{
@@ -244,13 +245,15 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 		},
 	}
 
-	err := resourceClient.DB.Delete(&course).Error
+	//todo: stop all deployment & service
+
+	err := resourceClient.DB.Unscoped().Delete(&course).Error
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{
-			"error": true,
-			"cause": fmt.Sprintf("Failed to delete course {%s} information : %s", courseId, err.Error()),
-		})
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"Failed to delete course {%s} information : %s", courseId, err.Error())
 		return
 	}
+
+	util.RespondWithOk(c, "Course %s is deleted successfully", courseId)
 }
