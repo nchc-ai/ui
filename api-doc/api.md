@@ -1224,8 +1224,8 @@
 
     ```json
      {
-        "token": "token-xxxxxxx"
-     }
+        "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+        "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"     }
     ```
 
 * **Error Response:**
@@ -1258,7 +1258,8 @@
         http://localhost:8080/v1/proxy/token
 
      {
-        "token": "token-xxxxxxx"
+        "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+        "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"     
      }
    ```
 
@@ -1333,7 +1334,8 @@
         http://localhost:8080/v1/proxy/refresh
 
      {
-        "token": "token-xxxxxxx"
+        "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+        "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
      }
    ```
 
