@@ -1,5 +1,5 @@
 hash: f3601b9cf5441a3b45b590c2c13fb5239f10282eab99d7b7a317bda0098908a2
-updated: 2018-06-21T16:29:55.450648399+08:00
+updated: 2018-06-23T15:05:00.996638429+08:00
 imports:
 - name: github.com/fsnotify/fsnotify
   version: c2828203cd70a50dcccfb2761f8b1f8ceef9a8e9
@@ -20,8 +20,6 @@ imports:
   subpackages:
   - proto
   - sortkeys
-- name: github.com/goinggo/mapstructure
-  version: 194205d9b4a98eff86d4e8d3c0dfe87dea59ef81
 - name: github.com/golang/glog
   version: 44145f04b68cf362d9c4df2182967c2275eaefed
 - name: github.com/golang/protobuf
@@ -74,6 +72,8 @@ imports:
   version: bb74f1db0675b241733089d5a1faa5dd8b0ef57b
 - name: github.com/pelletier/go-toml
   version: c01d1270ff3e442a8a57cddc1c92dc1138598194
+- name: github.com/pkg/errors
+  version: 645ef00459ed84a119197bfb8d8205042c6df63d
 - name: github.com/spf13/afero
   version: 787d034dfe70e44075ccc060d346146ef53270ad
   subpackages:
@@ -105,6 +105,13 @@ imports:
   - idna
   - lex/httplex
   - websocket
+- name: golang.org/x/oauth2
+  version: a6bd8cefa1811bd24b86f8902872e4e8225f74c4
+  subpackages:
+  - google
+  - internal
+  - jws
+  - jwt
 - name: golang.org/x/sys
   version: 95c6576299259db960f6c5b9b69ea52422860fce
   subpackages:
@@ -125,6 +132,13 @@ imports:
   version: b9aad5d628b283f265adf8d3557faae187a8d015
   subpackages:
   - cloudsql
+  - internal
+  - internal/base
+  - internal/datastore
+  - internal/log
+  - internal/remote_api
+  - internal/urlfetch
+  - urlfetch
 - name: gopkg.in/go-playground/validator.v8
   version: 5f1438d3fca68893a817e4a66806cea46a9e4ebf
 - name: gopkg.in/inf.v0

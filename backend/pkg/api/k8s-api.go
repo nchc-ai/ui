@@ -1,7 +1,6 @@
 package api
 
 import (
-	"log"
 	"net/http"
 
 	"k8s.io/client-go/kubernetes"
@@ -10,6 +9,7 @@ import (
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+	log "github.com/golang/glog"
 )
 
 func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
@@ -19,13 +19,13 @@ func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 		config.GetString("kubernetes.kubeconfig"))
 
 	if err != nil {
-		log.Fatalf("create kubenetes config fail: " + err.Error())
+		log.Fatalf("create kubenetes config fail: %s", err.Error())
 		return nil, err
 	}
 
 	clientset, err := kubernetes.NewForConfig(kConfig)
 	if err != nil {
-		log.Fatalf("create kubenetes client set fail: " + err.Error())
+		log.Fatalf("create kubenetes client set fail: %s", err.Error())
 		return nil, err
 	}
 
@@ -33,16 +33,12 @@ func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 }
 
 func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
-	//c.Header("Access-Control-Allow-Origin", "*")
-
 	statusList := []model.Node{}
 	nList, err := resourceClient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
 
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, model.GenericResponse{
-			Error:   true,
-			Message: "List Node fail: " + err.Error(),
-		})
+		log.Errorf("List Node fail: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "List Node fail: %s", err.Error())
 		return
 	}
 

@@ -15,8 +15,11 @@
       * [X] [check kubernetes with token](#check-kubernetes-with-token)
       * [X] [check database](#check-database)
       * [X] [check database with token](#check-database-with-token)
-
-<!-- Added by: ogre0403, at:  -->
+   * [Proxy](#proxy)
+      * [X] [Token](#token)
+      * [X] [Refresh](#refresh)
+       
+<!-- Added by: jimmy, at:  -->
 
 <!--te-->
 
@@ -99,7 +102,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query datasets table fail: error-message"
+        "message": "Query datasets table fail: error-message"
      }
     ```
 
@@ -109,7 +112,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query courses table fail: error-message"
+        "message": "Query courses table fail: error-message"
      }
     ```
 
@@ -153,7 +156,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
 
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -251,7 +262,7 @@
     ```json
     {
         "error": true,
-        "cause": "Failed to parse spec request request: error-message"
+        "message": "Failed to parse spec request request: error-message"
      }
     ```
 
@@ -261,7 +272,7 @@
     ```json
     {
         "error": true,
-        "cause": "Failed to create course information: error-message"
+        "message": "Failed to create course information: error-message"
      }
     ```
 
@@ -271,7 +282,7 @@
     ```json
     {
         "error": true,
-        "cause": "Failed to create course-dataset information in DB: error-message"
+        "message": "Failed to create course-dataset information in DB: error-message"
      }
     ```
 
@@ -316,6 +327,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -558,7 +578,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query datasets table fail: error-message"
+        "message": "Query datasets table fail: error-message"
      }
     ```
 
@@ -568,7 +588,7 @@
     ```json
     {
         "error": true,
-        "cause": "Query courses table fail: error-message"
+        "message": "Query courses table fail: error-message"
      }
     ```
 
@@ -1003,6 +1023,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -1177,6 +1206,15 @@
       }
     ```
 
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
@@ -1185,3 +1223,155 @@
 
     {"error":false,"message":"xs","tables":["course"]}
    ```
+
+# Proxy
+
+## Token
+
+* **Description**
+
+  Exchange token from Provider
+
+* **URL**
+
+  /v1/proxy/token
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "code": "xxxxxxx"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+        "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: error message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Exchange Token fail: error"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -d '"{"code":"xxxxxx"}"' \
+        http://localhost:8080/v1/proxy/token
+
+     {
+        "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+        "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"     
+     }
+   ```
+
+
+
+## Refresh
+
+* **Description**
+
+  Refresh token with provider
+
+* **URL**
+
+  /v1/proxy/refresh
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+      "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+      "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: error message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Exchange Token fail: error"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -d '"{"refresh_token":"7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"}"' \
+        http://localhost:8080/v1/proxy/refresh
+
+     {
+        "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
+        "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
+     }
+   ```
+
