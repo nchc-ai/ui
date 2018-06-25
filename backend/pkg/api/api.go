@@ -203,6 +203,9 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 		bb.OPTIONS("/level/:level", resourceClient.handleOption)
 		bb.OPTIONS("/create", resourceClient.handleOption)
 		bb.OPTIONS("/list", resourceClient.handleOption)
+		bb.OPTIONS("/delete/:id", resourceClient.handleOption)
+		bb.DELETE("/delete/:id", resourceClient.DeleteCourse)
+
 	}
 
 	// list/add course under specific user, token is required
@@ -210,6 +213,7 @@ func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddlewar
 	{
 		aa.POST("/create", resourceClient.AddCourse)
 		aa.POST("/list", resourceClient.ListCourse)
+		//aa.DELETE("/delete", resourceClient.DeleteCourse)
 	}
 
 }

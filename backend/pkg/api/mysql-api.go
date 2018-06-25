@@ -243,3 +243,30 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	}, )
 
 }
+
+// Step 1: Find all associated Deployment/Service (included launched by student) and stop in kubernetes
+// 		Step 1-1: delete jobs in DB.  (With foreign key, this should be done automatically)
+// 		Step 1-2: delete proxy in DB. (With foreign key, this should be done automatically)
+
+// Step 2: Delete course in DB. (With foreign key, this should be done automatically)
+
+// Step 3: delete required dataset in DB. (With foreign key, this should be done automatically)
+func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
+	courseId := c.Param("id")
+
+	course := model.Course{
+		Model: model.Model{
+			ID: courseId,
+		},
+	}
+
+	err := resourceClient.DB.Delete(&course).Error
+
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": true,
+			"cause": fmt.Sprintf("Failed to delete course {%s} information : %s", courseId, err.Error()),
+		})
+		return
+	}
+}

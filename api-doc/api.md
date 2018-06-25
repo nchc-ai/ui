@@ -397,18 +397,13 @@
 
 ## Delete
 
-* **TODO** 
-
-  do we need to delete course ?
-  what is course id ?
-
 * **Description**
  
   Delete course information in database
 
 * **URL**
 
-  /v1/course/:user/:id
+  /v1/course/delete/:id
 
 * **Method:**
 
@@ -436,21 +431,62 @@
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:** 500  <br />
     **Content:**
 
     ```json
-
+    {
+    }
     ```
 
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true, 
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
 
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/logout
+      $ curl -X DELETE -d '{"user": "user-name","id": "course-id"}' http://localhost:8080/v1/course/delete
 
       {
-
+        "error": false,
+        "message" : "course <name> delete successfully"
       }
    ```
 
