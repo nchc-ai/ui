@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
-import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { setToken, getToken } from '../libraries/utils';
+import { connect } from 'react-redux';
+import { setToken } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
@@ -20,10 +20,13 @@ class AuthPage extends Component {
   }
 
   onSuccess = (data) => {
+    console.log('success');
     this.props.authAction.retrieveToken(data.code, this.redirect);
   }
 
-  redirect = () => {
+  redirect = (token) => {
+    setToken(token);
+    this.props.authAction.setUserToken(token);
     this.props.history.push('/user/course');
   }
 

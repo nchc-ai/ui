@@ -4,6 +4,7 @@ const InitialState = {
   loading: false,
   isLogin: false,
   data: [],
+  token: '',
   userInfo: {
     email: '',
     username: '',
@@ -27,6 +28,12 @@ export default function Auth(state = InitialState, action) {
         ...state.userInfo,
         ...action.userInfo
       }
+    };
+  case actionTypes.SET_USER_TOKEN:
+    return {
+      ...state,
+      isLogin: action.isLogin,
+      token: action.token
     };
 
   case actionTypes.LOGOUT:

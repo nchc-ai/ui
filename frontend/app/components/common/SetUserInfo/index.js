@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
-import { getLocalStorageItem, isItemExistInLocalStorage } from '../../../libraries/utils';
+import { getToken, getLocalStorageItem, isItemExistInLocalStorage } from '../../../libraries/utils';
 
 
 class SetUserInfo extends Component {
@@ -27,6 +27,10 @@ class SetUserInfo extends Component {
     const userInfo = getLocalStorageItem('userInfo');
     const isLogin = isItemExistInLocalStorage('userInfo');
     authAction.setUserInfo(userInfo, isLogin);
+
+    const token = getToken();
+    authAction.setUserToken(token);
+
     // 可以做一些初始動作
   }
 

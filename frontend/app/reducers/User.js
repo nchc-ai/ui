@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import * as actionTypes from '../actions/actionTypes';
 import { LOADING, SUCCESS } from '../constants/apiActions';
+import { courses } from '../libraries/utils';
 
 const InitialState = {
   course: {
@@ -19,12 +21,11 @@ export default function User(state = InitialState, action) {
       }
     };
   case actionTypes.GET_USER_COURSE_LIST[SUCCESS]:
-    console.log('action.payload', action.payload);
     return {
       ...state,
       course: {
         isLoading: false,
-        data: action.payload.course
+        data: _.map(action.payload.courses, d => courses(d))
       }
     };
   default:

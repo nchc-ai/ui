@@ -60,7 +60,7 @@ export const userCourseData = {
       text: 'level'
     }, {
       key: 3,
-      text: 'date'
+      text: 'image'
     }, {
       key: 4,
       text: '',

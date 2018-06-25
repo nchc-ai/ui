@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
 import _ from 'lodash';
 import CourseIntro from '../components/Course/CourseIntro';
 import CourseList from '../components/Course/CourseList';
 import { courseList } from '../constants/fakeData';
 import { courseData } from '../constants/tableData';
+import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 
 class CoursePage extends Component {
+
+  componentWillMount() {
+    // this.props.userAction.getCourseList('jimmy', token)
+  }
+
   render() {
     const {
       match
@@ -30,4 +38,13 @@ class CoursePage extends Component {
   }
 }
 
-export default (withRouter(CoursePage));
+const mapStateToProps = ({ Auth }) => ({
+  token: Auth.token
+});
+
+
+export default compose(
+  connect(mapStateToProps),
+  bindActionCreatorHoc,
+  withRouter
+)(CoursePage);

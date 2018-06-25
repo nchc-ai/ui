@@ -7,12 +7,14 @@ import Ui from './Ui';
 import User from './User';
 
 import {
-  initialGlobalSearchState
+  initialGlobalSearchState,
+  initialAddCourseState
 } from '../constants/initialState';
 
 const rootReducer = combineReducers({
   forms: combineForms({
-    globalSearch: modelReducer('globalSearch', initialGlobalSearchState)
+    globalSearch: modelReducer('globalSearch', initialGlobalSearchState),
+    addCourse: modelReducer('addCourse', initialAddCourseState)
   }, 'forms'),
   Auth,
   User,

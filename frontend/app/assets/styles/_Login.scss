@@ -26,6 +26,33 @@
     @include rect-center(414px, initial);
     margin-top: 50px;
     margin-bottom: 30px;
+    
+
+    button {
+      outline: none;
+      
+      img {
+        transition: all .2s ease-in-out;
+        cursor: pointer;
+      }
+
+      &:hover{
+        img {
+          opacity:0.8;   
+        }
+      }
+
+      &:active{
+        img {
+          opacity:0.8;
+          transform: translateY(6px);
+        } 
+       
+      }
+    }
+
+
+
     h4 {
       @include margin-v(20px);
     }

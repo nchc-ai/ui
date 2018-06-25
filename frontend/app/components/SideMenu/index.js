@@ -20,7 +20,6 @@ class Index extends Component {
     const {
       match
     } = this.props;
-    console.log('match', match);
 
     return (
       <div

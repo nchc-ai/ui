@@ -13,27 +13,29 @@ export const setUserInfo = (userInfo, isLogin) => ({
   isLogin
 });
 
+export const setUserToken = token => ({
+  type: types.SET_USER_TOKEN,
+  token
+});
 
 // 用code換取token
 export const retrieveToken = (code, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `http://140.110.5.22:30010/v1/oauth/tokens?grant_type=client_credentials&scope=read_write`,
+      endpoint: `${API_URL}/v1/course/token`,
       method: 'POST',
-      headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Content-Type': 'application/json',
-        'Authorization': `Basic ${btoa('test_client_1' + ':' + 'test_secret')}`
-      },
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        code
+      }),
       types: types.RETRIEVE_TOKEN
     }
   });
 
-  console.log('response', response);
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('retrieveToken 失敗');
+    console.error('retrieveToken 失敗', response);
   }
-  next();
+  next(response.payload.token);
 };
 
 
