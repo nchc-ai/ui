@@ -9,7 +9,7 @@
       * [ ] [List](#list-1)
       * [ ] [Delete](#delete-1)
    * [DataSet](#dataset)
-      * [ ] [List](#list-2)
+      * [X] [List](#list-2)
    * [Health Check](#health-check)
       * [X] [check kubernetes](#check-kubernetes)
       * [X] [check kubernetes with token](#check-kubernetes-with-token)
@@ -794,7 +794,7 @@
 
 * **Description**
 
-  List all available data set stored in PV
+  List all shared data set stored in PV
 
 * **URL**
 
@@ -806,6 +806,7 @@
   `GET`
 
 * **Header:**
+
   `Authorization=Bearer <token-string>`
 
 * **URL Params**
@@ -824,7 +825,7 @@
     ```json
      {
         "error": false,
-        "message" : {"dataset":["mnist", "caltech256"]}
+        "datasets": ["mnist", "caltech256"]
      }
     ```
 
@@ -836,28 +837,18 @@
     ```json
     {
         "error": true,
-        "message" : "XXXXXXXXX"
+        "message" : "List Kubernetes default namespace PVC fail: error message"
      }
     ```
 
-  * **Code:**  500 <br />
+* **Code:**  401 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message" : "verify token process fail: error message"
+        "message" : "Authorization header is missing"
      }
-    ```
-
-  * **Code:**  401 <br />
-    **Content:**
-
-    ```json
-      {
-          "error": true,
-          "message" : "Authorization header is missing"
-       }
     ```
 
   * **Code:**  401 <br />
@@ -870,7 +861,6 @@
      }
     ```
 
-
   * **Code:**  403 <br />
     **Content:**
 
@@ -881,15 +871,36 @@
        }
     ```
 
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
 
 * **Sample Call:**
 
   ```sh
-      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
-
-      {
-        "error": false,
-        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/datasets/
+      { 
+        "error":false,
+        "datasets":[
+          "dataset1","dataset2","dataset3"
+          ]
       }
    ```
 

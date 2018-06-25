@@ -62,6 +62,7 @@ func NewGoAuthProvider(config model.ProviderConfig) *GoAuth {
 	}
 }
 
+// todo: test validate logic
 func (g *GoAuth) Validate(token string) (bool, error) {
 	client := &http.Client{}
 	data := url.Values{}

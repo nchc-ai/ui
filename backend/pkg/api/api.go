@@ -165,41 +165,39 @@ func (resourceClient *ResourceClient) handleOption(c *gin.Context) {
 func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceClient) {
 
 	// health check api
-	clusterGroup := router.Group("/v1").Group("/health")
+	health := router.Group("/v1").Group("/health")
 	{
-		clusterGroup.GET("/kubernetes", resourceClient.checkK8s)
-		clusterGroup.OPTIONS("/kubernetes", resourceClient.handleOption)
-		clusterGroup.POST("/database", resourceClient.checkDatabase)
-		clusterGroup.OPTIONS("/database", resourceClient.handleOption)
-		clusterGroup.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
-		clusterGroup.OPTIONS("/databaseAuth", resourceClient.handleOption)
+		health.GET("/kubernetes", resourceClient.checkK8s)
+		health.OPTIONS("/kubernetes", resourceClient.handleOption)
+		health.POST("/database", resourceClient.checkDatabase)
+		health.OPTIONS("/database", resourceClient.handleOption)
+		health.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
+		health.OPTIONS("/databaseAuth", resourceClient.handleOption)
 	}
 
 	// health check require token
-	authGroup := router.Group("/v1").Group("/health").Use(server.AuthMiddleware())
+	healthAuth := router.Group("/v1").Group("/health").Use(server.AuthMiddleware())
 	{
-		authGroup.GET("/kubernetesAuth", resourceClient.checkK8s)
-		authGroup.POST("/databaseAuth", resourceClient.checkDatabase)
+		healthAuth.GET("/kubernetesAuth", resourceClient.checkK8s)
+		healthAuth.POST("/databaseAuth", resourceClient.checkDatabase)
 	}
 
 	// list advance and basic course, do not required token
-	bb := router.Group("/v1").Group("/course")
+	course := router.Group("/v1").Group("/course")
 	{
-		bb.GET("/level/:level", resourceClient.ListCourse)
-		bb.OPTIONS("/level/:level", resourceClient.handleOption)
-		bb.OPTIONS("/create", resourceClient.handleOption)
-		bb.OPTIONS("/list", resourceClient.handleOption)
-		bb.OPTIONS("/delete/:id", resourceClient.handleOption)
-		bb.DELETE("/delete/:id", resourceClient.DeleteCourse)
-
+		course.GET("/level/:level", resourceClient.ListCourse)
+		course.OPTIONS("/level/:level", resourceClient.handleOption)
+		course.OPTIONS("/create", resourceClient.handleOption)
+		course.OPTIONS("/list", resourceClient.handleOption)
+		course.OPTIONS("/delete/:id", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
-	aa := router.Group("/v1").Group("/course").Use(server.AuthMiddleware())
+	courseAuth := router.Group("/v1").Group("/course").Use(server.AuthMiddleware())
 	{
-		aa.POST("/create", resourceClient.AddCourse)
-		aa.POST("/list", resourceClient.ListCourse)
-		//aa.DELETE("/delete", resourceClient.DeleteCourse)
+		courseAuth.POST("/create", resourceClient.AddCourse)
+		courseAuth.POST("/list", resourceClient.ListCourse)
+		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
 	}
 
 	//proxy for communicate with provider
@@ -211,6 +209,15 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		proxy.OPTIONS("/refresh", resourceClient.handleOption)
 	}
 
+	dataset := router.Group("/v1").Group("/datasets")
+	{
+		dataset.OPTIONS("/", resourceClient.handleOption)
+	}
+
+	datasetAuth := router.Group("/v1").Group("/datasets").Use(server.AuthMiddleware())
+	{
+		datasetAuth.GET("/", resourceClient.ListPVC)
+	}
 }
 
 func (server *APIServer) GetToken(c *gin.Context) {

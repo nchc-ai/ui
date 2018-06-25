@@ -30,3 +30,8 @@ type ListCourseResponse struct {
 	Error   bool     `json:"error"`
 	Courses []Course `json:"courses"`
 }
+
+type DatasetsListResponse struct {
+	Error    bool     `json:"error"`
+	Datasets []string `json:"datasets"`
+}

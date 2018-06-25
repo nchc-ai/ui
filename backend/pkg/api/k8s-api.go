@@ -67,4 +67,22 @@ func deleteDeployment(deployment string) {
 }
 
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
+
+	var pvcNameList []string
+	pvcs, err := resourceClient.K8sClient.CoreV1().PersistentVolumeClaims("default").List(metav1.ListOptions{})
+	if err != nil {
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"List Kubernetes default namespace PVC fail: %s", err.Error())
+		return
+	}
+
+	for _, pvc := range pvcs.Items {
+		pvcNameList = append(pvcNameList, pvc.Name)
+	}
+
+	c.JSON(http.StatusOK, model.DatasetsListResponse{
+		Error:    false,
+		Datasets: pvcNameList,
+	})
+
 }
