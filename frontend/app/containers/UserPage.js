@@ -11,7 +11,7 @@ import SideMenu from '../components/SideMenu/index';
 import TableList from '../components/common/TableList/index';
 import FormGroups from '../components/common/FormGroups/index';
 import { userCourseData } from '../constants/tableData';
-import { addCourseForm } from '../constants/formsData';
+import { addCourseForm, addCourseContainerOneForm, addCourseContainerTwoForm } from '../constants/formsData';
 import FormButtons from '../components/common/FormButtons/index';
 import HeaderBlock from '../components/common/HeaderBlock/index';
 
@@ -75,6 +75,8 @@ class UserPage extends Component {
             {/* 課程列表 */}
             <Route exact path="/user/course">
               <div className="user-course-bg">
+
+
                 <Row>
                   <Col>課程列表</Col>
                   <Col>
@@ -91,32 +93,55 @@ class UserPage extends Component {
             
             <Route exact path="/user/course/add">
               <div className="user-course-edit-bg">
-                {/* TODO: FormGroups */}
+
+
+                <h1>新增課程</h1>
+                
                 <Form
                   model="forms.addCourse"
                   className="add-course-comp"
                   onSubmit={formData => this.handleSubmit(formData)}
                   onSubmitFailed={formData => this.handleSubmitFailed(formData)}
                 >
-                 
-                  <FormGroups
-                    formData={addCourseForm}
-                    targetForm={addCourse}
-                    changeVal={changeValue}
-                  />
+                  <Row>
+                    <Col md={5}>
+                      <FormGroups
+                        formData={addCourseForm}
+                        targetForm={addCourse}
+                        changeVal={changeValue}
+                      />
+                    </Col>
+                  </Row>
+                  
 
                   <HeaderBlock headerArr={['容器範本']}>
-                    <FormGroups
-                      formData={addCourseForm}
-                      targetForm={addCourse}
-                      changeVal={changeValue}
-                    />
+
+                    <Row>
+                      <Col>
+                        <FormGroups
+                          formData={addCourseContainerOneForm}
+                          targetForm={addCourse}
+                          changeVal={changeValue}
+                        />
+                      </Col>
+
+                      <Col>
+                        <FormGroups
+                          formData={addCourseContainerTwoForm}
+                          targetForm={addCourse}
+                          changeVal={changeValue}
+                        />
+                      </Col>
+
+
+                    </Row>
+                    
                   </HeaderBlock>
 
                   {/* 下方按鈕 */}
                   <FormButtons
-                    cancelName="取消"
-                    submitName="上傳"
+                    cancelName="上一頁"
+                    submitName="儲存"
                     backMethod={this.cancelEdit}
                     resetMethod={this.resetEdit}
                     isReset
