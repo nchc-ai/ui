@@ -16,6 +16,7 @@ $ai-main-grey: #373838;
 $ai-light-grey: #f8f4f4;
 $ai-input-border-default: #ddd;
 $ai-input-border-hover: #2a9b9d; 
+$ai-secondary-light-green: #6ec7cf;
 
 /*------- 尺寸 -------*/
 
@@ -469,6 +470,9 @@ html{
 
     a{
       text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
     }
 
     // Custom

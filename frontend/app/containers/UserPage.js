@@ -78,9 +78,14 @@ class UserPage extends Component {
 
 
                 <Row>
-                  <Col>課程列表</Col>
                   <Col>
-                    <Link to="/user/course/add"><button>+ 新增 </button></Link>
+                    <h1>課程列表</h1>
+                  </Col>
+                  <Col>
+                    <Link to="/user/course/add">
+                      <span className="v-helper" />
+                      <button className="btn-pair add-btn">+ 新增 </button>
+                    </Link>
                   </Col>
                 </Row>
                 <TableList
@@ -113,38 +118,11 @@ class UserPage extends Component {
                     </Col>
                   </Row>
                   
-
-                  <HeaderBlock headerArr={['容器範本']}>
-
-                    <Row>
-                      <Col>
-                        <FormGroups
-                          formData={addCourseContainerOneForm}
-                          targetForm={addCourse}
-                          changeVal={changeValue}
-                        />
-                      </Col>
-
-                      <Col>
-                        <FormGroups
-                          formData={addCourseContainerTwoForm}
-                          targetForm={addCourse}
-                          changeVal={changeValue}
-                        />
-                      </Col>
-
-
-                    </Row>
-                    
-                  </HeaderBlock>
-
                   {/* 下方按鈕 */}
                   <FormButtons
                     cancelName="上一頁"
                     submitName="儲存"
                     backMethod={this.cancelEdit}
-                    resetMethod={this.resetEdit}
-                    isReset
                   />
 
                 </Form>

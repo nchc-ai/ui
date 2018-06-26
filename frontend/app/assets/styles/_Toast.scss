@@ -1,0 +1,13 @@
+#notification-wrapper {  
+  .toast-notification {
+    width: 100% !important;
+    top: 80px !important;
+    z-index: 30 !important;
+    span {
+      display: inline-block !important;
+      width: 100% !important;
+      color: #fff !important;
+    }
+  }
+}
+
