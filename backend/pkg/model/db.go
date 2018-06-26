@@ -40,6 +40,7 @@ func (Course) TableName() string {
 
 type Job struct {
 	Model
+	OauthUser
 	// foreign key
 	CourseID string `gorm:"size:36"`
 

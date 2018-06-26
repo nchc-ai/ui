@@ -342,7 +342,7 @@
   ```sh
    $ curl -X POST \
      -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
-     -d '{"user":"jimmy", name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
+     -d '{"user":"jimmy", "name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
      http://localhost:8080/v1/course/create
    {
        "error": false,
@@ -351,20 +351,14 @@
    ```
 
 ## Launch
-
-* **TODO** 
-
-  check all required fields to create deployment?
   
-  each deployment is in their own namespace?
-
 * **Description**
  
   Create a course deployment in kubernetes 
 
 * **URL**
 
-  /v1/course/:user
+  /v1/course/launch
 
 * **Method:**
 
@@ -378,8 +372,8 @@
 
   ```json
   {
-    "":"",
-    "":""
+    "course_id": "5ab02011-9ab7-40c3-b691-d335f93a12ee",
+    "user": "jimmy@test2"
   }
   ```
 
@@ -408,7 +402,7 @@
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/logout
+      $ curl http://localhost:8080/v1/course/launch
 
       {
 

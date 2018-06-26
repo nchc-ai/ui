@@ -35,3 +35,8 @@ type DatasetsListResponse struct {
 	Error    bool     `json:"error"`
 	Datasets []string `json:"datasets"`
 }
+
+type LaunchCourseRequest struct {
+	User     string `json:"user"`
+	CourseId string `json:"course_id"`
+}

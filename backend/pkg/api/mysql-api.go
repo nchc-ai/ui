@@ -174,6 +174,12 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 		return
 	}
 
+	if req.User == "" {
+		log.Errorf("user field in request cannot be empty")
+		util.RespondWithError(c, http.StatusBadRequest, "user field in request cannot be empty")
+		return
+	}
+
 	// add course information in DB
 	courseID := uuid.New().String()
 
