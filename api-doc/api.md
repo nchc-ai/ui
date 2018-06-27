@@ -19,6 +19,8 @@
    * [Proxy](#proxy)
       * [X] [Token](#token)
       * [X] [Refresh](#refresh)
+   * [Image](#image)
+      * [ ] [List](#list-3)
 <!-- Added by: ogre0403, at:  -->
 
 <!--te-->
@@ -1005,7 +1007,16 @@
     ```json
      {
         "error": false,
-        "datasets": ["mnist", "caltech256"]
+        "datasets": [
+            {
+              "label": "dataset1",
+              "value": "dataset1"
+            }, 
+            {
+              "label": "dataset2",
+              "value": "dataset2"
+            }
+        ]
      }
     ```
 
@@ -1031,9 +1042,6 @@
      }
     ```
 
-  * **Code:**  401 <br />
-    **Content:**
-
     ```json
     {
         "error": true,
@@ -1050,9 +1058,6 @@
           "message" : "Invalid API token"
        }
     ```
-
-  * **Code:**  403 <br />
-    **Content:**
 
     ```json
       {
@@ -1079,8 +1084,15 @@
       { 
         "error":false,
         "datasets":[
-          "dataset1","dataset2","dataset3"
-          ]
+            {
+              "label": "dataset1",
+              "value": "dataset1"
+            }, 
+            {
+              "label": "dataset2",
+              "value": "dataset2"
+            }          
+         ]
       }
    ```
 
@@ -1585,3 +1597,125 @@
      }
    ```
 
+
+# Image
+
+## List
+
+
+* **Description**
+
+  check backend kubernetes in running, but required token authentication
+
+* **URL**
+
+  /v1/image/
+
+* **Method:**
+
+  `GET`
+
+* **Header:**
+  `Authorization=Bearer <token-string>`
+
+* **URL Params**
+
+  None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "image" : [
+          {
+              "label": "repo_name/img_name:tag",
+              "value": "repo_name/img_name:tag"
+          }, 
+          {
+              "label": "repo_name/img_name:tag",
+              "value": "repo_name/img_name:tag"
+          }
+        ]
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "List Node fail: error message"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
+
+      {
+        "error": false,
+        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+      }
+   ```

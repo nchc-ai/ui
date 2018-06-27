@@ -32,8 +32,8 @@ type ListCourseResponse struct {
 }
 
 type DatasetsListResponse struct {
-	Error    bool     `json:"error"`
-	Datasets []string `json:"datasets"`
+	Error    bool         `json:"error"`
+	Datasets []LabelValue `json:"datasets"`
 }
 
 type LaunchCourseRequest struct {
@@ -49,4 +49,9 @@ type LaunchCourseResponse struct {
 type JobStatus struct {
 	JobId  string `json:"job_id"`
 	Status string `json:"status"`
+}
+
+type LabelValue struct {
+	Label string `json:"label"`
+	Value string `json:"value"`
 }

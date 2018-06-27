@@ -34,12 +34,6 @@ var defaultResourceLimit = apiv1.ResourceList{
 	apiv1.ResourceCPU:    resource.MustParse("500m"),
 }
 
-const (
-	//JobStatusCreated = "Created",
-	//	JobStatusRunning = "Running",
-
-)
-
 func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 
 	kConfig, err := util.GetConfig(
@@ -96,7 +90,7 @@ func deleteDeployment(deployment string) {
 
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 
-	var pvcNameList []string
+	pvcNameList := []model.LabelValue{}
 	pvcs, err := resourceClient.K8sClient.CoreV1().PersistentVolumeClaims("default").List(metav1.ListOptions{})
 	if err != nil {
 		util.RespondWithError(c, http.StatusInternalServerError,
@@ -105,7 +99,11 @@ func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 	}
 
 	for _, pvc := range pvcs.Items {
-		pvcNameList = append(pvcNameList, pvc.Name)
+		lbval := model.LabelValue{
+			Label: pvc.Name,
+			Value: pvc.Name,
+		}
+		pvcNameList = append(pvcNameList, lbval)
 	}
 
 	c.JSON(http.StatusOK, model.DatasetsListResponse{
