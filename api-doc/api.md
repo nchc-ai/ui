@@ -21,6 +21,7 @@
       * [X] [Refresh](#refresh)
    * [Image](#image)
       * [ ] [List](#list-3)
+      
 <!-- Added by: ogre0403, at:  -->
 
 <!--te-->
@@ -982,14 +983,9 @@
 
   `Authorization=Bearer <token-string>`
 
-
 * **Method:**
 
   `GET`
-
-* **Header:**
-
-  `Authorization=Bearer <token-string>`
 
 * **URL Params**
 
@@ -1609,13 +1605,14 @@
 
 * **URL**
 
-  /v1/image/
+  /v1/images/
 
 * **Method:**
 
   `GET`
 
 * **Header:**
+
   `Authorization=Bearer <token-string>`
 
 * **URL Params**
@@ -1634,7 +1631,7 @@
     ```json
      {
         "error": false,
-        "image" : [
+        "images" : [
           {
               "label": "repo_name/img_name:tag",
               "value": "repo_name/img_name:tag"
@@ -1712,10 +1709,20 @@
 * **Sample Call:**
 
   ```sh
-      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" http://localhost:8080/v1/health/kubernetesAuth
-
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+        http://localhost:8080/v1/images/
+    
       {
         "error": false,
-        "message" : [{"name":"10.0.1.85","status":"Ready"}]
+        "images": [
+          {
+            "label": "tensorflow/tensorflow:1.5.1",
+            "value": "tensorflow/tensorflow:1.5.1"
+          },
+          {
+            "label": "nvidia/digits5.0",
+            "value": "nvidia/digits5.0"
+          }
+        ]
       }
    ```

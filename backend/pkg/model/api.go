@@ -36,6 +36,11 @@ type DatasetsListResponse struct {
 	Datasets []LabelValue `json:"datasets"`
 }
 
+type ImagesListResponse struct {
+	Error  bool         `json:"error"`
+	Images []LabelValue `json:"images"`
+}
+
 type LaunchCourseRequest struct {
 	User     string `json:"user"`
 	CourseId string `json:"course_id"`

@@ -263,3 +263,26 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 
 	util.RespondWithOk(c, "Course %s is deleted successfully", courseId)
 }
+
+// todo: implement real list image
+func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
+	image := map[string]string{
+		"tensorflow/tensorflow:1.5.1": "tensorflow/tensorflow:1.5.1",
+		"nvidia/digits5.0":            "nvidia/digits5.0",
+	}
+
+	imageList := []model.LabelValue{}
+
+	for k, v := range image {
+		lbval := model.LabelValue{
+			Label: k,
+			Value: v,
+		}
+		imageList = append(imageList, lbval)
+	}
+
+	c.JSON(http.StatusOK, model.ImagesListResponse{
+		Error:  false,
+		Images: imageList,
+	})
+}

@@ -220,6 +220,16 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	{
 		datasetAuth.GET("/", resourceClient.ListPVC)
 	}
+
+	image := router.Group("/v1").Group("/images")
+	{
+		image.OPTIONS("/", resourceClient.handleOption)
+	}
+
+	imageAuth := router.Group("/v1").Group("/images").Use(server.AuthMiddleware())
+	{
+		imageAuth.GET("/", resourceClient.ListImage)
+	}
 }
 
 func (server *APIServer) GetToken(c *gin.Context) {
