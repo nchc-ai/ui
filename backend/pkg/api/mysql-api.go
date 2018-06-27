@@ -36,20 +36,20 @@ func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
 	course := &model.Course{}
 	job := &model.Job{}
 	dateset := &model.Dataset{}
-	student := &model.StudentTake{}
-	proxy := &model.Proxy{}
+	//student := &model.StudentTake{}
+	//proxy := &model.Proxy{}
 
 	db.AutoMigrate(course)
 	db.AutoMigrate(job)
 	db.AutoMigrate(dateset)
-	db.AutoMigrate(student)
-	db.AutoMigrate(proxy)
+	//db.AutoMigrate(student)
+	//db.AutoMigrate(proxy)
 
 	// add foreign key
 	db.Model(job).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
 	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
-	db.Model(student).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
-	db.Model(proxy).AddForeignKey("job_id", "jobs(id)", "CASCADE", "RESTRICT")
+	//db.Model(student).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+	//db.Model(proxy).AddForeignKey("job_id", "jobs(id)", "CASCADE", "RESTRICT")
 
 	return db, nil
 }

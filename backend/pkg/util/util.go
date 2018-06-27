@@ -10,6 +10,8 @@ import (
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"fmt"
 	"net/http"
+	"time"
+	"math/rand"
 )
 
 func homeDir() string {
@@ -78,3 +80,10 @@ func genericResponse(isError bool, format string, args ...interface{}) model.Gen
 }
 
 func Int32Ptr(i int32) *int32 { return &i }
+
+//https://gist.github.com/mfojtik/a0018e29d803a6e2ba0c
+func SvcNameGen() string {
+	rand.Seed(time.Now().UnixNano())
+	name, _ := Generate("[a-z]{1}[a-z0-9]{4}")
+	return name
+}

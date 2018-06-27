@@ -40,3 +40,13 @@ type LaunchCourseRequest struct {
 	User     string `json:"user"`
 	CourseId string `json:"course_id"`
 }
+
+type LaunchCourseResponse struct {
+	Error bool      `json:"error"`
+	Job   JobStatus `json:"job"`
+}
+
+type JobStatus struct {
+	JobId  string `json:"job_id"`
+	Status string `json:"status"`
+}

@@ -73,23 +73,23 @@ func (Dataset) TableName() string {
 	return "datasets"
 }
 
-type StudentTake struct {
-	// foreign key
-	CourseID string `gorm:"primary_key;size:36"`
-	OauthUser       `gorm:"primary_key"`
-}
-
-func (StudentTake) TableName() string {
-	return "students_take"
-}
+//type StudentTake struct {
+//	// foreign key
+//	CourseID string `gorm:"primary_key;size:36"`
+//	OauthUser       `gorm:"primary_key"`
+//}
+//
+//func (StudentTake) TableName() string {
+//	return "students_take"
+//}
 
 // job may have multiple proxy url
-type Proxy struct {
-	JobID    string `gorm:"primary_key;size:36"`
-	ProxyUrl string `gorm:"primary_key"`
-	Name     string
-}
-
-func (Proxy) TableName() string {
-	return "proxy"
-}
+//type Proxy struct {
+//	JobID    string `gorm:"primary_key;size:36"`
+//	ProxyUrl string `gorm:"primary_key"`
+//	Name     string
+//}
+//
+//func (Proxy) TableName() string {
+//	return "proxy"
+//}

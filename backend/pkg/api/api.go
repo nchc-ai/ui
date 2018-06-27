@@ -191,8 +191,6 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		course.OPTIONS("/list", resourceClient.handleOption)
 		course.OPTIONS("/delete/:id", resourceClient.handleOption)
 		course.OPTIONS("/launch", resourceClient.handleOption)
-		course.POST("/launch", resourceClient.LaunchCourse)
-
 	}
 
 	// list/add course under specific user, token is required
@@ -201,7 +199,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		courseAuth.POST("/create", resourceClient.AddCourse)
 		courseAuth.POST("/list", resourceClient.ListCourse)
 		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
-		//courseAuth.POST("/launch", resourceClient.LaunchCourse)
+		courseAuth.POST("/launch", resourceClient.LaunchCourse)
 	}
 
 	//proxy for communicate with provider

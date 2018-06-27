@@ -2,12 +2,13 @@
    * [Course](#course)
       * [X] [List](#list)
       * [X] [Create](#create)
-      * [ ] [Launch](#launch)
+      * [X] [Launch](#launch)
       * [ ] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
    * [Job](#job)
       * [ ] [List](#list-1)
       * [ ] [Delete](#delete-1)
+      * [ ] [IsReady](#isready)
    * [DataSet](#dataset)
       * [X] [List](#list-2)
    * [Health Check](#health-check)
@@ -18,8 +19,7 @@
    * [Proxy](#proxy)
       * [X] [Token](#token)
       * [X] [Refresh](#refresh)
-       
-<!-- Added by: jimmy, at:  -->
+<!-- Added by: ogre0403, at:  -->
 
 <!--te-->
 
@@ -27,10 +27,6 @@
 
 ## List
 
-* **TODO** 
-
-  how to get student course list? Do we have different query logic for teacher and student 
-  
 * **Description**
  
   List user's all courses information
@@ -360,6 +356,11 @@
 
   /v1/course/launch
 
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+
 * **Method:**
 
   `POST`
@@ -385,27 +386,131 @@
     ```json
      {
         "error": false,
-        "message" : "Launch deployment <deployment name> successfully"
-     }
+        "job":{
+          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "status": "Created"
+        }
+      }
     ```
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
-
+    {
+        "error": true,
+        "message": "user field in request cannot be empty"
+     }
     ```
+    
+    ```json
+    {
+        "error": true,
+        "message": "Failed to parse spec request request: %s"
+     }
+    ```    
+
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Query course id %s fail: %s"
+     }
+    ```
+        
+    ```json
+    {
+        "error": true,
+        "message": "Query course id %s required dataset fail: %s"
+     }
+    ```
+           
+    ```json
+    {
+        "error": true,
+        "message": "create deployment for course {id = %s} fail: %s"
+     }
+    ```   
+
+    ```json
+    {
+        "error": true,
+        "message": "create service for job {id = %s} fail: %s"
+     }
+    ```   
+
+    ```json
+    {
+        "error": true,
+        "message": "update Job Table for job {id = %s} fail: %s"
+     }
+    ```   
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+    
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+    
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```    
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
 
 
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/course/launch
-
+      $ curl -X POST \
+        -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+        -d '{"course_id": "e17281e1-2c16-46e8-a905-74c06592353b","user":"jimmy@nchc"}' 
+        http://localhost:8080/v1/course/launch
       {
-
+        "error": false,
+        "job":{
+          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "status": "Created"
+        }
       }
    ```
 
@@ -418,6 +523,11 @@
 * **URL**
 
   /v1/course/delete/:id
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
 
 * **Method:**
 
@@ -644,6 +754,7 @@
       }
    ```
 
+
 # Job
 
 ## List
@@ -658,6 +769,11 @@
 * **URL**
 
   /v1/job/:user
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
 
 * **Method:**
 
@@ -722,7 +838,6 @@
       }
    ```
 
-
 ## Delete
 
 * **TODO** 
@@ -736,6 +851,10 @@
 * **URL**
 
   /v1/job/:user/:id
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
 
 
 * **Method:**
@@ -782,6 +901,69 @@
       }
    ```
 
+## IsReady
+
+* **Description**
+ 
+  Delete a running job deployment in user namespace
+
+* **URL**
+
+  /v1/job/ready/:id
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "job":{
+          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "status": "Ready"
+        }
+      }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  <br />
+    **Content:**
+
+    ```json
+
+    ```
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/logout
+
+      {
+
+      }
+   ```
+
+
 # DataSet
 
 ## List
@@ -793,6 +975,10 @@
 * **URL**
 
   /v1/datasets/
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
 
 
 * **Method:**
@@ -898,6 +1084,7 @@
       }
    ```
 
+
 # Health Check
 
 ## check kubernetes
@@ -958,7 +1145,6 @@
         "message" : [{"name":"10.0.1.85","status":"Ready"}]
       }
    ```
-
 
 ## check kubernetes with token
 
@@ -1071,7 +1257,6 @@
       }
    ```
 
-
 ## check database
 
 * **Description**
@@ -1135,8 +1320,6 @@
     {"error":false,"message":"xs","tables":["course"]}
    ```
 
-
-
 ## check database with token
 
 * **Description**
@@ -1148,6 +1331,7 @@
   /v1/health/databaseAuth
 
 * **Header:**
+
   `Authorization=Bearer <token-string>`
 
 * **Method:**
@@ -1251,6 +1435,7 @@
     {"error":false,"message":"xs","tables":["course"]}
    ```
 
+
 # Proxy
 
 ## Token
@@ -1325,8 +1510,6 @@
         "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"     
      }
    ```
-
-
 
 ## Refresh
 

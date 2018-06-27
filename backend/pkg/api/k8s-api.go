@@ -2,31 +2,43 @@ package api
 
 import (
 	"net/http"
+	"fmt"
 
 	"k8s.io/client-go/kubernetes"
 	"github.com/spf13/viper"
 	"github.com/gin-gonic/gin"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/util/intstr"
 	apiv1 "k8s.io/api/core/v1"
-
 	appsv1 "k8s.io/api/apps/v1"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	log "github.com/golang/glog"
 	"github.com/jinzhu/gorm"
-	"fmt"
 	"github.com/google/uuid"
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
-var exposePort = []int32{
-	80, 8888, 5000, 22, 6006, 5566,
+var exposePort = map[string]int32{
+	"web":     80,
+	"jupyter": 8888,
+	"digitis": 5000,
+	"ssh":     22,
+	"svc1":    6006,
+	"svc2":    5566,
 }
 
-var limit = apiv1.ResourceList{
+// todo: determine cpu & memory limit automatically, not hard code
+var defaultResourceLimit = apiv1.ResourceList{
 	apiv1.ResourceMemory: resource.MustParse("64Mi"),
 	apiv1.ResourceCPU:    resource.MustParse("500m"),
 }
+
+const (
+	//JobStatusCreated = "Created",
+	//	JobStatusRunning = "Running",
+
+)
 
 func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 
@@ -113,6 +125,19 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 		return
 	}
 
+	user := req.User
+	if user == "" {
+		log.Errorf("user field in request cannot be empty")
+		util.RespondWithError(c, http.StatusBadRequest, "user field in request cannot be empty")
+		return
+	}
+
+	provider, exist := c.Get("Provider")
+	if !exist {
+		log.Warning("Provider is not found in request context, set empty")
+		provider = ""
+	}
+
 	//Step 1: retrive required information
 	//	Step 1-1: find course object by course_id
 	course := getCourseObject(resourceClient.DB, req.CourseId)
@@ -137,25 +162,39 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 	deployment, err := createDeployment(resourceClient.K8sClient, course, datasets)
 
 	if err != nil {
-
+		errStrt := fmt.Sprintf("create deployment for course {id = %s} fail: %s", course.ID, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
 		return
 	}
 
 	// 	Step 2-2: create service
-	_, err = createService(resourceClient.K8sClient, deployment.Name)
-
+	svc, err := createService(resourceClient.K8sClient, deployment.Name)
 	if err != nil {
-
+		//todo : rollback, need to delete deployment
+		errStrt := fmt.Sprintf("create service for job {id = %s} fail: %s", deployment.Name, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
 		return
 	}
 
 	// Step 3: update Job Table
-	// Step 4: update proxy table
-	err = updateTable(resourceClient.DB)
+	err = updateTable(resourceClient.DB, deployment, svc, course, user, provider.(string))
 	if err != nil {
-
+		//todo : rollback, need to delete svc and deployment
+		errStrt := fmt.Sprintf("update Job Table for job {id = %s} fail: %s", deployment.Name, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
 		return
 	}
+
+	c.JSON(http.StatusOK, model.LaunchCourseResponse{
+		Error: false,
+		Job: model.JobStatus{
+			JobId:  deployment.Name,
+			Status: "Created",
+		},
+	})
 
 }
 
@@ -237,10 +276,11 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 
 	// if require GPU
 	if course.Gpu > 0 {
-		limit["nvidia.com/gpu"] = *resource.NewQuantity(1, resource.DecimalSI)
+		//defaultResourceLimit["nvidia.com/gpu"] = *resource.NewQuantity(int64(course.Gpu), resource.DecimalSI)
+		defaultResourceLimit["nvidia.com/gpu"] = resource.MustParse(string(course.Gpu))
 	}
 	resources = apiv1.ResourceRequirements{
-		Limits: limit,
+		Limits: defaultResourceLimit,
 	}
 
 	// prepare container Spec
@@ -294,9 +334,41 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 	return deployment, nil
 }
 
-func createService(clientset *kubernetes.Clientset, dname string) (*apiv1.Service, error) {
+func createService(clientset *kubernetes.Clientset, deploy_name string) (*apiv1.Service, error) {
+
+	selector := make(map[string]string)
+	selector["job_Id"] = deploy_name
+
+	// svc name must consist of lower case alphanumeric characters or '-',
+	// start with an alphabetic character, and end with an alphanumeric character
+	svcName := util.SvcNameGen()
+
+	var ports []apiv1.ServicePort
+
+	for name, p := range exposePort {
+		sp := apiv1.ServicePort{
+			Name: name,
+			Port: p,
+			TargetPort: intstr.IntOrString{
+				Type:   intstr.Int,
+				IntVal: p,
+			},
+		}
+		ports = append(ports, sp)
+	}
+
 	serviceClient := clientset.CoreV1().Services(apiv1.NamespaceDefault)
-	service := &apiv1.Service{}
+	service := &apiv1.Service{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: svcName,
+		},
+
+		Spec: apiv1.ServiceSpec{
+			Selector: selector,
+			Type:     apiv1.ServiceTypeNodePort,
+			Ports:    ports,
+		},
+	}
 
 	result, err := serviceClient.Create(service)
 
@@ -308,9 +380,32 @@ func createService(clientset *kubernetes.Clientset, dname string) (*apiv1.Servic
 
 }
 
-func updateTable(DB *gorm.DB) error {
+func updateTable(DB *gorm.DB, deploy *appsv1.Deployment, svc *apiv1.Service,
+	course *model.Course, user string, provider string) error {
+	newJob := model.Job{
+		Model: model.Model{
+			ID: deploy.Name,
+		},
+		OauthUser: model.OauthUser{
+			User:     user,
+			Provider: provider,
+		},
+		CourseID:   course.ID,
+		Deployment: deploy.Name,
+		Service:    svc.Name,
+		Status:     "Created",
+	}
+
+	err := DB.Create(&newJob).Error
+
+	if err != nil {
+		return nil
+	}
+
 	return nil
 }
 
+// check deployment is ready and set job status to running
 func (resourceClient *ResourceClient) IsJobReady(c *gin.Context) {
+
 }
