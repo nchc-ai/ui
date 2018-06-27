@@ -408,7 +408,6 @@ func updateTable(DB *gorm.DB, deploy *appsv1.Deployment, svc *apiv1.Service,
 	return nil
 }
 
-// check deployment is ready and set job status to running
 func (resourceClient *ResourceClient) IsJobReady(c *gin.Context) {
 	jobid := c.Param("jobid")
 
@@ -463,4 +462,8 @@ func (resourceClient *ResourceClient) IsJobReady(c *gin.Context) {
 			Status: JoBStatueReady,
 		},
 	})
+}
+
+func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
+
 }

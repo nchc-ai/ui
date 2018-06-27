@@ -69,6 +69,7 @@
         "courses":[
           {
             "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "createAt": "2018-06-25T09:24:38Z",
             "name":"image process",
             "introduction" : "markdown text with escape",
             "image":"nvidia/caffe:latest",
@@ -80,6 +81,7 @@
           },
           {
             "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "createAt": "2018-06-25T09:24:38Z",
             "name":"image process",
             "introduction" : "markdown text with escape",
             "image":"nvidia/caffe:latest",
@@ -168,6 +170,7 @@
         "courses":[
           {
             "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "createAt": "2018-06-25T09:24:38Z",
             "name":"image process",
             "introduction" : "markdown text with escape",
             "image":"nvidia/caffe:latest",
@@ -179,6 +182,7 @@
           },
           {
             "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "createAt": "2018-06-25T09:24:38Z",
             "name":"image process",
             "introduction" : "markdown text with escape",
             "image":"nvidia/caffe:latest",
@@ -639,7 +643,7 @@
 
 * **URL**
 
-  /v1/level/:level
+  /v1/course/level/:level
 
 * **Method:**
 
@@ -664,6 +668,7 @@
         "courses": [
             {
                 "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
                 "name": "course name",
                 "introduction": "markdown text with escape",
                 "image": "course docker image",
@@ -676,6 +681,7 @@
             },
             {
                 "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "createAt": "2018-06-25T09:21:20Z",
                 "name": "course name",
                 "introduction": "markdown text with escape",
                 "image": "course docker image",

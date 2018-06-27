@@ -12,7 +12,7 @@ type OauthUser struct {
 
 type Model struct {
 	ID        string     `gorm:"primary_key;size:36" json:"id"`
-	CreatedAt time.Time  `json:"-"`
+	CreatedAt time.Time  `json:"createAt"`
 	UpdatedAt time.Time  `json:"-"`
 	DeletedAt *time.Time `sql:"index" json:"-"`
 }

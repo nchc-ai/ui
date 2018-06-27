@@ -96,15 +96,21 @@ func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 }
 
 func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
-	provider, _ := c.Get("Provider")
+	provider, exist := c.Get("Provider")
+	if exist == false {
+		provider = ""
+	}
 	level := c.Param("level")
 
-	var req model.Course
-	err := c.BindJSON(&req)
-	if err != nil {
-		log.Errorf("Failed to parse spec request request: %s", err.Error())
-		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
-		return
+	req := model.Course{}
+	var err error
+	if level == "" {
+		err := c.BindJSON(&req)
+		if err != nil {
+			log.Errorf("Failed to parse spec request request: %s", err.Error())
+			util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+			return
+		}
 	}
 
 	course := model.Course{
@@ -146,7 +152,8 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 
 		resp = append(resp, model.Course{
 			Model: model.Model{
-				ID: result.ID,
+				ID:        result.ID,
+				CreatedAt: result.CreatedAt,
 			},
 			Name:         result.Name,
 			Introduction: result.Introduction,
