@@ -202,6 +202,16 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		courseAuth.POST("/launch", resourceClient.LaunchCourse)
 	}
 
+	job := router.Group("/v1").Group("/job")
+	{
+		job.OPTIONS("/ready/:jobid", resourceClient.handleOption)
+	}
+
+	jobAuth := router.Group("/v1").Group("/job")
+	{
+		jobAuth.GET("/ready/:jobid", resourceClient.IsJobReady).Use(server.AuthMiddleware())
+	}
+
 	//proxy for communicate with provider
 	proxy := router.Group("/v1").Group("/proxy")
 	{

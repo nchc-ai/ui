@@ -53,6 +53,7 @@ type LaunchCourseResponse struct {
 
 type JobStatus struct {
 	JobId  string `json:"job_id"`
+	Ready  bool   `json:"ready"`
 	Status string `json:"status"`
 }
 

@@ -34,6 +34,11 @@ var defaultResourceLimit = apiv1.ResourceList{
 	apiv1.ResourceCPU:    resource.MustParse("500m"),
 }
 
+const (
+	JoBStatusCreated string = "Created"
+	JoBStatueReady   string = "Ready"
+)
+
 func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 
 	kConfig, err := util.GetConfig(
@@ -190,6 +195,7 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 		Error: false,
 		Job: model.JobStatus{
 			JobId:  deployment.Name,
+			Ready:  false,
 			Status: "Created",
 		},
 	})
@@ -274,8 +280,7 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 
 	// if require GPU
 	if course.Gpu > 0 {
-		//defaultResourceLimit["nvidia.com/gpu"] = *resource.NewQuantity(int64(course.Gpu), resource.DecimalSI)
-		defaultResourceLimit["nvidia.com/gpu"] = resource.MustParse(string(course.Gpu))
+		defaultResourceLimit["nvidia.com/gpu"] = *resource.NewQuantity(int64(course.Gpu), resource.DecimalSI)
 	}
 	resources = apiv1.ResourceRequirements{
 		Limits: defaultResourceLimit,
@@ -391,7 +396,7 @@ func updateTable(DB *gorm.DB, deploy *appsv1.Deployment, svc *apiv1.Service,
 		CourseID:   course.ID,
 		Deployment: deploy.Name,
 		Service:    svc.Name,
-		Status:     "Created",
+		Status:     JoBStatusCreated,
 	}
 
 	err := DB.Create(&newJob).Error
@@ -405,5 +410,57 @@ func updateTable(DB *gorm.DB, deploy *appsv1.Deployment, svc *apiv1.Service,
 
 // check deployment is ready and set job status to running
 func (resourceClient *ResourceClient) IsJobReady(c *gin.Context) {
+	jobid := c.Param("jobid")
 
+	if jobid == "" {
+		log.Errorf("job id is not found")
+		util.RespondWithError(c, http.StatusBadRequest, "job id is not found")
+		return
+	}
+
+	deploymentsClient := resourceClient.K8sClient.AppsV1().Deployments(apiv1.NamespaceDefault)
+	deploy, err := deploymentsClient.Get(jobid, metav1.GetOptions{})
+
+	if err != nil {
+		errStr := fmt.Sprintf("Get deployment {%s} fail: %s", jobid, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	// if replica not enough, return not ready
+	if deploy.Status.AvailableReplicas != deploy.Status.Replicas {
+		c.JSON(http.StatusOK, model.LaunchCourseResponse{
+			Error: false,
+			Job: model.JobStatus{
+				JobId:  jobid,
+				Ready:  false,
+				Status: JoBStatusCreated,
+			},
+		})
+		return
+	}
+
+	// update Job status in Job Table
+	jobObj := model.Job{
+		Model: model.Model{
+			ID: jobid,
+		},
+	}
+	err = resourceClient.DB.Model(&jobObj).Update("status", JoBStatueReady).Error
+	if err != nil {
+		errStr := fmt.Sprintf("update job {%s} status fail: %s", jobid, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, model.LaunchCourseResponse{
+		Error: false,
+		Job: model.JobStatus{
+			JobId:  jobid,
+			Ready:  true,
+			Status: JoBStatueReady,
+		},
+	})
 }

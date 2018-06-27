@@ -8,7 +8,7 @@
    * [Job](#job)
       * [ ] [List](#list-1)
       * [ ] [Delete](#delete-1)
-      * [ ] [IsReady](#isready)
+      * [X] [IsReady](#isready)
    * [DataSet](#dataset)
       * [X] [List](#list-2)
    * [Health Check](#health-check)
@@ -105,9 +105,6 @@
      }
     ```
 
-  * **Code:**  500 <br />
-    **Content:**
-
     ```json
     {
         "error": true,
@@ -125,9 +122,6 @@
      }
     ```
 
-  * **Code:**  401 <br />
-    **Content:**
-
     ```json
     {
         "error": true,
@@ -144,9 +138,6 @@
           "message" : "Invalid API token"
        }
     ```
-
-  * **Code:**  403 <br />
-    **Content:**
 
     ```json
       {
@@ -363,7 +354,6 @@
 
   `Authorization=Bearer <token-string>`
 
-
 * **Method:**
 
   `POST`
@@ -391,6 +381,7 @@
         "error": false,
         "job":{
           "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "ready": false,
           "status": "Created"
         }
       }
@@ -908,16 +899,15 @@
 
 * **Description**
  
-  Delete a running job deployment in user namespace
+  Check Job is ready to use. (By checking deployment replica number)
 
 * **URL**
 
-  /v1/job/ready/:id
+  /v1/job/ready/:jobid
 
 * **Header:**
 
   `Authorization=Bearer <token-string>`
-
 
 * **Method:**
 
@@ -941,6 +931,7 @@
         "error": false,
         "job":{
           "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "ready": true,
           "status": "Ready"
         }
       }
@@ -948,21 +939,90 @@
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
+     {
+        "error": true,
+        "message" : "job id is not found"
+     }
+    ```  
+    
+  * **Code:**  500 <br />
+    **Content:**
 
+    ```json
+     {
+        "error": true,
+        "message" : "update job {%s} status fail: %s"
+     }
+    ```
+    
+    ```json
+     {
+        "error": true,
+        "message" : "Get deployment {%s} fail: %s"
+     }
     ```
 
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
 
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/logout
+      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+        localhost:38080/v1/job/ready/581507e7-65c1-443a-8775-47fed28ec632
 
       {
-
+         "error": false,
+         "job":{
+            "job_id": "581507e7-65c1-443a-8775-47fed28ec632",
+            "ready": true,
+            "status": "Ready"
+         }
       }
    ```
 
