@@ -3,28 +3,25 @@ package api
 import (
 	"net/http"
 	"fmt"
+	"time"
+	"net"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	//"k8s.io/apimachinery/pkg/util/intstr"
 	apiv1 "k8s.io/api/core/v1"
-	//appsv1 "k8s.io/api/apps/v1"
+	appsv1 "k8s.io/api/apps/v1"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	log "github.com/golang/glog"
-	//"github.com/jinzhu/gorm"
-	//"github.com/google/uuid"
 	"k8s.io/apimachinery/pkg/api/resource"
-	"time"
 )
 
 var exposePort = map[string]int32{
 	"web":     80,
 	"jupyter": 8888,
 	"digitis": 5000,
-	"ssh":     22,
-	//"svc1":    6006,
-	//"svc2":    5566,
+	"ttyd":    7681,
 }
 
 // todo: determine cpu & memory limit automatically, not hard code
@@ -33,9 +30,11 @@ var defaultResourceLimit = apiv1.ResourceList{
 	apiv1.ResourceCPU:    resource.MustParse("500m"),
 }
 
+// todo: Do we need define Job lifecycle ?
 const (
-	JoBStatusCreated string = "Created"
-	JoBStatueReady   string = "Ready"
+	JoBStatusCreated = "Created"
+	JoBStatusPending = "Pending"
+	JoBStatueReady   = "Ready"
 )
 
 func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
@@ -136,62 +135,6 @@ func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 	})
 }
 
-func (resourceClient *ResourceClient) isJobReady(c *gin.Context) {
-	jobid := c.Param("jobid")
-
-	if jobid == "" {
-		log.Errorf("job id is not found")
-		util.RespondWithError(c, http.StatusBadRequest, "job id is not found")
-		return
-	}
-
-	deploymentsClient := resourceClient.K8sClient.AppsV1().Deployments(apiv1.NamespaceDefault)
-	deploy, err := deploymentsClient.Get(jobid, metav1.GetOptions{})
-
-	if err != nil {
-		errStr := fmt.Sprintf("Get deployment {%s} fail: %s", jobid, err.Error())
-		log.Errorf(errStr)
-		util.RespondWithError(c, http.StatusInternalServerError, errStr)
-		return
-	}
-
-	// if replica not enough, return not ready
-	if deploy.Status.AvailableReplicas != deploy.Status.Replicas {
-		c.JSON(http.StatusOK, model.LaunchCourseResponse{
-			Error: false,
-			Job: model.JobStatus{
-				JobId:  jobid,
-				Ready:  false,
-				Status: JoBStatusCreated,
-			},
-		})
-		return
-	}
-
-	// update Job status in Job Table
-	jobObj := model.Job{
-		Model: model.Model{
-			ID: jobid,
-		},
-	}
-	err = resourceClient.DB.Model(&jobObj).Update("status", JoBStatueReady).Error
-	if err != nil {
-		errStr := fmt.Sprintf("update job {%s} status fail: %s", jobid, err.Error())
-		log.Errorf(errStr)
-		util.RespondWithError(c, http.StatusInternalServerError, errStr)
-		return
-	}
-
-	c.JSON(http.StatusOK, model.LaunchCourseResponse{
-		Error: false,
-		Job: model.JobStatus{
-			JobId:  jobid,
-			Ready:  true,
-			Status: JoBStatueReady,
-		},
-	})
-}
-
 func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (string, error) {
 	job := model.Job{
 		Model: model.Model{
@@ -218,28 +161,78 @@ func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (s
 	return "", nil
 }
 
-// todo: find ports in svc, we only return port which is available,
-// use goroutine check port at the same time
-func checkJobStatus(job_id string) {
-	ticker := time.NewTicker(2 * time.Second)
-	defer ticker.Stop()
-	ch := make(chan int, 10)
+// todo: how to kill goroutine if job is deleted by hand
+func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
+
+	deploymentsClient := resourceClient.K8sClient.AppsV1().Deployments(apiv1.NamespaceDefault)
+	jobObj := model.Job{
+		Model: model.Model{
+			ID: jobId,
+		},
+	}
+	var deploy *appsv1.Deployment
+	var svc *apiv1.Service
+	var err error
+
+	// wait until deployment is ready
 	for {
-		select {
-		case <-ch:
-			fmt.Println(ch) // if ch not empty, time.After will nerver exec
-			fmt.Println("sleep one seconds ...")
-			time.Sleep(1 * time.Second)
-			fmt.Println("sleep one seconds end...")
-		default: // forbid block
+		deploy, err = deploymentsClient.Get(jobId, metav1.GetOptions{})
+		if err != nil {
+			log.Warning("Get deployment {%s} fail: %s", jobId, err.Error())
+			time.Sleep(10 * time.Second)
+			continue
 		}
-		select {
-		case <-ticker.C:
-			fmt.Println("timeout")
-			return
-		default: // forbid block
+
+		if deploy.Status.AvailableReplicas != deploy.Status.Replicas {
+			log.Warningf("Wait until deployment {%s} replica to {%d}, current replica is {%d}",
+				jobId, deploy.Status.Replicas, deploy.Status.AvailableReplicas)
+
+			if err := resourceClient.DB.Model(&jobObj).Update("status", JoBStatusPending).Error; err != nil {
+				log.Error("update job {%s} status to %s fail: %s", jobId, JoBStatusPending, err.Error())
+			}
+			time.Sleep(10 * time.Second)
+			continue
 		}
+		break
 	}
 
-	return
+	svcClient := resourceClient.K8sClient.CoreV1().Services(apiv1.NamespaceDefault)
+	for {
+		svc, err = svcClient.Get(svcName, metav1.GetOptions{})
+		if err != nil {
+			log.Errorf("Get service {%s} fail: %s", svcName, err.Error())
+			time.Sleep(10 * time.Second)
+			continue
+		}
+		break
+	}
+
+	exposeip := resourceClient.config.GetString("kubernetes.expose_ip")
+	var newPorts []apiv1.ServicePort
+
+	// check every nodePort, only keep reachable one
+	for _, p := range svc.Spec.Ports {
+		svcIp := strings.TrimPrefix(fmt.Sprintf("%s:%d", exposeip, p.NodePort), "http://")
+		timeout := time.Duration(2 * time.Second)
+		conn, err := net.DialTimeout("tcp", svcIp, timeout)
+		if err != nil {
+			log.Infof("%s [%s] is not reachable", svcIp, p.Name)
+			continue
+		}
+		conn.Close()
+		log.Infof("%s [%s] is reachable, add to service nodeport", svcIp, p.Name)
+		sp := p
+		newPorts = append(newPorts, sp)
+	}
+
+	svc.Spec.Ports = newPorts
+	if _, err = svcClient.Update(svc); err != nil {
+		log.Error("update svc {%s} nodePort fail: %s", svc.Name, err.Error())
+		return
+	}
+
+	if err := resourceClient.DB.Model(&jobObj).Update("status", JoBStatueReady).Error; err != nil {
+		log.Error("update job {%s} status to %s fail: %s", jobId, JoBStatueReady, err.Error())
+	}
+
 }

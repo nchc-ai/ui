@@ -160,8 +160,6 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s created successfully", req.Name)
 }
 
-// 		Step 1-1: delete jobs in DB.  (With foreign key, this should be done automatically)
-
 func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	courseId := c.Param("id")
 
@@ -186,6 +184,7 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	}
 
 	// Step 2: Stop deployment and service in kubernetes
+	// 	 Step 2-1: delete jobs in DB.
 	for _, j := range jobs {
 		if errStr, err := resourceClient.deleteJobDeploymentAndSvc(j.ID); err != nil {
 			util.RespondWithError(c, http.StatusInternalServerError, errStr)
@@ -232,18 +231,18 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 	//	Step 1-1: find course object by course_id
 	course := getCourseObject(resourceClient.DB, req.CourseId)
 	if course == nil {
-		log.Errorf("Query course id %s fail: %s", req.CourseId, err.Error())
+		log.Errorf("Query course id %s fail", req.CourseId)
 		util.RespondWithError(c, http.StatusInternalServerError,
-			"Query course id %s fail: %s", req.CourseId, err.Error())
+			"Query course id %s fail", req.CourseId)
 		return
 	}
 
 	// 	Step 1-2: find dataset required by course
 	datasets := getRequiredDataset(resourceClient.DB, req.CourseId)
 	if datasets == nil {
-		log.Errorf("Query course id %s required dataset fail: %s", req.CourseId, err.Error())
+		log.Errorf("Query course id %s required dataset fail", req.CourseId)
 		util.RespondWithError(c, http.StatusInternalServerError,
-			"Query course id %s required dataset fail: %s", req.CourseId, err.Error())
+			"Query course id %s required dataset fail", req.CourseId)
 		return
 	}
 
@@ -277,6 +276,9 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
 		return
 	}
+
+	// create a go routine to check job is ready or not
+	go resourceClient.checkJobStatus(deployment.Name, svc.Name)
 
 	c.JSON(http.StatusOK, model.LaunchCourseResponse{
 		Error: false,
