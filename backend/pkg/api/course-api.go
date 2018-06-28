@@ -12,7 +12,6 @@ import (
 	log "github.com/golang/glog"
 )
 
-
 func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 	provider, exist := c.Get("Provider")
 	if exist == false {
@@ -161,13 +160,8 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s created successfully", req.Name)
 }
 
-// Step 1: Find all associated Deployment/Service (included launched by student) and stop in kubernetes
 // 		Step 1-1: delete jobs in DB.  (With foreign key, this should be done automatically)
-// 		Step 1-2: delete proxy in DB. (With foreign key, this should be done automatically)
 
-// Step 2: Delete course in DB.
-
-// Step 3: delete required dataset in DB. (With foreign key, this should be done automatically)
 func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	courseId := c.Param("id")
 
@@ -182,18 +176,33 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 			ID: courseId,
 		},
 	}
+	jobs := []model.Job{}
 
-	//todo: stop all deployment & service
+	// Step 1: Find all associated Deployment/Service
+	if err := resourceClient.DB.Model(&course).Related(&jobs).Error; err != nil {
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"Failed to find jobs belong to course {%s} information : %s", courseId, err.Error())
+		return
+	}
 
+	// Step 2: Stop deployment and service in kubernetes
+	for _, j := range jobs {
+		if errStr, err := resourceClient.deleteJobDeploymentAndSvc(j.ID); err != nil {
+			util.RespondWithError(c, http.StatusInternalServerError, errStr)
+			return
+		}
+	}
+
+	// Step 3: Delete course in DB.
+	// Step 4: delete required dataset in DB. (With foreign key, this should be done automatically)
 	err := resourceClient.DB.Unscoped().Delete(&course).Error
-
 	if err != nil {
 		util.RespondWithError(c, http.StatusInternalServerError,
 			"Failed to delete course {%s} information : %s", courseId, err.Error())
 		return
 	}
 
-	util.RespondWithOk(c, "Course %s is deleted successfully", courseId)
+	util.RespondWithOk(c, "Course %s is deleted successfully, associated jobs are also deleted", courseId)
 }
 
 func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {

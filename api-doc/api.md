@@ -3,7 +3,7 @@
       * [X] [List](#list)
       * [X] [Create](#create)
       * [X] [Launch](#launch)
-      * [ ] [Delete](#delete)
+      * [X] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
    * [Job](#job)
       * [X] [List](#list-1)
@@ -515,7 +515,8 @@
 
 * **Description**
  
-  Delete course information in database
+  Delete course information in database, and delete all associated job. 
+  Deployment and svc in kubernetes are also deleted. 
 
 * **URL**
 
@@ -546,7 +547,7 @@
     ```json
      {
         "error": false,
-        "message" : "course <name> is deleted successfully"
+        "message" : "Course %s is deleted successfully, associated jobs are also deleted"
      }
     ```
 
@@ -572,7 +573,7 @@
     }
     ```
 
-* **Code:**  401 <br />
+  * **Code:**  401 <br />
     **Content:**
 
     ```json
@@ -581,9 +582,6 @@
         "message" : "Authorization header is missing"
      }
     ```
-
-  * **Code:**  401 <br />
-    **Content:**
 
     ```json
     {
@@ -601,9 +599,6 @@
           "message" : "Invalid API token"
        }
     ```
-
-  * **Code:**  403 <br />
-    **Content:**
 
     ```json
       {
@@ -629,7 +624,7 @@
 
       {
         "error": false,
-        "message" : "Course 1e5c1de8-26ce-424a-b906-70d8d574e7d3 is deleted successfully"
+        "message" : "Course 1e5c1de8-26ce-424a-b906-70d8d574e7d3 is deleted successfully, associated jobs are also deleted"
       }
    ```
 
@@ -1110,137 +1105,6 @@
         "error": false,
         "message" : "job <id> is deleted successfully"
      }
-   ```
-
-## IsReady
-
-* **Description**
- 
-  Check Job is ready to use. (By checking deployment replica number)
-
-* **URL**
-
-  /v1/job/ready/:jobid
-
-* **Header:**
-
-  `Authorization=Bearer <token-string>`
-
-* **Method:**
-
-  `GET`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-  None
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error": false,
-        "job":{
-          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
-          "ready": true,
-          "status": "Ready"
-        }
-      }
-    ```
-
-* **Error Response:**
-
-  * **Code:**  400 <br />
-    **Content:**
-
-    ```json
-     {
-        "error": true,
-        "message" : "job id is not found"
-     }
-    ```  
-    
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-     {
-        "error": true,
-        "message" : "update job {%s} status fail: %s"
-     }
-    ```
-    
-    ```json
-     {
-        "error": true,
-        "message" : "Get deployment {%s} fail: %s"
-     }
-    ```
-
-  * **Code:**  401 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message" : "Authorization header is missing"
-     }
-    ```
-
-    ```json
-    {
-        "error": true,
-        "message" : "Authorization header is not Bearer Token format or token is missing"
-     }
-    ```
-
-  * **Code:**  403 <br />
-    **Content:**
-
-    ```json
-      {
-          "error": true,
-          "message" : "Invalid API token"
-       }
-    ```
-
-    ```json
-      {
-          "error": true,
-          "message" : "Access token expired"
-      }
-    ```
-
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-      {
-          "error": true,
-          "message" : "verify token fail: error message"
-      }
-    ```
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
-        localhost:38080/v1/job/ready/581507e7-65c1-443a-8775-47fed28ec632
-
-      {
-         "error": false,
-         "job":{
-            "job_id": "581507e7-65c1-443a-8775-47fed28ec632",
-            "ready": true,
-            "status": "Ready"
-         }
-      }
    ```
 
 

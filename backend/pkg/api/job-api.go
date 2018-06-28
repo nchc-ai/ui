@@ -47,33 +47,8 @@ func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 		return
 	}
 
-	job := model.Job{
-		Model: model.Model{
-			ID: jobId,
-		},
-	}
-
-	if err := resourceClient.DB.First(&job).Error; err != nil {
-		util.RespondWithError(c, http.StatusInternalServerError,
-			"Failed to find job {%s} information : %s", jobId, err.Error())
-		return
-	}
-
-	if err := deleteDeployment(resourceClient.K8sClient, jobId); err != nil {
-		util.RespondWithError(c, http.StatusInternalServerError,
-			"Failed to delete deployment {%s}: %s", jobId, err.Error())
-		return
-	}
-
-	if err := deleteService(resourceClient.K8sClient, job.Service); err != nil {
-		util.RespondWithError(c, http.StatusInternalServerError,
-			"Failed to delete service {%s}: %s", job.Service, err.Error())
-		return
-	}
-
-	if err := resourceClient.DB.Unscoped().Delete(&job).Error; err != nil {
-		util.RespondWithError(c, http.StatusInternalServerError,
-			"Failed to delete job {%s} information : %s", jobId, err.Error())
+	if errStr, err := resourceClient.deleteJobDeploymentAndSvc(jobId); err != nil {
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
 		return
 	}
 
@@ -215,6 +190,32 @@ func (resourceClient *ResourceClient) isJobReady(c *gin.Context) {
 			Status: JoBStatueReady,
 		},
 	})
+}
+
+func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (string, error) {
+	job := model.Job{
+		Model: model.Model{
+			ID: jobId,
+		},
+	}
+
+	if err := resourceClient.DB.First(&job).Error; err != nil {
+		return fmt.Sprintf("Failed to find job {%s} information : %s", jobId, err.Error()), err
+	}
+
+	if err := deleteDeployment(resourceClient.K8sClient, jobId); err != nil {
+		return fmt.Sprintf("Failed to delete deployment {%s}: %s", jobId, err.Error()), nil
+	}
+
+	if err := deleteService(resourceClient.K8sClient, job.Service); err != nil {
+		return fmt.Sprintf("Failed to delete service {%s}: %s", job.Service, err.Error()), nil
+	}
+
+	if err := resourceClient.DB.Unscoped().Delete(&job).Error; err != nil {
+		return fmt.Sprintf("Failed to delete job {%s} information : %s", jobId, err.Error()), nil
+	}
+
+	return "", nil
 }
 
 // todo: find ports in svc, we only return port which is available,
