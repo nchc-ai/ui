@@ -17,6 +17,7 @@ import (
 	"github.com/jinzhu/gorm"
 	"github.com/google/uuid"
 	"k8s.io/apimachinery/pkg/api/resource"
+	"time"
 )
 
 var exposePort = map[string]int32{
@@ -24,8 +25,8 @@ var exposePort = map[string]int32{
 	"jupyter": 8888,
 	"digitis": 5000,
 	"ssh":     22,
-	"svc1":    6006,
-	"svc2":    5566,
+	//"svc1":    6006,
+	//"svc2":    5566,
 }
 
 // todo: determine cpu & memory limit automatically, not hard code
@@ -393,10 +394,10 @@ func updateTable(DB *gorm.DB, deploy *appsv1.Deployment, svc *apiv1.Service,
 			User:     user,
 			Provider: provider,
 		},
-		CourseID:   course.ID,
-		Deployment: deploy.Name,
-		Service:    svc.Name,
-		Status:     JoBStatusCreated,
+		CourseID: course.ID,
+		//Deployment: deploy.Name,
+		Service: svc.Name,
+		Status:  JoBStatusCreated,
 	}
 
 	err := DB.Create(&newJob).Error
@@ -408,7 +409,7 @@ func updateTable(DB *gorm.DB, deploy *appsv1.Deployment, svc *apiv1.Service,
 	return nil
 }
 
-func (resourceClient *ResourceClient) IsJobReady(c *gin.Context) {
+func (resourceClient *ResourceClient) isJobReady(c *gin.Context) {
 	jobid := c.Param("jobid")
 
 	if jobid == "" {
@@ -464,6 +465,51 @@ func (resourceClient *ResourceClient) IsJobReady(c *gin.Context) {
 	})
 }
 
-func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
+//func findServiceNodePort(K8sClient *kubernetes.Clientset, c *gin.Context, job model.Job) map[string]int32 {
+func findServiceNodePort(K8sClient *kubernetes.Clientset, job model.Job, exposeip string) ([]model.LabelValue, error) {
 
+	result := []model.LabelValue{}
+
+	svcClient := K8sClient.CoreV1().Services(apiv1.NamespaceDefault)
+	svc, err := svcClient.Get(job.Service, metav1.GetOptions{})
+
+	if err != nil {
+		log.Errorf("Get service {%s} fail: %s", job.Service, err.Error())
+		return nil, err
+	}
+
+	for _, p := range svc.Spec.Ports {
+		lv := model.LabelValue{
+			Label: p.Name,
+			Value: fmt.Sprintf("%s:%d", exposeip, p.NodePort),
+		}
+		result = append(result, lv)
+	}
+	return result, nil
+}
+
+// todo: find ports in svc, we only return port which is available,
+// use goroutine check port at the same time
+func checkJobStatus(job_id string) {
+	ticker := time.NewTicker(2 * time.Second)
+	defer ticker.Stop()
+	ch := make(chan int, 10)
+	for {
+		select {
+		case <-ch:
+			fmt.Println(ch) // if ch not empty, time.After will nerver exec
+			fmt.Println("sleep one seconds ...")
+			time.Sleep(1 * time.Second)
+			fmt.Println("sleep one seconds end...")
+		default: // forbid block
+		}
+		select {
+		case <-ticker.C:
+			fmt.Println("timeout")
+			return
+		default: // forbid block
+		}
+	}
+
+	return
 }

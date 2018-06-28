@@ -6,9 +6,8 @@
       * [ ] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
    * [Job](#job)
-      * [ ] [List](#list-1)
+      * [X] [List](#list-1)
       * [ ] [Delete](#delete-1)
-      * [X] [IsReady](#isready)
    * [DataSet](#dataset)
       * [X] [List](#list-2)
    * [Health Check](#health-check)
@@ -759,8 +758,6 @@
 
 ## List
 
-* **TODO** 
-
 
 * **Description**
  
@@ -768,16 +765,15 @@
 
 * **URL**
 
-  /v1/job/:user
+  /v1/job/list
 
 * **Header:**
 
   `Authorization=Bearer <token-string>`
 
-
 * **Method:**
 
-  `GET`
+  `POST`
 
 * **URL Params**
 
@@ -785,7 +781,11 @@
 
 * **Data Params**
 
-  None
+  ```json
+    {
+      "user": "user-name"
+    }
+  ```
 
 * **Success Response:**
 
@@ -796,46 +796,181 @@
      {
         "error": false,
         "jobs" : 
-          [{
-            "status": "",
-            "job_id": 1,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
-            ]
-          },
-          {
-            "status": "",
-            "job_id": 2,
-            "course_name":"影像處理",
-            "image":"nvidia/caffe:latest", 
-            "dataset":[
-              "cifar-10","mnist"
-            ]
-          }
-        ]
+          [
+              {
+                "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+                "startAt": "2018-06-25T09:24:38Z",
+                "status": "Ready",
+                "name": "image process",
+                "introduction": "markdown text with escape",
+                "image": "nvidia/caffe:latest",
+                "gpu": 1,
+                "level": "basic",
+                "dataset": [
+                  "cifar-10",
+                  "mnist"
+                ],
+                "service": [
+                  {
+                     "label": "jupyter",
+                     "value": "http://140.110.5.22:30010"
+                  },
+                  {
+                     "label": "digits",
+                     "value": "http://140.110.5.22:29875"
+                  }
+                ]
+              },
+              {
+                "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+                "startAt": "2018-06-25T09:24:38Z",
+                "status": "Created",
+                "name": "image process",
+                "introduction": "markdown text with escape",
+                "image":"nvidia/caffe:latest",
+                "gpu": 1,
+                "level": "advance",
+                "dataset": [
+                  "cifar-10",
+                  "mnist"
+                ],
+                "service": [
+                  {
+                     "label": "digits",
+                     "value": "http://140.110.5.22:29119"
+                  }
+                ]
+              }
+          ]
      }
     ```
 
 * **Error Response:**
 
-  * **Code:**  <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+    
+    ```json
+    {
+        "error": true,
+        "message" : "Empty user name"
+     }
+    ```    
+    
+  * **Code:**  500 <br />
+    **Content:**
 
+    ```json
+    {
+        "error": true,
+        "message" : "Query Job table for user {%s} fail: %s"
+     }
+    ```
+    
+    ```json
+    {
+        "error": true,
+        "message" : "Query Course info for job {%s} fail: %s"
+     }
+    ```
+    
+    ```json
+    {
+        "error": true,
+        "message" : "Parse Service info for job {%s} fail: %s"
+     }
+    ```
+    
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
     ```
 
 
 * **Sample Call:**
 
   ```sh
-      $ curl http://localhost:8080/v1/logout
+      $ curl -X POST -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+        -d '{"user":"jimmy@nchc"}' \ 
+        http://localhost:38080/v1/job/list
 
-      {
-
-      }
+     {
+        "error": false,
+        "jobs" : 
+          [
+              {
+                "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+                "startAt": "2018-06-25T09:24:38Z",
+                "status": "Ready",
+                "name": "image process",
+                "introduction": "markdown text with escape",
+                "image": "nvidia/caffe:latest",
+                "gpu": 1,
+                "level": "basic",
+                "dataset": [
+                  "cifar-10",
+                  "mnist"
+                ],
+                "service": [
+                  {
+                     "label": "jupyter",
+                     "value": "http://140.110.5.22:30010"
+                  },
+                  {
+                     "label": "digits",
+                     "value": "http://140.110.5.22:29875"
+                  }
+                ]
+              }
+          ]
+     }
    ```
 
 ## Delete

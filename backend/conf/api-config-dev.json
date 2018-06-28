@@ -22,6 +22,7 @@
     "database": "twgc"
   },
   "kubernetes": {
-    "kubeconfig": "./conf/openstack-kubeconfig"
+    "kubeconfig": "./conf/openstack-kubeconfig",
+    "expose_ip" : "http://140.110.5.22"
   }
 }

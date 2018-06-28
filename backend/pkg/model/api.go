@@ -1,6 +1,9 @@
 package model
 
-import "k8s.io/api/core/v1"
+import (
+	"k8s.io/api/core/v1"
+	"time"
+)
 
 type HealthDatabaseResponse struct {
 	GenericResponse
@@ -60,4 +63,22 @@ type JobStatus struct {
 type LabelValue struct {
 	Label string `json:"label"`
 	Value string `json:"value"`
+}
+
+type JobListResponse struct {
+	Error bool      `json:"error"`
+	Jobs  []JobInfo `json:"jobs"`
+}
+
+type JobInfo struct {
+	Id           string       `json:"id"`
+	StartAt      time.Time    `json:"startAt"`
+	Status       string       `json:"status"`
+	Name         string       `json:"name"`
+	Introduction string       `json:"introduction"`
+	Image        string       `json:"image"`
+	GPU          uint8        `json:"gpu"`
+	Level        string       `json:"level"`
+	Dataset      []string     `json:"dataset"`
+	Service      []LabelValue `json:"service"`
 }

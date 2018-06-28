@@ -44,7 +44,7 @@ type Job struct {
 	// foreign key
 	CourseID string `gorm:"size:36"`
 
-	Deployment string `gorm:"not null"`
+	//Deployment string `gorm:"not null"`
 	Service    string `gorm:"not null"`
 	//ProxyUrl   string `gorm:"not null"`
 	Status string `gorm:"not null"`

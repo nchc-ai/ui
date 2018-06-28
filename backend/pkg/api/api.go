@@ -19,6 +19,7 @@ import (
 )
 
 type ResourceClient struct {
+	config    *viper.Viper
 	K8sClient *kubernetes.Clientset
 	DB        *gorm.DB
 }
@@ -79,6 +80,7 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 		resourceClient: &ResourceClient{
 			DB:        dbclient,
 			K8sClient: kclient,
+			config:    config,
 		},
 		router:        gin.Default(),
 		providerProxy: providerProxy,
@@ -204,12 +206,14 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 
 	job := router.Group("/v1").Group("/job")
 	{
-		job.OPTIONS("/ready/:jobid", resourceClient.handleOption)
+		//job.OPTIONS("/ready/:jobid", resourceClient.handleOption)
+		job.OPTIONS("/list", resourceClient.handleOption)
 	}
 
-	jobAuth := router.Group("/v1").Group("/job")
+	jobAuth := router.Group("/v1").Group("/job").Use(server.AuthMiddleware())
 	{
-		jobAuth.GET("/ready/:jobid", resourceClient.IsJobReady).Use(server.AuthMiddleware())
+		//jobAuth.GET("/ready/:jobid", resourceClient.IsJobReady)
+		jobAuth.POST("/list", resourceClient.ListJob)
 	}
 
 	//proxy for communicate with provider
