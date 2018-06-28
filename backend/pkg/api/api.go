@@ -87,6 +87,60 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 	}
 }
 
+func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
+
+	kConfig, err := util.GetConfig(
+		config.GetBool("api-server.isOutsideCluster"),
+		config.GetString("kubernetes.kubeconfig"))
+
+	if err != nil {
+		log.Fatalf("create kubenetes config fail: %s", err.Error())
+		return nil, err
+	}
+
+	clientset, err := kubernetes.NewForConfig(kConfig)
+	if err != nil {
+		log.Fatalf("create kubenetes client set fail: %s", err.Error())
+		return nil, err
+	}
+
+	return clientset, nil
+}
+
+func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
+
+	dbArgs := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True",
+		config.GetString("database.username"),
+		config.GetString("database.password"),
+		config.GetString("database.host"),
+		config.GetInt("database.port"),
+		config.GetString("database.database"),
+	)
+
+	db, err := gorm.Open("mysql", dbArgs)
+
+	if err != nil {
+		log.Fatalf("create database client fail: %s", err.Error())
+		return nil, err
+	}
+
+	// create tables
+	course := &model.Course{}
+	job := &model.Job{}
+	dateset := &model.Dataset{}
+
+	db.AutoMigrate(course)
+	db.AutoMigrate(job)
+	db.AutoMigrate(dateset)
+
+	// add foreign key
+	db.Model(job).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+
+	return db, nil
+}
+
 func (server *APIServer) RunServer() error {
 
 	defer server.resourceClient.DB.Close()
@@ -206,14 +260,15 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 
 	job := router.Group("/v1").Group("/job")
 	{
-		//job.OPTIONS("/ready/:jobid", resourceClient.handleOption)
 		job.OPTIONS("/list", resourceClient.handleOption)
+		job.OPTIONS("/delete/:id", resourceClient.handleOption)
+
 	}
 
 	jobAuth := router.Group("/v1").Group("/job").Use(server.AuthMiddleware())
 	{
-		//jobAuth.GET("/ready/:jobid", resourceClient.IsJobReady)
 		jobAuth.POST("/list", resourceClient.ListJob)
+		jobAuth.DELETE("/delete/:id", resourceClient.DeleteJob)
 	}
 
 	//proxy for communicate with provider
@@ -244,55 +299,4 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	{
 		imageAuth.GET("/", resourceClient.ListImage)
 	}
-}
-
-func (server *APIServer) GetToken(c *gin.Context) {
-
-	var req model.TokenReq
-	err := c.BindJSON(&req)
-	if err != nil {
-		log.Errorf("Failed to parse spec request request: %s", err.Error())
-		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
-		return
-	}
-
-	token, err := server.providerProxy.GetToken(req.Code)
-
-	if err != nil {
-		log.Errorf("Exchange Token fail: %s", err.Error())
-		util.RespondWithError(c, http.StatusInternalServerError, "Exchange Token fail: %s", err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK,
-		model.TokenResp{
-			Token:        token.AccessToken,
-			RefreshToken: token.RefreshToken,
-		},
-	)
-}
-
-func (server *APIServer) RefreshToken(c *gin.Context) {
-	var req model.RefreshTokenReq
-	err := c.BindJSON(&req)
-	if err != nil {
-		log.Errorf("Failed to parse spec request request: %s", err.Error())
-		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
-		return
-	}
-
-	newToken, err := server.providerProxy.RefreshToken(req.RefreshToken)
-
-	if err != nil {
-		log.Errorf("Refresh Token fail: %s", err.Error())
-		util.RespondWithError(c, http.StatusInternalServerError, "Refresh Token fail: %s", err.Error())
-		return
-	}
-
-	c.JSON(http.StatusOK,
-		model.TokenResp{
-			Token:        newToken.AccessToken,
-			RefreshToken: newToken.RefreshToken,
-		},
-	)
 }

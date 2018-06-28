@@ -6,88 +6,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"github.com/jinzhu/gorm"
-	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"github.com/google/uuid"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	log "github.com/golang/glog"
 )
 
-func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
-
-	dbArgs := fmt.Sprintf(
-		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True",
-		config.GetString("database.username"),
-		config.GetString("database.password"),
-		config.GetString("database.host"),
-		config.GetInt("database.port"),
-		config.GetString("database.database"),
-	)
-
-	db, err := gorm.Open("mysql", dbArgs)
-
-	if err != nil {
-		log.Fatalf("create database client fail: %s", err.Error())
-		return nil, err
-	}
-
-	// create tables
-	course := &model.Course{}
-	job := &model.Job{}
-	dateset := &model.Dataset{}
-
-	db.AutoMigrate(course)
-	db.AutoMigrate(job)
-	db.AutoMigrate(dateset)
-
-	// add foreign key
-	db.Model(job).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
-	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
-
-	return db, nil
-}
-
-func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
-	var req model.GenericRequest
-	err := c.BindJSON(&req)
-	if err != nil {
-		log.Errorf("Failed to parse spec request request: %s", err.Error())
-		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
-		return
-	}
-	msg := req.Message
-
-	tNameList := []string{}
-
-	rows, err := resourceClient.DB.Raw("show tables").Rows()
-
-	if err != nil {
-		log.Errorf("Show all table name fail: %s", err.Error())
-		util.RespondWithError(c, http.StatusInternalServerError, "Query all table name fail: %s", err.Error())
-		return
-	}
-
-	for rows.Next() {
-		var name string
-		if err := rows.Scan(&name); err != nil {
-			log.Errorf("Scan table name fail: %s", err.Error())
-			util.RespondWithError(c, http.StatusInternalServerError, "Scan table name fail: %s", err.Error())
-			return
-		}
-		tNameList = append(tNameList, name)
-	}
-
-	resp := model.HealthDatabaseResponse{
-		GenericResponse: model.GenericResponse{
-			Error:   false,
-			Message: msg,
-		},
-		Tables: tNameList,
-	}
-
-	c.JSON(http.StatusOK, resp)
-}
 
 func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 	provider, exist := c.Get("Provider")
@@ -250,6 +174,7 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	if courseId == "" {
 		util.RespondWithError(c, http.StatusBadRequest,
 			"Course Id is not found")
+		return
 	}
 
 	course := model.Course{
@@ -271,37 +196,9 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s is deleted successfully", courseId)
 }
 
-// todo: implement real list image
-func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
-	image := map[string]string{
-		"tensorflow/tensorflow:1.5.1": "tensorflow/tensorflow:1.5.1",
-		"nvidia/digits5.0":            "nvidia/digits5.0",
-	}
+func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 
-	imageList := []model.LabelValue{}
-
-	for k, v := range image {
-		lbval := model.LabelValue{
-			Label: k,
-			Value: v,
-		}
-		imageList = append(imageList, lbval)
-	}
-
-	c.JSON(http.StatusOK, model.ImagesListResponse{
-		Error:  false,
-		Images: imageList,
-	})
-}
-
-func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
-
-	provider, exist := c.Get("Provider")
-	if exist == false {
-		provider = ""
-	}
-
-	req := model.Job{}
+	var req model.LaunchCourseRequest
 	err := c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Failed to parse spec request request: %s", err.Error())
@@ -309,111 +206,76 @@ func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 		return
 	}
 
-	if req.User == "" {
-		log.Errorf("Empty user name")
-		util.RespondWithError(c, http.StatusBadRequest, "Empty user name")
+	user := req.User
+	if user == "" {
+		log.Errorf("user field in request cannot be empty")
+		util.RespondWithError(c, http.StatusBadRequest, "user field in request cannot be empty")
 		return
 	}
 
-	job := model.Job{
-		OauthUser: model.OauthUser{
-			User:     req.User,
-			Provider: provider.(string),
-		},
+	provider, exist := c.Get("Provider")
+	if !exist {
+		log.Warning("Provider is not found in request context, set empty")
+		provider = ""
 	}
 
-	resultJobs := []model.Job{}
-	err = resourceClient.DB.Where(&job).Find(&resultJobs).Error
+	//Step 1: retrive required information
+	//	Step 1-1: find course object by course_id
+	course := getCourseObject(resourceClient.DB, req.CourseId)
+	if course == nil {
+		log.Errorf("Query course id %s fail: %s", req.CourseId, err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"Query course id %s fail: %s", req.CourseId, err.Error())
+		return
+	}
+
+	// 	Step 1-2: find dataset required by course
+	datasets := getRequiredDataset(resourceClient.DB, req.CourseId)
+	if datasets == nil {
+		log.Errorf("Query course id %s required dataset fail: %s", req.CourseId, err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"Query course id %s required dataset fail: %s", req.CourseId, err.Error())
+		return
+	}
+
+	// Step 2: create kubernetes resources
+	// 	Step 2-1: create deployment
+	deployment, err := createDeployment(resourceClient.K8sClient, course, datasets)
 
 	if err != nil {
-		strErr := fmt.Sprintf("Query Job table for user {%s} fail: %s", req.User, err.Error())
-		log.Errorf(strErr)
-		util.RespondWithError(c, http.StatusInternalServerError, strErr)
+		errStrt := fmt.Sprintf("create deployment for course {id = %s} fail: %s", course.ID, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
 		return
 	}
 
-	jobList := []model.JobInfo{}
-	for _, result := range resultJobs {
-		// find course information
-		courseInfo, err := findCourse(resourceClient.DB, result)
-		if err != nil {
-			errStr := fmt.Sprintf("Query Course info for job {%s} fail: %s", result.ID, err.Error())
-			log.Errorf(errStr)
-			util.RespondWithError(c, http.StatusInternalServerError, errStr)
-			return
-		}
-
-		// find nodeport information
-		nodePorts, err := findServiceNodePort(resourceClient.K8sClient, result,
-			resourceClient.config.GetString("kubernetes.expose_ip"))
-		if err != nil {
-			errStr := fmt.Sprintf("Parse Service info for job {%s} fail: %s", result.ID, err.Error())
-			log.Errorf(errStr)
-			util.RespondWithError(c, http.StatusInternalServerError, errStr)
-			return
-		}
-
-		jobInfo := model.JobInfo{
-			Id:           result.ID,
-			StartAt:      result.CreatedAt,
-			Status:       result.Status,
-			Name:         courseInfo.Name,
-			Introduction: courseInfo.Introduction,
-			Image:        courseInfo.Image,
-			Level:        courseInfo.Level,
-			GPU:          courseInfo.Gpu,
-			Dataset:      courseInfo.Datasets,
-			Service:      nodePorts,
-		}
-
-		jobList = append(jobList, jobInfo)
+	// 	Step 2-2: create service
+	svc, err := createService(resourceClient.K8sClient, deployment.Name)
+	if err != nil {
+		//todo : rollback, need to delete deployment
+		errStrt := fmt.Sprintf("create service for job {id = %s} fail: %s", deployment.Name, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
+		return
 	}
 
-	c.JSON(http.StatusOK, model.JobListResponse{
+	// Step 3: update Job Table
+	err = updateTable(resourceClient.DB, deployment, svc, course, user, provider.(string))
+	if err != nil {
+		//todo : rollback, need to delete svc and deployment
+		errStrt := fmt.Sprintf("update Job Table for job {id = %s} fail: %s", deployment.Name, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
+		return
+	}
+
+	c.JSON(http.StatusOK, model.LaunchCourseResponse{
 		Error: false,
-		Jobs:  jobList,
+		Job: model.JobStatus{
+			JobId:  deployment.Name,
+			Ready:  false,
+			Status: "Created",
+		},
 	})
-}
 
-func findCourse(DB *gorm.DB, job model.Job) (*model.Course, error) {
-
-	course := model.Course{
-		Model: model.Model{
-			ID: job.CourseID,
-		},
-	}
-	err := DB.Where(&course).Find(&course).Error
-	if err != nil {
-		log.Errorf("Query courses table fail: %s", err.Error())
-		return nil, err
-	}
-
-	dataset := model.Dataset{
-		CourseID: job.CourseID,
-	}
-	datasetResult := []model.Dataset{}
-	err = DB.Where(&dataset).Find(&datasetResult).Error
-	if err != nil {
-		log.Errorf("Query datasets table fail: %s", err.Error())
-		return nil, err
-	}
-
-	courseDataset := []string{}
-
-	for _, s := range datasetResult {
-		courseDataset = append(courseDataset, s.DatasetName)
-	}
-
-	return &model.Course{
-		Model: model.Model{
-			ID:        course.ID,
-			CreatedAt: course.CreatedAt,
-		},
-		Name:         course.Name,
-		Introduction: course.Introduction,
-		Image:        course.Image,
-		Level:        course.Level,
-		Gpu:          course.Gpu,
-		Datasets:     courseDataset,
-	}, nil
 }
