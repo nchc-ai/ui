@@ -6,6 +6,12 @@ import (
 	"path/filepath"
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/rest"
+	"github.com/gin-gonic/gin"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
+	"fmt"
+	"net/http"
+	"time"
+	"math/rand"
 )
 
 func homeDir() string {
@@ -51,4 +57,33 @@ func GetConfig(isOutOfCluster bool, kubeConfigPath string) (*rest.Config, error)
 	}
 
 	return config, nil
+}
+
+func RespondWithError(c *gin.Context, code int, format string, args ...interface{}) {
+	resp := genericResponse(true, format, args ...)
+	c.JSON(code, resp)
+	c.Abort()
+}
+
+func RespondWithOk(c *gin.Context, format string, args ...interface{}) {
+	resp := genericResponse(false, format, args ...)
+	c.JSON(http.StatusOK, resp)
+	c.Abort()
+}
+
+func genericResponse(isError bool, format string, args ...interface{}) model.GenericResponse {
+	resp := model.GenericResponse{
+		Error:   isError,
+		Message: fmt.Sprintf(format, args ...),
+	}
+	return resp
+}
+
+func Int32Ptr(i int32) *int32 { return &i }
+
+//https://gist.github.com/mfojtik/a0018e29d803a6e2ba0c
+func SvcNameGen() string {
+	rand.Seed(time.Now().UnixNano())
+	name, _ := Generate("[a-z]{1}[a-z0-9]{4}")
+	return name
 }

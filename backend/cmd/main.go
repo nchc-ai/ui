@@ -1,10 +1,10 @@
 package main
 
 import (
-	"log"
 	"flag"
 	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/api"
+	log "github.com/golang/glog"
 )
 
 func main() {
@@ -25,6 +25,7 @@ func main() {
 		return
 	}
 
+	log.Info("Start API Server")
 	err = server.RunServer()
 	if err != nil {
 		log.Fatalf("start api server error: %s", err.Error())
