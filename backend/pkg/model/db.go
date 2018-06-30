@@ -12,7 +12,7 @@ type OauthUser struct {
 
 type Model struct {
 	ID        string     `gorm:"primary_key;size:36" json:"id"`
-	CreatedAt time.Time  `json:"-"`
+	CreatedAt time.Time  `json:"createAt"`
 	UpdatedAt time.Time  `json:"-"`
 	DeletedAt *time.Time `sql:"index" json:"-"`
 }
@@ -40,10 +40,11 @@ func (Course) TableName() string {
 
 type Job struct {
 	Model
+	OauthUser
 	// foreign key
 	CourseID string `gorm:"size:36"`
 
-	Deployment string `gorm:"not null"`
+	//Deployment string `gorm:"not null"`
 	Service    string `gorm:"not null"`
 	//ProxyUrl   string `gorm:"not null"`
 	Status string `gorm:"not null"`
@@ -72,23 +73,23 @@ func (Dataset) TableName() string {
 	return "datasets"
 }
 
-type StudentTake struct {
-	// foreign key
-	CourseID string `gorm:"primary_key;size:36"`
-	OauthUser       `gorm:"primary_key"`
-}
-
-func (StudentTake) TableName() string {
-	return "students_take"
-}
+//type StudentTake struct {
+//	// foreign key
+//	CourseID string `gorm:"primary_key;size:36"`
+//	OauthUser       `gorm:"primary_key"`
+//}
+//
+//func (StudentTake) TableName() string {
+//	return "students_take"
+//}
 
 // job may have multiple proxy url
-type Proxy struct {
-	JobID    string `gorm:"primary_key;size:36"`
-	ProxyUrl string `gorm:"primary_key"`
-	Name     string
-}
-
-func (Proxy) TableName() string {
-	return "proxy"
-}
+//type Proxy struct {
+//	JobID    string `gorm:"primary_key;size:36"`
+//	ProxyUrl string `gorm:"primary_key"`
+//	Name     string
+//}
+//
+//func (Proxy) TableName() string {
+//	return "proxy"
+//}

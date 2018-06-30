@@ -4,19 +4,22 @@ import (
 	"strconv"
 	"fmt"
 	"strings"
-	"log"
 	"net/http"
+	"encoding/json"
 
 	"k8s.io/client-go/kubernetes"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/validate"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/provider"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	"github.com/jinzhu/gorm"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
+	log "github.com/golang/glog"
 )
 
 type ResourceClient struct {
+	config    *viper.Viper
 	K8sClient *kubernetes.Clientset
 	DB        *gorm.DB
 }
@@ -24,32 +27,52 @@ type ResourceClient struct {
 type APIServer struct {
 	config         *viper.Viper
 	router         *gin.Engine
-	verifier       validate.Validate
+	providerProxy  provider.Provider
 	resourceClient *ResourceClient
 }
 
 func NewAPIServer(config *viper.Viper) *APIServer {
 	kclient, err := NewKClients(config)
 	if err != nil {
-		log.Fatalf("Create kubernetes client fail: %s", err.Error())
+		log.Fatalf("Create kubernetes client fail, Stop...: %s", err.Error())
 		return nil
 	}
+	log.Info("Create Kubernetes Client")
 
 	dbclient, err := NewDBClient(config)
 	if err != nil {
-		log.Fatalf("Create database client fail: %s", err.Error())
+		log.Fatalf("Create database client fail, Stop...: %s", err.Error())
+		return nil
+	}
+	log.Info("Create Database Client")
+
+	// convert each provider config json to ProviderConfig struct
+	// we need two phase conversion, map[string]interface{} -> json -> struct
+	// https://www.cnblogs.com/liang1101/p/6741262.html
+	log.Info("Create Oauth Provider Proxy")
+	providerConfigstr := config.GetStringMapString("api-server.provider")
+	var vconf model.ProviderConfig
+
+	// map[string]string -> json
+	jsonStr, err := json.Marshal(providerConfigstr)
+	if err != nil {
+		log.Fatalf(fmt.Sprintf(":%s", err.Error()))
 		return nil
 	}
 
-	var verifier validate.Validate
-	switch oauthProvider := config.GetString("api-server.validate.type"); oauthProvider {
+	// json -> struct
+	err = json.Unmarshal([]byte(jsonStr), &vconf)
+	if err != nil {
+		log.Fatalf(fmt.Sprintf(":%s", err.Error()))
+		return nil
+	}
+
+	var providerProxy provider.Provider
+	switch oauthProvider := vconf.Type; oauthProvider {
 	case "go-oauth":
-		verifier = validate.NewGoAuthValidate(config)
-	case "github":
-		verifier = validate.NewGithubValidate(config)
+		providerProxy = provider.NewGoAuthProvider(vconf)
 	default:
-		log.Println(fmt.Sprintf("%s is a not supported provider type, use dummy validater", oauthProvider))
-		verifier = validate.NewDummyValidate(config)
+		log.Warning(fmt.Sprintf("%s is a not supported provider type", oauthProvider))
 	}
 
 	return &APIServer{
@@ -57,10 +80,65 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 		resourceClient: &ResourceClient{
 			DB:        dbclient,
 			K8sClient: kclient,
+			config:    config,
 		},
-		router:   gin.Default(),
-		verifier: verifier,
+		router:        gin.Default(),
+		providerProxy: providerProxy,
 	}
+}
+
+func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
+
+	kConfig, err := util.GetConfig(
+		config.GetBool("api-server.isOutsideCluster"),
+		config.GetString("kubernetes.kubeconfig"))
+
+	if err != nil {
+		log.Fatalf("create kubenetes config fail: %s", err.Error())
+		return nil, err
+	}
+
+	clientset, err := kubernetes.NewForConfig(kConfig)
+	if err != nil {
+		log.Fatalf("create kubenetes client set fail: %s", err.Error())
+		return nil, err
+	}
+
+	return clientset, nil
+}
+
+func NewDBClient(config *viper.Viper) (*gorm.DB, error) {
+
+	dbArgs := fmt.Sprintf(
+		"%s:%s@tcp(%s:%d)/%s?charset=utf8&parseTime=True",
+		config.GetString("database.username"),
+		config.GetString("database.password"),
+		config.GetString("database.host"),
+		config.GetInt("database.port"),
+		config.GetString("database.database"),
+	)
+
+	db, err := gorm.Open("mysql", dbArgs)
+
+	if err != nil {
+		log.Fatalf("create database client fail: %s", err.Error())
+		return nil, err
+	}
+
+	// create tables
+	course := &model.Course{}
+	job := &model.Job{}
+	dateset := &model.Dataset{}
+
+	db.AutoMigrate(course)
+	db.AutoMigrate(job)
+	db.AutoMigrate(dateset)
+
+	// add foreign key
+	db.Model(job).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+	db.Model(dateset).AddForeignKey("course_id", "courses(id)", "CASCADE", "RESTRICT")
+
+	return db, nil
 }
 
 func (server *APIServer) RunServer() error {
@@ -71,7 +149,7 @@ func (server *APIServer) RunServer() error {
 	server.router.Use(server.CORSHeaderMiddleware())
 
 	// add route
-	server.resourceClient.AddRoute(server.router, server.AuthMiddleware())
+	server.AddRoute(server.router, server.resourceClient)
 
 	err := server.router.Run(":" + strconv.Itoa(server.config.GetInt("api-server.port")))
 	if err != nil {
@@ -80,51 +158,49 @@ func (server *APIServer) RunServer() error {
 	return nil
 }
 
-func respondWithError(code int, message string, c *gin.Context) {
-	resp := model.GenericResponse{
-		Error:   true,
-		Message: message,
-	}
-	c.JSON(code, resp)
-	c.Abort()
-}
-
 func (server *APIServer) AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//token := c.Request.FormValue("token")
-
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
-			respondWithError(http.StatusUnauthorized, "Authorization header is missing", c)
+			log.Error("Authorization header is missing")
+			util.RespondWithError(c, http.StatusUnauthorized, "Authorization header is missing")
 			return
 		}
 
 		bearerToken := strings.Split(authHeader, " ")
 
 		if len(bearerToken) != 2 || bearerToken[0] != "Bearer" {
-			respondWithError(http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing", c)
+			log.Errorf("Authorization header is not Bearer Token format or token is missing: %s", authHeader)
+			util.RespondWithError(c, http.StatusUnauthorized, "Authorization header is not Bearer Token format or token is missing")
 			return
 		}
 
-		// todo: do we support different provider at the same time ?
-		// if so, we need verify token with all supported provider
-		validated, err := server.verifier.Validate(bearerToken[1])
+		var validated bool
+		var err error
+
+		token := bearerToken[1]
+		validated, err = server.providerProxy.Validate(token)
+
+		if err != nil && err.Error() == "Access token expired" {
+			log.Error("Access token expired")
+			util.RespondWithError(c, http.StatusForbidden, "Access token expired")
+			return
+		}
+
 		if err != nil {
-			respondWithError(http.StatusInternalServerError, fmt.Sprintf("verify token process fail: %s", err.Error()), c)
+			log.Errorf("verify token fail: %s", err.Error())
+			util.RespondWithError(c, http.StatusInternalServerError, "verify token fail: %s", err.Error())
 			return
 		}
 
 		if !validated {
-			respondWithError(http.StatusForbidden, "Invalid API token", c)
+			util.RespondWithError(c, http.StatusForbidden, "Invalid API token")
 			return
 		}
 
-		// todo: add provider name in header
-		//c.Header("Provider", "provider-name")
-
-		// todo: verify if token is expire
-
+		c.Set("Provider", server.providerProxy.Name())
 		c.Next()
+
 	}
 }
 
@@ -142,40 +218,85 @@ func (resourceClient *ResourceClient) handleOption(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (resourceClient *ResourceClient) AddRoute(router *gin.Engine, authMiddleware gin.HandlerFunc) {
+func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceClient) {
 
 	// health check api
-	clusterGroup := router.Group("/v1").Group("/health")
+	health := router.Group("/v1").Group("/health")
 	{
-		clusterGroup.GET("/kubernetes", resourceClient.checkK8s)
-		clusterGroup.OPTIONS("/kubernetes", resourceClient.handleOption)
-		clusterGroup.POST("/database", resourceClient.checkDatabase)
-		clusterGroup.OPTIONS("/database", resourceClient.handleOption)
-		clusterGroup.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
-		clusterGroup.OPTIONS("/databaseAuth", resourceClient.handleOption)
+		health.GET("/kubernetes", resourceClient.checkK8s)
+		health.OPTIONS("/kubernetes", resourceClient.handleOption)
+		health.POST("/database", resourceClient.checkDatabase)
+		health.OPTIONS("/database", resourceClient.handleOption)
+		health.OPTIONS("/kubernetesAuth", resourceClient.handleOption)
+		health.OPTIONS("/databaseAuth", resourceClient.handleOption)
 	}
 
 	// health check require token
-	authGroup := router.Group("/v1").Group("/health").Use(authMiddleware)
+	healthAuth := router.Group("/v1").Group("/health").Use(server.AuthMiddleware())
 	{
-		authGroup.GET("/kubernetesAuth", resourceClient.checkK8s)
-		authGroup.POST("/databaseAuth", resourceClient.checkDatabase)
+		healthAuth.GET("/kubernetesAuth", resourceClient.checkK8s)
+		healthAuth.POST("/databaseAuth", resourceClient.checkDatabase)
 	}
 
 	// list advance and basic course, do not required token
-	bb := router.Group("/v1").Group("/course")
+	course := router.Group("/v1").Group("/course")
 	{
-		bb.GET("/level/:level", resourceClient.ListCourse)
-		bb.OPTIONS("/level/:level", resourceClient.handleOption)
-		bb.OPTIONS("/create", resourceClient.handleOption)
-		bb.OPTIONS("/list", resourceClient.handleOption)
+		course.GET("/level/:level", resourceClient.ListCourse)
+		course.OPTIONS("/level/:level", resourceClient.handleOption)
+		course.OPTIONS("/create", resourceClient.handleOption)
+		course.OPTIONS("/list", resourceClient.handleOption)
+		course.OPTIONS("/delete/:id", resourceClient.handleOption)
+		course.OPTIONS("/launch", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
-	aa := router.Group("/v1").Group("/course").Use(authMiddleware)
+	courseAuth := router.Group("/v1").Group("/course").Use(server.AuthMiddleware())
 	{
-		aa.POST("/create", resourceClient.AddCourse)
-		aa.POST("/list", resourceClient.ListCourse)
+		courseAuth.POST("/create", resourceClient.AddCourse)
+		courseAuth.POST("/list", resourceClient.ListCourse)
+		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
+		courseAuth.POST("/launch", resourceClient.LaunchCourse)
 	}
 
+	job := router.Group("/v1").Group("/job")
+	{
+		job.OPTIONS("/list", resourceClient.handleOption)
+		job.OPTIONS("/delete/:id", resourceClient.handleOption)
+
+	}
+
+	jobAuth := router.Group("/v1").Group("/job").Use(server.AuthMiddleware())
+	{
+		jobAuth.POST("/list", resourceClient.ListJob)
+		jobAuth.DELETE("/delete/:id", resourceClient.DeleteJob)
+	}
+
+	//proxy for communicate with provider
+	proxy := router.Group("/v1").Group("/proxy")
+	{
+		proxy.POST("/token", server.GetToken)
+		proxy.OPTIONS("/token", resourceClient.handleOption)
+		proxy.POST("/refresh", server.RefreshToken)
+		proxy.OPTIONS("/refresh", resourceClient.handleOption)
+	}
+
+	dataset := router.Group("/v1").Group("/datasets")
+	{
+		dataset.OPTIONS("/", resourceClient.handleOption)
+	}
+
+	datasetAuth := router.Group("/v1").Group("/datasets").Use(server.AuthMiddleware())
+	{
+		datasetAuth.GET("/", resourceClient.ListPVC)
+	}
+
+	image := router.Group("/v1").Group("/images")
+	{
+		image.OPTIONS("/", resourceClient.handleOption)
+	}
+
+	imageAuth := router.Group("/v1").Group("/images").Use(server.AuthMiddleware())
+	{
+		imageAuth.GET("/", resourceClient.ListImage)
+	}
 }
