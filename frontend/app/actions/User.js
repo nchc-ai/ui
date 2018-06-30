@@ -31,7 +31,7 @@ export const getCourseList = (user, token) => async (dispatch) => {
 };
 
 
-export const createCourse = token => async (dispatch) => {
+export const createCourse = (token, formData) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/create`,
@@ -41,15 +41,15 @@ export const createCourse = token => async (dispatch) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        "user": "user-name",
-        "name": "course name",
-        "introduction":"markdown text with escape",
-        "image":"course docker image",
-        "level": "basic",
-        "GPU": 1,
-        "datasets": [
-          "mnist",
-          "caltech256"
+        user: 'jimmy',
+        name: formData.user,
+        introduction: formData.intro,
+        image: formData.image,
+        level: formData.level,
+        GPU: parseInt(formData.gpu, 10),
+        datasets: [
+          'mnist',
+          'caltech256'
         ]
       }
     ),
@@ -61,3 +61,57 @@ export const createCourse = token => async (dispatch) => {
     console.error('createCourse 失敗');
   }
 };
+
+
+// 獲取datasets選項
+export const getDatasetsOpts = (user, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/datasets`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_DATASETS_OPTS
+    }
+  });
+
+  console.log('[getDatasetsOpts] response', response);
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getDatasetsOpts 失敗');
+  }
+};
+
+// export const luanchCourse = (token, formData) => async (dispatch) => {
+//   const response = await dispatch({
+//     [RSAA]: {
+//       endpoint: `${API_URL}/v1/course/create`,
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//         'Authorization': `Bearer ${token}`
+//       },
+//       body: JSON.stringify({
+//         user: 'jimmy',
+//         name: formData.user,
+//         introduction: formData.intro,
+//         image: formData.image,
+//         level: formData.level,
+//         GPU: parseInt(formData.gpu, 10),
+//         datasets: [
+//           'mnist',
+//           'caltech256'
+//         ]
+//       }
+//     ),
+//       types: types.CREATE_USER_COURSE
+//     }
+//   });
+
+//   if (_.isUndefined(response) || response.payload.error) {
+//     console.error('createCourse 失敗');
+//   }
+// };

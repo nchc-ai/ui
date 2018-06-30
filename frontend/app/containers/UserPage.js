@@ -22,6 +22,8 @@ class UserPage extends Component {
       token
     } = this.props;
     userAction.getCourseList('jimmy', token);
+
+    // userAction.getDatasetsOpts();
   }
 
   componentDidMount() {
@@ -33,12 +35,19 @@ class UserPage extends Component {
 
 
   handleSubmitFailed = (formData) => {
+    console.log('formData', formData);
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
   handleSubmit = (formData) => {
-    console.log('submit');
-    // this.props.authAction.manualLogin(user, this.afterLogin);
+    console.log('submit', formData);
+
+    const {
+      userAction,
+      token
+    } = this.props;
+
+    userAction.createCourse(token, formData);
   }
 
   resetEdit = () => {
@@ -75,8 +84,6 @@ class UserPage extends Component {
             {/* 課程列表 */}
             <Route exact path="/user/course">
               <div className="user-course-bg">
-
-
                 <Row>
                   <Col>
                     <h1>課程列表</h1>
@@ -95,7 +102,7 @@ class UserPage extends Component {
 
               </div>
             </Route>
-            
+            {/* 新增課程 */}
             <Route exact path="/user/course/add">
               <div className="user-course-edit-bg">
 

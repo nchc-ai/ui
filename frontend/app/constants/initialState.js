@@ -6,8 +6,12 @@ export const initialGlobalSearchState = {
 export const initialAddCourseState = {
   name: '',
   intro: '',
-  level: '',
   image: '',
+  level: '',
   startAt: '',
-  endAt: ''
+  endAt: '',
+  server: '',
+  gpu: '',
+  datasets: ''
 };
+

@@ -118,7 +118,7 @@ const FormGroups = ({
           }
 
           {/* [input] 下拉式選單 */}
-          {/* {
+          {
             d.inputType === 'select'
             ?
               <div className="form-input">
@@ -126,14 +126,14 @@ const FormGroups = ({
                   name="form-field-name"
                   value={_.get(targetForm, d.name)}
                   onChange={val => changeVal(val, d.name, d.target)}
-                  options={_.get(options, d.options)}
+                  options={d.options}
                   searchable={false}
                   clearable={false}
                 />
               </div>
             :
               null
-          } */}
+          }
 
           {/* [input] Async下拉式選單 */}
           {
@@ -191,6 +191,23 @@ const FormGroups = ({
               </div>
             :
             null
+          }
+          
+          {/* [input] Markdown */}
+          {
+            d.inputType === 'markdown'
+            ?
+              <div className="form-input">
+                <Control.textarea
+                  className={`input-${d.name} text-input`}
+                  model={`.${d.name}`}
+                  validators={d.validators}
+                  placeholder={d.placeholder}
+                  style={{ width: '400px', height: '200px', marginBottom: '40px' }}
+                />
+              </div>
+            :
+              null
           }
 
           {/* [input] Quill格式 */}
