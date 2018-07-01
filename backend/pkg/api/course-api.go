@@ -290,3 +290,40 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 	})
 
 }
+
+func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {
+	var req model.Course
+	var needRestartDeployment bool
+
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	findCourse := model.Course{
+		Model: model.Model{
+			ID: req.ID,
+		},
+	}
+
+	if err = resourceClient.DB.First(&findCourse).Error; err != nil {
+		return
+	}
+
+	// update job deployment later if course is updated
+	// dataset??
+	if findCourse.Gpu != req.Gpu || findCourse.Image != req.Image {
+		needRestartDeployment = true
+	}
+
+	// update course object fields
+
+	// update Course DB
+	resourceClient.DB.Update(&findCourse)
+
+	if needRestartDeployment == true {
+		// update deployment
+	}
+}
