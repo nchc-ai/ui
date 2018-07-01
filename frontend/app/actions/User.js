@@ -10,6 +10,7 @@ import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalSt
 // 獲取課程列表
 export const getCourseList = (user, token) => async (dispatch) => {
 
+  console.log('token', token);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/list`,
@@ -30,8 +31,31 @@ export const getCourseList = (user, token) => async (dispatch) => {
   }
 };
 
+// 獲取工作清單列表
+export const getJobList = (user, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/job/list`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ user }),
+      types: types.GET_JOB_LIST
+    }
+  });
+
+  console.log('[getJobList] response', response);
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getJobList 失敗');
+  }
+};
 
 export const createCourse = (token, formData) => async (dispatch) => {
+  console.log('formData', formData);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/create`,
@@ -42,7 +66,7 @@ export const createCourse = (token, formData) => async (dispatch) => {
       },
       body: JSON.stringify({
         user: 'jimmy',
-        name: formData.user,
+        name: formData.name,
         introduction: formData.intro,
         image: formData.image,
         level: formData.level,
@@ -69,7 +93,7 @@ export const getDatasetsOpts = (user, token) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/datasets`,
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`

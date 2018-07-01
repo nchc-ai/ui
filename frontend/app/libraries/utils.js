@@ -27,6 +27,22 @@ export function enterWithoutAuth() {
 	store.dispatch(push("/login"));
 }
 
+/*---------------------------
+  將某array分組
+  依序給group的名字又不失為一個array
+  以便for react去做mapping
+----------------------------*/
+
+export const groupArray = (arr, grpKey) => (
+  _.chain(arr)
+    .groupBy(grpKey)
+    .map((v, i) => ({
+      group: i,
+      data: [...v]
+    }))
+    .value()
+);
+
 
 /*---------------------------
 // 組OAuth字串 for <MyoauthButton />

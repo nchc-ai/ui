@@ -22,7 +22,7 @@ export const setUserToken = token => ({
 export const retrieveToken = (code, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/course/token`,
+      endpoint: `${API_URL}/v1/proxy/token`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -35,6 +35,7 @@ export const retrieveToken = (code, next) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('retrieveToken 失敗', response);
   }
+
   next(response.payload.token);
 };
 

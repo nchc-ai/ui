@@ -1,6 +1,8 @@
 import React from 'react';
 import _ from 'lodash';
 import { Table } from 'reactstrap';
+import { Link } from 'react-router-dom';
+import Moment from 'react-moment';
 import ToggleButton from 'react-toggle-button';
 import MdMoreVert from 'react-icons/lib/md/more-vert';
 import DataFrameTable from '../DataFrame/DataFrameTable';
@@ -22,6 +24,30 @@ const TableList = ({ data, tableData }) => (
             {
               tableData.cols.map((datum) => {
                 switch (datum.type) {
+                case 'link':
+                  return (
+                    <td key={datum.key}>
+                      <Link to={`course/${_.get(d, 'id')}`}>{_.get(d, datum.value)}</Link>
+                    </td>
+                  );
+                case 'level':
+                  return (
+                    <td key={datum.key}>
+                      { _.get(d, datum.value, 'basic') === 'advance' ? '進階' : '基礎' }
+                    </td>
+                  );
+                case 'date':
+                  return (
+                    <td key={datum.key}>
+                      <Moment format="YYYY/MM/DD" date={_.get(d, datum.value)} />
+                    </td>
+                  );
+                case 'more':
+                  return (
+                    <td key={datum.key}>
+                      <MdMoreVert />
+                    </td>
+                  );
                 case 'toggle':
                   return (
                     <td key={datum.key}>
@@ -33,18 +59,6 @@ const TableList = ({ data, tableData }) => (
                           trackStyle={{ borderRadius: 2 }}
                         />
                       </div>
-                    </td>
-                  );
-                case 'date':
-                  return (
-                    <td key={datum.key}>
-                      {_.get(d, datum.value)}
-                    </td>
-                  );
-                case 'more':
-                  return (
-                    <td key={datum.key}>
-                      <MdMoreVert />
                     </td>
                   );
                 default:

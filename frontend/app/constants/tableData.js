@@ -51,13 +51,15 @@ export const userCourseData = {
   cols: [
     {
       key: 1,
-      value: 'name'
+      value: 'name',
+      type: 'link'
     }, {
       key: 2,
-      value: 'level'
+      value: 'level',
+      type: 'level'
     }, {
       key: 3,
-      value: 'date',
+      value: 'createAt',
       type: 'date'
     }, {
       key: 4,

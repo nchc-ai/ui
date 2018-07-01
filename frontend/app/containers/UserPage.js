@@ -4,6 +4,7 @@ import { compose } from 'redux';
 import { Switch, Route } from 'react-router';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
+import _ from 'lodash';
 import { Form, Control, Errors, actions as formActions } from 'react-redux-form';
 import { notify } from "react-notify-toast";
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -14,6 +15,9 @@ import { userCourseData } from '../constants/tableData';
 import { addCourseForm, addCourseContainerOneForm, addCourseContainerTwoForm } from '../constants/formsData';
 import FormButtons from '../components/common/FormButtons/index';
 import HeaderBlock from '../components/common/HeaderBlock/index';
+import { jobs } from '../constants/tempData';
+import { groupArray } from '../libraries/utils';
+import SectionTitle from '../components/common/SectionTitle/index';
 
 class UserPage extends Component {
   componentWillMount() {
@@ -23,7 +27,11 @@ class UserPage extends Component {
     } = this.props;
     userAction.getCourseList('jimmy', token);
 
-    // userAction.getDatasetsOpts();
+    userAction.getDatasetsOpts();
+
+    userAction.getJobList('jimmy', token);
+
+    console.log('jobs', jobs, groupArray(jobs, 'name'));
   }
 
   componentDidMount() {
@@ -137,6 +145,76 @@ class UserPage extends Component {
               </div>
             </Route>
 
+            {/* 課程細項 */}
+            <Route exact path="/user/course/:courseId">
+              <div className="user-course-edit-bg">
+
+
+                <h1>課程細項</h1>
+                
+                
+                  
+                {/* 下方按鈕 */}
+                <FormButtons
+                  cancelName="上一頁"
+                  submitName="開始課程"
+                  backMethod={this.cancelEdit}
+                />
+
+
+              </div>
+            </Route>
+
+            {/* 工作清單 */}
+            <Route exact path="/user/job">
+              <div className="user-job-bg">
+
+                <SectionTitle
+                  title={'工作清單'}
+                  subTitle={'以下是您開始的課程中，正在執行的工作內容。'}
+                />
+                
+                {
+                  groupArray(jobs, 'name').map(
+                    (obj, i) => (
+                      <div key={i} className="job-group">
+                        <h4>{obj.group}</h4>
+                        <Row>
+                          {
+                            obj.data.map((thumb, j) => (
+                              <Col key={j} md={4} >
+                                <div className="job-card">
+                                  <button className="btn-cancel">X</button>
+                                  <p className="job-card-status">
+                                    <span className={`light light-${thumb.status}`} />
+                                    {thumb.status}
+                                  </p>
+                                  <p className="job-card-id">{thumb.id}</p>
+                                  {
+                                    thumb.service.map(
+                                      (service, k) => (
+                                        <span>
+                                          <a key={k} href={service.value}>
+                                            {service.label}
+                                          </a>
+                                          <span>|</span>
+                                        </span>
+                                      )
+                                    )
+                                  }
+                                </div>
+                              </Col>
+                            ))
+                          }
+                        </Row>
+                      </div>
+                    )
+                  )
+                }
+                
+              </div>
+            </Route>
+
           </Switch>
         </div>
         
@@ -156,7 +234,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = ({ Auth, User, forms }) => ({
   addCourse: forms.addCourse,
   token: Auth.token,
-  Course: { 
+  Course: {
     loading: User.course.loading,
     list: User.course.data
   }
