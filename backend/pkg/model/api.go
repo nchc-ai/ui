@@ -34,6 +34,11 @@ type ListCourseResponse struct {
 	Courses []Course `json:"courses"`
 }
 
+type GetCourseResponse struct {
+	Error  bool   `json:"error"`
+	Course Course `json:"course"`
+}
+
 type DatasetsListResponse struct {
 	Error    bool         `json:"error"`
 	Datasets []LabelValue `json:"datasets"`

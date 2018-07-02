@@ -208,6 +208,7 @@ func (server *APIServer) CORSHeaderMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
 		c.Next()
 	}
 }
@@ -247,6 +248,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		course.OPTIONS("/list", resourceClient.handleOption)
 		course.OPTIONS("/delete/:id", resourceClient.handleOption)
 		course.OPTIONS("/launch", resourceClient.handleOption)
+		course.OPTIONS("/get/:id", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
@@ -256,6 +258,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		courseAuth.POST("/list", resourceClient.ListCourse)
 		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
 		courseAuth.POST("/launch", resourceClient.LaunchCourse)
+		courseAuth.GET("/get/:id", resourceClient.GetCourse)
 	}
 
 	job := router.Group("/v1").Group("/job")

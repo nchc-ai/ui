@@ -290,3 +290,48 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 	})
 
 }
+
+func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		log.Errorf("Empty course id")
+		util.RespondWithError(c, http.StatusBadRequest, "Empty course id")
+		return
+	}
+
+	course := model.Course{
+		Model: model.Model{
+			ID: id,
+		},
+	}
+
+	result := model.Course{}
+	if err := resourceClient.DB.Where(&course).First(&result).Error; err != nil {
+		log.Errorf("Query courses {%s} fail: %s", id, err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Query courses {%s} fail: %s", id, err.Error())
+		return
+	}
+
+	dataset := model.Dataset{
+		CourseID: id,
+	}
+	datasetResult := []model.Dataset{}
+	if err := resourceClient.DB.Where(&dataset).Find(&datasetResult).Error; err != nil {
+		log.Errorf("Query course {%s} datasets fail: %s", id, err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Query course {%s} datasets fail: %s", id, err.Error())
+		return
+	}
+	courseDataset := []string{}
+	for _, s := range datasetResult {
+		courseDataset = append(courseDataset, s.DatasetName)
+	}
+
+	result.Datasets = courseDataset
+
+	c.JSON(http.StatusOK, model.GetCourseResponse{
+		Error:   false,
+		Course: result,
+	})
+
+}
