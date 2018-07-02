@@ -21,6 +21,58 @@
       &:nth-last-child(1) {
         border-bottom: 1px solid #eaeaea;
       }
+
+      td {
+
+        .action-open-btn {
+          cursor: pointer;
+        }
+
+        .action-open-btn:hover + .action-menu {
+          opacity: 1;
+          pointer-events: initial;
+        }
+        .action-menu {
+          position: absolute;
+          box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26);
+          opacity: 0;
+          pointer-events: none;
+
+          &:hover {
+            opacity: 1;
+            pointer-events: initial;
+          }
+
+          li {
+            @include rect(80px, 50px);
+            background-color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s ease-in-out;
+            cursor: pointer;
+
+            .action-btn {
+              background-color: transparent;
+              cursor: pointer;
+              .action-word {
+                padding-right: 5px;
+              }
+
+              svg {
+                transform: translateY(-1px);
+              }
+            }
+
+            &:hover {
+              background-color: $ailab-super-light-green;
+            }
+
+
+          }
+        }
+      }
+
     }
   }
 }

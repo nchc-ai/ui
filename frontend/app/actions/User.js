@@ -7,7 +7,7 @@ import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem } from '../libraries/utils';
 
 
-// 獲取課程列表
+// Course > List
 export const getCourseList = (user, token) => async (dispatch) => {
 
   console.log('token', token);
@@ -31,7 +31,7 @@ export const getCourseList = (user, token) => async (dispatch) => {
   }
 };
 
-// 獲取工作清單列表
+// Job > List
 export const getJobList = (user, token) => async (dispatch) => {
 
   const response = await dispatch({
@@ -53,6 +53,28 @@ export const getJobList = (user, token) => async (dispatch) => {
     console.error('getJobList 失敗');
   }
 };
+// Job > Delete
+export const deleteJob = (jobId, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/job/delete/${jobId}`,
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.DELETE_JOB
+    }
+  });
+
+  console.log('[deleteJob] response', response);
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('deleteJob 失敗');
+  }
+};
+
 
 export const createCourse = (token, formData) => async (dispatch) => {
   console.log('formData', formData);

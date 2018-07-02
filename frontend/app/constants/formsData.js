@@ -32,11 +32,11 @@ export const addCourseForm = [
     radioArr: [
       {
         key: 1,
-        value: 1,
+        value: 'basic',
         label: '基礎'
       }, {
         key: 2,
-        value: 2,
+        value: 'advance',
         label: '進階'
       }
     ],

@@ -5,9 +5,11 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import ToggleButton from 'react-toggle-button';
 import MdMoreVert from 'react-icons/lib/md/more-vert';
+import MdEdit from 'react-icons/lib/md/edit';
+import MdDelete from 'react-icons/lib/md/delete';
 import DataFrameTable from '../DataFrame/DataFrameTable';
 
-const TableList = ({ data, tableData }) => (
+const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -45,7 +47,23 @@ const TableList = ({ data, tableData }) => (
                 case 'more':
                   return (
                     <td key={datum.key}>
-                      <MdMoreVert />
+                      <button className="action-open-btn">
+                        <MdMoreVert />
+                      </button>
+                      <ul className="action-menu">
+                        <li>
+                          <button className="action-btn" onClick={() => editMethod(d)}>
+                            <span className="action-word">編輯</span>
+                            <MdEdit />
+                          </button>
+                        </li>
+                        <li>
+                          <button className="action-btn" onClick={() => deleteMethod(d)}>
+                            <span className="action-word">刪除</span>
+                            <MdDelete />
+                          </button>
+                        </li>
+                      </ul>
                     </td>
                   );
                 case 'toggle':

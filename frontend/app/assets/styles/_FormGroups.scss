@@ -35,10 +35,29 @@ $form-group-row-margin: 20px;
 		outline:none;
 
 		&:focus{
+			border-radius: 4px; 
 			border: solid 2px $form-group-border-focus-color;
 			box-shadow:none;
 		}
 
+	}
+
+	.radio-con {
+		label {
+			line-height: 29px;
+			.radio-input {
+				display: inline-block;
+				float: left;
+				width: 22px;
+			}
+		}
+	}
+
+	.md-input {
+		min-height: 160px;
+		border: 2px solid $form-group-border-color;
+		padding-left: 10px;
+    padding-top: 10px;
 	}
 
 	.errors{

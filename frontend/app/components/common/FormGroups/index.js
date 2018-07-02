@@ -6,6 +6,8 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
+import { Editor } from 'slate-react';
+import MarkdownPreview from '../MarkdownPreview/index';
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
@@ -18,7 +20,8 @@ const FormGroups = ({
   changeVal,
   loadOptsMethod,
   onRadioChange,
-  onDateChange
+  onDateChange,
+  onMdChange,
 }) => (
   <Row>
     {
@@ -50,7 +53,7 @@ const FormGroups = ({
                           type="radio"
                           className="radio-input"
                           value={opts.value}
-                          checked={targetForm.gender === opts.value}
+                          checked={targetForm.level === opts.value}
                           onChange={e => onRadioChange(e)}
                         />
                         {opts.label}
@@ -198,13 +201,7 @@ const FormGroups = ({
             d.inputType === 'markdown'
             ?
               <div className="form-input">
-                <Control.textarea
-                  className={`input-${d.name} text-input`}
-                  model={`.${d.name}`}
-                  validators={d.validators}
-                  placeholder={d.placeholder}
-                  style={{ width: '400px', height: '200px', marginBottom: '40px' }}
-                />
+                <MarkdownPreview />
               </div>
             :
               null

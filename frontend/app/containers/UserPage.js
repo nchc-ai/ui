@@ -7,6 +7,9 @@ import { Row, Col } from 'reactstrap';
 import _ from 'lodash';
 import { Form, Control, Errors, actions as formActions } from 'react-redux-form';
 import { notify } from "react-notify-toast";
+import { Value } from 'slate'
+
+
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import SideMenu from '../components/SideMenu/index';
 import TableList from '../components/common/TableList/index';
@@ -19,7 +22,35 @@ import { jobs } from '../constants/tempData';
 import { groupArray } from '../libraries/utils';
 import SectionTitle from '../components/common/SectionTitle/index';
 
+
+const initialValue = Value.fromJSON({
+  document: {
+    nodes: [
+      {
+        kind: 'block',
+        type: 'paragraph',
+        nodes: [
+          {
+            kind: 'text',
+            ranges: [
+              {
+                text: 'A line of text in a paragraph.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+});
+
+
 class UserPage extends Component {
+
+  state = {
+    value: initialValue
+  }
+
   componentWillMount() {
     const {
       userAction,
@@ -71,6 +102,33 @@ class UserPage extends Component {
     // }
   }
 
+  changeCourseIntro = ({ value }) => {
+
+    this.setState({ value });
+    console.log('change', value);
+  }
+
+
+  deleteJob = (e, thumb) => {
+    const {
+      token,
+      userAction
+    } = this.props;
+    
+    userAction.deleteJob(thumb.id, token);
+  }
+
+  editCourse = (course) => {
+    console.log('edit course', course);
+  }
+
+  deleteCourse = (course) => {
+    console.log('delete course', course);
+
+  }
+
+
+
   render() {
     const {
       match,
@@ -106,6 +164,8 @@ class UserPage extends Component {
                 <TableList
                   data={Course.list}
                   tableData={userCourseData}
+                  editMethod={this.editCourse}
+                  deleteMethod={this.deleteCourse}
                 />
 
               </div>
@@ -126,9 +186,11 @@ class UserPage extends Component {
                   <Row>
                     <Col md={5}>
                       <FormGroups
+                        state={this.state}
                         formData={addCourseForm}
                         targetForm={addCourse}
                         changeVal={changeValue}
+                        onMdChange={this.changeCourseIntro}
                       />
                     </Col>
                   </Row>
@@ -156,6 +218,7 @@ class UserPage extends Component {
                   
                 {/* 下方按鈕 */}
                 <FormButtons
+                  state={this.state}
                   cancelName="上一頁"
                   submitName="開始課程"
                   backMethod={this.cancelEdit}
@@ -184,7 +247,7 @@ class UserPage extends Component {
                             obj.data.map((thumb, j) => (
                               <Col key={j} md={4} >
                                 <div className="job-card">
-                                  <button className="btn-cancel">X</button>
+                                  <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
                                   <p className="job-card-status">
                                     <span className={`light light-${thumb.status}`} />
                                     {thumb.status}
