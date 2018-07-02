@@ -19,6 +19,7 @@ const FormGroups = ({
   size,
   changeVal,
   loadOptsMethod,
+  loadTagsOptsMethod,
   onRadioChange,
   onDateChange,
   onMdChange,
@@ -42,21 +43,21 @@ const FormGroups = ({
             ?
               <div className="form-input-radio">
                 {
-                  d.radioArr.map(opts => (
-                    <div key={opts.key}>
+                  d.radioArr.map(opt => (
+                    <div key={opt.key} className={`radio-input-con ${d.className}`}>
                       <label
-                        htmlFor={`radio-input-${opts.key}`}
+                        htmlFor={`radio-input-${opt.key}`}
                         className="radio-label"
                       >
                         <input
-                          id={`radio-input-${opts.key}`}
+                          id={`radio-input-${opt.key}`}
                           type="radio"
                           className="radio-input"
-                          value={opts.value}
-                          checked={targetForm.level === opts.value}
-                          onChange={e => onRadioChange(e)}
+                          value={opt.value}
+                          checked={_.get(targetForm, `${d.name}.value`) === opt.value}
+                          onChange={e => onRadioChange(e, opt)}
                         />
-                        {opts.label}
+                        <span>{opt.label}</span>
                       </label>
                     </div>
                   ))
@@ -160,7 +161,7 @@ const FormGroups = ({
 
           {/* [input] Async 多選 */}
           {
-            d.inputType === 'multi-async-select'
+            d.inputType === 'tags-input'
             ?
               <div className="form-input">
                 <Select.Async
@@ -169,7 +170,7 @@ const FormGroups = ({
                   value={_.get(targetForm, d.name)}
                   placeholder={d.placeholder}
                   onChange={val => changeVal(val, d.name, d.target)}
-                  loadOptions={input => loadOptsMethod(input)}
+                  loadOptions={input => loadTagsOptsMethod(input)}
                 />
               </div>
             :

@@ -9,6 +9,7 @@ export const addCourseForm = [
     name: 'name',
     inputType: 'text',
     mainLabel: '課程名稱',
+    placeholder: '請輸入英文名稱',
     validators: { required },
     errorMessage: {
       required: '請輸入課程名稱'
@@ -29,6 +30,7 @@ export const addCourseForm = [
     name: 'level',
     inputType: 'radio',
     mainLabel: '課程程度',
+    className: 'fl',
     radioArr: [
       {
         key: 1,
@@ -58,8 +60,14 @@ export const addCourseForm = [
   }, {
     key: 5,
     name: 'gpu',
-    inputType: 'text',
+    inputType: 'select',
     mainLabel: 'GPU核心數',
+    options: [
+      { label: 'x1', value: 1 },
+      { label: 'x2', value: 2 },
+      { label: 'x3', value: 3 },
+      { label: 'x4', value: 4 }
+    ],
     validators: { required },
     errorMessage: {
       required: '請輸入GPU核心數'
@@ -68,7 +76,7 @@ export const addCourseForm = [
   }, {
     key: 6,
     name: '',
-    inputType: 'datasets',
+    inputType: 'tags-input',
     mainLabel: '資料集',
     options: [
       {

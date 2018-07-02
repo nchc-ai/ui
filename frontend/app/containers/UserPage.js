@@ -102,6 +102,11 @@ class UserPage extends Component {
     // }
   }
 
+  changeCourseLevel = (e) => {
+
+    console.log('[changeCourseLevel] val', e.target.value);
+  }
+
   changeCourseIntro = ({ value }) => {
 
     this.setState({ value });
@@ -127,7 +132,9 @@ class UserPage extends Component {
 
   }
 
-
+  loadTagsOpts = () => {
+    console.log('loadtags');
+  }
 
   render() {
     const {
@@ -189,7 +196,9 @@ class UserPage extends Component {
                         state={this.state}
                         formData={addCourseForm}
                         targetForm={addCourse}
+                        loadTagsOptsMethod={this.loadTagsOpts}
                         changeVal={changeValue}
+                        onRadioChange={this.changeCourseLevel}
                         onMdChange={this.changeCourseIntro}
                       />
                     </Col>
