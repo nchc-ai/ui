@@ -1,0 +1,41 @@
+$list-view-font-size: 18px;
+$list-view-li-height: 50px;
+$list-view-li-margin: 30px;
+
+.list-view-comp {
+  
+  .list-view-li {
+    @include rect(initial, $list-view-li-height);
+    margin-bottom: $list-view-li-margin;
+
+    span {
+      font-size: $list-view-font-size;
+    }
+
+    .col-grp {
+      display: inline-block;
+      line-height: $list-view-li-height;
+    }
+
+    .col-icon {
+      @include square(50px);
+      text-align: center;
+      img {
+        @include rect-center(30px, 30px);
+        display: inline;
+        transform: translateY(-2px);
+      }
+    } 
+    .col-label {
+      @include rect(130px, initial);
+    }
+    .col-value {
+      @include rect(265px, initial);
+      padding-left: 20px;
+    }
+
+    .value-empty {
+      color: $footer-info-gray;
+    }
+  }
+}

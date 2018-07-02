@@ -3,8 +3,9 @@ import { Switch, Route, withRouter } from 'react-router';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import CourseIntro from '../components/Course/CourseIntro';
+import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
+import CourseIntro from '../components/Course/CourseIntro';
 import { courseList } from '../constants/fakeData';
 import { courseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -15,6 +16,10 @@ class CoursePage extends Component {
     // this.props.userAction.getCourseList('jimmy', token)
   }
 
+  cancelEdit = () => {
+    console.log('cancel');
+  }
+
   render() {
     const {
       match
@@ -23,6 +28,9 @@ class CoursePage extends Component {
     return (
       <div className="course-bg global-content">
         <Switch>
+          <Route exact path="/course/intro">
+            <CourseIntro />
+          </Route>
           <Route exact path="/course/:type">
             <CourseList
               match={match}
@@ -31,7 +39,10 @@ class CoursePage extends Component {
               courseType={courseType}
             />
           </Route>
-          <Route exact path="/course" component={CourseIntro} />
+          <Route exact path="/course/detail/:courseId">
+            <CourseDetail cancelEdit={this.cancelEdit} />
+          </Route>
+          
         </Switch>
       </div>
     );

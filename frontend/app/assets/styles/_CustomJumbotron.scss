@@ -1,0 +1,41 @@
+$custom-jumbotron-tag-color: $ailab-primary-dark-green;
+$custom-jumbotron-block-color: $ailab-black-text;
+
+.custom-jumbotron-comp {
+
+  .custom-jumbotron-tag {
+    @include rect(80px, 32px);
+    @include center-child;
+    margin-bottom: 30px;
+    font-size: 16px;
+    letter-spacing: 1.1px;
+    border-radius: 2px;
+    border: 1px solid $custom-jumbotron-tag-color;
+    color: $custom-jumbotron-tag-color;
+  }
+
+  .title-row {
+    @include center-child;
+
+    .title-side {
+      text-align: right;
+    }
+  }
+
+  hr {
+  }
+
+
+  .custom-jumbotron-info {
+    margin-top: 20px;
+    margin-bottom: 70px;
+
+    p {
+      text-align: justify;
+      font-size: 18px;
+      line-height: 30px;
+      letter-spacing: 1px;
+      color: $custom-jumbotron-block-color;
+    }
+  }
+}

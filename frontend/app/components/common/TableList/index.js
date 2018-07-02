@@ -29,7 +29,7 @@ const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
                 case 'link':
                   return (
                     <td key={datum.key}>
-                      <Link to={`course/${_.get(d, 'id')}`}>{_.get(d, datum.value)}</Link>
+                      <Link to={`/course/detail/${_.get(d, 'id')}`}>{_.get(d, datum.value)}</Link>
                     </td>
                   );
                 case 'level':

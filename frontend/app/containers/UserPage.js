@@ -22,7 +22,6 @@ import { jobs } from '../constants/tempData';
 import { groupArray } from '../libraries/utils';
 import SectionTitle from '../components/common/SectionTitle/index';
 
-
 const initialValue = Value.fromJSON({
   document: {
     nodes: [
@@ -212,27 +211,6 @@ class UserPage extends Component {
                   />
 
                 </Form>
-
-              </div>
-            </Route>
-
-            {/* 課程細項 */}
-            <Route exact path="/user/course/:courseId">
-              <div className="user-course-edit-bg">
-
-
-                <h1>課程細項</h1>
-                
-                
-                  
-                {/* 下方按鈕 */}
-                <FormButtons
-                  state={this.state}
-                  cancelName="上一頁"
-                  submitName="開始課程"
-                  backMethod={this.cancelEdit}
-                />
-
 
               </div>
             </Route>

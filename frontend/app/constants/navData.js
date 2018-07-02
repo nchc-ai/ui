@@ -12,7 +12,7 @@ export const mainNav = [
     key: 0,
     name: 'navbar.class',
     nameCh: '課程介紹',
-    url: '/course',
+    url: '/course/intro',
     // url: '/intro/class',
     isCate: true
   },

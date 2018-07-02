@@ -43,6 +43,68 @@ export const groupArray = (arr, grpKey) => (
     .value()
 );
 
+/*---------------------------
+  ListView用
+----------------------------*/
+
+
+export function formatGender(num) {
+  switch (num) {
+  case 0:
+    return '';
+  case 1:
+    return '男生';
+  case 2:
+    return '女生';
+  default:
+    return '';
+  }
+}
+
+
+export const formatDate = (text) => {
+  switch (text) {
+  case '0000-00-00':
+    return '';
+  default:
+    return <Moment format="YYYY/MM/DD" date={text} />;
+  }
+};
+
+export const formatOrderState = (text, type) => {
+  switch (text) {
+  case 'N':
+    return type === 'orderFront' ? '已付款' : '新單';
+  case 'P':
+    return '處理中';
+  case 'D':
+    return '交貨中';
+  case 'S':
+    return '已到貨';
+  case 'R':
+    return '退件中';
+  case 'G':
+    return '收到退件';
+  case 'X':
+    return '已取消';
+  case 'C':
+    return type === 'orderFront' ? '已完成' : '結案';
+  default:
+    return '購物車';
+  }
+};
+
+
+export const formatValue = (obj) => {
+  switch (obj.type) {
+  case 'gender':
+    return formatGender(obj.value);
+  case 'date':
+    return formatDate(obj.value);
+  default:
+    return obj.value;
+  }
+};
 
 /*---------------------------
 // 組OAuth字串 for <MyoauthButton />

@@ -17,8 +17,8 @@ const routeClient = ({ offline }) => (
     <Switch>
       { offline ? <Route path="*" component={StaticPage} /> : null }
       <Route exact path="/" component={IndexPage} />
+      <Route exact path="/course/:type/:courseId" component={CoursePage} />
       <Route exact path="/course/:type" component={CoursePage} />
-      <Route exact path="/course" component={CoursePage} />
       <Route exact path="/contact" component={ContactPage} />
       <Route exact path="/login" component={AuthPage} />
       <Route exact path="/signup" component={AuthPage} />
