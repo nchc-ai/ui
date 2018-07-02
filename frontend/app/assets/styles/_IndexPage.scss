@@ -1,0 +1,111 @@
+.index-bg {
+
+
+  .section-grp {
+    @include rect(100%,initial);
+    position: relative;
+    min-height: 600px;
+    overflow: hidden;
+    
+
+    .img-grp {
+      position: absolute;
+      z-index: 10;
+    }
+  }
+
+  .section-01 {
+    padding-top: 1px;
+    background-image: url('../images/index/section01-bg.png');
+    overflow: initial;
+
+    .title {
+      @include rect-center(740px,180px);
+      margin-top: 60px;
+    }
+
+    .info {
+      @include rect-center(830px,70px);
+      margin-top: 36px;
+    }
+
+    .highlight {
+      @include rect-center(1000px,145px);
+      margin-top: 18px;
+      background-image: url('../images/index/section01-highlight.png');
+      span {
+        @include rect(730px,145px);
+        @include margin-leftop(170px,20px);
+        font-size: 32px;
+        display: inline-block;
+      }
+    }
+
+    .img-tree {
+      @include margin-leftop(200px, 50px);
+    }
+
+    .img-tree-02 {
+      margin-top: 320px;
+      right: 190px;
+    }
+
+    .img-train {
+      width: 800px;
+      top: 380px;
+      right: 0px;
+    }
+
+
+  }
+
+  .section-02 {
+    height: 1127px;
+    background-image: url('../images/index/section02-bg.png');
+  
+    .section-02-thumb {
+      @include rect-center(80%, initial);
+      margin-top: 90px;
+    }
+    
+  }
+
+  .section-03 {
+    height: 1555px;
+    background-image: url('../images/index/section03-bg.png');
+    
+    .section-03-container {
+
+      @include rect-center(1200px, initial);
+      margin-bottom: 70px;
+      .intro-img {
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+
+      }
+
+      .line-h {
+        @include rect-center(100%, 1px);
+        @include margin-v(35px);
+        background-color: #000;
+      }
+
+      .content {
+        line-height: 36px;
+
+        p {
+          font-size: 20px;
+          margin-bottom: 30px;
+        }
+      }
+    }
+    
+    .line-h {
+      @include rect-center(80%, 1px);
+      background-color: #000;
+      transform: translateY(9px);
+    }
+    
+  }
+
+
+}

@@ -1,0 +1,36 @@
+$button-cancel-color: #eaeaea;
+$button-error-color: $ai-input-border-hover;
+$button-success-color: $ai-input-border-hover;
+$button-add-color: $ai-secondary-light-green;
+
+// General
+// btn-pair next-btn
+
+.btn-pair{
+  @include rect(100%,40px);       
+  font-size:16px;
+  color:#fff;
+  outline: none;
+}
+
+.back-btn{
+  @include opacity-button;
+  background-color: $button-cancel-color;
+  opacity: 0.7;
+}
+
+.reset-btn{
+  @include opacity-button;
+  background-color: $button-error-color;
+  opacity: 0.7;
+}
+
+.next-btn{
+  @include scale-button;
+  background-color: $button-success-color;
+}
+
+.add-btn {
+  @include opacity-button;
+  background-color: $button-add-color;
+}

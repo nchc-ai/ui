@@ -1,0 +1,55 @@
+$header-color: $ai-light-grey;
+$header-font-color: $ai-main-grey;
+
+.header-block-comp {
+  .header-block-header {
+    @include rect-center(100%,50px); 
+    background-color: $header-color;
+    li{
+      height: 50px;
+      color:$header-font-color;
+      line-height: 50px;
+    }
+
+    .list-col-01 {
+      text-align: left;
+      padding-left: 40px;
+    }
+
+    .list-col-06-header{
+      text-align: center;
+    }
+
+
+  }
+
+  .header-block-content {
+    min-height: 60px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border: 1px solid $header-color;
+  }
+
+
+  .list-col-grp{
+    height: 100%;
+    text-align: center;
+    float:left;
+  }
+
+  .list-col-01{ width: 33%; }
+  .list-col-02{ width: 18%; }
+  .list-col-03{ width: 10%;  }
+  .list-col-04{ width: 15%; }
+  .list-col-05{ width: 6%; }
+  .list-col-06{ width: 18%; padding-right: 25px; text-align: right; }
+
+  .list-col-06-header{
+    text-align: center;
+  }
+
+
+
+
+}
+

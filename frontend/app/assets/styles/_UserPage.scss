@@ -1,0 +1,35 @@
+.user-bg {
+  .side-menu-wrap {
+  
+    min-height: 1000px;
+    position: relative;
+    background-color: #f8f4f4;
+  
+  }
+
+  .user-container {
+    width: 80%;
+    padding-left: 80px;
+    padding-top: 100px;
+
+
+    .user-course-bg {
+      width: 1000px;
+
+      .col {
+        text-align: right;
+      }
+
+      .add-btn {
+        @include rect(120px, 35px);
+        margin-left: auto;
+        display: inline;
+        border-radius: 4px;
+      }
+
+    }
+  }
+
+
+}
+

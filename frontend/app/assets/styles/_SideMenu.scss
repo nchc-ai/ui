@@ -1,0 +1,48 @@
+$highlight-color: #d4ebeb;
+$highlight-font-color: #000;
+
+.side-menu-comp {
+  @include rect(225px, 100%);
+  background-color: #f8f4f4;
+
+  // DogTag ----
+  .dog-tag-comp {
+    @include margin-leftop(20px, 30px);
+    margin-bottom: 20px;
+    
+    .content-container p {
+      color:#9b9b9b;
+    }
+  }
+  // ----------
+
+
+  li.side-menu-li {
+    @include rect(100%, 60px);
+    transition: all .2s ease-in-out;
+    
+    // LinkFormat
+    .link-format-comp {
+      padding-left: 70px;
+      .link-format-container {
+        a.link-text, span.link-text {
+          p.title, p.info {
+            color: $nav-font-color;
+          }
+        }
+      }
+    }
+  }
+
+  li.active {
+    background-color: $highlight-color;
+    &:before {
+      @include rect(5px, 60px);
+      content: '';
+      position: absolute;
+      background-color:#2a9b9d;
+      
+    }
+    // color: $highlight-font-color;
+  }
+}
