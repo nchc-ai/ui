@@ -1,0 +1,44 @@
+.data-frame-comp {
+
+	.no-data-comp{
+
+		@include rect(100%,100%);
+		.no-data-container{
+	
+			@include rect-center(200px,initial);
+			text-align: center;
+			color:#9C9C9C;
+	
+			.no-data-icon{	
+	
+				@include rect-center(40px,40px);
+				vertical-align: middle;
+			}
+
+			.no-data-word {
+				vertical-align: middle;
+			}
+			a{
+				line-height: 70px;
+			}
+	
+		}
+	}
+	
+	
+	.loading-comp{
+	
+		@include square(100%);
+		display: inline-grid;
+		
+		img{
+				
+			@include center;
+			width:50px !important;
+			height:50px !important; 
+			vertical-align: middle;
+		}
+	}
+
+}
+

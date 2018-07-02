@@ -39,35 +39,31 @@ export const userCourseData = {
       text: '課程名稱'
     }, {
       key: 2,
-      text: '程度'
+      text: '課程程度'
     }, {
       key: 3,
-      text: '開課日期'
+      text: '課程建立時間'
     }, {
       key: 4,
-      text: '容器狀態'
-    }, {
-      key: 5,
       text: ''
     }
   ],
   cols: [
     {
       key: 1,
-      text: 'name'
+      value: 'name',
+      type: 'link'
     }, {
       key: 2,
-      text: 'level'
+      value: 'level',
+      type: 'level'
     }, {
       key: 3,
-      text: 'image'
+      value: 'createAt',
+      type: 'date'
     }, {
       key: 4,
-      text: '',
-      type: 'toggle'
-    }, {
-      key: 5,
-      text: '',
+      value: '',
       type: 'more'
     }
   ]

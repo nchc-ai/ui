@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as actionTypes from '../actions/actionTypes';
 import { LOADING, SUCCESS } from '../constants/apiActions';
-import { courses } from '../libraries/utils';
+import { courses } from '../libraries/backToFront';
 
 const InitialState = {
   course: {

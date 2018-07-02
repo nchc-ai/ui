@@ -207,7 +207,7 @@ export const sideNav = [
     isLink: true
   }, {
     key: 1,
-    url: '/user/work',
+    url: '/user/job',
     text: '工作清單',
     isMain: false,
     isLink: true

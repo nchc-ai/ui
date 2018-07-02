@@ -28,10 +28,10 @@ const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
       >
         <img alt="" src={localBtnImg} />
       </MyoauthButton>
-      <h4>OR</h4>
+      {/* <h4>OR</h4>
       <button className="btn-login-github btn-grp">
         <img alt="" src={githubBtnImg} />
-      </button>
+      </button> */}
 
       <p className="policy-word">By continuing, you agree to NCHC.ai’s Terms of Service, Privacy Policy</p>
     </div>

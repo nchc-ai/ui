@@ -17,7 +17,7 @@ export const addCourseForm = [
   }, {
     key: 2,
     name: 'intro',
-    inputType: 'text',
+    inputType: 'markdown',
     mainLabel: '課程介紹',
     validators: { required },
     errorMessage: {
@@ -27,8 +27,19 @@ export const addCourseForm = [
   }, {
     key: 3,
     name: 'level',
-    inputType: 'text',
+    inputType: 'radio',
     mainLabel: '課程程度',
+    radioArr: [
+      {
+        key: 1,
+        value: 1,
+        label: '基礎'
+      }, {
+        key: 2,
+        value: 2,
+        label: '進階'
+      }
+    ],
     validators: { required },
     errorMessage: {
       required: '請輸入課程程度'
@@ -36,16 +47,6 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 4,
-    name: 'startAt',
-    inputType: 'text',
-    mainLabel: '開課時間',
-    validators: { required },
-    errorMessage: {
-      required: '請輸入開課時間'
-    },
-    isRequired: true
-  }, {
-    key: 5,
     name: 'image',
     inputType: 'text',
     mainLabel: '映像檔',
@@ -55,10 +56,31 @@ export const addCourseForm = [
     },
     isRequired: true
   }, {
-    key: 6,
+    key: 5,
     name: 'gpu',
     inputType: 'text',
-    mainLabel: 'GPU',
+    mainLabel: 'GPU核心數',
+    validators: { required },
+    errorMessage: {
+      required: '請輸入GPU核心數'
+    },
+    isRequired: true
+  }, {
+    key: 6,
+    name: '',
+    inputType: 'datasets',
+    mainLabel: '資料集',
+    options: [
+      {
+        key: 1,
+        value: 1,
+        label: 'asc'
+      }, {
+        key: 2,
+        value: 2,
+        label: '進階'
+      }
+    ],
     validators: { required },
     errorMessage: {
       required: '請輸入GPU核心數'

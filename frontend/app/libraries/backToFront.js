@@ -1,9 +1,12 @@
 import _ from 'lodash';
 
-export const coures = row => ({
+export const courses = row => ({
+  id: _.get(row, 'id'),
   name: _.get(row, 'name'),
-  teacher: '',
+  intro: _.get(row, 'introduction'),
+  image: _.get(row, 'image'),
+  gpu: _.get(row, 'gpu'),
   level: _.get(row, 'level'),
-  data: _.get(row, 'image'),
-  date: _.get(row, '')
+  datasets: _.get(row, 'datasets'),
+  createAt: _.get(row, 'createAt')
 });
