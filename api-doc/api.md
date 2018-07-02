@@ -5,6 +5,9 @@
       * [X] [Launch](#launch)
       * [X] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
+      * [X] [Get](#get)
+      * [ ] [Update](#update)
+      * [ ] [List all courses](#list-all-courses)
    * [Job](#job)
       * [X] [List](#list-1)
       * [X] [Delete](#delete-1)
@@ -753,7 +756,7 @@
 
 * **Description**
  
-  List basic or advance courses information
+  Get one courses information by course id
 
 * **URL**
 
@@ -896,6 +899,9 @@
       }
    ```
 
+## Update
+
+## List all courses
 
 # Job
 
