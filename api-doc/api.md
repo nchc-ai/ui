@@ -5,6 +5,9 @@
       * [X] [Launch](#launch)
       * [X] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
+      * [X] [Get](#get)
+      * [ ] [Update](#update)
+      * [ ] [List all courses](#list-all-courses)
    * [Job](#job)
       * [X] [List](#list-1)
       * [X] [Delete](#delete-1)
@@ -748,6 +751,157 @@
       }
    ```
 
+## Get
+
+
+* **Description**
+ 
+  Get one courses information by course id
+
+* **URL**
+
+  /v1/course/get/:id
+  
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "course": 
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            }
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Empty course id"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Query courses {%s} fail: %s"
+     }
+    ```
+    
+    ```json
+    {
+        "error": true,
+        "message": "Query course {%s} datasets fail: %s"
+     }
+    ```    
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/course/get/ea8870aa-01d6-443e-b1ca-c6e79cd1d930
+
+      {
+        "error": false,
+        "course": 
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            }
+      }
+   ```
+
+## Update
+
+## List all courses
 
 # Job
 
