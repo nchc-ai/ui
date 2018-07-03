@@ -57,8 +57,6 @@ class UserPage extends Component {
     } = this.props;
     userAction.getCourseList('jimmy', token);
 
-    userAction.getDatasetsOpts();
-
     userAction.getJobList('jimmy', token);
 
     console.log('jobs', jobs, groupArray(jobs, 'name'));
@@ -77,6 +75,17 @@ class UserPage extends Component {
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
+  redirect = () => {
+    const {
+      userAction,
+      token,
+      history
+    } = this.props;
+    userAction.getCourseList('jimmy', token);
+    history.push('user/course');
+  }
+
+
   handleSubmit = (formData) => {
     console.log('submit', formData);
 
@@ -85,12 +94,13 @@ class UserPage extends Component {
       token
     } = this.props;
 
-    userAction.createCourse(token, formData);
+    userAction.createCourse(token, formData, this.redirect);
   }
 
   resetEdit = () => {
     // this.props.uiAction.openResetDialog(types.ITEMS);
   }
+
 
   cancelEdit = () => {
     // const groupType = _.get(this.props.match, 'params.groupType');
@@ -123,17 +133,21 @@ class UserPage extends Component {
   }
 
   editCourse = (course) => {
-    console.log('edit course', course);
+    console.log('[edit course] course', course);
   }
 
   deleteCourse = (course) => {
-    console.log('delete course', course);
+    console.log('[delete course] course', course);
 
   }
 
   loadTagsOpts = () => {
-    console.log('loadtags');
-  }
+    const {
+      userAction,
+      token
+    } = this.props;
+    return userAction.getDatasetsOpts('jimmy', token);
+  };
 
   render() {
     const {
@@ -275,8 +289,8 @@ class UserPage extends Component {
 
 const mapDispatchToProps = dispatch => ({
   resetForm: () => dispatch(formActions.reset('forms.addCourse')),
-  changeValue: (value, target) => dispatch(formActions.change(
-    `forms.addCourse.${target}`,
+  changeValue: (value, key, target) => dispatch(formActions.change(
+    `forms.${target}.${key}`,
     value
   ))
 });

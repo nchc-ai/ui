@@ -73,9 +73,6 @@ const config = {
         exclude: /node_modules/,
         loaders: JxsLoader
       }, {
-        test: /\.json?$/,
-        loader: 'json-loader'
-      }, {
         test: /\.(ico|eot|woff|woff2|ttf|svg|png|jpg|gif)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
         loader: 'url-loader?limit=3000'
       }

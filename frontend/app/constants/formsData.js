@@ -60,6 +60,7 @@ export const addCourseForm = [
   }, {
     key: 5,
     name: 'gpu',
+    target: 'addCourse',
     inputType: 'select',
     mainLabel: 'GPU核心數',
     options: [
@@ -75,7 +76,8 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 6,
-    name: '',
+    name: 'datasets',
+    target: 'addCourse',
     inputType: 'tags-input',
     mainLabel: '資料集',
     options: [

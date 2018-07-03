@@ -14,6 +14,13 @@ class CoursePage extends Component {
 
   componentWillMount() {
     // this.props.userAction.getCourseList('jimmy', token)
+    const {
+      courseAction,
+      token,
+      match
+    } = this.props;
+    courseAction.getCourseDetail(match.params.courseId, token);
+
   }
 
   cancelEdit = () => {
@@ -22,7 +29,8 @@ class CoursePage extends Component {
 
   render() {
     const {
-      match
+      match,
+      courseDetail
     } = this.props;
     const courseType = _.get(match, 'params.type');
     return (
@@ -40,7 +48,7 @@ class CoursePage extends Component {
             />
           </Route>
           <Route exact path="/course/detail/:courseId">
-            <CourseDetail cancelEdit={this.cancelEdit} />
+            <CourseDetail detail={courseDetail} cancelEdit={this.cancelEdit} />
           </Route>
           
         </Switch>
@@ -49,8 +57,9 @@ class CoursePage extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth }) => ({
-  token: Auth.token
+const mapStateToProps = ({ Auth, Course }) => ({
+  token: Auth.token,
+  courseDetail: Course.courseDetail.data
 });
 
 

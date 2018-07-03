@@ -1,41 +1,33 @@
-// import * as actionTypes from '../actions/actionTypes';
+import _ from 'lodash';
+import * as actionTypes from '../actions/actionTypes';
+import { LOADING, SUCCESS } from '../constants/apiActions';
 
-// const InitialState = {
-//   loading: false,
-//   isLogin: false,
-//   data: [],
-//   userInfo: {
-//     email: '',
-//     username: '',
-//     nickName: '',
-//     gender: '',
-//     birthday: '',
-//     mobile: '',
-//     tel: '',
-//     address: '',
-//     selfIntro: ''
-//   }
-// };
+const InitialState = {
+  courseDetail: {
+    loading: false,
+    data: {}
+  }
+};
 
-// export default function Auth(state = InitialState, action) {
-//   switch (action.type) {
-//   case actionTypes.SET_USER_INFO:
-//     return {
-//       ...state,
-//       isLogin: action.isLogin,
-//       userInfo: {
-//         ...state.userInfo,
-//         ...action.userInfo
-//       }
-//     };
-
-//   case actionTypes.LOGOUT:
-//     return {
-//       ...state,
-//       isLogin: false,
-//       userInfo: {}
-//     };
-//   default:
-//     return state;
-//   }
-// }
+export default function Course(state = InitialState, action) {
+  switch (action.type) {
+  case actionTypes.GET_COURSE_DETAIL[LOADING]:
+    return {
+      ...state,
+      courseDetail: {
+        ...state.course,
+        isLoading: true
+      }
+    };
+  case actionTypes.GET_COURSE_DETAIL[SUCCESS]:
+    return {
+      ...state,
+      courseDetail: {
+        isLoading: false,
+        data: action.payload.course
+      }
+    };
+  default:
+    return state;
+  }
+}

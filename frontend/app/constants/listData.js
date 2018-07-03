@@ -9,7 +9,7 @@ export const courseDetailList = obj => ([
     key: 1,
     icon: <img alt="" src={IconCalendar} />,
     label: '建立時間',
-    type: 'data',
+    type: 'date',
     value: obj.createAt
   }, {
     key: 2,

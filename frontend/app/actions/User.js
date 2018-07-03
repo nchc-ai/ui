@@ -31,6 +31,8 @@ export const getCourseList = (user, token) => async (dispatch) => {
   }
 };
 
+
+
 // Job > List
 export const getJobList = (user, token) => async (dispatch) => {
 
@@ -76,7 +78,7 @@ export const deleteJob = (jobId, token) => async (dispatch) => {
 };
 
 
-export const createCourse = (token, formData) => async (dispatch) => {
+export const createCourse = (token, formData, next) => async (dispatch) => {
   console.log('formData', formData);
   const response = await dispatch({
     [RSAA]: {
@@ -91,12 +93,9 @@ export const createCourse = (token, formData) => async (dispatch) => {
         name: formData.name,
         introduction: formData.intro,
         image: formData.image,
-        level: formData.level,
-        GPU: parseInt(formData.gpu, 10),
-        datasets: [
-          'mnist',
-          'caltech256'
-        ]
+        level: formData.level.value,
+        GPU: parseInt(formData.gpu.value, 10),
+        datasets: formData.datasets.map(d => d.value)
       }
     ),
       types: types.CREATE_USER_COURSE
@@ -106,16 +105,19 @@ export const createCourse = (token, formData) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('createCourse 失敗');
   }
+
+  next();
 };
 
 
 // 獲取datasets選項
 export const getDatasetsOpts = (user, token) => async (dispatch) => {
 
+  // console.log('token', token);
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/datasets`,
-      method: 'POST',
+      endpoint: `${API_URL}/v1/datasets/`,
+      method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -124,11 +126,16 @@ export const getDatasetsOpts = (user, token) => async (dispatch) => {
     }
   });
 
-  console.log('[getDatasetsOpts] response', response);
+  console.log('[getDatasetsOpts] response', response, response.payload.datasets);
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getDatasetsOpts 失敗');
   }
+
+  return {
+    options: response.payload.datasets,
+    complete: response.payload.datasets
+  };
 };
 
 // export const luanchCourse = (token, formData) => async (dispatch) => {

@@ -6,8 +6,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
-import { Editor } from 'slate-react';
-import MarkdownPreview from '../MarkdownPreview/index';
+import MarkdownShortcuts from '../MarkdownShortcuts/index';
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
@@ -202,7 +201,7 @@ const FormGroups = ({
             d.inputType === 'markdown'
             ?
               <div className="form-input">
-                <MarkdownPreview />
+                <MarkdownShortcuts />
               </div>
             :
               null
