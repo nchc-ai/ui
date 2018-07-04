@@ -21,6 +21,7 @@
    * [Proxy](#proxy)
       * [X] [Token](#token)
       * [X] [Refresh](#refresh)
+      * [X] [Introspection](#introspection)
    * [Image](#image)
       * [ ] [List](#list-3)
       
@@ -1886,6 +1887,89 @@
         "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
         "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
      }
+   ```
+
+## Introspection
+
+
+* **Description**
+
+  Get token meta information from provider
+
+* **URL**
+
+  /v1/proxy/introspection
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+      "active": true,
+      "scope": "read_write",
+      "client_id": "test_client_1",
+      "username": "ogre0403@gmail.com",
+      "token_type": "Bearer",
+      "exp": 1530672296
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Introspection Token {%s} fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -d '"{"refresh_token":"7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"}"' \
+        http://localhost:8080/v1/proxy/refresh
+
+        {
+          "active": true,
+          "scope": "read_write",
+          "client_id": "test_client_1",
+          "username": "ogre0403@gmail.com",
+          "token_type": "Bearer",
+          "exp": 1530672296
+        }
    ```
 
 

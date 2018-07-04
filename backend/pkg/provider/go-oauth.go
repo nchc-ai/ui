@@ -164,6 +164,50 @@ func (g *GoAuth) RefreshToken(refresh_token string) (*TokenResponse, error) {
 	return &tokenResp, nil
 }
 
+func (g *GoAuth) Introspection(token string) (*IntrospectResponse, error) {
+	client := &http.Client{}
+	data := url.Values{}
+	data.Add("token", token)
+	req, err := http.NewRequest("POST", g.introspect_url, strings.NewReader(data.Encode()))
+	if err != nil {
+		return nil, err
+	}
+
+	req.SetBasicAuth(g.oauthConfig.ClientID, g.oauthConfig.ClientSecret)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		var errResp model.ErrResp
+		err = json.Unmarshal(bodyBytes, &errResp)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, errors.New(errResp.Error)
+	}
+
+	var introspectResp IntrospectResponse
+	err = json.Unmarshal(bodyBytes, &introspectResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &introspectResp, nil
+
+}
+
 func (g *GoAuth) Name() string {
 	return g.name
 }

@@ -281,6 +281,8 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		proxy.OPTIONS("/token", resourceClient.handleOption)
 		proxy.POST("/refresh", server.RefreshToken)
 		proxy.OPTIONS("/refresh", resourceClient.handleOption)
+		proxy.POST("/introspection", server.Introspection)
+		proxy.OPTIONS("/introspection", resourceClient.handleOption)
 	}
 
 	dataset := router.Group("/v1").Group("/datasets")
