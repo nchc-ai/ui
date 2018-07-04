@@ -10,13 +10,11 @@ export const getCourseListByLevel = level => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/level/${level}`,
+      endpoint: `${API_URL}/v1/course/level/${level}`,
       method: 'GET',
       types: types.GET_COURSE_LIST_BY_LEVEL
     }
   });
-
-  // console.log('[getCourseListByLevel] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getCourseListByLevel 失敗');

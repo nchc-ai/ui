@@ -6,7 +6,6 @@ import _ from 'lodash';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
-import { courseList } from '../constants/fakeData';
 import { courseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 
@@ -14,11 +13,23 @@ class CoursePage extends Component {
 
   componentWillMount() {
     // this.props.userAction.getCourseList('jimmy', token)
+    this.fetchData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.url !== this.props.match.url) {
+      window.scrollTo(0, 0);
+      this.fetchData(nextProps);
+    }
+  }
+
+
+  fetchData = (nextProps) => {
     const {
       courseAction,
       token,
       match
-    } = this.props;
+    } = nextProps;
 
     const type = _.get(match, 'params.type');
 
@@ -36,6 +47,7 @@ class CoursePage extends Component {
   render() {
     const {
       match,
+      courseList,
       courseDetail
     } = this.props;
     const courseType = _.get(match, 'params.type');
@@ -73,6 +85,7 @@ class CoursePage extends Component {
 
 const mapStateToProps = ({ Auth, Course }) => ({
   token: Auth.token,
+  courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data
 });
 
