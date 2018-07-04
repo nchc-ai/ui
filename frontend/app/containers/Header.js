@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
+import { Hover } from 'react-powerplug';
 // import TopBar from './TopBar.js';
 
 
@@ -15,8 +16,10 @@ import { mainNav } from '../constants/navData';
 import logoImg from '../../public/images/header/header-logo.png';
 import GlobalSearch from '../components/Header/GlobalSearch';
 
-import iconMember from '../../public/images/common/ic-nav-member-default.png';
-import iconLogout from '../../public/images/common/ic-nav-logout-default.png';
+import iconMemberBefore from '../../public/images/common/ic-nav-member-default.png';
+import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png';
+import iconLogoutBefore from '../../public/images/common/ic-nav-logout-default.png';
+import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png';
 
 // import IconList from './IconList';
 
@@ -26,7 +29,6 @@ class Header extends Component {
   }
 
   logout = () => {
-    console.log('logout');
     this.props.authAction.logout();
     this.props.history.push('/');
   }
@@ -67,12 +69,21 @@ class Header extends Component {
               {
                 isLogin ?
                   <span className="login-container">
-                    <Link to="/user/course" className="fl">
-                      <img alt="" src={iconMember} />
-                    </Link>
-                    <span onClick={this.logout} className="fl">
-                      <img alt="" src={iconLogout} />
-                    </span>
+                    <Hover>
+                      {({ hovered, bind }) => (
+                        <Link to="/user/course" className="fl" {...bind}>
+                          <img alt="" src={hovered ? iconMemberAfter : iconMemberBefore} />
+                        </Link>
+                      )}
+                    </Hover>
+                    
+                    <Hover>
+                      {({ hovered, bind }) => (
+                        <span onClick={this.logout} className="fl" {...bind}>
+                          <img alt="" src={hovered ? iconLogoutAfter : iconLogoutBefore} />
+                        </span>
+                      )}
+                    </Hover>
                   </span>
                 :
                   <Link to="/login">
