@@ -307,3 +307,48 @@ func deleteService(clientset *kubernetes.Clientset, svc string) error {
 	}
 	return nil
 }
+
+func queryCourse(DB *gorm.DB, course model.Course) ([]model.Course, error) {
+	// query course based on course condition
+	results := []model.Course{}
+
+	if err := DB.Where(&course).Find(&results).Error; err != nil {
+		log.Errorf("Query courses table fail: %s", err.Error())
+		return nil, err
+	}
+
+	resp := []model.Course{}
+
+	for _, result := range results {
+
+		dataset := model.Dataset{
+			CourseID: result.ID,
+		}
+		datasetResult := []model.Dataset{}
+		if err := DB.Where(&dataset).Find(&datasetResult).Error; err != nil {
+			log.Errorf("Query datasets table fail: %s", err.Error())
+			return nil, err
+		}
+
+		courseDataset := []string{}
+
+		for _, s := range datasetResult {
+			courseDataset = append(courseDataset, s.DatasetName)
+		}
+
+		resp = append(resp, model.Course{
+			Model: model.Model{
+				ID:        result.ID,
+				CreatedAt: result.CreatedAt,
+			},
+			Name:         result.Name,
+			Introduction: result.Introduction,
+			Image:        result.Image,
+			Level:        result.Level,
+			Gpu:          result.Gpu,
+			Datasets:     courseDataset,
+		})
+	}
+
+	return resp, nil
+}

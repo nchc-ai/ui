@@ -7,7 +7,7 @@
       * [X] [List different level course](#list-different-level-course)
       * [X] [Get](#get)
       * [ ] [Update](#update)
-      * [ ] [List all courses](#list-all-courses)
+      * [X] [List all courses](#list-all-courses)
    * [Job](#job)
       * [X] [List](#list-1)
       * [X] [Delete](#delete-1)
@@ -35,7 +35,7 @@
 
 * **Description**
  
-  List user's all courses information
+  List someone's all courses information
 
 * **URL**
 
@@ -100,20 +100,30 @@
 
 * **Error Response:**
 
-  * **Code:**  500 <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message": "Query datasets table fail: error-message"
+        "message": "Empty user name"
      }
     ```
 
     ```json
     {
         "error": true,
-        "message": "Query courses table fail: error-message"
+        "message": "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "query user {%s} course fail: %s"
      }
     ```
 
@@ -696,13 +706,13 @@
 
 * **Error Response:**
 
-  * **Code:**  500 <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message": "Query datasets table fail: error-message"
+        "message": "empty level string"
      }
     ```
 
@@ -712,7 +722,7 @@
     ```json
     {
         "error": true,
-        "message": "Query courses table fail: error-message"
+        "message": "query %s level course fail: %s"
      }
     ```
 
@@ -903,6 +913,114 @@
 ## Update
 
 ## List all courses
+
+
+* **Description**
+ 
+  List all course information 
+
+* **URL**
+
+  /v1/course/list
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "query all course fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/level/list
+
+      {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+      }
+   ```
 
 # Job
 

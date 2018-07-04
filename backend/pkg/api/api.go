@@ -242,7 +242,8 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	// list advance and basic course, do not required token
 	course := router.Group("/v1").Group("/course")
 	{
-		course.GET("/level/:level", resourceClient.ListCourse)
+		course.GET("/level/:level", resourceClient.ListLevelCourse)
+		course.GET("/list", resourceClient.ListAllCourse)
 		course.OPTIONS("/level/:level", resourceClient.handleOption)
 		course.OPTIONS("/create", resourceClient.handleOption)
 		course.OPTIONS("/list", resourceClient.handleOption)
@@ -255,7 +256,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	courseAuth := router.Group("/v1").Group("/course").Use(server.AuthMiddleware())
 	{
 		courseAuth.POST("/create", resourceClient.AddCourse)
-		courseAuth.POST("/list", resourceClient.ListCourse)
+		courseAuth.POST("/list", resourceClient.ListUserCourse)
 		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
 		courseAuth.POST("/launch", resourceClient.LaunchCourse)
 		courseAuth.GET("/get/:id", resourceClient.GetCourse)
