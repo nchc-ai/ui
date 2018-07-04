@@ -16,7 +16,7 @@ build-backend-img:
 
 
 build-backend-img-k8s:
-	docker build -t ogre0403/twgc:ap-$(TAG)-k8s -f Dockerfiles/Dockerfile-k8s .
+	docker build -t ogre0403/twgc:api-$(TAG)-k8s -f Dockerfiles/Dockerfile-k8s .
 
 
 build-in-docker:
