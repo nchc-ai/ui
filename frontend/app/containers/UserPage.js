@@ -1,26 +1,25 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Switch, Route } from 'react-router';
-import { Link } from 'react-router-dom';
-import { Row, Col } from 'reactstrap';
-import _ from 'lodash';
-import { Form, Control, Errors, actions as formActions } from 'react-redux-form';
-import { notify } from "react-notify-toast";
-import { Value } from 'slate'
+import { actions as formActions } from 'react-redux-form';
+import { notify } from 'react-notify-toast';
+import { Value } from 'slate';
+import Progress from 'react-progress-2';
 
 
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import SideMenu from '../components/SideMenu/index';
-import TableList from '../components/common/TableList/index';
-import FormGroups from '../components/common/FormGroups/index';
 import { userCourseData } from '../constants/tableData';
-import { addCourseForm, addCourseContainerOneForm, addCourseContainerTwoForm } from '../constants/formsData';
-import FormButtons from '../components/common/FormButtons/index';
-import HeaderBlock from '../components/common/HeaderBlock/index';
+import { addCourseForm } from '../constants/formsData';
 import { jobs } from '../constants/tempData';
 import { groupArray } from '../libraries/utils';
-import SectionTitle from '../components/common/SectionTitle/index';
+import SideMenu from '../components/SideMenu/index';
+import CourseList from '../components/User/CourseList';
+import JobList from '../components/User/JobList';
+import CourseEdit from '../components/User/CourseEdit';
+
+import DialogHOC from '../HOC/DialogHOC';
 
 const initialValue = Value.fromJSON({
   document: {
@@ -43,7 +42,6 @@ const initialValue = Value.fromJSON({
   }
 });
 
-
 class UserPage extends Component {
 
   state = {
@@ -53,27 +51,73 @@ class UserPage extends Component {
   componentWillMount() {
     const {
       userAction,
-      token
+      token,
+      match
     } = this.props;
-    userAction.getCourseList('jimmy', token);
 
-    userAction.getJobList('jimmy', token);
+    const part = _.get(match, 'params.part');
+    const action = _.get(match, 'params.action');
 
-    console.log('jobs', jobs, groupArray(jobs, 'name'));
+    if (part === 'course' && action === 'add') {
+      
+    } else if (part === 'course' && action === 'edit') {
+      
+    } else if (part === 'course') {
+      this.loadCourseList()
+    } else if (part === 'job') {
+      userAction.getJobList('jimmy', token);
+    }
   }
 
   componentDidMount() {
     window.scrollTo(0, 0);
-    // const token = getToken();
-    // console.log('token', token);
-    // this.props.userAction.getCourseList('jimmy', token);    
   }
 
 
-  handleSubmitFailed = (formData) => {
-    console.log('formData', formData);
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
+  componentWillReceiveProps(nextProps) {
+    const {
+      match,
+    } = nextProps;
+    if (this.props.match !== match && match) {
+      window.scrollTo(0, 0);
+    }
   }
+  
+  // common
+
+  loadCourseList = () => {
+    const {
+      userAction,
+      token,
+    } = this.props;
+
+    userAction.getCourseList('jimmy', token);
+  }
+
+  // CourseList
+  editCourse = (course) => {
+    console.log('[editCourse] course', course);
+  }
+
+  deleteSuccess = () => {
+
+    this.props.updateState({ open: !open });
+    notify.show('課程刪除成功', 'success', 1800);
+    Progress.hide();
+    this.loadCourseList();
+  }
+
+  deleteCourse = (course) => {
+    const {
+      userAction,
+      token
+    } = this.props;
+
+    Progress.show();
+    userAction.deleteCourse(course.id, token, this.deleteSuccess);
+  }
+
+  // CourseEdit
 
   redirect = () => {
     const {
@@ -82,12 +126,11 @@ class UserPage extends Component {
       history
     } = this.props;
     userAction.getCourseList('jimmy', token);
-    history.push('user/course');
+    history.push('/user/course');
   }
 
-
   handleSubmit = (formData) => {
-    console.log('submit', formData);
+    console.log('[handleSubmit] submit', formData);
 
     const {
       userAction,
@@ -97,48 +140,9 @@ class UserPage extends Component {
     userAction.createCourse(token, formData, this.redirect);
   }
 
-  resetEdit = () => {
-    // this.props.uiAction.openResetDialog(types.ITEMS);
-  }
-
-
-  cancelEdit = () => {
-    // const groupType = _.get(this.props.match, 'params.groupType');
-    // if (groupType) {
-    //   this.props.history.push('/manage/cate');
-    // } else {
-    //   this.props.history.push(`/manage/${this.props.match.params.type}`);
-    // }
-  }
-
-  changeCourseLevel = (e) => {
-
-    console.log('[changeCourseLevel] val', e.target.value);
-  }
-
-  changeCourseIntro = ({ value }) => {
-
-    this.setState({ value });
-    console.log('change', value);
-  }
-
-
-  deleteJob = (e, thumb) => {
-    const {
-      token,
-      userAction
-    } = this.props;
-    
-    userAction.deleteJob(thumb.id, token);
-  }
-
-  editCourse = (course) => {
-    console.log('[edit course] course', course);
-  }
-
-  deleteCourse = (course) => {
-    console.log('[delete course] course', course);
-
+  handleSubmitFailed = (formData) => {
+    console.log('[handleSubmitFailed] formData', formData);
+    notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
   loadTagsOpts = () => {
@@ -148,6 +152,32 @@ class UserPage extends Component {
     } = this.props;
     return userAction.getDatasetsOpts('jimmy', token);
   };
+
+  changeCourseLevel = (e) => {
+    console.log('[changeCourseLevel] val', e.target.value);
+  }
+
+
+  changeCourseIntro = ({ value }) => {
+    this.setState({ value });
+    console.log('[changeCourseIntro] value', value);
+  }
+
+
+  cancelEdit = () => {
+    this.props.history.push('/user/course');
+  }
+
+  // Job
+
+  deleteJob = (e, thumb) => {
+    const {
+      token,
+      userAction
+    } = this.props;
+
+    userAction.deleteJob(thumb.id, token);
+  }
 
   render() {
     const {
@@ -159,7 +189,6 @@ class UserPage extends Component {
     
     return (
       <div id="page-wrap" className="user-bg global-content">
-       
         <div className="side-menu-wrap fl">
           <SideMenu
             match={match}
@@ -169,114 +198,51 @@ class UserPage extends Component {
           <Switch>
             {/* 課程列表 */}
             <Route exact path="/user/course">
-              <div className="user-course-bg">
-                <Row>
-                  <Col>
-                    <h1>課程列表</h1>
-                  </Col>
-                  <Col>
-                    <Link to="/user/course/add">
-                      <span className="v-helper" />
-                      <button className="btn-pair add-btn">+ 新增 </button>
-                    </Link>
-                  </Col>
-                </Row>
-                <TableList
-                  data={Course.list}
-                  tableData={userCourseData}
-                  editMethod={this.editCourse}
-                  deleteMethod={this.deleteCourse}
-                />
-
-              </div>
+              <CourseList
+                data={Course.list}
+                tableData={userCourseData}
+                editMethod={this.editCourse}
+                deleteMethod={this.deleteCourse}
+              />
             </Route>
+
             {/* 新增課程 */}
             <Route exact path="/user/course/add">
-              <div className="user-course-edit-bg">
+              <CourseEdit
+                handleSubmit={this.handleSubmit}
+                handleSubmitFailed={this.handleSubmitFailed}
+                state={this.state}
+                formData={addCourseForm}
+                targetForm={addCourse}
+                changeVal={changeValue}
+                loadTagsOptsMethod={this.loadTagsOpts}
+                onRadioChange={this.changeCourseLevel}
+                onMdChange={this.changeCourseIntro}
+                backMethod={this.cancelEdit}
+              />
+            </Route>
 
-
-                <h1>新增課程</h1>
-                
-                <Form
-                  model="forms.addCourse"
-                  className="add-course-comp"
-                  onSubmit={formData => this.handleSubmit(formData)}
-                  onSubmitFailed={formData => this.handleSubmitFailed(formData)}
-                >
-                  <Row>
-                    <Col md={5}>
-                      <FormGroups
-                        state={this.state}
-                        formData={addCourseForm}
-                        targetForm={addCourse}
-                        loadTagsOptsMethod={this.loadTagsOpts}
-                        changeVal={changeValue}
-                        onRadioChange={this.changeCourseLevel}
-                        onMdChange={this.changeCourseIntro}
-                      />
-                    </Col>
-                  </Row>
-                  
-                  {/* 下方按鈕 */}
-                  <FormButtons
-                    cancelName="上一頁"
-                    submitName="儲存"
-                    backMethod={this.cancelEdit}
-                  />
-
-                </Form>
-
-              </div>
+            {/* 編輯課程 */}
+            <Route exact path="/user/course/edit">
+              <CourseEdit
+                handleSubmit={this.handleSubmit}
+                handleSubmitFailed={this.handleSubmitFailed}
+                state={this.state}
+                formData={addCourseForm}
+                targetForm={addCourse}
+                changeVal={changeValue}
+                loadTagsOptsMethod={this.loadTagsOpts}
+                onRadioChange={this.changeCourseLevel}
+                onMdChange={this.changeCourseIntro}
+                backMethod={this.cancelEdit}
+              />
             </Route>
 
             {/* 工作清單 */}
             <Route exact path="/user/job">
-              <div className="user-job-bg">
-
-                <SectionTitle
-                  title={'工作清單'}
-                  subTitle={'以下是您開始的課程中，正在執行的工作內容。'}
-                />
-                
-                {
-                  groupArray(jobs, 'name').map(
-                    (obj, i) => (
-                      <div key={i} className="job-group">
-                        <h4>{obj.group}</h4>
-                        <Row>
-                          {
-                            obj.data.map((thumb, j) => (
-                              <Col key={j} md={4} >
-                                <div className="job-card">
-                                  <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
-                                  <p className="job-card-status">
-                                    <span className={`light light-${thumb.status}`} />
-                                    {thumb.status}
-                                  </p>
-                                  <p className="job-card-id">{thumb.id}</p>
-                                  {
-                                    thumb.service.map(
-                                      (service, k) => (
-                                        <span>
-                                          <a key={k} href={service.value}>
-                                            {service.label}
-                                          </a>
-                                          <span>|</span>
-                                        </span>
-                                      )
-                                    )
-                                  }
-                                </div>
-                              </Col>
-                            ))
-                          }
-                        </Row>
-                      </div>
-                    )
-                  )
-                }
-                
-              </div>
+              <JobList
+                data={jobs}
+              />
             </Route>
 
           </Switch>
@@ -309,5 +275,6 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc
+  bindActionCreatorHoc,
+  DialogHOC
 )(UserPage);

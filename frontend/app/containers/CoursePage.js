@@ -19,12 +19,18 @@ class CoursePage extends Component {
       token,
       match
     } = this.props;
-    courseAction.getCourseDetail(match.params.courseId, token);
 
+    const type = _.get(match, 'params.type');
+
+    if (type === 'basic' || type === 'advance') {
+      courseAction.getCourseListByLevel(type);
+    } else if (type === 'detail') {
+      courseAction.getCourseDetail(match.params.courseId, token);
+    }
   }
 
   cancelEdit = () => {
-    console.log('cancel');
+    this.props.history.push('/user/course');
   }
 
   render() {
@@ -36,9 +42,12 @@ class CoursePage extends Component {
     return (
       <div className="course-bg global-content">
         <Switch>
+          {/* 課程介紹 */}
           <Route exact path="/course/intro">
             <CourseIntro />
           </Route>
+
+          {/* 基礎課程 vs 進階課程 */}
           <Route exact path="/course/:type">
             <CourseList
               match={match}
@@ -47,8 +56,13 @@ class CoursePage extends Component {
               courseType={courseType}
             />
           </Route>
+
+          {/* 課程細項 */}
           <Route exact path="/course/detail/:courseId">
-            <CourseDetail detail={courseDetail} cancelEdit={this.cancelEdit} />
+            <CourseDetail
+              detail={courseDetail}
+              cancelEdit={this.cancelEdit}
+            />
           </Route>
           
         </Switch>

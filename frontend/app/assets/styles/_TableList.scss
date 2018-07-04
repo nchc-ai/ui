@@ -55,6 +55,8 @@
             .action-btn {
               background-color: transparent;
               cursor: pointer;
+              outline: none;
+
               .action-word {
                 padding-right: 5px;
               }
@@ -62,6 +64,10 @@
               svg {
                 transform: translateY(-1px);
               }
+            }
+            
+            &:focus {
+              outline: none;
             }
 
             &:hover {

@@ -12,8 +12,8 @@ class StaticPage extends Component {
 
   render = () => {
     return (
-      <div className="welcome-bg global-content">
-       
+      <div className="static-bg global-content">
+
       </div>
     );
   }

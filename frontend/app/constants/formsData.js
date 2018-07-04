@@ -9,25 +9,27 @@ export const addCourseForm = [
     name: 'name',
     inputType: 'text',
     mainLabel: '課程名稱',
-    placeholder: '請輸入英文名稱',
+    placeholder: '請輸入課程名稱',
     validators: { required },
     errorMessage: {
-      required: '請輸入課程名稱'
+      required: '您尚未輸入字元'
     },
     isRequired: true
   }, {
     key: 2,
     name: 'intro',
+    target: 'addCourse',
     inputType: 'markdown',
     mainLabel: '課程介紹',
     validators: { required },
     errorMessage: {
-      required: '請輸入課程介紹'
+      required: '您尚未輸入字元'
     },
     isRequired: true
   }, {
     key: 3,
     name: 'level',
+    target: 'addCourse',
     inputType: 'radio',
     mainLabel: '課程程度',
     className: 'fl',

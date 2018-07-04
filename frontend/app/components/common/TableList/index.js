@@ -8,6 +8,7 @@ import MdMoreVert from 'react-icons/lib/md/more-vert';
 import MdEdit from 'react-icons/lib/md/edit';
 import MdDelete from 'react-icons/lib/md/delete';
 import DataFrameTable from '../DataFrame/DataFrameTable';
+import DialogWrapper from '../Dialog/index';
 
 const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
   <Table className="table-list-comp" hover>
@@ -58,10 +59,21 @@ const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
                           </button>
                         </li>
                         <li>
-                          <button className="action-btn" onClick={() => deleteMethod(d)}>
-                            <span className="action-word">刪除</span>
-                            <MdDelete />
-                          </button>
+                          <DialogWrapper
+                            openButton={{
+                              icon: <MdDelete />,
+                              text: '刪除'
+                            }}
+                            submitButton={{
+                              cancel: '取消',
+                              confirm: '確定'
+                            }}
+                            initialModel={{ open: false }}
+                            title={'刪除課程'}
+                            confirmMethod={() => deleteMethod(d)}
+                          >
+                            <p>{`確定刪除 ${d.name} 這門課？`}</p>
+                          </DialogWrapper>
                         </li>
                       </ul>
                     </td>

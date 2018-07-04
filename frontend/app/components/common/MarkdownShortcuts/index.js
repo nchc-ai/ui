@@ -4,40 +4,44 @@ import { Value } from 'slate';
 import React from 'react';
 import initialValue from './value.json';
 import Html from 'slate-html-serializer';
+import { htmlStr } from '../../../constants/tempData';
+
 
 // Refactor block tags into a dictionary for cleanliness.
 const BLOCK_TAGS = {
   p: 'paragraph',
-  blockquote: 'quote',
-  pre: 'code',
-}
+  blockquote: 'block-quote',
+  pre: 'code'
+};
 
 // Add a dictionary of mark tags.
 const MARK_TAGS = {
   em: 'italic',
   strong: 'bold',
-  u: 'underline',
-}
+  u: 'underline'
+};
 
 
 const rules = [
   // Add our first rule with a deserializing function.
   {
     deserialize(el, next) {
-      const type = BLOCK_TAGS[el.tagName.toLowerCase()]
+      const type = BLOCK_TAGS[el.tagName.toLowerCase()];
+
       if (type) {
+        console.log('el', el, type );
         return {
           object: 'block',
-          type: type,
+          type,
           data: {
-            className: el.getAttribute('class'),
+            className: el.getAttribute('class')
           },
-          nodes: next(el.childNodes),
-        }
+          nodes: next(el.childNodes)
+        };
       }
     },
     serialize(obj, children) {
-      if (obj.object == 'block') {
+      if (obj.object === 'block') {
         switch (obj.type) {
         case 'code':
           return (
@@ -46,9 +50,7 @@ const rules = [
             </pre>
           )
         case 'paragraph':
-          return <p className={obj.data.get('className')}>{children}</p>
-        case 'quote':
-          return <blockquote>{children}</blockquote>;
+          return <p className={obj.data.get('className')}>{children}</p>;
         case 'block-quote':
           return <blockquote>{children}</blockquote>;
         case 'heading-one':
@@ -70,29 +72,29 @@ const rules = [
   // Add a new rule that handles marks...
   {
     deserialize(el, next) {
-      const type = MARK_TAGS[el.tagName.toLowerCase()]
+      const type = MARK_TAGS[el.tagName.toLowerCase()];
       if (type) {
         return {
           object: 'mark',
-          type: type,
-          nodes: next(el.childNodes),
-        }
+          type,
+          nodes: next(el.childNodes)
+        };
       }
     },
     serialize(obj, children) {
-      if (obj.object == 'mark') {
+      if (obj.object === 'mark') {
         switch (obj.type) {
-          case 'bold':
-            return <strong>{children}</strong>
-          case 'italic':
-            return <em>{children}</em>
-          case 'underline':
-            return <u>{children}</u>
+        case 'bold':
+          return <strong>{children}</strong>
+        case 'italic':
+          return <em>{children}</em>
+        case 'underline':
+          return <u>{children}</u>
         }
       }
-    },
-  },
-]
+    }
+  }
+];
 
 const html = new Html({ rules });
 /**
@@ -109,7 +111,8 @@ class MarkdownShortcuts extends React.Component {
    */
 
   state = {
-    value: Value.fromJSON(initialValue),
+    // value: Value.fromJSON(initialValue)
+    value: html.deserialize(htmlStr)
   }
 
   /**
@@ -121,26 +124,26 @@ class MarkdownShortcuts extends React.Component {
 
   getType = chars => {
     switch (chars) {
-      case '*':
-      case '-':
-      case '+':
-        return 'list-item'
-      case '>':
-        return 'block-quote'
-      case '#':
-        return 'heading-one'
-      case '##':
-        return 'heading-two'
-      case '###':
-        return 'heading-three'
-      case '####':
-        return 'heading-four'
-      case '#####':
-        return 'heading-five'
-      case '######':
-        return 'heading-six'
-      default:
-        return null
+    case '*':
+    case '-':
+    case '+':
+      return 'list-item';
+    case '>':
+      return 'block-quote';
+    case '#':
+      return 'heading-one';
+    case '##':
+      return 'heading-two';
+    case '###':
+      return 'heading-three';
+    case '####':
+      return 'heading-four';
+    case '#####':
+      return 'heading-five';
+    case '######':
+      return 'heading-six';
+    default:
+      return null;
     }
   }
 
@@ -153,14 +156,16 @@ class MarkdownShortcuts extends React.Component {
 
   render() {
     return (
-      <Editor
-        placeholder="Write some markdown..."
-        value={this.state.value}
-        onChange={this.onChange}
-        onKeyDown={this.onKeyDown}
-        renderNode={this.renderNode}
-        renderMark={this.renderMark}
-      />
+      <div className="md-editor-comp">
+        <Editor
+          placeholder="請輸入字元後按下Space鍵即可轉換為Markdown形式..."
+          value={this.state.value}
+          onChange={this.onChange}
+          onKeyDown={this.onKeyDown}
+          renderNode={this.renderNode}
+          renderMark={this.renderMark}
+        />
+      </div>
     )
   }
 
@@ -169,12 +174,12 @@ class MarkdownShortcuts extends React.Component {
   renderMark = props => {
     const { mark, attributes } = props
     switch (mark.type) {
-      case 'bold':
-        return <strong {...attributes}>{props.children}</strong>
-      case 'italic':
-        return <em {...attributes}>{props.children}</em>
-      case 'underline':
-        return <u {...attributes}>{props.children}</u>
+    case 'bold':
+      return <strong {...attributes}>{props.children}</strong>
+    case 'italic':
+      return <em {...attributes}>{props.children}</em>
+    case 'underline':
+      return <u {...attributes}>{props.children}</u>
     }
   }
 
@@ -189,24 +194,24 @@ class MarkdownShortcuts extends React.Component {
     const { attributes, children, node } = props
 
     switch (node.type) {
-      case 'block-quote':
-        return <blockquote {...attributes}>{children}</blockquote>
-      case 'bulleted-list':
-        return <ul {...attributes}>{children}</ul>
-      case 'heading-one':
-        return <h1 {...attributes}>{children}</h1>
-      case 'heading-two':
-        return <h2 {...attributes}>{children}</h2>
-      case 'heading-three':
-        return <h3 {...attributes}>{children}</h3>
-      case 'heading-four':
-        return <h4 {...attributes}>{children}</h4>
-      case 'heading-five':
-        return <h5 {...attributes}>{children}</h5>
-      case 'heading-six':
-        return <h6 {...attributes}>{children}</h6>
-      case 'list-item':
-        return <li {...attributes}>{children}</li>
+    case 'block-quote':
+      return <blockquote {...attributes}>{children}</blockquote>
+    case 'bulleted-list':
+      return <ul {...attributes}>{children}</ul>
+    case 'heading-one':
+      return <h1 {...attributes}>{children}</h1>
+    case 'heading-two':
+      return <h2 {...attributes}>{children}</h2>
+    case 'heading-three':
+      return <h3 {...attributes}>{children}</h3>
+    case 'heading-four':
+      return <h4 {...attributes}>{children}</h4>
+    case 'heading-five':
+      return <h5 {...attributes}>{children}</h5>
+    case 'heading-six':
+      return <h6 {...attributes}>{children}</h6>
+    case 'list-item':
+      return <li {...attributes}>{children}</li>
     }
   }
 
@@ -218,19 +223,14 @@ class MarkdownShortcuts extends React.Component {
 
   onChange = ({ value }) => {
 
-    if (value.document != this.state.value.document) {
-      const string = html.serialize(value);
-      console.log('[] string', string);
+    const {
+      onMdChange
+    } = this.props;
+    if (value.document !== this.state.value.document) {
+      onMdChange(html.serialize(value));
     }
 
-
-    this.setState({ value })
-
-   
-    //   const string = html.serialize(value);
-  
-
-    // console.log('[slate] value', string);
+    this.setState({ value });
   }
 
   /**
@@ -242,12 +242,12 @@ class MarkdownShortcuts extends React.Component {
 
   onKeyDown = (event, change) => {
     switch (event.key) {
-      case ' ':
-        return this.onSpace(event, change)
-      case 'Backspace':
-        return this.onBackspace(event, change)
-      case 'Enter':
-        return this.onEnter(event, change)
+    case ' ':
+      return this.onSpace(event, change);
+    case 'Backspace':
+      return this.onBackspace(event, change);
+    case 'Enter':
+      return this.onEnter(event, change);
     }
   }
 
@@ -292,7 +292,7 @@ class MarkdownShortcuts extends React.Component {
   onBackspace = (event, change) => {
     const { value } = change
     if (value.isExpanded) return
-    if (value.startOffset != 0) return
+    if (value.startOffset !== 0) return
 
     const { startBlock } = value
     if (startBlock.type == 'paragraph') return
@@ -322,16 +322,16 @@ class MarkdownShortcuts extends React.Component {
     const { startBlock, startOffset, endOffset } = value
     if (startOffset == 0 && startBlock.text.length == 0)
       return this.onBackspace(event, change)
-    if (endOffset != startBlock.text.length) return
+    if (endOffset !== startBlock.text.length) return
 
     if (
-      startBlock.type != 'heading-one' &&
-      startBlock.type != 'heading-two' &&
-      startBlock.type != 'heading-three' &&
-      startBlock.type != 'heading-four' &&
-      startBlock.type != 'heading-five' &&
-      startBlock.type != 'heading-six' &&
-      startBlock.type != 'block-quote'
+      startBlock.type !== 'heading-one' &&
+      startBlock.type !== 'heading-two' &&
+      startBlock.type !== 'heading-three' &&
+      startBlock.type !== 'heading-four' &&
+      startBlock.type !== 'heading-five' &&
+      startBlock.type !== 'heading-six' &&
+      startBlock.type !== 'block-quote'
     ) {
       return
     }

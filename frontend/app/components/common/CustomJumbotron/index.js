@@ -21,9 +21,10 @@ const CustomJumbotron = ({ tag, title, sideTitle, info, t, children }) => (
     </Row>
     {/* <p className="lead">This is a simple hero unit, a simple Jumbotron-style component for calling extra attention to featured content or information.</p> */}
     <hr className="my-2" />
-    <div className="custom-jumbotron-info">
-      <p>{info}</p>
-    </div>
+    <div
+      className="custom-jumbotron-info"
+      dangerouslySetInnerHTML={{ __html: _.unescape(info) }}
+    />
   </div>
 );
 

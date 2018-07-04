@@ -1,0 +1,152 @@
+$dialog-primary-color: $ailab-primary-dark-green;
+$cancel-color: $ailab-grey-03;
+
+
+.modal-bg{
+
+	img{
+		@include rect(860px,500px);
+
+	}
+
+}
+
+
+
+// 客製化Modal
+.ReactModal__Body--open{
+	transition: all .4s ease-out;
+}
+
+
+.ReactModal__Overlay{
+
+	background-color: rgba(0,0,0,0.75) !important;
+	z-index:999;
+
+
+	.ReactModal__Content{
+
+		@include rect-center(860px,initial);
+		position:relative !important;
+		border:none !important;;
+		overflow:hidden !important;
+		padding:0 !important;
+		left: 0px!important;
+		right: 0px!important;
+	    border: 0px solid rgb(204, 204, 204) !important;
+		margin-top: 60px;
+		// background: url('../../assets/images/common/modal-contact.png') !important;
+		
+		// background-size:cover;
+
+	}
+
+}
+
+
+
+@media (max-width: 860px) {
+
+
+	.ReactModal__Overlay{
+		.ReactModal__Content{
+
+			@include rect-center(320px,540px);
+			position:relative !important;
+			border:none !important;;
+			overflow:hidden !important;
+			padding:0 !important;
+			border: 0px solid rgb(204, 204, 204) !important;
+			margin-top: 40px;
+			background: none !important;
+			// background-image : url('../../assets/images/common/modal-mob-img-m.png') !important;
+			background-size:cover !important;
+
+			.modal-bg{
+
+				img{
+					@include rect(320px,540px);
+
+				}
+
+			}
+		}
+	}
+
+
+}
+
+// Modal共用樣式
+
+.common-modal-bg{
+
+	.modal-header-con{
+		@include rect(100%,50px);
+		line-height: 50px;
+		padding-left: 16px;
+		letter-spacing: 1px;
+    text-indent: 1px;
+		background-color: $dialog-primary-color;
+		color:#fff;
+
+		span {
+			font-size: 20px;
+		}
+	}
+
+	.model-content-con{
+		p{
+			margin-top: 40px;
+			margin-left: 36px;
+			margin-right: 60px;
+			line-height: 33px;
+			font-size: 14px;
+			text-align: justify;
+			letter-spacing: 2px;
+			text-indent: 1px;
+		}
+	}	
+
+	.modal-button-bg{
+		position: relative;
+		width: 100%;
+		margin-top: 20px;
+		margin-bottom: 20px;
+		
+
+		.modal-button-con{
+			@include rect-center(240px,40px);
+			a, button{
+
+				@include rect(100px,40px);
+				@include margin(10px);
+				color: #fff;
+				letter-spacing: 10px;
+				text-indent: 10px;
+				text-align: center;
+				background-color:$dialog-primary-color;
+				border-radius: 6px;
+				line-height: 38px;
+				float: left;
+				outline: none;
+				cursor: pointer;
+
+        &:focus {
+					outline: none;
+        }
+        
+				&:hover {
+					text-decoration: none;
+				}
+			
+			}
+
+			.cancel-btn {
+				color: $primary-color;
+				background-color: $cancel-color;
+				// border: 1px solid $primary-color;
+			}
+		}
+	}
+}

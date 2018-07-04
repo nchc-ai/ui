@@ -71,3 +71,6 @@ export const courseDetailData = {
   gpu: 2,
   datasets: ['Juypter', 'Juypter2']
 };
+
+
+export const htmlStr = '';

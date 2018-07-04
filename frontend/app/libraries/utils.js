@@ -27,6 +27,7 @@ export function enterWithoutAuth() {
 	store.dispatch(push("/login"));
 }
 
+
 /*---------------------------
   將某array分組
   依序給group的名字又不失為一個array

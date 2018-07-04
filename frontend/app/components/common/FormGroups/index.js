@@ -54,7 +54,7 @@ const FormGroups = ({
                           className="radio-input"
                           value={opt.value}
                           checked={_.get(targetForm, `${d.name}.value`) === opt.value}
-                          onChange={e => onRadioChange(e, opt)}
+                          onChange={() => changeVal(opt, d.name, d.target)}
                         />
                         <span>{opt.label}</span>
                       </label>
@@ -201,7 +201,9 @@ const FormGroups = ({
             d.inputType === 'markdown'
             ?
               <div className="form-input">
-                <MarkdownShortcuts />
+                <MarkdownShortcuts
+                  onMdChange={val => changeVal(val, d.name, d.target)}
+                />
               </div>
             :
               null

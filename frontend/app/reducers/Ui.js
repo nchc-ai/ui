@@ -23,6 +23,9 @@ const InitialState = {
   Status: {
     offline: false,
     isAdmin: false
+  },
+  Dialog: {
+    open: false
   }
 };
 
