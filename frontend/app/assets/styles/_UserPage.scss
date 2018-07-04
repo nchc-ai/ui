@@ -1,0 +1,92 @@
+.user-bg {
+  .side-menu-wrap {
+  
+    min-height: 1000px;
+    position: relative;
+    background-color: #f8f4f4;
+  
+  }
+
+  .user-container {
+    width: 80%;
+    padding-left: 80px;
+    padding-top: 100px;
+
+
+    .user-course-bg {
+      width: 1000px;
+
+      .col {
+        text-align: right;
+        h1 {
+          text-align: left;
+        }
+
+      }
+
+      .add-btn {
+        @include rect(120px, 35px);
+        margin-left: auto;
+        display: inline;
+        border-radius: 4px;
+      }
+
+    }
+
+
+    // 工作清單
+    .user-job-bg {
+      .job-group {
+
+        margin-bottom: 20px;
+
+        .job-card {
+          @include card-1;
+          position: relative;
+          padding-top: 20px;
+          min-height: 150px;
+          text-align: center;
+
+          .btn-cancel {
+            @include scale-button;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+          }
+          
+
+          .job-card-status, .job-card-id {
+            margin-bottom: 20px;
+          }
+
+          .light {
+            @include circle(10px);
+            @include margin(10px);
+            display: inline-block;
+            border: 1px solid $ai-main-grey;
+          }
+
+          .light-error {
+            background-color: #E36457;
+          }
+
+          .light-Created {
+            background-color: #FBD36B;
+          }
+
+          .light-Ready {
+            background-color: #4BC3A1;
+          }
+
+
+        }
+      }
+    }
+
+
+  }
+
+
+}
+

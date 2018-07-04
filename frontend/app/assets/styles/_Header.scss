@@ -1,0 +1,171 @@
+
+
+$nav-bar-height: 80px;
+$nav-li-underline-color: #f5d600;
+
+// Index -------------------------------------------------
+
+.header-comp{
+  @include rect(100%,$nav-bar-height);
+  position: fixed;
+  background-color: #eff7f7;	
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  z-index: 50;
+
+  .con-grp{
+    height:100%;
+  }
+
+  .logo-con{
+    margin-left: 70px;
+    display: inline-block;
+    img{
+      @include rect(230px, initial);
+      display: inline;
+      vertical-align: middle;
+    }
+  }
+
+  .header-container{
+    
+    overflow: hidden;
+
+    .logo-svg{
+        position: relative;
+        width: 100px;
+        margin-top: 21px;
+        pointer-events:none;
+    }
+  }
+}
+
+// NavBar -------------------------------------------------
+
+.nav-bar-comp{
+  @include rect(100%,$nav-bar-height);
+  // background-image: linear-gradient(118deg, #00aae3, #0cfdfb);
+
+  .navbar-ul{
+    margin-left: 50px;
+    height: 110%;
+
+    li {
+      height: 91%;
+      margin-top: 0px;
+      padding-top: 30px;
+      float: left;
+      transition: all .2s ease-in-out;
+    }
+
+
+    .li-active {
+      // border-bottom: 5px solid $nav-li-underline-color;
+    }
+
+    .navbar-li{
+      display:inline;
+      // padding:10px 20px;
+      position:relative;
+
+     
+  
+      .main-link{
+        padding: 0px 20px;
+        color: $primary-color;
+        text-decoration: none;
+        font-weight: 300;
+        cursor: pointer;
+        &:hover{
+          text-decoration: underline;
+        }
+      }
+    }
+
+    .navbar-li-disabled{
+      &:hover{
+        &:after {
+          display:none;
+        }
+      }
+    }
+  }
+
+  //右
+  .navbar-vice-ul{
+    margin-right: 70px;
+    margin-top: 22px;
+    float: right;
+    li{
+      a{
+        img{
+          @include square(24px);
+          @include margin(5px); 
+        }
+      }
+    }
+
+    .notify-badge{
+      margin-right: -3px;
+      margin-top: -4px;
+    }
+  }
+}
+
+
+// GlobalSearch -------------------------------------------------
+
+.global-search-comp {
+
+  @include rect(240px, 40px);
+  position: relative;
+  margin-top: 24px;
+  float: left;
+
+  .global-search{
+    @include rect(240px, 40px);
+    font-size: 14px;
+    border-radius: 20px;
+    padding-left: 30px;
+    background-color: #D6DCDC;
+    box-shadow: inset 0 1px 3px 0 #D6DCDC;
+    outline: none;
+    float: left;
+  }
+  
+  .global-search-btn{
+
+    @include margin-leftop(5px, 11px);
+    position: absolute;
+    background-color: rgba(0,0,0,0);
+    height: 20px;
+    float: left;
+    pointer-events: none;
+    img{
+      width:14px;
+    }
+  }
+}
+
+
+// LoginButton -------------------------------------------------
+
+.header-container {
+  .login-btn {
+    @include rect(150px, 40px);
+    margin-left: 20px;
+    border-radius: 20px;
+    margin-top: 22px;
+    background-color: #ffd94a;
+    float: left;
+    opacity: 0.8;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    outline: none;
+
+    &:hover {
+      opacity: 1;
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+    }
+  }
+}

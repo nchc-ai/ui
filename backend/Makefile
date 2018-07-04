@@ -9,18 +9,20 @@ run-backend:
 	./bin/app --conf=./conf/api-config.json
 
 run-backend-docker:
-	docker run -ti --rm  -p 38080:38080 ogre0403/twgc:api-$(TAG)
+	docker run -ti --rm  -p 38080:38080 ogre0403/twgc:api-$(TAG)-local
 
 build-backend-img:
-	echo $(TAG)
-	docker build -t ogre0403/twgc:api-$(TAG) .
+	docker build -t ogre0403/twgc:api-$(TAG)-local -f Dockerfiles/Dockerfile .
+
+
+build-backend-img-k8s:
+	docker build -t ogre0403/twgc:ap-$(TAG)-k8s -f Dockerfiles/Dockerfile-k8s .
+
 
 build-in-docker:
 	rm -rf bin/*
 	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/app ./cmd
 
-run-frontend:
-	npm  --prefix frontend start
 
 clean:
 	rm -rf bin/*

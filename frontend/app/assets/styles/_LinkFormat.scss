@@ -1,0 +1,19 @@
+.link-format-comp {
+  height: 100%;
+
+  .link-format-container {
+    height: 100%;
+    a.link-text, span.link-text {
+      display: inline-block;
+      text-decoration: none;
+      cursor: pointer;
+
+      p.title, p.info {
+        font-size: 14px;
+      }
+    }
+    span.link-text {
+      cursor: default;
+    }
+  }
+}

@@ -1,0 +1,487 @@
+/*------- COLOR -------*/
+
+$primary-color: #000;
+$vice-color:#CFB138;
+$error-color: #DE576E;
+$border-color: #979797;
+$sub-nav-border: #CACACA;
+$footer-info-gray: #9B9B9B;
+$bg-color: #f4f4f4;
+$highlight-color: #48D2A0;
+
+
+$nav-font-color: #373838;
+
+$ai-main-grey: #373838;
+$ai-light-grey: #f8f4f4;
+$ai-input-border-default: #ddd;
+$ai-input-border-hover: #2a9b9d; 
+$ai-secondary-light-green: #6ec7cf;
+
+/*------- 尺寸 -------*/
+
+$desktop: 960px;
+$tablet-l: 760px;
+$tablet-m: 480px;
+$phone: 320px;
+
+$header-height: 60px;
+
+
+/*------- 尺寸 new -------*/
+// screen-s < s < screen-m
+// screen-m < m < screen-l
+// screen-l < l < screen-xl
+
+$screen-s: 320px;
+$screen-m: 768px;
+$screen-l: 1024px;
+$screen-xl: 1440px;
+
+/*------- 字體大小 -------*/
+
+$title-size: 27px;
+
+
+/*------- MIXIN -------*/
+
+@mixin pseudo{
+
+  content:"";
+  position:absolute;
+    
+}
+
+@mixin center{
+
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+@mixin margin($px){
+
+    margin-left: $px;
+    margin-right: $px;
+}
+
+@mixin margin-v($px){
+
+    margin-top: $px;
+    margin-bottom: $px;
+}
+
+@mixin margin-leftop($left,$top) {
+  margin-left: $left;
+  margin-top: $top;
+}
+
+@mixin rect($width,$height) {
+  width: $width;
+  height: $height;
+}
+
+
+@mixin rect-center($width,$height) {
+  width: $width;
+  height: $height;
+  margin-left: auto;
+  margin-right:auto;
+}
+
+
+@mixin square($px){
+
+    width: $px;
+    height: $px;
+}
+
+@mixin square-center($length){
+    
+    width: $length;
+    height: $length;
+    margin-left: auto;
+    margin-right:auto;
+}
+
+@mixin circle($px){
+
+    width: $px;
+    height: $px;
+    border-radius: 99em;
+}
+
+@mixin bg-cover($url){
+
+    background-image: url($url);
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+
+
+@mixin bg-contain($url){
+
+    background-image: url($url);
+    background-repeat: no-repeat;
+    background-size: contain; 
+}
+
+@mixin text-center{
+
+    width: 100%;
+    text-align: center;
+    display: inline-block;
+    cursor: default;
+
+}
+
+
+@mixin text-middle($height){
+
+    height: $height;
+    line-height: $height;
+
+}
+
+@mixin flex-ct-text {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  text-align: center;
+  margin-bottom: 0px;
+}
+
+/*------- 圖片位置 -------*/
+
+@mixin img-middle{
+
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+
+}
+
+
+/*------- BUTTON -------*/
+
+@mixin scale-button{
+    
+  transition:all .2s ease-in-out;
+  cursor:pointer !important;
+
+  &:hover{
+
+      transform:scale(1.1);
+  }
+
+}
+
+@mixin fullfill-button($bg-color,$font-color){
+    
+  transition:all .2s ease-in-out;
+  cursor:pointer !important;
+
+  &:hover{
+      opacity:1;
+      background-color:$bg-color;
+      color:$font-color;
+  }
+
+}
+
+@mixin opacity-button{
+    
+  transition:all .2s ease-in-out;
+  cursor:pointer !important;
+
+  &:hover{
+      opacity:1;
+  }
+
+  .button:active{
+      
+      opacity:0.8;
+      transform: translateY(4px);
+  }
+
+}
+
+@mixin float-button{
+    
+    transition:all .2s ease-in-out;
+    cursor:pointer !important;
+
+    &:hover{
+        @include shadow-effect(3);
+        opacity:1;
+    }
+
+    .button:active{
+        
+        opacity:0.8;
+        transform: translateY(4px);
+    }
+
+}
+
+@mixin three-col-grp{
+
+  float:left;
+  text-align:center;
+
+  &:nth-child(1),&:nth-child(3){
+      width: 33%;
+  }
+
+  &:nth-child(2){
+      width:34%;
+  }
+}
+
+@mixin slide-down-button{
+    
+    &:after {
+
+        background-color: brown;
+        content: '';
+        position: absolute;
+        z-index: -1;
+
+
+        height: 0;
+        margin-left: 0;
+        margin-top: 0;
+        width: 100%;
+
+    }
+    
+
+    &:hover{
+        color: #2ecc71;
+        &:after{
+
+            height: 100%;
+        }
+    }
+   
+
+}
+
+/*------- 加上暗玻璃特效 -------*/
+
+@mixin dark-glass{
+
+    &:before{
+
+
+        @include rect(100%,100%);
+        margin-left: -50%;
+        content: '';
+        position: absolute;
+        background-color: rgba(32,26,22,.7);
+        // background-color: rgba(0,0,0,0.8);
+        z-index: 0;
+
+    }
+
+
+}
+
+@mixin card-1 {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  border-radius: 2px;
+}
+
+
+.card-1:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+
+@mixin card-2 {
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
+}
+
+@mixin card-3 {
+    box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    border-radius: 2px;
+}
+
+@mixin card-4 {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    border-radius: 2px;
+}
+
+@mixin card-5 {
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    border-radius: 2px;
+}
+
+@mixin shadow-effect($level){
+    @if $level == 1 {
+        box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    }
+    @else if $level == 2  {
+        box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+    }
+    @else if $level == 3  {
+        box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+    }
+    @else if $level == 4  {
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+    }
+    @else if $level == 5  {
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    }
+}
+
+
+.v-helper{
+
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
+
+}
+
+.centered-con {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+}
+
+.fl{
+    float: left;
+}
+
+.fr{
+    float: right;
+}
+
+.oh{
+    overflow:hidden;
+}
+
+.tj{
+    text-align: justify;
+}
+
+.ct{
+    margin-left: auto;
+    margin-right:auto;
+}
+.tc{
+    text-align: center;
+}
+
+
+
+/*------- LAB -------*/
+
+// .font-#{$font-size}-#{$line-height}-#{$letter-spacing}-#{$font-weight} {
+//   font-size: $font-size"px";
+//   line-height: $line-height"px";
+//   letter-spacing: $letter-spacing"px";
+//   font-weight: $font-weight;
+// }
+
+@mixin font-shape($fs,$lh,$ls,$fw){
+  font-size: $fs;
+  line-height: $lh;
+  letter-spacing: $ls;
+  text-indent: $ls;
+  font-weight: $fw;
+}
+
+@mixin title-with-underline ($fs, $pb, $bw) {
+  position: relative;
+  font-size: $fs;
+  text-align: center;
+  display: inline-block;
+  padding-bottom: 5px;
+
+  &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    display: inline-block;
+    height: 1em;
+    width: 100%;
+    border-bottom: $bw solid;
+    margin-top: $pb;
+  }
+
+}
+
+
+
+/*------- DOM STYLE -------*/
+
+html{
+  height: 100%;
+  
+  body{
+    height: 100%;
+    // font-family: PingFangSC-Light, sans-serif;
+    // font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", 微软雅黑, Arial, sans-serif;
+    // font-family: "Noto Sans", "Noto Sans CJK TC", sans-serif;
+    font-family: "Lato","Helvetica Neue",Arial,Helvetica,sans-serif;
+    font-weight: 400;
+    
+    button,iframe{
+      display: block;
+      outline:none;
+      border:none;
+    }
+    
+    h1{ font-size: 36px; }
+    h2{ font-size: 30px; }
+    h3{ font-size: 24px; }
+    h4{ font-size: 20px; }
+    h5{ font-size: 16px; }
+    h6{ font-size: 14px; }
+    span{ font-size: 14px; }
+
+    p{  
+      font-size: 12px; 
+      margin: 0;
+    }
+
+    img {
+      display: none;
+    }
+
+
+    img[src] {
+      display: block;
+    }
+
+
+    ul{
+      list-style:none;
+      padding-left: 0px;
+    }
+
+    li{
+      list-style:none;  
+    }
+
+    a{
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    // Custom
+    .section-grp {
+      .bg-grp{
+        width: 100%;
+      }
+    }
+
+
+  }
+}
