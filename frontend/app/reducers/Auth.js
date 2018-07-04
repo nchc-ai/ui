@@ -1,4 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
+import { LOADING, SUCCESS } from '../constants/apiActions';
 
 const InitialState = {
   loading: false,
@@ -6,20 +7,33 @@ const InitialState = {
   data: [],
   token: '',
   userInfo: {
-    email: '',
-    username: '',
-    nickName: '',
-    gender: '',
-    birthday: '',
-    mobile: '',
-    tel: '',
-    address: '',
-    selfIntro: ''
+    active: false,
+    client_id: '',
+    exp: '',
+    scope: '',
+    token_type: '',
+    username: ''
   }
 };
 
 export default function Auth(state = InitialState, action) {
   switch (action.type) {
+  
+  case actionTypes.LOGOUT:
+    return {
+      ...state,
+      userInfo: InitialState.userInfo
+    };
+  case actionTypes.GET_USER_INFO[LOADING]:
+    return {
+      ...state,
+      loading: true
+    };
+  case actionTypes.GET_USER_INFO[SUCCESS]:
+    return {
+      ...state,
+      userInfo: action.payload
+    };
   case actionTypes.SET_USER_INFO:
     return {
       ...state,

@@ -18,7 +18,8 @@ class Index extends Component {
   render() {
 
     const {
-      match
+      match,
+      userInfo
     } = this.props;
 
     return (
@@ -26,7 +27,7 @@ class Index extends Component {
         className="side-menu-comp"
         width={200}
       >
-        <DogTag data={selfInfo} />
+        <DogTag data={userInfo} />
 
         {
           sideNav.map(d => (
@@ -49,7 +50,8 @@ class Index extends Component {
   }
 }
 
-const mapStateToProps = ({ Ui }) => ({
+const mapStateToProps = ({ Ui, Auth }) => ({
+  userInfo: Auth.userInfo,
   isOpen: Ui.SideNav.isOpen,
   currentMenu: Ui.SideNav.currentMenu,
   isHidden: Ui.SideNav.isWrapHidden,

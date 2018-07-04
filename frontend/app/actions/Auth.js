@@ -18,7 +18,11 @@ export const setUserToken = token => ({
   token
 });
 
-// 用code換取token
+export const logout = () => ({
+  type: types.LOGOUT
+});
+
+// Proxy > Token
 export const retrieveToken = (code, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
@@ -39,6 +43,28 @@ export const retrieveToken = (code, next) => async (dispatch) => {
   next(response.payload.token);
 };
 
+// Proxy > Introspection
+export const getUserInfo = (token, next) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/proxy/introspection`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        token
+      }),
+      types: types.GET_USER_INFO
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getUserInfo 失敗', response);
+  }
+
+  if(next) {
+    next();
+  }
+};
 
 
 
@@ -60,12 +86,6 @@ export const login = next => async (dispatch) => {
   }
 };
 
-
-// 登出
-
-export const logout = () => ({
-  type: types.LOGOUT
-});
 
 
 // 檢查健康狀況
@@ -143,23 +163,6 @@ export const manualSignup = (formData, next) => async (dispatch) => {
   }
 
   // next(response.payload.result[0]);
-};
-
-export const getUserInfo = (email, next) => async (dispatch) => {
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: '/getUserInfo',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email }),
-      types: types.GET_USER_INFO
-    }
-  });
-
-  if (_.isUndefined(response) || !response.payload.success) {
-    console.error('getUserInfo 失敗');
-  }
-  next(response.payload.result[0]);
 };
 
 export const updateUserInfoInDB = (email, formData, next) => async (dispatch) => {
