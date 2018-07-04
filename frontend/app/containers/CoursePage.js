@@ -40,8 +40,9 @@ class CoursePage extends Component {
     }
   }
 
-  cancelEdit = () => {
-    this.props.history.push('/user/course');
+  backFromCourseDetail = (e) => {
+    e.preventDefault();
+    this.props.history.goBack();
   }
 
   render() {
@@ -73,7 +74,7 @@ class CoursePage extends Component {
           <Route exact path="/course/detail/:courseId">
             <CourseDetail
               detail={courseDetail}
-              cancelEdit={this.cancelEdit}
+              cancelEdit={this.backFromCourseDetail}
             />
           </Route>
           
