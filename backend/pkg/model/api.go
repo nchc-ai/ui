@@ -87,3 +87,7 @@ type JobInfo struct {
 	Dataset      []string     `json:"dataset"`
 	Service      []LabelValue `json:"service"`
 }
+
+type Search struct {
+	Query string `json:"query"`
+}

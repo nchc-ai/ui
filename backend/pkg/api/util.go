@@ -308,11 +308,11 @@ func deleteService(clientset *kubernetes.Clientset, svc string) error {
 	return nil
 }
 
-func queryCourse(DB *gorm.DB, course model.Course) ([]model.Course, error) {
+func queryCourse(DB *gorm.DB, query interface{}, args ...interface{}) ([]model.Course, error) {
 	// query course based on course condition
 	results := []model.Course{}
 
-	if err := DB.Where(&course).Find(&results).Error; err != nil {
+	if err := DB.Where(query, args).Find(&results).Error; err != nil {
 		log.Errorf("Query courses table fail: %s", err.Error())
 		return nil, err
 	}

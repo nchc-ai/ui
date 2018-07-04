@@ -8,6 +8,7 @@
       * [X] [Get](#get)
       * [ ] [Update](#update)
       * [X] [List all courses](#list-all-courses)
+      * [X] [Search](#search)
    * [Job](#job)
       * [X] [List](#list-1)
       * [X] [Delete](#delete-1)
@@ -1021,6 +1022,139 @@
         ]
       }
    ```
+
+
+## Search
+
+* **Description**
+ 
+  Search course based on course name 
+
+* **URL**
+
+  /v1/course/search
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "query": "course"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Failed to parse spec request request: %s"
+     }
+    ```
+   
+    ```json
+    {
+        "error": true,
+        "message": "Empty query condition"
+     }
+    ```
+    
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "search course on condition Name like % %s % fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -d '{"query":"course"}' localhost:38080/v1/course/search
+
+      {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+      }
+   ```
+
+
 
 # Job
 

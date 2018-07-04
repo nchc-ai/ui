@@ -102,6 +102,36 @@ func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 	})
 }
 
+func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
+
+	req := model.Search{}
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	if req.Query == "" {
+		log.Errorf("Empty query condition")
+		util.RespondWithError(c, http.StatusBadRequest, "Empty query condition")
+		return
+	}
+	results, err := queryCourse(resourceClient.DB, "name LIKE ?", "%"+req.Query+"%")
+
+	if err != nil {
+		errStr := fmt.Sprintf("search course on condition Name like % %s % fail: %s", req.Query, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, model.ListCourseResponse{
+		Error:   false,
+		Courses: results,
+	})
+}
+
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 
 	var req model.Course

@@ -244,12 +244,14 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	{
 		course.GET("/level/:level", resourceClient.ListLevelCourse)
 		course.GET("/list", resourceClient.ListAllCourse)
+		course.POST("/search", resourceClient.SearchCourse)
 		course.OPTIONS("/level/:level", resourceClient.handleOption)
 		course.OPTIONS("/create", resourceClient.handleOption)
 		course.OPTIONS("/list", resourceClient.handleOption)
 		course.OPTIONS("/delete/:id", resourceClient.handleOption)
 		course.OPTIONS("/launch", resourceClient.handleOption)
 		course.OPTIONS("/get/:id", resourceClient.handleOption)
+		course.OPTIONS("/search", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
