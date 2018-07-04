@@ -26,7 +26,7 @@ spec:
     spec:
       containers:
       - name: mysql
-        image: mysql:5.7
+        image: mysql:8
         env:
         - name: MYSQL_ROOT_PASSWORD
           value: ogre0403
