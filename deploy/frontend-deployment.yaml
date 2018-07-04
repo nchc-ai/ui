@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twgc-ui
+spec:
+  selector:
+    matchLabels:
+      tier: twgc-ui
+  replicas: 1
+  template:
+    metadata:
+      name: twgc-ui
+      labels:
+        tier: twgc-ui
+    spec:
+      containers:
+      - name: twgc-ui
+        image: ogre0403/twgc:ui
+        ports:
+        - containerPort: 3010
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: twgc-ui
+spec:
+  type: NodePort
+  ports:
+    - port: 3010
+      nodePort: 30004
+  selector:
+    tier: twgc-ui
