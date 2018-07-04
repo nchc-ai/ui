@@ -6,6 +6,7 @@ import (
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	"net/http"
 	log "github.com/golang/glog"
+	"fmt"
 )
 
 func (server *APIServer) GetToken(c *gin.Context) {
@@ -57,4 +58,26 @@ func (server *APIServer) RefreshToken(c *gin.Context) {
 			RefreshToken: newToken.RefreshToken,
 		},
 	)
+}
+
+func (server *APIServer) Introspection(c *gin.Context) {
+
+	var req model.IntrospectionReq
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	introspectionResult, err := server.providerProxy.Introspection(req.Token)
+
+	if err != nil {
+		errStr := fmt.Sprintf("Introspection Token {%s} fail: %s", req.Token, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, introspectionResult)
 }

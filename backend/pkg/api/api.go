@@ -208,6 +208,7 @@ func (server *APIServer) CORSHeaderMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		c.Header("Access-Control-Allow-Origin", "*")
 		c.Header("Access-Control-Allow-Credentials", "true")
+		c.Header("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, DELETE")
 		c.Next()
 	}
 }
@@ -241,21 +242,26 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	// list advance and basic course, do not required token
 	course := router.Group("/v1").Group("/course")
 	{
-		course.GET("/level/:level", resourceClient.ListCourse)
+		course.GET("/level/:level", resourceClient.ListLevelCourse)
+		course.GET("/list", resourceClient.ListAllCourse)
+		course.POST("/search", resourceClient.SearchCourse)
 		course.OPTIONS("/level/:level", resourceClient.handleOption)
 		course.OPTIONS("/create", resourceClient.handleOption)
 		course.OPTIONS("/list", resourceClient.handleOption)
 		course.OPTIONS("/delete/:id", resourceClient.handleOption)
 		course.OPTIONS("/launch", resourceClient.handleOption)
+		course.OPTIONS("/get/:id", resourceClient.handleOption)
+		course.OPTIONS("/search", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
 	courseAuth := router.Group("/v1").Group("/course").Use(server.AuthMiddleware())
 	{
 		courseAuth.POST("/create", resourceClient.AddCourse)
-		courseAuth.POST("/list", resourceClient.ListCourse)
+		courseAuth.POST("/list", resourceClient.ListUserCourse)
 		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
 		courseAuth.POST("/launch", resourceClient.LaunchCourse)
+		courseAuth.GET("/get/:id", resourceClient.GetCourse)
 	}
 
 	job := router.Group("/v1").Group("/job")
@@ -278,6 +284,8 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		proxy.OPTIONS("/token", resourceClient.handleOption)
 		proxy.POST("/refresh", server.RefreshToken)
 		proxy.OPTIONS("/refresh", resourceClient.handleOption)
+		proxy.POST("/introspection", server.Introspection)
+		proxy.OPTIONS("/introspection", resourceClient.handleOption)
 	}
 
 	dataset := router.Group("/v1").Group("/datasets")

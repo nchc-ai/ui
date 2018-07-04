@@ -12,22 +12,18 @@ import (
 	log "github.com/golang/glog"
 )
 
-func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
+func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
 	provider, exist := c.Get("Provider")
 	if exist == false {
 		provider = ""
 	}
-	level := c.Param("level")
 
 	req := model.Course{}
-	var err error
-	if level == "" {
-		err := c.BindJSON(&req)
-		if err != nil {
-			log.Errorf("Failed to parse spec request request: %s", err.Error())
-			util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
-			return
-		}
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
 	}
 
 	if req.User == "" {
@@ -41,50 +37,15 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 			User:     req.User,
 			Provider: provider.(string),
 		},
-		Level: level,
 	}
 
-	results := []model.Course{}
-	err = resourceClient.DB.Where(&course).Find(&results).Error
+	resp, err := queryCourse(resourceClient.DB, course)
+
 	if err != nil {
-		log.Errorf("Query courses table fail: %s", err.Error())
-		util.RespondWithError(c, http.StatusInternalServerError, "Query courses table fail: %s", err.Error())
+		errStr := fmt.Sprintf("query user {%s} course fail: %s", req.User, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
 		return
-	}
-
-	resp := []model.Course{}
-
-	for _, result := range results {
-
-		dataset := model.Dataset{
-			CourseID: result.ID,
-		}
-		datasetResult := []model.Dataset{}
-		err = resourceClient.DB.Where(&dataset).Find(&datasetResult).Error
-		if err != nil {
-			log.Errorf("Query datasets table fail: %s", err.Error())
-			util.RespondWithError(c, http.StatusInternalServerError, "Query datasets table fail: %s", err.Error())
-			return
-		}
-
-		courseDataset := []string{}
-
-		for _, s := range datasetResult {
-			courseDataset = append(courseDataset, s.DatasetName)
-		}
-
-		resp = append(resp, model.Course{
-			Model: model.Model{
-				ID:        result.ID,
-				CreatedAt: result.CreatedAt,
-			},
-			Name:         result.Name,
-			Introduction: result.Introduction,
-			Image:        result.Image,
-			Level:        result.Level,
-			Gpu:          result.Gpu,
-			Datasets:     courseDataset,
-		})
 	}
 
 	c.JSON(http.StatusOK, model.ListCourseResponse{
@@ -92,6 +53,83 @@ func (resourceClient *ResourceClient) ListCourse(c *gin.Context) {
 		Courses: resp,
 	})
 
+}
+
+func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
+	level := c.Param("level")
+
+	if level == "" {
+		log.Errorf("empty level string")
+		util.RespondWithError(c, http.StatusBadRequest, "empty level string")
+		return
+	}
+
+	course := model.Course{
+		Level: level,
+	}
+
+	results, err := queryCourse(resourceClient.DB, course)
+
+	if err != nil {
+		errStr := fmt.Sprintf("query %s level course fail: %s", level, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, model.ListCourseResponse{
+		Error:   false,
+		Courses: results,
+	})
+
+}
+
+func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
+	course := model.Course{}
+
+	results, err := queryCourse(resourceClient.DB, course)
+
+	if err != nil {
+		errStr := fmt.Sprintf("query all course fail: %s", err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, model.ListCourseResponse{
+		Error:   false,
+		Courses: results,
+	})
+}
+
+func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
+
+	req := model.Search{}
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	if req.Query == "" {
+		log.Errorf("Empty query condition")
+		util.RespondWithError(c, http.StatusBadRequest, "Empty query condition")
+		return
+	}
+	results, err := queryCourse(resourceClient.DB, "name LIKE ?", "%"+req.Query+"%")
+
+	if err != nil {
+		errStr := fmt.Sprintf("search course on condition Name like % %s % fail: %s", req.Query, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, model.ListCourseResponse{
+		Error:   false,
+		Courses: results,
+	})
 }
 
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
@@ -287,6 +325,51 @@ func (resourceClient *ResourceClient) LaunchCourse(c *gin.Context) {
 			Ready:  false,
 			Status: "Created",
 		},
+	})
+
+}
+
+func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
+	id := c.Param("id")
+
+	if id == "" {
+		log.Errorf("Empty course id")
+		util.RespondWithError(c, http.StatusBadRequest, "Empty course id")
+		return
+	}
+
+	course := model.Course{
+		Model: model.Model{
+			ID: id,
+		},
+	}
+
+	result := model.Course{}
+	if err := resourceClient.DB.Where(&course).First(&result).Error; err != nil {
+		log.Errorf("Query courses {%s} fail: %s", id, err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Query courses {%s} fail: %s", id, err.Error())
+		return
+	}
+
+	dataset := model.Dataset{
+		CourseID: id,
+	}
+	datasetResult := []model.Dataset{}
+	if err := resourceClient.DB.Where(&dataset).Find(&datasetResult).Error; err != nil {
+		log.Errorf("Query course {%s} datasets fail: %s", id, err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Query course {%s} datasets fail: %s", id, err.Error())
+		return
+	}
+	courseDataset := []string{}
+	for _, s := range datasetResult {
+		courseDataset = append(courseDataset, s.DatasetName)
+	}
+
+	result.Datasets = courseDataset
+
+	c.JSON(http.StatusOK, model.GetCourseResponse{
+		Error:  false,
+		Course: result,
 	})
 
 }

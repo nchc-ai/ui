@@ -5,6 +5,10 @@
       * [X] [Launch](#launch)
       * [X] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
+      * [X] [Get](#get)
+      * [ ] [Update](#update)
+      * [X] [List all courses](#list-all-courses)
+      * [X] [Search](#search)
    * [Job](#job)
       * [X] [List](#list-1)
       * [X] [Delete](#delete-1)
@@ -18,6 +22,7 @@
    * [Proxy](#proxy)
       * [X] [Token](#token)
       * [X] [Refresh](#refresh)
+      * [X] [Introspection](#introspection)
    * [Image](#image)
       * [ ] [List](#list-3)
       
@@ -31,7 +36,7 @@
 
 * **Description**
  
-  List user's all courses information
+  List someone's all courses information
 
 * **URL**
 
@@ -96,20 +101,30 @@
 
 * **Error Response:**
 
-  * **Code:**  500 <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message": "Query datasets table fail: error-message"
+        "message": "Empty user name"
      }
     ```
 
     ```json
     {
         "error": true,
-        "message": "Query courses table fail: error-message"
+        "message": "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "query user {%s} course fail: %s"
      }
     ```
 
@@ -692,13 +707,13 @@
 
 * **Error Response:**
 
-  * **Code:**  500 <br />
+  * **Code:**  400 <br />
     **Content:**
 
     ```json
     {
         "error": true,
-        "message": "Query datasets table fail: error-message"
+        "message": "empty level string"
      }
     ```
 
@@ -708,7 +723,7 @@
     ```json
     {
         "error": true,
-        "message": "Query courses table fail: error-message"
+        "message": "query %s level course fail: %s"
      }
     ```
 
@@ -747,6 +762,398 @@
         ]
       }
    ```
+
+## Get
+
+
+* **Description**
+ 
+  Get one courses information by course id
+
+* **URL**
+
+  /v1/course/get/:id
+  
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "course": 
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            }
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Empty course id"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Query courses {%s} fail: %s"
+     }
+    ```
+    
+    ```json
+    {
+        "error": true,
+        "message": "Query course {%s} datasets fail: %s"
+     }
+    ```    
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/course/get/ea8870aa-01d6-443e-b1ca-c6e79cd1d930
+
+      {
+        "error": false,
+        "course": 
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            }
+      }
+   ```
+
+## Update
+
+## List all courses
+
+
+* **Description**
+ 
+  List all course information 
+
+* **URL**
+
+  /v1/course/list
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "query all course fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl http://localhost:8080/v1/level/list
+
+      {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+      }
+   ```
+
+
+## Search
+
+* **Description**
+ 
+  Search course based on course name 
+
+* **URL**
+
+  /v1/course/search
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "query": "course"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "createAt": "2018-06-25T09:21:20Z",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Failed to parse spec request request: %s"
+     }
+    ```
+   
+    ```json
+    {
+        "error": true,
+        "message": "Empty query condition"
+     }
+    ```
+    
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "search course on condition Name like % %s % fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -d '{"query":"course"}' localhost:38080/v1/course/search
+
+      {
+        "error": false,
+        "courses": [
+            {
+                "id": "131ba8a9-b60b-44f9-83b5-46590f756f41",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "caltech256",
+                    "mnist"
+                ]
+            },
+            {
+                "id": "344694cf-9f77-4feb-8e2a-737cb6a44f2d",
+                "name": "course name",
+                "introduction": "markdown text with escape",
+                "image": "course docker image",
+                "level": "advance",
+                "gpu": 1,
+                "datasets": [
+                    "data1",
+                    "mnist"
+                ]
+            }
+        ]
+      }
+   ```
+
 
 
 # Job
@@ -1732,6 +2139,89 @@
         "token": "045e8bd5-58dc-4bd5-8254-dc3d1571c9cd",
         "refresh_token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
      }
+   ```
+
+## Introspection
+
+
+* **Description**
+
+  Get token meta information from provider
+
+* **URL**
+
+  /v1/proxy/introspection
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+      "active": true,
+      "scope": "read_write",
+      "client_id": "test_client_1",
+      "username": "ogre0403@gmail.com",
+      "token_type": "Bearer",
+      "exp": 1530672296
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Introspection Token {%s} fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -d '"{"refresh_token":"7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"}"' \
+        http://localhost:8080/v1/proxy/refresh
+
+        {
+          "active": true,
+          "scope": "read_write",
+          "client_id": "test_client_1",
+          "username": "ogre0403@gmail.com",
+          "token_type": "Bearer",
+          "exp": 1530672296
+        }
    ```
 
 

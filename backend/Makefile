@@ -1,3 +1,5 @@
+TAG = $(shell git rev-parse --short HEAD)
+
 install_deps:
 	glide install
 
@@ -7,13 +9,15 @@ run-backend:
 	./bin/app --conf=./conf/api-config.json
 
 run-backend-docker:
-	docker run -ti --rm  -p 38080:38080 ogre0403/twgc:local
+	docker run -ti --rm  -p 38080:38080 ogre0403/twgc:api-$(TAG)-local
 
 build-backend-img:
-	docker build -t ogre0403/twgc:local -f Dockerfiles/Dockerfile .
+	docker build -t ogre0403/twgc:api-$(TAG)-local -f Dockerfiles/Dockerfile .
+
 
 build-backend-img-k8s:
-	docker build -t ogre0403/twgc:k8s -f Dockerfiles/Dockerfile-k8s .
+	docker build -t ogre0403/twgc:api-$(TAG)-k8s -f Dockerfiles/Dockerfile-k8s .
+
 
 build-in-docker:
 	rm -rf bin/*
