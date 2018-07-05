@@ -12,6 +12,7 @@ const CourseList = ({ data, tableData, editMethod, deleteMethod }) => (
         <SectionTitle
           title={'課程列表'}
         />
+        <hr />
       </Col>
       <Col>
         <Link to="/user/course/add">

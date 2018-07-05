@@ -6,6 +6,7 @@ const InitialState = {
   isLogin: false,
   data: [],
   token: '',
+  steady: false,
   userInfo: {
     active: false,
     client_id: '',
@@ -32,6 +33,7 @@ export default function Auth(state = InitialState, action) {
   case actionTypes.GET_USER_INFO[SUCCESS]:
     return {
       ...state,
+      steady: true,
       userInfo: action.payload
     };
   case actionTypes.SET_USER_INFO:

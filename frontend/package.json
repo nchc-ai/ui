@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "build": "webpack --config webpack.config.dev.js",
-    "dev": "node server.js",
-    "production": "webpack --config webpack.config.prod.js"
+    "dev": "webpack-dev-server --config webpack.config.dev.js",
+    "prod": "webpack --config webpack.config.prod.js"
   },
   "author": "FreeFolk TM Studio",
   "license": "ISC",

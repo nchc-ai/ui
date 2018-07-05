@@ -21,25 +21,23 @@ const CourseEdit = ({ handleSubmit, handleSubmitFailed, state, formData, targetF
       title={'新增課程'}
     />
 
+    <hr />
+
     <Form
       model="forms.addCourse"
       className="add-course-comp"
       onSubmit={submitData => handleSubmit(submitData)}
       onSubmitFailed={submitData => handleSubmitFailed(submitData)}
     >
-      <Row>
-        <Col md={5}>
-          <FormGroups
-            state={state}
-            formData={formData}
-            targetForm={targetForm}
-            changeVal={changeVal}
-            loadTagsOptsMethod={loadTagsOptsMethod}
-            onRadioChange={onRadioChange}
-            onMdChange={onMdChange}
-          />
-        </Col>
-      </Row>
+      <FormGroups
+        state={state}
+        formData={formData}
+        targetForm={targetForm}
+        changeVal={changeVal}
+        loadTagsOptsMethod={loadTagsOptsMethod}
+        onRadioChange={onRadioChange}
+        onMdChange={onMdChange}
+      />
 
       {/* 下方按鈕 */}
       <FormButtons
