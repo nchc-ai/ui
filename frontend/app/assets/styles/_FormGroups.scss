@@ -35,8 +35,41 @@ $form-group-row-margin: 20px;
 		outline:none;
 
 		&:focus{
+			border-radius: 4px; 
 			border: solid 2px $form-group-border-focus-color;
 			box-shadow:none;
+		}
+
+	}
+
+	.radio-input-con {
+		
+		width: 100px;
+
+		.radio-input {
+			display: inline-block;
+			width: 22px;
+		}
+
+		span {
+			transform: translateY(1px);
+			display: inline-block;
+		}
+		
+	}
+
+	.md-editor-comp {
+		overflow: hidden;
+		min-height: 160px;
+		border: 2px solid $form-group-border-color;
+		border-radius: 4px; 
+		padding-left: 10px;
+		padding-top: 10px;
+		
+		// 預設樣式
+		blockquote {
+			border-left: 3px solid #ddd;
+    	padding-left: 1rem;
 		}
 
 	}

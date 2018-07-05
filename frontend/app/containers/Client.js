@@ -8,8 +8,10 @@ import { compose } from 'redux';
 import { notify } from 'react-notify-toast';
 // import ga from 'react-google-analytics';
 import Notifications from 'react-notify-toast';
+import Progress from 'react-progress-2';
+
 import SetUserInfo from '../components/common/SetUserInfo/index';
-import Header from '../components/Header/index';
+import Header from './Header';
 import Footer from '../components/Footer/Index';
 // import Dialog from '../components/common/Dialog/index';
 
@@ -51,6 +53,7 @@ class Client extends Component {
           match={match}
           t={t}
         />
+        <Progress.Component/>
         <Notifications />
         {children}
         <Footer

@@ -1,14 +1,15 @@
 .user-bg {
   .side-menu-wrap {
-  
-    min-height: 1000px;
-    position: relative;
+    
+    position: absolute;
+    min-height: 1500px;
     background-color: #f8f4f4;
   
   }
 
   .user-container {
     width: 80%;
+    margin-left: 225px;
     padding-left: 80px;
     padding-top: 100px;
 
@@ -29,6 +30,23 @@
         margin-left: auto;
         display: inline;
         border-radius: 4px;
+      }
+
+    }
+
+
+    .user-course-edit-bg {
+      .form-group {
+        .main-label {
+          font-size: 18px;
+          color: $ailab-black-text;
+          letter-spacing: 0.1px;
+          font-weight: 400;
+        }
+      }
+
+      .submit-bg {
+        margin-bottom: 100px;
       }
 
     }

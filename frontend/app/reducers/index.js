@@ -4,6 +4,7 @@ import { routerReducer } from 'react-router-redux';
 
 import Auth from './Auth';
 import Ui from './Ui';
+import Course from './Course';
 import User from './User';
 
 import {
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
     addCourse: modelReducer('addCourse', initialAddCourseState)
   }, 'forms'),
   Auth,
+  Course,
   User,
   Ui
 });

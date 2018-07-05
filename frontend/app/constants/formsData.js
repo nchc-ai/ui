@@ -9,34 +9,38 @@ export const addCourseForm = [
     name: 'name',
     inputType: 'text',
     mainLabel: '課程名稱',
+    placeholder: '請輸入課程名稱',
     validators: { required },
     errorMessage: {
-      required: '請輸入課程名稱'
+      required: '您尚未輸入字元'
     },
     isRequired: true
   }, {
     key: 2,
     name: 'intro',
+    target: 'addCourse',
     inputType: 'markdown',
     mainLabel: '課程介紹',
     validators: { required },
     errorMessage: {
-      required: '請輸入課程介紹'
+      required: '您尚未輸入字元'
     },
     isRequired: true
   }, {
     key: 3,
     name: 'level',
+    target: 'addCourse',
     inputType: 'radio',
     mainLabel: '課程程度',
+    className: 'fl',
     radioArr: [
       {
         key: 1,
-        value: 1,
+        value: 'basic',
         label: '基礎'
       }, {
         key: 2,
-        value: 2,
+        value: 'advance',
         label: '進階'
       }
     ],
@@ -58,8 +62,15 @@ export const addCourseForm = [
   }, {
     key: 5,
     name: 'gpu',
-    inputType: 'text',
+    target: 'addCourse',
+    inputType: 'select',
     mainLabel: 'GPU核心數',
+    options: [
+      { label: 'x1', value: 1 },
+      { label: 'x2', value: 2 },
+      { label: 'x3', value: 3 },
+      { label: 'x4', value: 4 }
+    ],
     validators: { required },
     errorMessage: {
       required: '請輸入GPU核心數'
@@ -67,8 +78,9 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 6,
-    name: '',
-    inputType: 'datasets',
+    name: 'datasets',
+    target: 'addCourse',
+    inputType: 'tags-input',
     mainLabel: '資料集',
     options: [
       {

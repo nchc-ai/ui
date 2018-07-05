@@ -14,10 +14,15 @@ $nav-font-color: #373838;
 
 $ai-main-grey: #373838;
 $ai-light-grey: #f8f4f4;
+$ailab-black-text: #373838;
 $ai-input-border-default: #ddd;
 $ai-input-border-hover: #2a9b9d; 
 $ai-secondary-light-green: #6ec7cf;
-
+$ailab-super-light-green: #d4ebeb;
+$ailab-black-text: #373838;
+$ailab-primary-dark-green:#2a9b9d;
+$ailab-black: #000;
+$ailab-grey-03: #EAEAEA;
 /*------- 尺寸 -------*/
 
 $desktop: 960px;
@@ -159,6 +164,15 @@ $title-size: 27px;
     top: 50%;
     transform: translateY(-50%);
 
+}
+
+
+/*------- 置中child -------*/
+
+@mixin center-child{
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 
@@ -442,7 +456,7 @@ html{
     h4{ font-size: 20px; }
     h5{ font-size: 16px; }
     h6{ font-size: 14px; }
-    span{ font-size: 14px; }
+    // span{ font-size: 14px; }
 
     p{  
       font-size: 12px; 

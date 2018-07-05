@@ -1,0 +1,50 @@
+.course-bg {
+  min-height: 800px !important;
+
+  .section-01 {
+
+    .title { 
+      @include center;
+      text-align: center;
+      font-size: 36px;
+      margin-top: 70px;
+      margin-bottom: 20px;
+    }
+
+    .table-container {
+      @include rect-center(1000px, initial);
+    }
+  }
+}
+
+.course-detail-bg {
+
+  .section-bn {
+    @include rect-center(100%, 290px);
+    background-image: url(../images/course/course-bn.png);
+    line-height: 290px;
+    text-align: center;
+
+    h1 {
+      display: inline;
+    }
+
+    img {
+      @include rect-center(180px, 180px);
+      margin-top: -90px;
+    }
+  }
+
+  .section-01 {
+   
+    @include rect-center(960px, initial);
+    .custom-jumbotron-comp {
+      margin-top: 120px;
+    }
+  }
+
+  .submit-bg {
+    margin-top: 45px;
+    margin-bottom: 50px;
+  }
+}

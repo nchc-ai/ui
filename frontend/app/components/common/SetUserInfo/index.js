@@ -23,13 +23,13 @@ class SetUserInfo extends Component {
 
     // authAction.healthCheck();
     authAction.checkDatabase();
-
-    const userInfo = getLocalStorageItem('userInfo');
-    const isLogin = isItemExistInLocalStorage('userInfo');
-    authAction.setUserInfo(userInfo, isLogin);
+    // const userInfo = getLocalStorageItem('userInfo');
+    // const isLogin = isItemExistInLocalStorage('userInfo');
+    // authAction.setUserInfo(userInfo, isLogin);
 
     const token = getToken();
     authAction.setUserToken(token);
+    authAction.getUserInfo(token);
 
     // 可以做一些初始動作
   }

@@ -65,3 +65,12 @@ export const jobs = [
   }
 ];
 
+export const courseDetailData = {
+  createAt: '2018/06/30',
+  image: 'darpa-timit.cifar-100 ',
+  gpu: 2,
+  datasets: ['Juypter', 'Juypter2']
+};
+
+
+export const htmlStr = '';

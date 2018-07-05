@@ -5,28 +5,37 @@ export const courseData = {
       text: '課程名稱'
     }, {
       key: 2,
-      text: '講師名稱'
+      text: '課程程度'
     }, {
       key: 3,
-      text: '訓練資料'
+      text: '映像檔'
     }, {
       key: 4,
-      text: '建立日期'
+      text: 'GPU使用數'
+    }, {
+      key: 5,
+      text: '建立時間'
     }
   ],
   cols: [
     {
       key: 1,
-      text: 'courseName'
+      type: 'link',
+      value: 'name'
     }, {
       key: 2,
-      text: 'teacher'
+      type: 'level',
+      value: 'level'
     }, {
       key: 3,
-      text: 'data'
+      value: 'image'
     }, {
       key: 4,
-      text: 'date'
+      value: 'gpu'
+    }, {
+      key: 5,
+      type: 'date',
+      value: 'createAt'
     }
   ]
 };
@@ -51,20 +60,20 @@ export const userCourseData = {
   cols: [
     {
       key: 1,
-      value: 'name',
-      type: 'link'
+      type: 'link',
+      value: 'name'
     }, {
       key: 2,
-      value: 'level',
-      type: 'level'
+      type: 'level',
+      value: 'level'
     }, {
       key: 3,
-      value: 'createAt',
-      type: 'date'
+      type: 'date',
+      value: 'createAt'
     }, {
       key: 4,
-      value: '',
-      type: 'more'
+      type: 'more',
+      value: ''
     }
   ]
 };

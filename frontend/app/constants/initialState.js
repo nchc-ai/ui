@@ -7,7 +7,7 @@ export const initialAddCourseState = {
   name: '',
   intro: '',
   image: '',
-  level: '',
+  level: { label: '基礎', value: 'basic' },
   startAt: '',
   endAt: '',
   server: '',

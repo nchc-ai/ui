@@ -1,0 +1,11 @@
+.static-bg {
+  background-image: url(../images/static/static-bg.png);
+  .static-container {
+    @include rect-center(180px, initial);
+
+    .common-title-underline {
+      @include rect-center(600px, 2px);
+      background-color: #000;
+    }
+  }
+}

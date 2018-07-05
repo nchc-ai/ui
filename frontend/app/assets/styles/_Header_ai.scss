@@ -1,5 +1,16 @@
+.header-comp{
+  .login-container {
+    position: relative;
+    margin-top: 27px;
+    margin-left: 20px;
+    display: inline-block;
 
+    a{
+      padding-right: 15px;
+    }
 
-
-
-
+    span {
+      cursor: pointer;
+    }
+  }
+}
