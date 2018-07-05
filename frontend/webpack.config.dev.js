@@ -94,12 +94,19 @@ const config = {
     },
     runtimeChunk: true
   },
-  // devServer: {
-  //   contentBase: './build',
-  //   hot: true,
-  //   inline: true,
-  //   historyApiFallback: true
-  // }
+  devServer: {
+    contentBase: './build',
+    proxy: {
+      '/*': {
+        target: 'http://twgc-api-svc.default:38080/',
+        secure: 'false'
+      }
+    },
+    hot: true,
+    inline: true,
+    historyApiFallback: true,
+    port: 3010
+  }
 };
 
 

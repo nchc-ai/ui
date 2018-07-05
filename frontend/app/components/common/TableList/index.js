@@ -19,7 +19,7 @@ const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
     </thead>
     <DataFrameTable
       data={data}
-      cols={5}
+      cols={8}
     >
       {
         data.map((d, j) => (

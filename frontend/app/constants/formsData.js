@@ -6,6 +6,7 @@ import {
 export const addCourseForm = [
   {
     key: 1,
+    size: 8,
     name: 'name',
     inputType: 'text',
     mainLabel: '課程名稱',
@@ -17,6 +18,7 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 2,
+    size: 8,
     name: 'intro',
     target: 'addCourse',
     inputType: 'markdown',
@@ -28,6 +30,7 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 3,
+    size: 8,
     name: 'level',
     target: 'addCourse',
     inputType: 'radio',
@@ -51,6 +54,7 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 4,
+    size: 4,
     name: 'image',
     inputType: 'text',
     mainLabel: '映像檔',
@@ -61,6 +65,7 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 5,
+    size: 4,
     name: 'gpu',
     target: 'addCourse',
     inputType: 'select',
@@ -78,6 +83,7 @@ export const addCourseForm = [
     isRequired: true
   }, {
     key: 6,
+    size: 8,
     name: 'datasets',
     target: 'addCourse',
     inputType: 'tags-input',

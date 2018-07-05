@@ -49,24 +49,7 @@ class UserPage extends Component {
   }
 
   componentWillMount() {
-    const {
-      userAction,
-      token,
-      match
-    } = this.props;
-
-    const part = _.get(match, 'params.part');
-    const action = _.get(match, 'params.action');
-
-    if (part === 'course' && action === 'add') {
-      
-    } else if (part === 'course' && action === 'edit') {
-      
-    } else if (part === 'course') {
-      this.loadCourseList()
-    } else if (part === 'job') {
-      userAction.getJobList('jimmy', token);
-    }
+    this.fetchData(this.props);
   }
 
   componentDidMount() {
@@ -82,7 +65,28 @@ class UserPage extends Component {
       window.scrollTo(0, 0);
     }
   }
-  
+
+  fetchData = (nextProps) => {
+    const {
+      userAction,
+      token,
+      match
+    } = nextProps;
+
+    const part = _.get(match, 'params.part');
+    const action = _.get(match, 'params.action');
+
+    if (part === 'course' && action === 'add') {
+      
+    } else if (part === 'course' && action === 'edit') {
+      
+    } else if (part === 'course') {
+      this.loadCourseList();
+    } else if (part === 'job') {
+      userAction.getJobList('jimmy', token);
+    }
+  }
+
   // common
 
   loadCourseList = () => {
@@ -164,9 +168,14 @@ class UserPage extends Component {
   }
 
 
-  cancelEdit = () => {
-    this.props.history.push('/user/course');
+  backFromCourseAdd = () => {
+    this.props.history.goBack();
   }
+
+  backFromCourseEdit = () => {
+    this.props.history.goBack();
+  }
+
 
   // Job
 
@@ -218,12 +227,12 @@ class UserPage extends Component {
                 loadTagsOptsMethod={this.loadTagsOpts}
                 onRadioChange={this.changeCourseLevel}
                 onMdChange={this.changeCourseIntro}
-                backMethod={this.cancelEdit}
+                backMethod={this.backFromCourseAdd}
               />
             </Route>
 
             {/* 編輯課程 */}
-            <Route exact path="/user/course/edit">
+            <Route exact path="/user/course/edit/:courseId">
               <CourseEdit
                 handleSubmit={this.handleSubmit}
                 handleSubmitFailed={this.handleSubmitFailed}
@@ -234,7 +243,7 @@ class UserPage extends Component {
                 loadTagsOptsMethod={this.loadTagsOpts}
                 onRadioChange={this.changeCourseLevel}
                 onMdChange={this.changeCourseIntro}
-                backMethod={this.cancelEdit}
+                backMethod={this.backFromCourseEdit}
               />
             </Route>
 
