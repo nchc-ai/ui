@@ -6,7 +6,7 @@
       * [X] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
       * [X] [Get](#get)
-      * [ ] [Update](#update)
+      * [X] [Update](#update)
       * [X] [List all courses](#list-all-courses)
       * [X] [Search](#search)
    * [Job](#job)
@@ -389,9 +389,7 @@
     "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
     "name": "course name",
     "introduction":"markdown text with escape",
-    "image":"course docker image",
     "level": "basic",
-    "GPU": 1,
     "datasets":[
       "mnist",
       "caltech256"
@@ -407,11 +405,59 @@
     ```json
      {
         "error": false,
-        "message" : "course <course-name> update successfully"
+        "message" : "course <course-id> update successfully"
      }
     ```
 
 * **Error Response:**
+
+  * **Code:** 400 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+    ```json
+     {
+        "error": false,
+        "message" : "Course id is empty"
+     }
+    ```
+
+  * **Code:** 500 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : "find course {%s} fail: %s"
+     }
+    ```
+
+    ```json
+     {
+        "error": false,
+        "message" : "update course {%s} information fail: %s"
+     }
+    ```
+    
+    ```json
+     {
+        "error": false,
+        "message" : "Failed to delete course {%s} dataset information in DB: %s"
+     }
+    ```
+    
+    ```json
+     {
+        "error": false,
+        "message" : "Failed to create course-dataset information in DB: %s"
+     }
+    ```
 
   * **Code:**  400 <br />
     **Content:**
@@ -454,15 +500,13 @@
      }
     ```
 
-  * **Code:**  401 <br />
-    **Content:**
-
     ```json
     {
         "error": true,
         "message" : "Authorization header is not Bearer Token format or token is missing"
      }
     ```
+
 
   * **Code:**  403 <br />
     **Content:**
@@ -473,16 +517,14 @@
           "message" : "Invalid API token"
        }
     ```
-
-  * **Code:**  403 <br />
-    **Content:**
-
+    
     ```json
       {
           "error": true,
           "message" : "Access token expired"
       }
     ```
+
 
   * **Code:**  500 <br />
     **Content:**
@@ -499,7 +541,7 @@
   ```sh
    $ curl -X PUT \
      -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
-     -d '{"user":"jimmy", "name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
+     -d '{"id":"ea8870aa-01d6-443e-b1ca-c6e79cd1d930", "name":"course name","introduction":"markdown text with escape","level": "basic","datasets":["mnist","caltech256"]}' \
      http://localhost:8080/v1/course/create
    {
        "error": false,

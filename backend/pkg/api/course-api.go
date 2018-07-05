@@ -376,12 +376,17 @@ func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 // todo: do we allow user to modify image/gpu, if so, we need to restart job deployment
 func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {
 	var req model.Course
-	var needRestartDeployment bool
 
 	err := c.BindJSON(&req)
 	if err != nil {
 		log.Errorf("Failed to parse spec request request: %s", err.Error())
 		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	if req.ID == "" {
+		log.Errorf("Course id is empty")
+		util.RespondWithError(c, http.StatusBadRequest, "Course id is empty")
 		return
 	}
 
@@ -392,21 +397,46 @@ func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {
 	}
 
 	if err = resourceClient.DB.First(&findCourse).Error; err != nil {
+		errStr := fmt.Sprintf("find course {%s} fail: %s", req.ID, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
 		return
 	}
 
-	// update job deployment later if course is updated
-	// dataset??
-	if findCourse.Gpu != req.Gpu || findCourse.Image != req.Image {
-		needRestartDeployment = true
-	}
-
-	// update course object fields
-
 	// update Course DB
-	resourceClient.DB.Update(&findCourse)
-
-	if needRestartDeployment == true {
-		// update deployment
+	if err := resourceClient.DB.Model(&findCourse).Updates(
+		model.Course{
+			Name:         req.Name,
+			Introduction: req.Introduction,
+			Level:        req.Level,
+		}).Error; err != nil {
+		errStr := fmt.Sprintf("update course {%s} information fail: %s", req.ID, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
 	}
+
+	// update dataset required by course in DB
+
+	// Step 1: delete dataset used by course
+	if err = resourceClient.DB.Where("course_id = ?", req.ID).Delete(model.Dataset{}).Error; err != nil {
+		errStr := fmt.Sprintf("Failed to delete course {%s} dataset information in DB: %s", req.ID, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+	}
+
+	// Step 2: careate new datasets
+	for _, data := range req.Datasets {
+		newDataset := model.Dataset{
+			CourseID:    req.ID,
+			DatasetName: data,
+		}
+		if err = resourceClient.DB.Create(&newDataset).Error; err != nil {
+			log.Errorf("Failed to create course-dataset information in DB: %s", err.Error())
+			util.RespondWithError(c, http.StatusInternalServerError, "Failed to create course-dataset information in DB: %s", err.Error())
+			return
+		}
+	}
+
+	util.RespondWithOk(c, "Course {%s} update successfully", req.ID)
 }
