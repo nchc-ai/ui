@@ -28,9 +28,6 @@ spec:
       - name: mysql-storage
         persistentVolumeClaim:
           claimName: mysql-pvc
-      - name: init-db-script
-        persistentVolumeClaim:
-          claimName: init-db
       - name: twgc-database-init
         configMap:
           name: twgc-database-cm
