@@ -34,7 +34,7 @@ spec:
       serviceAccountName: twgc-api-server
       containers:
       - name: twgc-api
-        image: ogre0403/twgc:api-299f3bc-k8s
+        image: ogre0403/twgc:api-fe85e33
         ports:
         - containerPort: 38080
         volumeMounts:
