@@ -252,6 +252,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		course.OPTIONS("/launch", resourceClient.handleOption)
 		course.OPTIONS("/get/:id", resourceClient.handleOption)
 		course.OPTIONS("/search", resourceClient.handleOption)
+		course.OPTIONS("/update", resourceClient.handleOption)
 	}
 
 	// list/add course under specific user, token is required
@@ -262,6 +263,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
 		courseAuth.POST("/launch", resourceClient.LaunchCourse)
 		courseAuth.GET("/get/:id", resourceClient.GetCourse)
+		courseAuth.PUT("/update", resourceClient.UpdateCourse)
 	}
 
 	job := router.Group("/v1").Group("/job")

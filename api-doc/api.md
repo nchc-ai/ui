@@ -358,6 +358,156 @@
    }
    ```
 
+
+## Update
+
+* **Description**
+ 
+  Add new course information into database
+
+* **URL**
+
+  /v1/course/update/
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+
+* **Method:**
+
+  `PUT`
+
+* **URL Params**
+
+  None
+
+* **Data Params**
+
+  ```json
+  {
+    "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+    "name": "course name",
+    "introduction":"markdown text with escape",
+    "image":"course docker image",
+    "level": "basic",
+    "GPU": 1,
+    "datasets":[
+      "mnist",
+      "caltech256"
+    ]
+  }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "message" : "course <course-name> update successfully"
+     }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Failed to parse spec request request: error-message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Failed to create course information: error-message"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Failed to create course-dataset information in DB: error-message"
+     }
+    ```
+
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+   $ curl -X PUT \
+     -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+     -d '{"user":"jimmy", "name":"course name","introduction":"markdown text with escape","image":"course docker image","level": "basic","GPU": 1,"datasets":["mnist","caltech256"]}' \
+     http://localhost:8080/v1/course/create
+   {
+       "error": false,
+       "message": "Course course name created successfully"
+   }
+   ```
+
+
 ## Launch
   
 * **Description**
