@@ -34,7 +34,7 @@
                                                       echo '<a href="course.php" class="nav-link g-py-17 g-px-0"> <i class="ace-icon fa fa-database"></i>';
                                                       echo $_SESSION['username'].'的課程清單</a></li>';
 //}
-                                                      echo '<li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="personal_data.aspx" class="nav-link g-py-17 g-px-0"> <i class="ace-icon fa fa-male"></i>';
+                                                      echo '<li class="nav-item g-mx-10--lg g-mx-15--xl"><a href="test_password.php" class="nav-link g-py-17 g-px-0"> <i class="ace-icon fa fa-male"></i>';
                                                       echo $_SESSION['username'].'的個人資料</a></li>';
 
 ?>

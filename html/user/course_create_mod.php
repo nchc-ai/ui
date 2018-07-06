@@ -1,6 +1,19 @@
 <?php
 include "../session.php";
 $PageName=basename($_SERVER["SCRIPT_FILENAME"],'.php');
+$ds_array=scandir("/home/chou/mntest/datasets/".$_SESSION['username']);
+$ds_num=count($ds_array);
+for ($i=0;$i<$ds_num;$i++){
+	if ($ds_array[$i]!='.' && $ds_array[$i]!='..'){
+		$sql = "select * from `data_upload` where `userid`='".$_SESSION['aid']."' and `name`='".$ds_array[$i]."';";
+		$sqlresult = mysqli_query($conn, $sql);
+		$sqlrow=mysqli_fetch_assoc($sqlresult);
+		if ($sqlrow == NULL){
+			$sqlinsert= "insert into `data_upload` ( `name`,`userid`) values('".$ds_array[$i]."','".$_SESSION['aid']."')";
+			mysqli_query($conn,$sqlinsert);
+		}
+	}
+}
 ?>
 
 <!DOCTYPE html>

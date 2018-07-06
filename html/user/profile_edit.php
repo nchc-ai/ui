@@ -21,15 +21,48 @@ $PageName=basename($_SERVER["SCRIPT_FILENAME"],'.php');
 		<div class="container">
 			<div class="d-sm-flex text-center">
 				<div class="align-self-center">
-					<h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md"><b><a href="job.php"><?php echo $_SESSION['username'];?>的工作清單</a> <i class="ace-icon fa fa-angle-double-right"></i> 新增</b></h2>
+					<h2 class="h3 g-font-weight-300 w-100 g-mb-10 g-mb-0--md"><b><a href="job.php"><?php echo $_SESSION['username'];?>修改密碼</a></b></h2>
 				</div>
 			</div>
 		</div>
 	</section>
 	
 	<form method="post" action="./job_update.php" onsubmit="javascript:return WebForm_OnSubmit();" id="ctl00">
+        <form  action="alter_password.php" method="post" onsubmit="return alter()">  
+        用户名<input type="text" name="username" id ="username" /><br/> 舊密碼<input  
+            type="password" name="oldpassword" id ="oldpassword"/><br/> 新密碼<input  
+            type="password" name="newpassword" id="newpassword"/><br/> 確認新密碼<input  
+            type="password" name="assertpassword" id="assertpassword"/><br/> <input  
+            type="submit" value="修改密碼" onclick="return alter()">  
+        </form>  
 
 <script type="text/javascript">
+function alter() {  
+              
+            var username=document.getElementById("username").value;  
+            var oldpassword=document.getElementById("oldpassword").value;  
+            var newpassword=document.getElementById("newpassword").value;  
+            var assertpassword=document.getElementById("assertpassword").value;  
+            var regex=/^[/s]+$/;  
+            if(regex.test(username)||username.length==0){  
+                alert("用戶名格式不對");  
+                return false;  
+            }  
+            if(regex.test(oldpassword)||oldpassword.length==0){  
+                alert("密碼格式不對");  
+                return false;  
+            }  
+            if(regex.test(newpassword)||newpassword.length==0) {  
+                alert("新密碼格式不對");  
+                return false;  
+            }  
+            if (assertpassword != newpassword||assertpassword==0) {  
+                alert("兩次密碼輸入不一致");  
+                return false;  
+            }  
+            return true;  
+  
+        }
 //<![CDATA[
 var theForm = document.forms['ctl00'];
 if (!theForm) {
@@ -55,29 +88,38 @@ return true;
 //]]>
 </script>
 
-<!--	<section class="container g-pt-40 g-pb-10">
+	<section class="container g-pt-40 g-pb-10">
 		<div class="row">
 			<div class="col-lg-12 g-mb-20">
 				<div class="form-group g-mb-20">
+
+
                                         <input type="hidden" id="job_id" name="job_id" value="<?php echo $_GET['job_id'];?>">
-					Container 帳號 <font color="red"><b>必填</b></font> &nbsp; 
+					舊密碼 <font color="red"><b>必填</b></font> &nbsp; 
 
 					<a href="#modal1" data-modal-target="#modal1" data-modal-effect="fadein"><i class="ace-icon fa fa-info-circle"></i></a> 
 					<div id="modal1" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-10" style="display: none;"> 
 						<button type="button" class="close" onclick="Custombox.modal.close();"> <i class="hs-icon hs-icon-close"></i> </button> 
-						<h4 class="g-mb-20">Container 帳號</h4> 
+						<h4 class="g-mb-20">舊密碼</h4> 
 					</div>
 					
 					<input name="gateway_id" type="text" value="" maxlength="255" id="gateway_id" class="form-control" required="" autocomplete="false" />
 					<span id="ctl01" style="visibility:hidden;"><font color=red><b>Alphanumeric only!</b></font></span>
+
 				</div>
+
+
+
+
+
+
 				<div class="form-group g-mb-20">
-					Container 密碼 <font color="red"><b>必填</b></font> &nbsp; 
+					新密碼 <font color="red"><b>必填</b></font> &nbsp; 
 					
 					<a href="#modal2" data-modal-target="#modal2" data-modal-effect="fadein"><i class="ace-icon fa fa-info-circle"></i></a> 
 					<div id="modal2" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-10" style="display: none;"> 
 						<button type="button" class="close" onclick="Custombox.modal.close();"> <i class="hs-icon hs-icon-close"></i> </button> 
-						<h4 class="g-mb-20">Container 密碼</h4> 
+						<h4 class="g-mb-20">新密碼</h4> 
 <br/>
 </p>
 					</div>
@@ -85,7 +127,25 @@ return true;
 					<input name="gateway_password" value="" maxlength="255" id="gateway_password" class="form-control" type="password" required="" autocomplete="new-password" />
 					<span id="ctl02" style="visibility:hidden;"><font color=red><b>Alphanumeric only!</b></font></span>
 				</div>
--->
+				<div class="form-group g-mb-20">
+                                        確認新密碼 <font color="red"><b>必填</b></font> &nbsp;
+
+                                        <a href="#modal2" data-modal-target="#modal2" data-modal-effect="fadein"><i class="ace-icon fa fa-info-circle"></i></a>
+                                        <div id="modal2" class="text-left g-max-width-600 g-bg-white g-overflow-y-auto g-pa-10" style="display: none;">
+                                                <button type="button" class="close" onclick="Custombox.modal.close();"> <i class="hs-icon hs-icon-close"></i> </button>
+                                                <h4 class="g-mb-20">確認新密碼</h4>
+<br/>
+</p>
+                                        </div>
+
+                                        <input name="gateway_password" value="" maxlength="255" id="gateway_password" class="form-control" type="password" required="" autocomplete="new-password" />
+                                        <span id="ctl02" style="visibility:hidden;"><font color=red><b>Alphanumeric only!</b></font></span>
+                                </div>
+
+
+
+
+
 <!--				<div class="form-group g-mb-20">
 					進階設定：來源 IP Address (可以不指定) 
 					
@@ -102,12 +162,12 @@ return true;
 					<input name="source_ip_address" type="text" maxlength="255" id="source_ip_address" class="form-control" autocomplete="false" />
 				</div>
 -->				
-<!--				<input type="submit" name="Button_Submit" value="確定" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;Button_Submit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="Button_Submit" class="btn btn-xl u-btn-primary g-font-size-default" />
+				<input type="submit" name="Button_Submit" value="確定" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;Button_Submit&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="Button_Submit" class="btn btn-xl u-btn-primary g-font-size-default" />
 				<a class="btn btn-xl u-btn-primary g-font-size-default" href="job.php">回上頁</a>
 			</div>
 		</div>
 	</section>
--->	
+	
 <script type="text/javascript">
 //<![CDATA[
 var Page_Validators =  new Array(document.getElementById("ctl01"), document.getElementById("ctl02"), document.getElementById("ctl03"));
@@ -153,24 +213,6 @@ function ValidatorOnSubmit() {
 }
         WebForm_AutoFocus('id');//]]>
 </script>
-</form>
-        <section class="container g-pb-10">
-                <div class="row">
-                        <div class="col-lg-12 g-mb-20">
-                                <div class="form-group g-mb-20">
-<form method="post" action="job_commit_restful.php">
-<!--  <button type="submit" value="sub" class="btn btn-xl u-btn-primary g-font-size-default">commit container</button> -->
-<br/><br/>
-<span style="font-size:24px;">另存Container為image</span><br><br><br>
-   <span style="font-size:18px;">Image name: </span>
-<?php echo '<span>'.$_SESSION['username'].'/</span><input type="hidden" name="job_id" value="'.$_GET['job_id'].'"></span><input type="hidden" name="di_id" value="'.$_GET['di'].'">';?>
-   <input size="10" type="text" name="repo" onblur="this.value = this.value.toLowerCase();">
-   <span>:</span>
-   <input size="10" type="text" name="tag" onblur="this.value = this.value.toLowerCase();">
-<!--   <span>(request)</span>-->
-   <br/><br/><br/>
-  <input type="submit" value="Commit" class="btn btn-xl u-btn-primary g-font-size-default">
-</form>
 </div></div></div></section>
 
 <?php include "footer.php";?>
