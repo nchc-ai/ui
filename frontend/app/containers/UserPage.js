@@ -85,6 +85,8 @@ class UserPage extends Component {
     } else if (part === 'job') {
       userAction.getJobList('jimmy', token);
     }
+
+    window.scrollTo(0, 0);
   }
 
   // common
@@ -93,9 +95,10 @@ class UserPage extends Component {
     const {
       userAction,
       token,
+      userInfo
     } = this.props;
 
-    userAction.getCourseList('jimmy', token);
+    userAction.getCourseList(userInfo, token);
   }
 
   // CourseList
@@ -127,25 +130,27 @@ class UserPage extends Component {
     const {
       userAction,
       token,
-      history
+      history,
+      userInfo
     } = this.props;
-    userAction.getCourseList('jimmy', token);
+    this.loadCourseList();
     history.push('/user/course');
   }
 
   handleSubmit = (formData) => {
-    console.log('[handleSubmit] submit', formData);
+    // console.log('[handleSubmit] submit', formData);
 
     const {
       userAction,
-      token
+      token,
+      userInfo
     } = this.props;
 
-    userAction.createCourse(token, formData, this.redirect);
+    userAction.createCourse(token, userInfo, formData, this.redirect);
   }
 
   handleSubmitFailed = (formData) => {
-    console.log('[handleSubmitFailed] formData', formData);
+    // console.log('[handleSubmitFailed] formData', formData);
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
@@ -195,7 +200,7 @@ class UserPage extends Component {
       addCourse,
       changeValue
     } = this.props;
-    
+
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -273,6 +278,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = ({ Auth, User, forms }) => ({
   addCourse: forms.addCourse,
   token: Auth.token,
+  userInfo: Auth.userInfo,
   Course: {
     loading: User.course.loading,
     list: User.course.data

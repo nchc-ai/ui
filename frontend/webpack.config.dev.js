@@ -96,12 +96,12 @@ const config = {
   },
   devServer: {
     contentBase: './build',
-    proxy: {
-      '/*': {
-        target: 'http://twgc-api-svc.default:38080/',
-        secure: 'false'
-      }
-    },
+    // proxy: {
+    //   '/*': {
+    //     target: 'http://twgc-api-svc.default:38080/',
+    //     secure: 'false'
+    //   }
+    // },
     hot: true,
     inline: true,
     historyApiFallback: true,
