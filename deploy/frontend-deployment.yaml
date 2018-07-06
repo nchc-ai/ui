@@ -15,9 +15,9 @@ spec:
     spec:
       containers:
       - name: twgc-ui
-        image: ogre0403/twgc:ui-fe85e33
+        image: ogre0403/twgc:ui-c82ee76
         ports:
-        - containerPort: 3010
+        - containerPort: 30014
         volumeMounts:
         - name: twgc-ui-conf
           mountPath: /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/frontend/app/config/
@@ -36,8 +36,8 @@ metadata:
 spec:
   type: NodePort
   ports:
-    - port: 3010
-      nodePort: 30004
+    - port: 30014
+      nodePort: 30014
   selector:
     tier: twgc-ui
 ---
@@ -47,6 +47,6 @@ metadata:
   name: twgc-ui-cm
 data:
   endpoint-conf: |-
-    export const WEBSITE_URL = 'http://140.110.5.22:30004';
-    export const API_URL = 'http://140.110.5.22:30003';
+    export const WEBSITE_URL = 'http://140.110.136.74:30014';
+    export const API_URL = '';
     export const AUTH_PROVIDER_URL = 'http://140.110.5.22:30010';

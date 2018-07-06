@@ -97,15 +97,18 @@ const config = {
   devServer: {
     contentBase: './build',
     proxy: {
-      '/*': {
-        target: 'http://twgc-api-svc.default:38080/',
-        secure: 'false'
+      '/v1/*': {
+        target: 'http://twgc-api-svc.default:38080',
+        bypass: function(req, res, proxyOptions) {
+      	  if (req.headers.accept.indexOf("html") !== -1) {
+            console.log("Skipping proxy for browser request.");
+            return "/index.html";
+          }
+        }
       }
     },
-    hot: true,
-    inline: true,
-    historyApiFallback: true,
-    port: 3010
+    port: 30014,
+    host: '0.0.0.0'
   }
 };
 
