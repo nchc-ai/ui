@@ -49,18 +49,20 @@ export const addCourseForm = [
     ],
     validators: { required },
     errorMessage: {
-      required: '請輸入課程程度'
+      required: '您尚未輸入課程程度'
     },
     isRequired: true
   }, {
     key: 4,
     size: 4,
     name: 'image',
-    inputType: 'text',
+    target: 'addCourse',
+    placeholder: '請選擇映像檔',
+    inputType: 'async-select',
     mainLabel: '映像檔',
     validators: { required },
     errorMessage: {
-      required: '請輸入映像檔名稱'
+      required: '您尚未選擇映像檔'
     },
     isRequired: true
   }, {
@@ -101,7 +103,7 @@ export const addCourseForm = [
     ],
     validators: { required },
     errorMessage: {
-      required: '請輸入GPU核心數'
+      required: '您尚未輸入GPU核心數'
     },
     isRequired: true
   }

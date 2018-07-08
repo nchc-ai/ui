@@ -10,6 +10,7 @@ import MarkdownShortcuts from '../MarkdownShortcuts/index';
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
+// 請不要重複同個type兩次以上，如遇此狀況請分兩個FormGroups用
 // 另外也不要寫changeVal函式，保持pure
 const FormGroups = ({
   formData,

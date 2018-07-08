@@ -15,7 +15,7 @@ import FormButtons from '../common/FormButtons/index';
 // import { courseDetailData } from '../../constants/tempData';
 // import circleIcon from '../../../public/images/course/course-detail-ai-logo.png';
 
-const CourseEdit = ({ handleSubmit, handleSubmitFailed, state, formData, targetForm, changeVal, loadTagsOptsMethod, onRadioChange, onMdChange, backMethod }) => (
+const CourseEdit = ({ handleSubmit, handleSubmitFailed, state, formData, targetForm, changeVal, loadOptsMethod, loadTagsOptsMethod, onRadioChange, onMdChange, backMethod }) => (
   <div className="user-course-edit-bg">
     <SectionTitle
       title={'新增課程'}
@@ -34,6 +34,7 @@ const CourseEdit = ({ handleSubmit, handleSubmitFailed, state, formData, targetF
         formData={formData}
         targetForm={targetForm}
         changeVal={changeVal}
+        loadOptsMethod={loadOptsMethod}
         loadTagsOptsMethod={loadTagsOptsMethod}
         onRadioChange={onRadioChange}
         onMdChange={onMdChange}
