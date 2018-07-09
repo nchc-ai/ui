@@ -8,6 +8,9 @@ import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
 import { courseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import courseBasicBn from '../../public/images/course/course-basic-bn.png';
+import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
+
 
 class CoursePage extends Component {
 
@@ -43,6 +46,23 @@ class CoursePage extends Component {
     }
   }
 
+  startCourse = () => {
+    const {
+      userAction,
+      token,
+      userInfo,
+      match
+    } = this.props;
+
+    userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
+  }
+
+  onStartClassSuccess = () => {
+    console.log('create class success');
+    
+  }
+
+
   backFromCourseDetail = (e) => {
     e.preventDefault();
     this.props.history.goBack();
@@ -60,10 +80,21 @@ class CoursePage extends Component {
       <div className="course-bg global-content">
         <Switch>
 
+
+          {/* 課程細項 */}
+          <Route exact path="/course/detail/:courseId">
+            <CourseDetail
+              detail={courseDetail}
+              submitMethod={this.startCourse}
+              cancelEdit={this.backFromCourseDetail}
+            />
+          </Route>
+
           {/* 課程搜尋 */}
           <Route exact path="/course/:type/:query">
             <CourseList
               match={match}
+              banner={courseBasicBn}
               title={'搜尋課程結果'}
               data={searchResult}
               tableData={courseData}
@@ -79,20 +110,15 @@ class CoursePage extends Component {
           <Route exact path="/course/:type">
             <CourseList
               match={match}
-              title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表' }
+              banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
+              title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
               data={courseList}
               tableData={courseData}
               courseType={courseType}
             />
           </Route>
 
-          {/* 課程細項 */}
-          <Route exact path="/course/detail/:courseId">
-            <CourseDetail
-              detail={courseDetail}
-              cancelEdit={this.backFromCourseDetail}
-            />
-          </Route>
+
           
         </Switch>
       </div>
@@ -102,6 +128,7 @@ class CoursePage extends Component {
 
 const mapStateToProps = ({ Auth, Course }) => ({
   token: Auth.token,
+  userInfo: Auth.userInfo,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data

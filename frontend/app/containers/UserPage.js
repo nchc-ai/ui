@@ -76,7 +76,7 @@ class UserPage extends Component {
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
-
+    console.log('part', part);
     if (part === 'course' && action === 'add') {
       // TODO:
     } else if (part === 'course' && action === 'edit') {
@@ -193,6 +193,16 @@ class UserPage extends Component {
 
   // Job
 
+  addJob = (e, obj) => {
+    const {
+      token,
+      userInfo,
+      userAction
+    } = this.props;
+    // console.log('obj', obj);
+    // userAction.launchJob(userInfo.username, token);
+  }
+
   deleteJob = (e, thumb) => {
     const {
       token,
@@ -206,6 +216,7 @@ class UserPage extends Component {
     const {
       match,
       Course,
+      Job,
       addCourse,
       changeValue
     } = this.props;
@@ -266,7 +277,9 @@ class UserPage extends Component {
             {/* 工作清單 */}
             <Route exact path="/user/job">
               <JobList
-                data={jobs}
+                data={Job.list}
+                addJob={this.addJob}
+                deleteJob={this.deleteJob}
               />
             </Route>
 
@@ -293,7 +306,12 @@ const mapStateToProps = ({ Auth, User, forms }) => ({
   Course: {
     loading: User.course.loading,
     list: User.course.data
+  },
+  Job: {
+    loading: User.job.loading,
+    list: User.job.data
   }
+
 });
 
 export default compose(

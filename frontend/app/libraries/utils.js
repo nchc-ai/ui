@@ -11,11 +11,18 @@ export function bindFunctions(functions) {
 }
 
 /*---------------------------
-//	判斷是否為空的
+//  Status變換
 ----------------------------*/
 
-export function isNotNull(string) {
-  return !(string === "" || string === null);
+export function formatStatus(str) {
+  switch (str) {
+  case 'Pending':
+    return '已發出開啟訊號';
+  case 'Ready':
+    return '已開啟';
+  default:
+    return '已關閉';
+  }
 }
 
 /*---------------------------
@@ -24,8 +31,19 @@ export function isNotNull(string) {
 
 export function enterWithoutAuth() {
 
-	store.dispatch(push("/login"));
+  store.dispatch(push('/login'));
 }
+
+
+/*---------------------------
+//	判斷是否為空的
+----------------------------*/
+
+export function isNotNull(string) {
+  return !(string === "" || string === null);
+}
+
+
 
 
 /*---------------------------
@@ -69,29 +87,6 @@ export const formatDate = (text) => {
     return '';
   default:
     return <Moment format="YYYY/MM/DD" date={text} />;
-  }
-};
-
-export const formatOrderState = (text, type) => {
-  switch (text) {
-  case 'N':
-    return type === 'orderFront' ? '已付款' : '新單';
-  case 'P':
-    return '處理中';
-  case 'D':
-    return '交貨中';
-  case 'S':
-    return '已到貨';
-  case 'R':
-    return '退件中';
-  case 'G':
-    return '收到退件';
-  case 'X':
-    return '已取消';
-  case 'C':
-    return type === 'orderFront' ? '已完成' : '結案';
-  default:
-    return '購物車';
   }
 };
 
