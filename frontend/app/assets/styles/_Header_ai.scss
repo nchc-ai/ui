@@ -13,4 +13,17 @@
       cursor: pointer;
     }
   }
+
+}
+
+
+@media (max-width: 1340px) {
+  .header-comp .header-container .global-search-comp{
+    display: none;
+  }
+  .header-comp .header-container .login-btn, 
+  .header-comp .header-container .login-container {
+    float: right;
+    margin-right: 30px;
+  }
 }

@@ -35,7 +35,7 @@ class Header extends Component {
 
   render() {
     const {
-      match, t, userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning
+      match, steady, t, userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning
     } = this.props;
 
     return (
@@ -67,7 +67,7 @@ class Header extends Component {
               <GlobalSearch />
               
               {
-                isLogin ?
+                isLogin && steady ?
                   <span className="login-container">
                     <Hover>
                       {({ hovered, bind }) => (
@@ -86,9 +86,16 @@ class Header extends Component {
                     </Hover>
                   </span>
                 :
+                  null
+              }
+
+              {
+                !isLogin && steady ?
                   <Link to="/login">
                     <button className="login-btn">登入</button>
                   </Link>
+                :
+                  null
               }
             </Col>
           </Row>
@@ -99,6 +106,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = ({ Auth }) => ({
+  steady: Auth.steady,
   isLogin: Auth.userInfo.active
 });
 

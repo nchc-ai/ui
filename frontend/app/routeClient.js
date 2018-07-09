@@ -22,6 +22,7 @@ const routeClient = ({ offline, isLogin }) => (
       <Route exact path="/contact" component={ContactPage} />
       <Route exact path="/login" component={AuthPage} />
       <Route exact path="/signup" component={AuthPage} />
+      <Route exact path="/user/:part/:action/:courseId" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="/user/:part/:action" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="/user/:part" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="*" component={StaticPage} />

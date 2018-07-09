@@ -11,8 +11,28 @@
     width: 80%;
     margin-left: 225px;
     padding-left: 80px;
-    padding-top: 100px;
+    padding-top: 36px;
 
+    .common-title-con {
+      h1 {
+        font-size: 36px;
+        letter-spacing: 1.5px;
+        color: $ailab-primary-dark-text;  
+        font-weight: 600;
+        cursor: default;
+      }
+
+      h6 {
+        margin-top: 15px;
+        margin-bottom: 35px;
+
+      }
+    }
+
+    hr {
+      margin-top: 36px;
+      margin-bottom: 60px;
+    }
 
     .user-course-bg {
       width: 1000px;

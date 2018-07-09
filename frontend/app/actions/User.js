@@ -7,9 +7,9 @@ import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem } from '../libraries/utils';
 
 // Course > List
-export const getCourseList = (user, token) => async (dispatch) => {
+export const getCourseList = (userInfo, token) => async (dispatch) => {
 
-  // console.log('[getCourseList] token', token);
+  console.log('[getCourseList] token', userInfo, token);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/list`,
@@ -18,7 +18,7 @@ export const getCourseList = (user, token) => async (dispatch) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ user }),
+      body: JSON.stringify({ user: userInfo.username }),
       types: types.GET_USER_COURSE_LIST
     }
   });
@@ -31,7 +31,7 @@ export const getCourseList = (user, token) => async (dispatch) => {
 };
 
 // Course > Create
-export const createCourse = (token, formData, next) => async (dispatch) => {
+export const createCourse = (token, userInfo, formData, next) => async (dispatch) => {
   // console.log('[createCourse] formData', formData, _.escape(formData.intro));
   const response = await dispatch({
     [RSAA]: {
@@ -42,7 +42,7 @@ export const createCourse = (token, formData, next) => async (dispatch) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        user: 'jimmy',
+        user: userInfo.username,
         name: formData.name,
         introduction: _.escape(formData.intro),
         image: formData.image,

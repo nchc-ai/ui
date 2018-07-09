@@ -49,24 +49,7 @@ class UserPage extends Component {
   }
 
   componentWillMount() {
-    const {
-      userAction,
-      token,
-      match
-    } = this.props;
-
-    const part = _.get(match, 'params.part');
-    const action = _.get(match, 'params.action');
-
-    if (part === 'course' && action === 'add') {
-      
-    } else if (part === 'course' && action === 'edit') {
-      
-    } else if (part === 'course') {
-      this.loadCourseList()
-    } else if (part === 'job') {
-      userAction.getJobList('jimmy', token);
-    }
+    this.fetchData(this.props);
   }
 
   componentDidMount() {
@@ -82,16 +65,40 @@ class UserPage extends Component {
       window.scrollTo(0, 0);
     }
   }
-  
+
+  fetchData = (nextProps) => {
+    const {
+      userAction,
+      token,
+      match
+    } = nextProps;
+
+    const part = _.get(match, 'params.part');
+    const action = _.get(match, 'params.action');
+
+    if (part === 'course' && action === 'add') {
+      
+    } else if (part === 'course' && action === 'edit') {
+      
+    } else if (part === 'course') {
+      this.loadCourseList();
+    } else if (part === 'job') {
+      userAction.getJobList('jimmy', token);
+    }
+
+    window.scrollTo(0, 0);
+  }
+
   // common
 
   loadCourseList = () => {
     const {
       userAction,
       token,
+      userInfo
     } = this.props;
 
-    userAction.getCourseList('jimmy', token);
+    userAction.getCourseList(userInfo, token);
   }
 
   // CourseList
@@ -123,25 +130,27 @@ class UserPage extends Component {
     const {
       userAction,
       token,
-      history
+      history,
+      userInfo
     } = this.props;
-    userAction.getCourseList('jimmy', token);
+    this.loadCourseList();
     history.push('/user/course');
   }
 
   handleSubmit = (formData) => {
-    console.log('[handleSubmit] submit', formData);
+    // console.log('[handleSubmit] submit', formData);
 
     const {
       userAction,
-      token
+      token,
+      userInfo
     } = this.props;
 
-    userAction.createCourse(token, formData, this.redirect);
+    userAction.createCourse(token, userInfo, formData, this.redirect);
   }
 
   handleSubmitFailed = (formData) => {
-    console.log('[handleSubmitFailed] formData', formData);
+    // console.log('[handleSubmitFailed] formData', formData);
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
@@ -164,9 +173,14 @@ class UserPage extends Component {
   }
 
 
-  cancelEdit = () => {
-    this.props.history.push('/user/course');
+  backFromCourseAdd = () => {
+    this.props.history.goBack();
   }
+
+  backFromCourseEdit = () => {
+    this.props.history.goBack();
+  }
+
 
   // Job
 
@@ -186,7 +200,7 @@ class UserPage extends Component {
       addCourse,
       changeValue
     } = this.props;
-    
+
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -218,12 +232,12 @@ class UserPage extends Component {
                 loadTagsOptsMethod={this.loadTagsOpts}
                 onRadioChange={this.changeCourseLevel}
                 onMdChange={this.changeCourseIntro}
-                backMethod={this.cancelEdit}
+                backMethod={this.backFromCourseAdd}
               />
             </Route>
 
             {/* 編輯課程 */}
-            <Route exact path="/user/course/edit">
+            <Route exact path="/user/course/edit/:courseId">
               <CourseEdit
                 handleSubmit={this.handleSubmit}
                 handleSubmitFailed={this.handleSubmitFailed}
@@ -234,7 +248,7 @@ class UserPage extends Component {
                 loadTagsOptsMethod={this.loadTagsOpts}
                 onRadioChange={this.changeCourseLevel}
                 onMdChange={this.changeCourseIntro}
-                backMethod={this.cancelEdit}
+                backMethod={this.backFromCourseEdit}
               />
             </Route>
 
@@ -264,6 +278,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = ({ Auth, User, forms }) => ({
   addCourse: forms.addCourse,
   token: Auth.token,
+  userInfo: Auth.userInfo,
   Course: {
     loading: User.course.loading,
     list: User.course.data
