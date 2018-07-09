@@ -25,6 +25,8 @@
       * [X] [Introspection](#introspection)
    * [Image](#image)
       * [ ] [List](#list-3)
+      * [ ] [Add](#add)
+      * [ ] [Delete](#delete-2)
       
 <!-- Added by: ogre0403, at:  -->
 
@@ -2549,3 +2551,7 @@
         ]
       }
    ```
+   
+## Add
+
+## Delete

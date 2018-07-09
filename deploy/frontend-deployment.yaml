@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: twgc-ui
-        image: ogre0403/twgc:ui-fe85e33
+        image: ogre0403/twgc:ui-a6d6368
         ports:
         - containerPort: 3010
         volumeMounts:
