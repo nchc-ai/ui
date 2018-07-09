@@ -15,7 +15,7 @@ class GlobalSearch extends React.Component {
     const {
       history
     } = this.props;
-    history.push(`/search/${query.searchText}`);
+    history.push(`/course/search/${query.searchText}`);
   }
 
   render = () => {

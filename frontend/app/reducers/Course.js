@@ -10,6 +10,10 @@ const InitialState = {
   courseDetail: {
     loading: false,
     data: {}
+  },
+  searchResult: {
+    loading: false,
+    data: []
   }
 };
 
@@ -31,7 +35,23 @@ export default function Course(state = InitialState, action) {
         data: action.payload.courses
       }
     };
-
+  
+  case actionTypes.SEARCH_COURSE[LOADING]:
+    return {
+      ...state,
+      searchResult: {
+        ...state.courseList,
+        isLoading: true
+      }
+    };
+  case actionTypes.SEARCH_COURSE[SUCCESS]:
+    return {
+      ...state,
+      searchResult: {
+        isLoading: false,
+        data: action.payload.courses
+      }
+    };
   case actionTypes.GET_COURSE_DETAIL[LOADING]:
     return {
       ...state,

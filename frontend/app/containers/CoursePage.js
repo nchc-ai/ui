@@ -33,10 +33,13 @@ class CoursePage extends Component {
 
     const type = _.get(match, 'params.type');
 
+    console.log('type', match, type);
     if (type === 'basic' || type === 'advance') {
       courseAction.getCourseListByLevel(type);
     } else if (type === 'detail') {
       courseAction.getCourseDetail(match.params.courseId, token);
+    } else if (type === 'search') {
+      courseAction.searchCourse(match.params.courseId);
     }
   }
 
@@ -49,12 +52,24 @@ class CoursePage extends Component {
     const {
       match,
       courseList,
-      courseDetail
+      courseDetail,
+      searchResult
     } = this.props;
     const courseType = _.get(match, 'params.type');
     return (
       <div className="course-bg global-content">
         <Switch>
+
+          {/* 課程搜尋 */}
+          <Route exact path="/course/:type/:query">
+            <CourseList
+              match={match}
+              title={'搜尋課程結果'}
+              data={searchResult}
+              tableData={courseData}
+            />
+          </Route>
+
           {/* 課程介紹 */}
           <Route exact path="/course/intro">
             <CourseIntro />
@@ -64,6 +79,7 @@ class CoursePage extends Component {
           <Route exact path="/course/:type">
             <CourseList
               match={match}
+              title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表' }
               data={courseList}
               tableData={courseData}
               courseType={courseType}
@@ -87,7 +103,8 @@ class CoursePage extends Component {
 const mapStateToProps = ({ Auth, Course }) => ({
   token: Auth.token,
   courseList: Course.courseList.data,
-  courseDetail: Course.courseDetail.data
+  courseDetail: Course.courseDetail.data,
+  searchResult: Course.searchResult.data
 });
 
 
