@@ -236,3 +236,90 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 	}
 
 }
+
+func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
+
+	var req model.LaunchCourseRequest
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	user := req.User
+	if user == "" {
+		log.Errorf("user field in request cannot be empty")
+		util.RespondWithError(c, http.StatusBadRequest, "user field in request cannot be empty")
+		return
+	}
+
+	provider, exist := c.Get("Provider")
+	if !exist {
+		log.Warning("Provider is not found in request context, set empty")
+		provider = ""
+	}
+
+	//Step 1: retrive required information
+	//	Step 1-1: find course object by course_id
+	course := getCourseObject(resourceClient.DB, req.CourseId)
+	if course == nil {
+		log.Errorf("Query course id %s fail", req.CourseId)
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"Query course id %s fail", req.CourseId)
+		return
+	}
+
+	// 	Step 1-2: find dataset required by course
+	datasets := getRequiredDataset(resourceClient.DB, req.CourseId)
+	if datasets == nil {
+		log.Errorf("Query course id %s required dataset fail", req.CourseId)
+		util.RespondWithError(c, http.StatusInternalServerError,
+			"Query course id %s required dataset fail", req.CourseId)
+		return
+	}
+
+	// Step 2: create kubernetes resources
+	// 	Step 2-1: create deployment
+	deployment, err := createDeployment(resourceClient.K8sClient, course, datasets)
+
+	if err != nil {
+		errStrt := fmt.Sprintf("create deployment for course {id = %s} fail: %s", course.ID, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
+		return
+	}
+
+	// 	Step 2-2: create service
+	svc, err := createService(resourceClient.K8sClient, deployment.Name)
+	if err != nil {
+		//todo : rollback, need to delete deployment
+		errStrt := fmt.Sprintf("create service for job {id = %s} fail: %s", deployment.Name, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
+		return
+	}
+
+	// Step 3: update Job Table
+	err = updateTable(resourceClient.DB, deployment, svc, course, user, provider.(string))
+	if err != nil {
+		//todo : rollback, need to delete svc and deployment
+		errStrt := fmt.Sprintf("update Job Table for job {id = %s} fail: %s", deployment.Name, err.Error())
+		log.Errorf(errStrt)
+		util.RespondWithError(c, http.StatusInternalServerError, errStrt)
+		return
+	}
+
+	// create a go routine to check job is ready or not
+	go resourceClient.checkJobStatus(deployment.Name, svc.Name)
+
+	c.JSON(http.StatusOK, model.LaunchCourseResponse{
+		Error: false,
+		Job: model.JobStatus{
+			JobId:  deployment.Name,
+			Ready:  false,
+			Status: "Created",
+		},
+	})
+
+}

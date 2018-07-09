@@ -2,7 +2,6 @@
    * [Course](#course)
       * [X] [List](#list)
       * [X] [Create](#create)
-      * [X] [Launch](#launch)
       * [X] [Delete](#delete)
       * [X] [List different level course](#list-different-level-course)
       * [X] [Get](#get)
@@ -12,6 +11,7 @@
    * [Job](#job)
       * [X] [List](#list-1)
       * [X] [Delete](#delete-1)
+      * [X] [Launch](#launch)
    * [DataSet](#dataset)
       * [X] [List](#list-2)
    * [Health Check](#health-check)
@@ -549,174 +549,6 @@
    }
    ```
 
-
-## Launch
-  
-* **Description**
- 
-  Create a course deployment in kubernetes 
-
-* **URL**
-
-  /v1/course/launch
-
-* **Header:**
-
-  `Authorization=Bearer <token-string>`
-
-* **Method:**
-
-  `POST`
-
-* **URL Params**
-
-   None
-
-* **Data Params**
-
-  ```json
-  {
-    "course_id": "5ab02011-9ab7-40c3-b691-d335f93a12ee",
-    "user": "jimmy@test2"
-  }
-  ```
-
-* **Success Response:**
-
-  * **Code:** 200 <br />
-    **Content:**
-
-    ```json
-     {
-        "error": false,
-        "job":{
-          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
-          "ready": false,
-          "status": "Created"
-        }
-      }
-    ```
-
-* **Error Response:**
-
-  * **Code:**  400 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message": "user field in request cannot be empty"
-     }
-    ```
-    
-    ```json
-    {
-        "error": true,
-        "message": "Failed to parse spec request request: %s"
-     }
-    ```    
-
-
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message": "Query course id %s fail: %s"
-     }
-    ```
-        
-    ```json
-    {
-        "error": true,
-        "message": "Query course id %s required dataset fail: %s"
-     }
-    ```
-           
-    ```json
-    {
-        "error": true,
-        "message": "create deployment for course {id = %s} fail: %s"
-     }
-    ```   
-
-    ```json
-    {
-        "error": true,
-        "message": "create service for job {id = %s} fail: %s"
-     }
-    ```   
-
-    ```json
-    {
-        "error": true,
-        "message": "update Job Table for job {id = %s} fail: %s"
-     }
-    ```   
-
-  * **Code:**  401 <br />
-    **Content:**
-
-    ```json
-    {
-        "error": true,
-        "message" : "Authorization header is missing"
-     }
-    ```
-
-    ```json
-    {
-        "error": true,
-        "message" : "Authorization header is not Bearer Token format or token is missing"
-     }
-    ```
-    
-
-  * **Code:**  403 <br />
-    **Content:**
-
-    ```json
-      {
-          "error": true,
-          "message" : "Invalid API token"
-       }
-    ```
-    
-    ```json
-      {
-          "error": true,
-          "message" : "Access token expired"
-      }
-    ```    
-
-  * **Code:**  500 <br />
-    **Content:**
-
-    ```json
-      {
-          "error": true,
-          "message" : "verify token fail: error message"
-      }
-    ```
-
-
-
-* **Sample Call:**
-
-  ```sh
-      $ curl -X POST \
-        -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
-        -d '{"course_id": "e17281e1-2c16-46e8-a905-74c06592353b","user":"jimmy@nchc"}' 
-        http://localhost:8080/v1/course/launch
-      {
-        "error": false,
-        "job":{
-          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
-          "status": "Created"
-        }
-      }
-   ```
 
 ## Delete
 
@@ -1704,6 +1536,174 @@
         "error": false,
         "message" : "job <id> is deleted successfully"
      }
+   ```
+
+## Launch
+  
+* **Description**
+ 
+  Create a course deployment in kubernetes 
+
+* **URL**
+
+  /v1/job/launch
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+  {
+    "course_id": "5ab02011-9ab7-40c3-b691-d335f93a12ee",
+    "user": "jimmy@test2"
+  }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+     {
+        "error": false,
+        "job":{
+          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "ready": false,
+          "status": "Created"
+        }
+      }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "user field in request cannot be empty"
+     }
+    ```
+    
+    ```json
+    {
+        "error": true,
+        "message": "Failed to parse spec request request: %s"
+     }
+    ```    
+
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message": "Query course id %s fail: %s"
+     }
+    ```
+        
+    ```json
+    {
+        "error": true,
+        "message": "Query course id %s required dataset fail: %s"
+     }
+    ```
+           
+    ```json
+    {
+        "error": true,
+        "message": "create deployment for course {id = %s} fail: %s"
+     }
+    ```   
+
+    ```json
+    {
+        "error": true,
+        "message": "create service for job {id = %s} fail: %s"
+     }
+    ```   
+
+    ```json
+    {
+        "error": true,
+        "message": "update Job Table for job {id = %s} fail: %s"
+     }
+    ```   
+
+  * **Code:**  401 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is missing"
+     }
+    ```
+
+    ```json
+    {
+        "error": true,
+        "message" : "Authorization header is not Bearer Token format or token is missing"
+     }
+    ```
+    
+
+  * **Code:**  403 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "Invalid API token"
+       }
+    ```
+    
+    ```json
+      {
+          "error": true,
+          "message" : "Access token expired"
+      }
+    ```    
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+      {
+          "error": true,
+          "message" : "verify token fail: error message"
+      }
+    ```
+
+
+
+* **Sample Call:**
+
+  ```sh
+      $ curl -X POST \
+        -H "Authorization: Bearer b86b2893-b876-45c2-a3f6-5e099c15d638" \
+        -d '{"course_id": "e17281e1-2c16-46e8-a905-74c06592353b","user":"jimmy@nchc"}' 
+        http://localhost:8080/v1/job/launch
+      {
+        "error": false,
+        "job":{
+          "job_id": "bf9be791-8a66-4095-862f-5a0290ce41f3",
+          "status": "Created"
+        }
+      }
    ```
 
 

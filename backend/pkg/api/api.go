@@ -249,7 +249,6 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		course.OPTIONS("/create", resourceClient.handleOption)
 		course.OPTIONS("/list", resourceClient.handleOption)
 		course.OPTIONS("/delete/:id", resourceClient.handleOption)
-		course.OPTIONS("/launch", resourceClient.handleOption)
 		course.OPTIONS("/get/:id", resourceClient.handleOption)
 		course.OPTIONS("/search", resourceClient.handleOption)
 		course.OPTIONS("/update", resourceClient.handleOption)
@@ -261,7 +260,6 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		courseAuth.POST("/create", resourceClient.AddCourse)
 		courseAuth.POST("/list", resourceClient.ListUserCourse)
 		courseAuth.DELETE("/delete/:id", resourceClient.DeleteCourse)
-		courseAuth.POST("/launch", resourceClient.LaunchCourse)
 		courseAuth.GET("/get/:id", resourceClient.GetCourse)
 		courseAuth.PUT("/update", resourceClient.UpdateCourse)
 	}
@@ -270,13 +268,14 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	{
 		job.OPTIONS("/list", resourceClient.handleOption)
 		job.OPTIONS("/delete/:id", resourceClient.handleOption)
-
+		job.OPTIONS("/launch", resourceClient.handleOption)
 	}
 
 	jobAuth := router.Group("/v1").Group("/job").Use(server.AuthMiddleware())
 	{
 		jobAuth.POST("/list", resourceClient.ListJob)
 		jobAuth.DELETE("/delete/:id", resourceClient.DeleteJob)
+		jobAuth.POST("/launch", resourceClient.LaunchJob)
 	}
 
 	//proxy for communicate with provider
