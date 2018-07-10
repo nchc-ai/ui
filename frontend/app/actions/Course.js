@@ -44,3 +44,24 @@ export const getCourseDetail = (courseId, token) => async (dispatch) => {
 };
 
 
+// Course > Search
+export const searchCourse = query => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/course/search`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ query }),
+      types: types.SEARCH_COURSE
+    }
+  });
+
+  console.log('[searchCourse] response', response);
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('searchCourse 失敗');
+  }
+};

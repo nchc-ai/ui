@@ -70,20 +70,21 @@ class UserPage extends Component {
     const {
       userAction,
       token,
-      match
+      match,
+      userInfo
     } = nextProps;
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
-
+    console.log('part', part);
     if (part === 'course' && action === 'add') {
-      
+      // TODO:
     } else if (part === 'course' && action === 'edit') {
-      
+      // TODO:
     } else if (part === 'course') {
       this.loadCourseList();
     } else if (part === 'job') {
-      userAction.getJobList('jimmy', token);
+      userAction.getJobList(userInfo.username, token);
     }
 
     window.scrollTo(0, 0);
@@ -154,12 +155,20 @@ class UserPage extends Component {
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
+  loadImagesOpts = () => {
+    const {
+      userAction,
+      token
+    } = this.props;
+    return userAction.getImagesOpts(token);
+  };
+
   loadTagsOpts = () => {
     const {
       userAction,
       token
     } = this.props;
-    return userAction.getDatasetsOpts('jimmy', token);
+    return userAction.getDatasetsOpts(token);
   };
 
   changeCourseLevel = (e) => {
@@ -184,6 +193,16 @@ class UserPage extends Component {
 
   // Job
 
+  addJob = (e, obj) => {
+    const {
+      token,
+      userInfo,
+      userAction
+    } = this.props;
+    // console.log('obj', obj);
+    // userAction.launchJob(userInfo.username, token);
+  }
+
   deleteJob = (e, thumb) => {
     const {
       token,
@@ -197,6 +216,7 @@ class UserPage extends Component {
     const {
       match,
       Course,
+      Job,
       addCourse,
       changeValue
     } = this.props;
@@ -229,6 +249,7 @@ class UserPage extends Component {
                 formData={addCourseForm}
                 targetForm={addCourse}
                 changeVal={changeValue}
+                loadOptsMethod={this.loadImagesOpts}
                 loadTagsOptsMethod={this.loadTagsOpts}
                 onRadioChange={this.changeCourseLevel}
                 onMdChange={this.changeCourseIntro}
@@ -245,6 +266,7 @@ class UserPage extends Component {
                 formData={addCourseForm}
                 targetForm={addCourse}
                 changeVal={changeValue}
+                loadOptsMethod={this.loadImagesOpts}
                 loadTagsOptsMethod={this.loadTagsOpts}
                 onRadioChange={this.changeCourseLevel}
                 onMdChange={this.changeCourseIntro}
@@ -255,7 +277,9 @@ class UserPage extends Component {
             {/* 工作清單 */}
             <Route exact path="/user/job">
               <JobList
-                data={jobs}
+                data={Job.list}
+                addJob={this.addJob}
+                deleteJob={this.deleteJob}
               />
             </Route>
 
@@ -282,7 +306,12 @@ const mapStateToProps = ({ Auth, User, forms }) => ({
   Course: {
     loading: User.course.loading,
     list: User.course.data
+  },
+  Job: {
+    loading: User.job.loading,
+    list: User.job.data
   }
+
 });
 
 export default compose(

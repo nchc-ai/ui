@@ -61,7 +61,7 @@ export const getUserInfo = (token, next) => async (dispatch) => {
     console.error('getUserInfo 失敗', response);
   }
 
-  if(next) {
+  if (next) {
     next();
   }
 };

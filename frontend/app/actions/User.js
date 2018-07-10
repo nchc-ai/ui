@@ -62,6 +62,7 @@ export const createCourse = (token, userInfo, formData, next) => async (dispatch
   next();
 };
 
+
 // Course > Luanch
 // export const luanchCourse = (token, formData) => async (dispatch) => {
 //   const response = await dispatch({
@@ -133,11 +134,36 @@ export const getJobList = (user, token) => async (dispatch) => {
     }
   });
 
-  // console.log('[getJobList] response', response);
+  console.log('[getJobList] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getJobList 失敗');
   }
+};
+
+// Job > Launch
+export const launchJob = (user, courseId, token, next) => async (dispatch) => {
+  // console.log('user, courseId, token', user, courseId, token);
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/job/launch`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ user, course_id: courseId }),
+      types: types.LAUNCH_JOB
+    }
+  });
+
+  // console.log('[launchJob] response', response);
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('launchJob 失敗');
+  }
+
+  next();
 };
 
 // Job > Delete
@@ -163,7 +189,7 @@ export const deleteJob = (jobId, token) => async (dispatch) => {
 };
 
 // DataSet > List
-export const getDatasetsOpts = (user, token) => async (dispatch) => {
+export const getDatasetsOpts = token => async (dispatch) => {
 
   // console.log('token', token);
   const response = await dispatch({
@@ -187,5 +213,32 @@ export const getDatasetsOpts = (user, token) => async (dispatch) => {
   return {
     options: response.payload.datasets,
     complete: response.payload.datasets
+  };
+};
+
+
+// Image > List
+export const getImagesOpts = token => async (dispatch) => {
+
+  // console.log('token', token);
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/images/`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_IMAGES_OPTS
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getImagesOpts 失敗');
+  }
+
+  return {
+    options: response.payload.images,
+    complete: response.payload.images
   };
 };

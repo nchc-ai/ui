@@ -9,7 +9,7 @@ import { courseDetailList } from '../../constants/listData';
 import { courseDetailData } from '../../constants/tempData';
 import circleIcon from '../../../public/images/course/course-detail-ai-logo.png';
 
-const CourseDetail = ({ cancelEdit, detail }) => (
+const CourseDetail = ({ submitMethod, cancelEdit, detail }) => (
   <div className="course-detail-bg">
 
     <div className="section-bn section-grp">
@@ -37,12 +37,15 @@ const CourseDetail = ({ cancelEdit, detail }) => (
       
 
       <hr className="my-2" />
+      
 
       {/* 下方按鈕 */}
+      {/* TODO: 需在這判斷是否有開過課程決定submitName */}
       <FormButtons
         cancelName="上一頁"
         submitName="開始課程"
         backMethod={cancelEdit}
+        submitMethod={submitMethod}
       />
 
     </div>
