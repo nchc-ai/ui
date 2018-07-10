@@ -6,6 +6,7 @@ import (
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	"net/http"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"strings"
 )
 
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
@@ -19,11 +20,16 @@ func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 	}
 
 	for _, pvc := range pvcs.Items {
-		lbval := model.LabelValue{
-			Label: pvc.Name,
-			Value: pvc.Name,
+		// dataset pvc name should start with "dataset-"
+		//https://gitlab.com/nchc-ai/AI-Eduational-Platform/issues/18#note_86408557
+		if strings.HasPrefix(pvc.Name, "dataset-") {
+			r := strings.SplitN(pvc.Name, "-", 2)
+			lbval := model.LabelValue{
+				Label: r[1],
+				Value: pvc.Name,
+			}
+			pvcNameList = append(pvcNameList, lbval)
 		}
-		pvcNameList = append(pvcNameList, lbval)
 	}
 
 	c.JSON(http.StatusOK, model.DatasetsListResponse{
