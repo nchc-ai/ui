@@ -16,11 +16,22 @@ import (
 	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	log "github.com/golang/glog"
+	apiv1 "k8s.io/api/core/v1"
+	"k8s.io/apimachinery/pkg/api/resource"
+	"github.com/spf13/cast"
 )
 
+type KClient struct {
+	KClientSet           *kubernetes.Clientset
+	defaultResourceLimit apiv1.ResourceList
+	exposePort           map[string]int32
+	namespace            string
+}
+
 type ResourceClient struct {
-	config    *viper.Viper
-	K8sClient *kubernetes.Clientset
+	config *viper.Viper
+	//K8sClient *kubernetes.Clientset
+	K8sClient *KClient
 	DB        *gorm.DB
 }
 
@@ -87,7 +98,7 @@ func NewAPIServer(config *viper.Viper) *APIServer {
 	}
 }
 
-func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
+func NewKClients(config *viper.Viper) (*KClient, error) {
 
 	kConfig, err := util.GetConfig(
 		config.GetBool("api-server.isOutsideCluster"),
@@ -104,7 +115,23 @@ func NewKClients(config *viper.Viper) (*kubernetes.Clientset, error) {
 		return nil, err
 	}
 
-	return clientset, nil
+	exposePort := make(map[string]int32)
+	for k, v := range config.GetStringMap("kubernetes.expose_port") {
+		exposePort[k] = cast.ToInt32(v)
+	}
+
+	defaultResourceLimit := apiv1.ResourceList{
+		apiv1.ResourceMemory: resource.MustParse(config.GetString("kubernetes.resourceLimit.memory")),
+		apiv1.ResourceCPU:    resource.MustParse(config.GetString("kubernetes.resourceLimit.cpu")),
+	}
+
+	c := &KClient{
+		KClientSet:           clientset,
+		defaultResourceLimit: defaultResourceLimit,
+		exposePort:           exposePort,
+		namespace:            config.GetString("kubernetes.namespace"),
+	}
+	return c, nil
 }
 
 func NewDBClient(config *viper.Viper) (*gorm.DB, error) {

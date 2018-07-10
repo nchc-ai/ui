@@ -75,7 +75,8 @@ func getRequiredDataset(DB *gorm.DB, id string) []string {
 	return courseDataset
 }
 
-func createDeployment(clientset *kubernetes.Clientset, course *model.Course, datasets []string, namespace string) (*appsv1.Deployment, error) {
+func createDeployment(clientset *kubernetes.Clientset, course *model.Course, datasets []string,
+	namespace string, exposePort map[string]int32, defaultResourceLimit apiv1.ResourceList) (*appsv1.Deployment, error) {
 	jobId := uuid.New().String()
 
 	deploymentsClient := clientset.AppsV1().Deployments(namespace)
@@ -174,7 +175,8 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 	return deployment, nil
 }
 
-func createService(clientset *kubernetes.Clientset, deploy_name string, namespace string) (*apiv1.Service, error) {
+func createService(clientset *kubernetes.Clientset, deploy_name string,
+	namespace string, exposePort map[string]int32) (*apiv1.Service, error) {
 
 	selector := make(map[string]string)
 	selector["job_Id"] = deploy_name

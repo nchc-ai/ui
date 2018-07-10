@@ -24,6 +24,16 @@
   "kubernetes": {
     "kubeconfig": "/etc/api-server/openstack-kubeconfig",
     "expose_ip": "http://140.110.5.22",
-    "namespace": "default"
+    "namespace": "default",
+    "resourceLimit": {
+      "cpu": "500m",
+      "memory": "64Mi"
+    },
+    "expose_port": {
+      "web": 80,
+      "jupyter": 8888,
+      "digitis": 5000,
+      "ttyd": 7681
+    }
   }
 }

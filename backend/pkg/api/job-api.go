@@ -14,21 +14,7 @@ import (
 	appsv1 "k8s.io/api/apps/v1"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/model"
 	log "github.com/golang/glog"
-	"k8s.io/apimachinery/pkg/api/resource"
 )
-
-var exposePort = map[string]int32{
-	"web":     80,
-	"jupyter": 8888,
-	"digitis": 5000,
-	"ttyd":    7681,
-}
-
-// todo: determine cpu & memory limit automatically, not hard code
-var defaultResourceLimit = apiv1.ResourceList{
-	apiv1.ResourceMemory: resource.MustParse("64Mi"),
-	apiv1.ResourceCPU:    resource.MustParse("500m"),
-}
 
 // todo: Do we need define Job lifecycle ?
 const (
@@ -92,7 +78,7 @@ func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 		return
 	}
 
-	namespace := resourceClient.config.GetString("kubernetes.namespace")
+	namespace := resourceClient.K8sClient.namespace
 	jobList := []model.JobInfo{}
 	for _, result := range resultJobs {
 		// find course information
@@ -105,7 +91,7 @@ func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 		}
 
 		// find nodeport information
-		nodePorts, err := findServiceNodePort(resourceClient.K8sClient, result,
+		nodePorts, err := findServiceNodePort(resourceClient.K8sClient.KClientSet, result,
 			resourceClient.config.GetString("kubernetes.expose_ip"), namespace)
 		if err != nil {
 			errStr := fmt.Sprintf("Parse Service info for job {%s} fail: %s", result.ID, err.Error())
@@ -143,16 +129,16 @@ func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (s
 			ID: jobId,
 		},
 	}
-	namespace := resourceClient.config.GetString("kubernetes.namespace")
+	namespace := resourceClient.K8sClient.namespace
 	if err := resourceClient.DB.First(&job).Error; err != nil {
 		return fmt.Sprintf("Failed to find job {%s} information : %s", jobId, err.Error()), err
 	}
 
-	if err := deleteDeployment(resourceClient.K8sClient, jobId, namespace); err != nil {
+	if err := deleteDeployment(resourceClient.K8sClient.KClientSet, jobId, namespace); err != nil {
 		return fmt.Sprintf("Failed to delete deployment {%s}: %s", jobId, err.Error()), nil
 	}
 
-	if err := deleteService(resourceClient.K8sClient, job.Service, namespace); err != nil {
+	if err := deleteService(resourceClient.K8sClient.KClientSet, job.Service, namespace); err != nil {
 		return fmt.Sprintf("Failed to delete service {%s}: %s", job.Service, err.Error()), nil
 	}
 
@@ -166,8 +152,8 @@ func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (s
 // todo: how to kill goroutine if job is deleted by hand
 func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 
-	namespace := resourceClient.config.GetString("kubernetes.namespace")
-	deploymentsClient := resourceClient.K8sClient.AppsV1().Deployments(namespace)
+	namespace := resourceClient.K8sClient.namespace
+	deploymentsClient := resourceClient.K8sClient.KClientSet.AppsV1().Deployments(namespace)
 	jobObj := model.Job{
 		Model: model.Model{
 			ID: jobId,
@@ -199,7 +185,7 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 		break
 	}
 
-	svcClient := resourceClient.K8sClient.CoreV1().Services(namespace)
+	svcClient := resourceClient.K8sClient.KClientSet.CoreV1().Services(namespace)
 	for {
 		svc, err = svcClient.Get(svcName, metav1.GetOptions{})
 		if err != nil {
@@ -263,7 +249,7 @@ func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
 		provider = ""
 	}
 
-	namespace := resourceClient.config.GetString("kubernetes.namespace")
+	namespace := resourceClient.K8sClient.namespace
 	//Step 1: retrive required information
 	//	Step 1-1: find course object by course_id
 	course := getCourseObject(resourceClient.DB, req.CourseId)
@@ -285,7 +271,8 @@ func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
 
 	// Step 2: create kubernetes resources
 	// 	Step 2-1: create deployment
-	deployment, err := createDeployment(resourceClient.K8sClient, course, datasets, namespace)
+	deployment, err := createDeployment(resourceClient.K8sClient.KClientSet, course, datasets,
+		namespace, resourceClient.K8sClient.exposePort, resourceClient.K8sClient.defaultResourceLimit)
 
 	if err != nil {
 		errStrt := fmt.Sprintf("create deployment for course {id = %s} fail: %s", course.ID, err.Error())
@@ -295,7 +282,8 @@ func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
 	}
 
 	// 	Step 2-2: create service
-	svc, err := createService(resourceClient.K8sClient, deployment.Name, namespace)
+	svc, err := createService(resourceClient.K8sClient.KClientSet, deployment.Name,
+		namespace, resourceClient.K8sClient.exposePort)
 	if err != nil {
 		//todo : rollback, need to delete deployment
 		errStrt := fmt.Sprintf("create service for job {id = %s} fail: %s", deployment.Name, err.Error())

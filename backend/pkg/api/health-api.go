@@ -11,7 +11,7 @@ import (
 
 func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	statusList := []model.Node{}
-	nList, err := resourceClient.K8sClient.CoreV1().Nodes().List(metav1.ListOptions{})
+	nList, err := resourceClient.K8sClient.KClientSet.CoreV1().Nodes().List(metav1.ListOptions{})
 
 	if err != nil {
 		log.Errorf("List Node fail: %s", err.Error())
