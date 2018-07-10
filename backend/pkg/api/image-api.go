@@ -10,7 +10,8 @@ import (
 func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
 	image := map[string]string{
 		"tensorflow/tensorflow:1.5.1": "tensorflow/tensorflow:1.5.1",
-		"nvidia/digits5.0":            "nvidia/digits5.0",
+		"nvidia/digits:5.0":           "nvidia/digits:5.0",
+		"nginx:1.7.9":                 "nginx:1.7.9",
 	}
 
 	imageList := []model.LabelValue{}
@@ -28,4 +29,3 @@ func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
 		Images: imageList,
 	})
 }
-
