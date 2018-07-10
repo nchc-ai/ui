@@ -7,6 +7,7 @@
     "start": "node server.js",
     "build": "webpack --config webpack.config.dev.js",
     "dev": "webpack-dev-server --config webpack.config.dev.js",
+    "proxy": "webpack-dev-server --config webpack.config.proxy.js",
     "prod": "webpack --config webpack.config.prod.js"
   },
   "author": "FreeFolk TM Studio",

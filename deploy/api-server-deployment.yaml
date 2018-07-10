@@ -77,7 +77,7 @@ data:
           "token_url": "http://140.110.5.22:30010/v1/oauth/tokens",
           "refresh_url": "http://140.110.5.22:30010/v1/oauth/tokens",
           "introspect_url": "http://140.110.5.22:30010/v1/oauth/introspect",
-          "redirect_url": "http://localhost:3010/user/course"
+          "redirect_url": "http://140.110.18.35:30004/user/course"
         }
       },
       "database": {
