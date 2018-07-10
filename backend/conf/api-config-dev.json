@@ -23,6 +23,7 @@
   },
   "kubernetes": {
     "kubeconfig": "./conf/openstack-kubeconfig",
-    "expose_ip" : "http://140.110.5.22"
+    "expose_ip": "http://140.110.5.22",
+    "namespace": "default"
   }
 }

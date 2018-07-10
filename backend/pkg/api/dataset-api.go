@@ -12,7 +12,8 @@ import (
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 
 	pvcNameList := []model.LabelValue{}
-	pvcs, err := resourceClient.K8sClient.CoreV1().PersistentVolumeClaims("default").List(metav1.ListOptions{})
+	namespace := resourceClient.config.GetString("kubernetes.namespace")
+	pvcs, err := resourceClient.K8sClient.CoreV1().PersistentVolumeClaims(namespace).List(metav1.ListOptions{})
 	if err != nil {
 		util.RespondWithError(c, http.StatusInternalServerError,
 			"List Kubernetes default namespace PVC fail: %s", err.Error())

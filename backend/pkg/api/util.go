@@ -17,11 +17,11 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 )
 
-func findServiceNodePort(K8sClient *kubernetes.Clientset, job model.Job, exposeip string) ([]model.LabelValue, error) {
+func findServiceNodePort(K8sClient *kubernetes.Clientset, job model.Job, exposeip string, namespace string) ([]model.LabelValue, error) {
 
 	result := []model.LabelValue{}
 
-	svcClient := K8sClient.CoreV1().Services(apiv1.NamespaceDefault)
+	svcClient := K8sClient.CoreV1().Services(namespace)
 	svc, err := svcClient.Get(job.Service, metav1.GetOptions{})
 
 	if err != nil {
@@ -75,10 +75,10 @@ func getRequiredDataset(DB *gorm.DB, id string) []string {
 	return courseDataset
 }
 
-func createDeployment(clientset *kubernetes.Clientset, course *model.Course, datasets []string) (*appsv1.Deployment, error) {
+func createDeployment(clientset *kubernetes.Clientset, course *model.Course, datasets []string, namespace string) (*appsv1.Deployment, error) {
 	jobId := uuid.New().String()
 
-	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceDefault)
+	deploymentsClient := clientset.AppsV1().Deployments(namespace)
 
 	volumes := []apiv1.Volume{}
 	volumeMounts := []apiv1.VolumeMount{}
@@ -174,7 +174,7 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 	return deployment, nil
 }
 
-func createService(clientset *kubernetes.Clientset, deploy_name string) (*apiv1.Service, error) {
+func createService(clientset *kubernetes.Clientset, deploy_name string, namespace string) (*apiv1.Service, error) {
 
 	selector := make(map[string]string)
 	selector["job_Id"] = deploy_name
@@ -197,7 +197,7 @@ func createService(clientset *kubernetes.Clientset, deploy_name string) (*apiv1.
 		ports = append(ports, sp)
 	}
 
-	serviceClient := clientset.CoreV1().Services(apiv1.NamespaceDefault)
+	serviceClient := clientset.CoreV1().Services(namespace)
 	service := &apiv1.Service{
 		ObjectMeta: metav1.ObjectMeta{
 			Name: svcName,
@@ -288,8 +288,8 @@ func findCourse(DB *gorm.DB, job model.Job) (*model.Course, error) {
 	}, nil
 }
 
-func deleteDeployment(clientset *kubernetes.Clientset, deployment string) error {
-	deploymentsClient := clientset.AppsV1().Deployments(apiv1.NamespaceDefault)
+func deleteDeployment(clientset *kubernetes.Clientset, deployment string, namespace string) error {
+	deploymentsClient := clientset.AppsV1().Deployments(namespace)
 	deletePolicy := metav1.DeletePropagationForeground
 	if err := deploymentsClient.Delete(deployment, &metav1.DeleteOptions{
 		PropagationPolicy: &deletePolicy,}); err != nil {
@@ -298,8 +298,8 @@ func deleteDeployment(clientset *kubernetes.Clientset, deployment string) error 
 	return nil
 }
 
-func deleteService(clientset *kubernetes.Clientset, svc string) error {
-	serviceClient := clientset.CoreV1().Services(apiv1.NamespaceDefault)
+func deleteService(clientset *kubernetes.Clientset, svc string, namespace string) error {
+	serviceClient := clientset.CoreV1().Services(namespace)
 	deletePolicy := metav1.DeletePropagationForeground
 	if err := serviceClient.Delete(svc, &metav1.DeleteOptions{
 		PropagationPolicy: &deletePolicy,}); err != nil {
