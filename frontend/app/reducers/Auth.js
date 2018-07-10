@@ -6,7 +6,7 @@ const InitialState = {
   isLogin: false,
   data: [],
   token: '',
-  steady: '',
+  steady: true,
   userInfo: {
     active: false,
     client_id: '',
