@@ -1227,6 +1227,7 @@
           [
               {
                 "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+                "course_id": "b86b2893-b876-45c2-a3f6-5e099c15d638",
                 "startAt": "2018-06-25T09:24:38Z",
                 "status": "Ready",
                 "name": "image process",
@@ -1251,6 +1252,7 @@
               },
               {
                 "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+                "course_id": "b86b2893-b876-45c2-a3f6-5e099c15d638",
                 "startAt": "2018-06-25T09:24:38Z",
                 "status": "Created",
                 "name": "image process",
@@ -1375,6 +1377,7 @@
           [
               {
                 "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+                "course_id": "b86b2893-b876-45c2-a3f6-5e099c15d638",
                 "startAt": "2018-06-25T09:24:38Z",
                 "status": "Ready",
                 "name": "image process",

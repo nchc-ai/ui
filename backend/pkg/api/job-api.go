@@ -115,6 +115,7 @@ func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 
 		jobInfo := model.JobInfo{
 			Id:           result.ID,
+			CourseID:     courseInfo.ID,
 			StartAt:      result.CreatedAt,
 			Status:       result.Status,
 			Name:         courseInfo.Name,

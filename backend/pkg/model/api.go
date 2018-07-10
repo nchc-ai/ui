@@ -77,6 +77,7 @@ type JobListResponse struct {
 
 type JobInfo struct {
 	Id           string       `json:"id"`
+	CourseID     string       `json:"course_id"`
 	StartAt      time.Time    `json:"startAt"`
 	Status       string       `json:"status"`
 	Name         string       `json:"name"`
