@@ -149,7 +149,6 @@ func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (s
 	return "", nil
 }
 
-// todo: how to kill goroutine if job is deleted by hand
 func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 
 	namespace := resourceClient.K8sClient.namespace
@@ -163,13 +162,30 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 	var svc *apiv1.Service
 	var err error
 
+	isDeploymentDeleted := false
+	isServiceDeleted := false
+
 	// wait until deployment is ready
 	for {
 		deploy, err = deploymentsClient.Get(jobId, metav1.GetOptions{})
 		if err != nil {
-			log.Warning("Get deployment {%s} fail: %s", jobId, err.Error())
+			// error message ends with "not found", means deployment resource is not exist
+			if strings.HasSuffix(err.Error(), "not found") {
+				isDeploymentDeleted = true
+				log.Warningf("deployment {%s} is not exist, maybe deleted already.", jobId)
+				break
+			}
+
+			log.Warningf("Get deployment {%s} fail: %s", jobId, err.Error())
 			time.Sleep(10 * time.Second)
 			continue
+		}
+
+		// deployment is being deleted in error message check, we can check replica
+		if deploy.Status.Replicas == 0 {
+			isDeploymentDeleted = true
+			log.Warningf("deployment {%s} is not exist, maybe deleted already.", jobId)
+			break
 		}
 
 		if deploy.Status.AvailableReplicas != deploy.Status.Replicas {
@@ -177,7 +193,7 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 				jobId, deploy.Status.Replicas, deploy.Status.AvailableReplicas)
 
 			if err := resourceClient.DB.Model(&jobObj).Update("status", JoBStatusPending).Error; err != nil {
-				log.Error("update job {%s} status to %s fail: %s", jobId, JoBStatusPending, err.Error())
+				log.Errorf("update job {%s} status to %s fail: %s", jobId, JoBStatusPending, err.Error())
 			}
 			time.Sleep(10 * time.Second)
 			continue
@@ -189,11 +205,22 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 	for {
 		svc, err = svcClient.Get(svcName, metav1.GetOptions{})
 		if err != nil {
-			log.Errorf("Get service {%s} fail: %s", svcName, err.Error())
+			if strings.HasSuffix(err.Error(), "not found") {
+				isServiceDeleted = true
+				log.Warningf("service {%s} is not exist, maybe deleted already.", jobId)
+				break
+			}
+
+			log.Warningf("Get service {%s} fail: %s", svcName, err.Error())
 			time.Sleep(10 * time.Second)
 			continue
 		}
 		break
+	}
+
+	if isDeploymentDeleted == true || isServiceDeleted == true {
+		log.Infof("deployment {%s} or service {%s} is not exist, checkJobStatus() finish.", jobId, svcName)
+		return
 	}
 
 	exposeip := resourceClient.config.GetString("kubernetes.expose_ip")
@@ -216,12 +243,12 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 
 	svc.Spec.Ports = newPorts
 	if _, err = svcClient.Update(svc); err != nil {
-		log.Error("update svc {%s} nodePort fail: %s", svc.Name, err.Error())
+		log.Errorf("update svc {%s} nodePort fail: %s", svc.Name, err.Error())
 		return
 	}
 
 	if err := resourceClient.DB.Model(&jobObj).Update("status", JoBStatueReady).Error; err != nil {
-		log.Error("update job {%s} status to %s fail: %s", jobId, JoBStatueReady, err.Error())
+		log.Errorf("update job {%s} status to %s fail: %s", jobId, JoBStatueReady, err.Error())
 	}
 
 }
