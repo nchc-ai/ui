@@ -25,6 +25,9 @@ func main() {
 		return
 	}
 
+	log.Info("Resume check pending job after api server restart")
+	server.Resume()
+
 	log.Info("Start API Server")
 	err = server.RunServer()
 	if err != nil {

@@ -336,3 +336,21 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		imageAuth.GET("/", resourceClient.ListImage)
 	}
 }
+
+func (server *APIServer) Resume() {
+
+	job := model.Job{
+		Status: JoBStatueReady,
+	}
+	resultJobs := []model.Job{}
+	if err := server.resourceClient.DB.Not(&job).Find(&resultJobs).Error; err != nil {
+		log.Warningf("find Job in Pending state fail: %s", err.Error())
+		return
+	}
+
+	for _, j := range resultJobs {
+		log.Infof("start check deployment {%s} and service {%s}", j.ID, j.Service)
+		go server.resourceClient.checkJobStatus(j.ID, j.Service)
+	}
+
+}
