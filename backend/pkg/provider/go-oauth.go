@@ -25,6 +25,7 @@ type IntrospectResponse struct {
 	Username  string `json:"username"`
 	TokenType string `json:"token_type"`
 	Expire    int64  `json:"exp"`
+	Role      string `json:"role"`
 }
 
 type TokenResponse struct {

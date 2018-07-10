@@ -2378,7 +2378,8 @@
       "client_id": "test_client_1",
       "username": "ogre0403@gmail.com",
       "token_type": "Bearer",
-      "exp": 1530672296
+      "exp": 1530672296,
+      "role": "user"
     }
     ```
 
@@ -2409,7 +2410,7 @@
   ```sh
       $ curl -X POST \
         -d '"{"refresh_token":"7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"}"' \
-        http://localhost:8080/v1/proxy/refresh
+        http://localhost:8080/v1/proxy/introspection
 
         {
           "active": true,
@@ -2417,7 +2418,8 @@
           "client_id": "test_client_1",
           "username": "ogre0403@gmail.com",
           "token_type": "Bearer",
-          "exp": 1530672296
+          "exp": 1530672296,
+          "role": "user"
         }
    ```
 
