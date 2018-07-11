@@ -63,6 +63,7 @@ class UserPage extends Component {
     } = nextProps;
     if (this.props.match !== match && match) {
       window.scrollTo(0, 0);
+      this.fetchData(this.props);
     }
   }
 
