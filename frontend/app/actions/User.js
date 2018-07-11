@@ -45,7 +45,7 @@ export const createCourse = (token, userInfo, formData, next) => async (dispatch
         user: userInfo.username,
         name: formData.name,
         introduction: _.escape(formData.intro),
-        image: formData.image,
+        image: formData.image.value,
         level: formData.level.value,
         GPU: parseInt(formData.gpu.value, 10),
         datasets: formData.datasets.map(d => d.value)
