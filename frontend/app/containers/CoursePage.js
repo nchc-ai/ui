@@ -123,9 +123,6 @@ class CoursePage extends Component {
               courseType={courseType}
             />
           </Route>
-
-
-          
         </Switch>
       </div>
     );

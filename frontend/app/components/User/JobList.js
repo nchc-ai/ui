@@ -4,7 +4,9 @@ import SectionTitle from '../common/SectionTitle/index';
 import DataFrame from '../common/DataFrame/index';
 import { groupArray, formatStatus } from '../../libraries/utils';
 
-const JobList = ({ data, addJob, deleteJob }) => (
+const JobList = ({ data, addJob, deleteJob }) => {
+  console.log('[JobList] data', groupArray(data, 'name'));
+  return (
   <div className="user-job-bg">
 
     <SectionTitle
@@ -12,7 +14,7 @@ const JobList = ({ data, addJob, deleteJob }) => (
       subTitle={'以下是您開始的課程中，正在執行的工作內容。'}
     />
     <DataFrame
-      data={data}
+      data={groupArray(data, 'name')}
       cols={8}
     >
       {
@@ -22,11 +24,12 @@ const JobList = ({ data, addJob, deleteJob }) => (
               <Row className="title-row">
                 <Col>
                   <h4 className="fl">{obj.group}</h4>
-                  <button className="fl btn-add" onClick={e => addJob(e, obj)}>+ 新增</button>  
+                  <button className="fl btn-add" onClick={e => addJob(e, obj)}>+ 新增</button>
                 </Col>
               </Row>
               <Row>
                 {
+                  obj.data ?
                   obj.data.map((thumb, j) => (
                     <Col key={j} md={4} >
                       <div className="job-card">
@@ -61,6 +64,7 @@ const JobList = ({ data, addJob, deleteJob }) => (
                       </div>
                     </Col>
                   ))
+                  : null
                 }
               </Row>
             </div>
@@ -69,6 +73,6 @@ const JobList = ({ data, addJob, deleteJob }) => (
       }
     </DataFrame>
   </div>
-);
+)};
 
 export default JobList;

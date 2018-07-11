@@ -13,6 +13,7 @@ export const courses = row => ({
 
 export const jobs = row => ({
   id: _.get(row, 'id'),
+  courseId: _.get(row, 'course_id'),
   name: _.get(row, 'name'),
   status: _.get(row, 'status'),
   intro: _.get(row, 'introduction'),

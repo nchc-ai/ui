@@ -1,4 +1,5 @@
 import React from 'react';
+import _ from 'lodash';
 import Loading from './Loading';
 import NoData from './NoData';
 
@@ -15,7 +16,7 @@ const DataFrame = ({ isLoading, data, children, className }) => (
 
     {/* children */}
     {
-      !isLoading && data.length > 0 ?
+      !isLoading && data.length > 0 && !_.isUndefined(data) ?
         children
       :
         null

@@ -119,7 +119,7 @@ export const deleteCourse = (courseId, token, next) => async (dispatch) => {
 
 
 // Job > List
-export const getJobList = (user, token) => async (dispatch) => {
+export const getJobList = (user, token, next) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -134,7 +134,7 @@ export const getJobList = (user, token) => async (dispatch) => {
     }
   });
 
-  console.log('[getJobList] response', response);
+  // console.log('[getJobList] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getJobList 失敗');
@@ -167,7 +167,7 @@ export const launchJob = (user, courseId, token, next) => async (dispatch) => {
 };
 
 // Job > Delete
-export const deleteJob = (jobId, token) => async (dispatch) => {
+export const deleteJob = (jobId, token, next) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -186,6 +186,8 @@ export const deleteJob = (jobId, token) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('deleteJob 失敗');
   }
+
+  next();
 };
 
 // DataSet > List
