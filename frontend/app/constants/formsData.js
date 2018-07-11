@@ -106,10 +106,6 @@ export const addCourseForm = [
         label: '進階'
       }
     ],
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入GPU核心數'
-    },
-    isRequired: true
+    isRequired: false
   }
 ];
