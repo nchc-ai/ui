@@ -1,0 +1,29 @@
+.header-comp{
+  .login-container {
+    position: relative;
+    margin-top: 27px;
+    margin-left: 20px;
+    display: inline-block;
+
+    a{
+      padding-right: 15px;
+    }
+
+    span {
+      cursor: pointer;
+    }
+  }
+
+}
+
+
+@media (max-width: 1340px) {
+  .header-comp .header-container .global-search-comp{
+    display: none;
+  }
+  .header-comp .header-container .login-btn, 
+  .header-comp .header-container .login-container {
+    float: right;
+    margin-right: 30px;
+  }
+}

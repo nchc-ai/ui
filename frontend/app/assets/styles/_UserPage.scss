@@ -1,0 +1,229 @@
+.user-bg {
+  .side-menu-wrap {
+    
+    position: absolute;
+    min-height: 1500px;
+    background-color: #f8f4f4;
+  
+  }
+
+  .user-container {
+    width: 80%;
+    margin-left: 225px;
+    padding-left: 80px;
+    padding-top: 40px;
+
+    .common-title-con {
+      h1 {
+        font-size: 36px;
+        letter-spacing: 1.5px;
+        color: $ailab-primary-dark-text;  
+        font-weight: 600;
+        cursor: default;
+      }
+
+      h6 {
+        margin-top: 15px;
+        margin-bottom: 35px;
+
+      }
+    }
+
+    hr {
+      margin-top: 36px;
+      margin-bottom: 60px;
+    }
+
+    .user-course-bg {
+      width: 1000px;
+
+      .col {
+        text-align: right;
+        h1 {
+          text-align: left;
+        }
+
+      }
+
+      .add-btn {
+        @include rect(120px, 35px);
+        margin-left: auto;
+        display: inline;
+        border-radius: 4px;
+      }
+
+    }
+
+
+    .user-course-edit-bg {
+      .form-group {
+        .main-label {
+          font-size: 18px;
+          color: $ailab-black-text;
+          letter-spacing: 0.1px;
+          font-weight: 400;
+        }
+      }
+
+      .submit-bg {
+        margin-bottom: 100px;
+      }
+
+    }
+
+
+    // 工作清單
+    .user-job-bg {
+
+      .common-title-con {
+        h1 {
+          font-size: 24px;
+          font-weight: 600;
+          margin-bottom: 15px;
+        }
+
+        h6 {
+          font-weight: 600;
+          font-size: 14px;
+        }
+      }
+
+
+      .job-group {
+        margin-bottom: 20px;
+
+        .title-row {
+          margin-bottom: 20px;
+      
+          .btn-add {
+            width: 120px;
+            height: 35px;
+            border-radius: 8px;
+            color: #fff;
+            background-color: $ailab-secondary;
+            margin-left: 20px;
+            margin-top: -6px;
+          }
+        }
+
+
+
+        .job-card {
+          @include rect(300px, 200px);
+          position: relative;
+          padding-left: 25px;
+          margin-bottom: 40px;
+          min-height: 150px;
+          text-align: left;
+          border-bottom: 1px solid $ailab-secondary;
+          box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.28);
+          overflow: hidden;
+
+          .btn-cancel {
+            @include scale-button;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            cursor: pointer;
+          }
+          
+
+          .job-card-status {
+            margin-top: 32px;
+            margin-bottom: 12px;
+          }
+
+          .light {
+            @include circle(10px);
+            @include margin(10px);
+            margin-left: 0px;
+            display: inline-block;
+            // border: 1px solid $ai-main-grey;
+            background-color: #fcec65;
+            box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.5), inset 1px 0 1px 0 #f5a623;
+          }
+
+          .light-error {
+            background-color: #E36457;
+          }
+
+          .light-Created {
+            background-color: #FBD36B;
+          }
+
+          .light-Ready {
+            background-color: #4BC3A1;
+          }
+
+          .status-word {
+            font-size: 12px;
+            letter-spacing: 0.7px;
+            color: $ailab-light-text;
+          }
+
+          .job-card-id {
+            margin-bottom: 12px;
+            color: $ailab-primary-dark-text;
+            font-size: 16px;
+            font-weight: 600;
+            font-style: normal;
+            font-stretch: normal;
+            line-height: normal;
+            letter-spacing: 1px;
+          }
+          
+          .job-card-link-li {
+            max-width: 220px;
+            position: relative;
+            display: block;
+            word-break: break-all;
+
+            .job-card-link {
+              .divide-line {
+                @include margin(7px);
+                cursor: default;
+              }
+
+              a {
+                font-size: 14px;
+                color: $ailab-primary-dark-text;
+                opacity: 0.8;
+                letter-spacing: 1px;
+
+                &:hover {
+                  opacity: 1;
+                  text-decoration: underline;
+                }
+              }
+
+              &:nth-last-child(1) {
+                .divide-line {
+                  display: none;
+                }
+              }
+            }
+
+            
+          }
+
+          .corner-triangle {
+            position: absolute;
+            width: 0;
+            height: 0;
+            right: 0px;
+            bottom: 0px;
+            border-bottom: 30px solid $ailab-secondary;
+            border-left: 30px solid transparent;
+
+          }
+
+        }
+      }
+    }
+
+
+  }
+
+
+}
+

@@ -1,0 +1,28 @@
+{
+  "api-server": {
+    "isOutsideCluster": true,
+    "port": 38080,
+    "provider": {
+      "type": "go-oauth",
+      "name": "test-provider",
+      "client_id": "test_client_1",
+      "client_secret": "test_secret",
+      "auth_url": "http://140.110.5.22:30010/web/authorize",
+      "token_url": "http://140.110.5.22:30010/v1/oauth/tokens",
+      "refresh_url": "http://140.110.5.22:30010/v1/oauth/tokens",
+      "introspect_url": "http://140.110.5.22:30010/v1/oauth/introspect",
+      "redirect_url": "https://www.example.com"
+    }
+  },
+  "database": {
+    "host": "127.0.0.1",
+    "port": 3306,
+    "username": "twgc",
+    "password": "twgc@NCHC",
+    "database": "twgc"
+  },
+  "kubernetes": {
+    "kubeconfig": "./conf/openstack-kubeconfig",
+    "expose_ip" : "http://140.110.5.22"
+  }
+}

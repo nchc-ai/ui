@@ -1,0 +1,84 @@
+$form-group-border-color: $ai-input-border-default;
+$form-group-border-focus-color: $ai-input-border-hover;
+$form-group-min-height: 95px;
+$form-group-row-margin: 20px;
+
+.form-group{
+	min-height: $form-group-min-height;
+	margin-bottom: $form-group-row-margin;
+
+	.required-label{
+		&:before{
+			@include rect(10px,10px);
+			@include margin-leftop(-10px,0px);
+			content:"*";
+			color:red;
+			position: absolute;
+			color:$primary-color;                        
+		}
+	}
+
+	.form-control{
+		border: 1px solid #e7e7e7 !important;
+		border-radius: 0px;
+		border: none;
+
+	}
+
+	.text-input{
+		@include rect(100%,35px);
+		border: 2px solid $form-group-border-color;
+		border-radius: 4px; 
+		background-color:#fff;
+		padding-left: 5px; 
+		font-size: 16px;
+		outline:none;
+
+		&:focus{
+			border-radius: 4px; 
+			border: solid 2px $form-group-border-focus-color;
+			box-shadow:none;
+		}
+
+	}
+
+	.radio-input-con {
+		
+		width: 100px;
+
+		.radio-input {
+			display: inline-block;
+			width: 22px;
+		}
+
+		span {
+			transform: translateY(1px);
+			display: inline-block;
+		}
+		
+	}
+
+	.md-editor-comp {
+		overflow: hidden;
+		min-height: 160px;
+		border: 2px solid $form-group-border-color;
+		border-radius: 4px; 
+		padding-left: 10px;
+		padding-top: 10px;
+		
+		// 預設樣式
+		blockquote {
+			border-left: 3px solid #ddd;
+    	padding-left: 1rem;
+		}
+
+	}
+
+	.errors{
+		span{
+			font-size: 12px;
+			color:red;
+		}
+	}
+
+}
