@@ -10,6 +10,7 @@ import (
 	"github.com/google/uuid"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
 	log "github.com/golang/glog"
+	"strings"
 )
 
 func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
@@ -242,7 +243,6 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s is deleted successfully, associated jobs are also deleted", courseId)
 }
 
-
 func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 	id := c.Param("id")
 
@@ -276,7 +276,9 @@ func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 	}
 	courseDataset := []string{}
 	for _, s := range datasetResult {
-		courseDataset = append(courseDataset, s.DatasetName)
+		// https://gitlab.com/nchc-ai/AI-Eduational-Platform/issues/18
+		// should remove "dataset-" prefix in dataset name (i.e. PVC name)
+		courseDataset = append(courseDataset, strings.SplitN(s.DatasetName, "-", 2)[1])
 	}
 
 	result.Datasets = courseDataset
