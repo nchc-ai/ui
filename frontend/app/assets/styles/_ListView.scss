@@ -32,6 +32,23 @@ $list-view-li-margin: 30px;
     .col-value {
       @include rect(265px, initial);
       padding-left: 20px;
+
+      .list-view-arr-ul {
+        .list-view-arr-li {
+
+          .comma {
+            @include margin(5px);
+          }
+
+          &:nth-last-child(1) {
+            .comma {
+              display: none;
+            }
+          }
+        }
+      }
+
+
     }
 
     .value-empty {

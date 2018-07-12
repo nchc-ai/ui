@@ -3,6 +3,8 @@ import { Switch, Route, withRouter } from 'react-router';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import { notify } from 'react-notify-toast';
+import Progress from 'react-progress-2';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
@@ -36,7 +38,7 @@ class CoursePage extends Component {
 
     const type = _.get(match, 'params.type');
 
-    console.log('type', match, type);
+    // console.log('type', match, type);
     if (type === 'basic' || type === 'advance') {
       courseAction.getCourseListByLevel(type);
     } else if (type === 'detail') {
@@ -54,12 +56,16 @@ class CoursePage extends Component {
       match
     } = this.props;
 
+    Progress.show();
     userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
   }
 
   onStartClassSuccess = () => {
-    console.log('create class success');
-    
+
+    console.log('create job success');
+    Progress.hide();
+    notify.show('新增工作成功', 'success', 1800);
+    this.props.history.push('/user/job');
   }
 
 
@@ -117,9 +123,6 @@ class CoursePage extends Component {
               courseType={courseType}
             />
           </Route>
-
-
-          
         </Switch>
       </div>
     );

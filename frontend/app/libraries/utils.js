@@ -91,12 +91,28 @@ export const formatDate = (text) => {
 };
 
 
+export const formatArr = arr => (
+  <span className="list-view-arr-ul">
+    {
+      arr.map(datum => (
+        <span className="list-view-arr-li">
+          {datum}
+          <span className="comma">,</span>
+        </span>
+      ))
+    }
+  </span>
+);
+
 export const formatValue = (obj) => {
+
   switch (obj.type) {
   case 'gender':
     return formatGender(obj.value);
   case 'date':
     return formatDate(obj.value);
+  case 'array':
+    return formatArr(obj.value);
   default:
     return obj.value;
   }

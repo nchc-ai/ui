@@ -63,10 +63,15 @@ class UserPage extends Component {
     } = nextProps;
     if (this.props.match !== match && match) {
       window.scrollTo(0, 0);
+      this.fetchData(nextProps);
     }
   }
 
-  fetchData = (nextProps) => {
+  fetchData = (props) => {
+
+    const nextProps = props || this.props;
+
+
     const {
       userAction,
       token,
@@ -199,18 +204,35 @@ class UserPage extends Component {
       userInfo,
       userAction
     } = this.props;
-    // console.log('obj', obj);
-    // userAction.launchJob(userInfo.username, token);
+    const {
+      courseId
+    } = obj.data[0];
+    Progress.show();
+    userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
   }
+
+  onAddJobSuccess = () => {
+    this.fetchData();
+    Progress.hide();
+    notify.show('工作新增成功', 'success', 1800);
+  }
+
 
   deleteJob = (e, thumb) => {
     const {
       token,
       userAction
     } = this.props;
-
-    userAction.deleteJob(thumb.id, token);
+    Progress.show();
+    userAction.deleteJob(thumb.id, token, this.onDeleteJobSuccess);
   }
+
+  onDeleteJobSuccess = () => {
+    this.fetchData();
+    Progress.hide();
+    notify.show('工作刪除成功', 'success', 1800);
+  }
+
 
   render() {
     const {
@@ -220,7 +242,6 @@ class UserPage extends Component {
       addCourse,
       changeValue
     } = this.props;
-
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">

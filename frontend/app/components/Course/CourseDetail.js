@@ -26,18 +26,13 @@ const CourseDetail = ({ submitMethod, cancelEdit, detail }) => (
         info={_.get(detail, 'introduction')}
       />
 
-      {
-        detail ?
-          <ListView
-            data={courseDetailList(detail)}
-          />
-        :
-          null
-      }
-      
+     
+      <ListView
+        data={courseDetailList(detail)}
+      />
+        
 
       <hr className="my-2" />
-      
 
       {/* 下方按鈕 */}
       {/* TODO: 需在這判斷是否有開過課程決定submitName */}
