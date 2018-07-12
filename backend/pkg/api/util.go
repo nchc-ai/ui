@@ -113,14 +113,11 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 		exposePorts = append(exposePorts, cp)
 	}
 
-	// default resource limit
-	var resources apiv1.ResourceRequirements
-
-	// if require GPU
+	// if require GPU, add gpu to default resource limit
 	if course.Gpu > 0 {
 		defaultResourceLimit["nvidia.com/gpu"] = *resource.NewQuantity(int64(course.Gpu), resource.DecimalSI)
 	}
-	resources = apiv1.ResourceRequirements{
+	resources := apiv1.ResourceRequirements{
 		Limits: defaultResourceLimit,
 	}
 

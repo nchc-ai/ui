@@ -299,7 +299,7 @@ func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
 	// Step 2: create kubernetes resources
 	// 	Step 2-1: create deployment
 	deployment, err := createDeployment(resourceClient.K8sClient.KClientSet, course, datasets,
-		namespace, resourceClient.K8sClient.exposePort, resourceClient.K8sClient.defaultResourceLimit)
+		namespace, resourceClient.K8sClient.exposePort, resourceClient.K8sClient.defaultResourceLimit.DeepCopy())
 
 	if err != nil {
 		errStrt := fmt.Sprintf("create deployment for course {id = %s} fail: %s", course.ID, err.Error())
