@@ -15,7 +15,12 @@ type GoAuth struct {
 	name           string
 	refresh_url    string
 	introspect_url string
+	logout_url     string
 	oauthConfig    *oauth2.Config
+}
+
+type LogoutResponse struct {
+	Message string `json:"message"`
 }
 
 type IntrospectResponse struct {
@@ -59,11 +64,11 @@ func NewGoAuthProvider(config model.ProviderConfig) *GoAuth {
 		name:           config.Name,
 		refresh_url:    config.RefreshURL,
 		introspect_url: config.IntrospectURL,
+		logout_url:     config.LogoutURL,
 		oauthConfig:    oauthConfig,
 	}
 }
 
-// todo: test validate logic
 func (g *GoAuth) Validate(token string) (bool, error) {
 	client := &http.Client{}
 	data := url.Values{}
@@ -211,4 +216,48 @@ func (g *GoAuth) Introspection(token string) (*IntrospectResponse, error) {
 
 func (g *GoAuth) Name() string {
 	return g.name
+}
+
+func (g *GoAuth) Logout(token string) (*LogoutResponse, error) {
+
+	client := &http.Client{}
+	data := url.Values{}
+	data.Add("token", token)
+	req, err := http.NewRequest("POST", g.logout_url, strings.NewReader(data.Encode()))
+	if err != nil {
+		return nil, err
+	}
+
+	req.SetBasicAuth(g.oauthConfig.ClientID, g.oauthConfig.ClientSecret)
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer resp.Body.Close()
+
+	bodyBytes, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	if resp.StatusCode != http.StatusOK {
+		var errResp model.ErrResp
+		err = json.Unmarshal(bodyBytes, &errResp)
+		if err != nil {
+			return nil, err
+		}
+
+		return nil, errors.New(errResp.Error)
+	}
+
+	var logoutResp LogoutResponse
+	err = json.Unmarshal(bodyBytes, &logoutResp)
+	if err != nil {
+		return nil, err
+	}
+
+	return &logoutResp, nil
 }

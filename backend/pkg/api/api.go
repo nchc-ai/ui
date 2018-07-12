@@ -314,6 +314,12 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		proxy.OPTIONS("/refresh", resourceClient.handleOption)
 		proxy.POST("/introspection", server.Introspection)
 		proxy.OPTIONS("/introspection", resourceClient.handleOption)
+		proxy.OPTIONS("/logout", resourceClient.handleOption)
+	}
+
+	proxyAuth := router.Group("/v1").Group("/proxy").Use(server.AuthMiddleware())
+	{
+		proxyAuth.POST("/logout", server.Logout)
 	}
 
 	dataset := router.Group("/v1").Group("/datasets")

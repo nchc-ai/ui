@@ -81,3 +81,25 @@ func (server *APIServer) Introspection(c *gin.Context) {
 
 	c.JSON(http.StatusOK, introspectionResult)
 }
+
+func (server *APIServer) Logout(c *gin.Context) {
+	// Logout and Introspection use the same request format
+	var req model.IntrospectionReq
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	logoutResp, err := server.providerProxy.Logout(req.Token)
+
+	if err != nil {
+		errStr := fmt.Sprintf("Logout use Token {%s} fail: %s", req.Token, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, logoutResp)
+}

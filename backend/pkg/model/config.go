@@ -16,6 +16,7 @@ type Endpoint struct {
 	TokenURL      string `json:"token_url"`
 	IntrospectURL string `json:"introspect_url"`
 	RefreshURL    string `json:"refresh_url"`
+	LogoutURL     string `json:"logout_url"`
 }
 
 type ProviderConfig struct {

@@ -2423,6 +2423,78 @@
         }
    ```
 
+## Logout
+
+
+* **Description**
+
+  Revoke all tokens of a user 
+
+* **URL**
+
+  /v1/proxy/logout
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+      "token": "7e7f6442-09e0-44f3-a05b-d7ea516cc6c5"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+      "message": "user-name logout"
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Logout use Token {%s} fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+  $ curl -X POST \
+    -H "Authorization: Bearer ea26b9ac-ae39-48e4-8a87-24950226767c" \
+    -d '{"token":"ea26b9ac-ae39-48e4-8a87-24950226767c"}' \
+    http://localhost:8080/v1/proxy/logout
+    {
+      "message": "user-name logout"
+    }
+   ```
 
 # Image
 
