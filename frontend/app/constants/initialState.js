@@ -12,6 +12,6 @@ export const initialAddCourseState = {
   endAt: '',
   server: '',
   gpu: '',
-  datasets: ''
+  datasets: []
 };
 

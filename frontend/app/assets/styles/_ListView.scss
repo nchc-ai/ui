@@ -55,4 +55,12 @@ $list-view-li-margin: 30px;
       color: $footer-info-gray;
     }
   }
+
+
+  .list-view-li-dataset {
+    height: initial;
+    .col-grp {
+      float: left;
+    }
+  }
 }

@@ -108,6 +108,13 @@ class UserPage extends Component {
   }
 
   // CourseList
+
+  startCourse = (course) => {
+    console.log('[startCourse] course', course);
+
+    this.addJob('e', course.id);
+  }
+
   editCourse = (course) => {
     console.log('[editCourse] course', course);
   }
@@ -198,15 +205,13 @@ class UserPage extends Component {
 
   // Job
 
-  addJob = (e, obj) => {
+  addJob = (e, courseId) => {
     const {
       token,
       userInfo,
       userAction
     } = this.props;
-    const {
-      courseId
-    } = obj.data[0];
+
     Progress.show();
     userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
   }
@@ -256,6 +261,7 @@ class UserPage extends Component {
               <CourseList
                 data={Course.list}
                 tableData={userCourseData}
+                startMethod={this.startCourse}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
               />
