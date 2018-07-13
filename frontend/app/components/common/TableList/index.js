@@ -5,12 +5,13 @@ import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import ToggleButton from 'react-toggle-button';
 import MdMoreVert from 'react-icons/lib/md/more-vert';
+import MdAdd from 'react-icons/lib/md/add';
 import MdEdit from 'react-icons/lib/md/edit';
 import MdDelete from 'react-icons/lib/md/delete';
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';
 
-const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
+const TableList = ({ data, tableData, startMethod, editMethod, deleteMethod }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -52,6 +53,12 @@ const TableList = ({ data, tableData, editMethod, deleteMethod }) => (
                         <MdMoreVert />
                       </button>
                       <ul className="action-menu">
+                        <li>
+                          <button className="action-btn" onClick={() => startMethod(d)}>
+                            <span className="action-word">開始</span>
+                            <MdAdd />
+                          </button>
+                        </li>
                         <li>
                           <button className="action-btn" onClick={() => editMethod(d)}>
                             <span className="action-word">編輯</span>

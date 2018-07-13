@@ -18,7 +18,7 @@ const ListView = ({ data, col }) => {
             <Col
               key={d.key}
               md={{ size: col ? 12 / col : 12 }}
-              className="list-view-li"
+              className={`list-view-li list-view-li-${d.labelVal}`}
             >
               <span className="col-icon col-grp">{d.icon}</span>
               <span className="col-label col-grp">{d.label}: </span>
