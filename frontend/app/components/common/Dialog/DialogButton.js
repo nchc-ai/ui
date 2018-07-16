@@ -7,53 +7,50 @@ import { Button } from 'reactstrap';
 import * as types from '../../../constants/types';
 import DialogHOC from '../../../HOC/DialogHOC';
 
-
-const Index = ({ width, customStyle, dialog }) => (
-  <Modal
-    style={{ content: { width: `${width ? width : '300'}px` } }}
-    isOpen={dialog.isOpen}
-    contentLabel="modal"
-    ariaHideApp={false}
-  >
-    <div className="common-modal-bg">
-      <div className="modal-header-con">
-        <span>{dialog.title}</span>
-      </div>
-
-      <div
-        className="model-content-con"
-        style={customStyle}
-      >
-        <p>{dialog.info}</p>
-      </div>
-
-      <div className="modal-button-bg">
-        <div className="modal-button-con">
-
-          <button
-            className="submit-btn btn-grp"
-            onClick={e => dialog.submitMethod(dialog.target)}
-          >
-            {dialog.submitText}
-          </button>
-
-          <button
-            className="cancel-btn btn-grp"
-            onClick={dialog.cancelMethod}
-          >
-            {dialog.cancelText}
-          </button>
-
+// Fail HOC
+const DialogButton = ({ width, customStyle, children, title, submitButton, open, closeMethod, cancelMethod, resetMethod, confirmMethod, openButton, updateState }) => (
+  <div>
+    <Modal
+      style={{ content: { width: `${width ? width : '300'}px` } }}
+      isOpen={open}
+      contentLabel="modal"
+      ariaHideApp={false}
+    >
+      <div className="common-modal-bg">
+        <div className="modal-header-con">
+          <span>{title}</span>
         </div>
+
+        <div
+          className="model-content-con"
+          style={customStyle}
+        >
+          {children}
+        </div>
+
+        <div className="modal-button-bg">
+          <div className="modal-button-con">
+
+            <button
+              className="submit-btn btn-grp"
+              onClick={() => confirmMethod()}
+            >
+              {submitButton.confirm}
+            </button>
+
+            <button
+              className="cancel-btn btn-grp"
+              onClick={() => updateState({ open: !open })}
+            >
+              {submitButton.cancel}
+            </button>
+
+          </div>
+        </div>
+
       </div>
-
-    </div>
-  </Modal>
-);
-
-
-/* <div>
- {openButton
+    </Modal>
+    {openButton
       ?
         <button
           className="action-btn"
@@ -71,7 +68,7 @@ const Index = ({ width, customStyle, dialog }) => (
           Open Dialog
         </Button>}
   </div>
-*/
+);
 
 // const DialogHOC = Component => (
 //   class extends React.Component {
@@ -110,7 +107,7 @@ const Index = ({ width, customStyle, dialog }) => (
 
 
 const mapStateToProps = ({ Ui }) => ({
-  dialog: Ui.Dialog
+  open: Ui.Dialog.open
 });
 
 export default compose(
@@ -119,6 +116,6 @@ export default compose(
     // mapDispatchToProps
   ),
   DialogHOC
-)(Index);
+)(DialogButton);
 
 // export default DialogWrapper;
