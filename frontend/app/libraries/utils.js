@@ -95,10 +95,10 @@ export const formatArr = arr => (
   <span className="list-view-arr-ul">
     {
       arr.map(datum => (
-        <span className="list-view-arr-li">
+        <div className="list-view-arr-li">
           {datum}
-          <span className="comma">,</span>
-        </span>
+          {/* <span className="comma">,</span> */}
+        </div>
       ))
     }
   </span>

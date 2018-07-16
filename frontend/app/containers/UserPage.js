@@ -81,11 +81,13 @@ class UserPage extends Component {
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
-    console.log('part', part);
+    // console.log('part', part);
     if (part === 'course' && action === 'add') {
       // TODO:
     } else if (part === 'course' && action === 'edit') {
-      // TODO:
+      // TODO:應在此先change forms 表單
+      // 先load 此course資訊(courseDetail)> next > change到formsData裡
+      // this.changeForm(formObj, addCourse)
     } else if (part === 'course') {
       this.loadCourseList();
     } else if (part === 'job') {
@@ -108,8 +110,14 @@ class UserPage extends Component {
   }
 
   // CourseList
+
+  startCourse = (course) => {
+    this.addJob('e', course.id);
+  }
+
   editCourse = (course) => {
-    console.log('[editCourse] course', course);
+    this.props.history.push(`/user/course/edit/${course.id}`);
+    // console.log('[editCourse] course', course);
   }
 
   deleteSuccess = () => {
@@ -198,15 +206,13 @@ class UserPage extends Component {
 
   // Job
 
-  addJob = (e, obj) => {
+  addJob = (e, courseId) => {
     const {
       token,
       userInfo,
       userAction
     } = this.props;
-    const {
-      courseId
-    } = obj.data[0];
+
     Progress.show();
     userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
   }
@@ -215,6 +221,7 @@ class UserPage extends Component {
     this.fetchData();
     Progress.hide();
     notify.show('工作新增成功', 'success', 1800);
+    this.props.history.push('/user/job');
   }
 
 
@@ -256,6 +263,7 @@ class UserPage extends Component {
               <CourseList
                 data={Course.list}
                 tableData={userCourseData}
+                startMethod={this.startCourse}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
               />
@@ -264,6 +272,7 @@ class UserPage extends Component {
             {/* 新增課程 */}
             <Route exact path="/user/course/add">
               <CourseEdit
+                title={'新增課程'}
                 handleSubmit={this.handleSubmit}
                 handleSubmitFailed={this.handleSubmitFailed}
                 state={this.state}
@@ -281,6 +290,7 @@ class UserPage extends Component {
             {/* 編輯課程 */}
             <Route exact path="/user/course/edit/:courseId">
               <CourseEdit
+                title={'編輯課程'}
                 handleSubmit={this.handleSubmit}
                 handleSubmitFailed={this.handleSubmitFailed}
                 state={this.state}
@@ -317,6 +327,10 @@ const mapDispatchToProps = dispatch => ({
   changeValue: (value, key, target) => dispatch(formActions.change(
     `forms.${target}.${key}`,
     value
+  )),
+  changeForm: (formObj, target) => dispatch(formActions.change(
+    `forms.${target}`,
+    formObj
   ))
 });
 
