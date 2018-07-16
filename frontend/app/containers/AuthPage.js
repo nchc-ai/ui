@@ -16,12 +16,10 @@ class AuthPage extends Component {
   onClickLogin = () => {
     // console.log('click');
     this.props.authAction.login();
-
   }
 
   onSuccess = (data) => {
     this.props.authAction.retrieveToken(data.code, this.setUserInfo);
-    
   }
 
   setUserInfo = (token) => {

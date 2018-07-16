@@ -122,7 +122,7 @@ class UserPage extends Component {
 
   deleteSuccess = () => {
 
-    this.props.updateState({ open: !open });
+    this.props.updateState({ open: false });
     notify.show('課程刪除成功', 'success', 1800);
     Progress.hide();
     this.loadCourseList();

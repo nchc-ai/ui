@@ -29,7 +29,15 @@ class Header extends Component {
   }
 
   logout = () => {
-    this.props.authAction.logout();
+    const {
+      authAction,
+      history,
+      token
+    } = this.props;
+    authAction.logout(token, this.redirect);
+  }
+
+  redirect = () => {
     this.props.history.push('/');
   }
 
@@ -106,6 +114,7 @@ class Header extends Component {
 }
 
 const mapStateToProps = ({ Auth }) => ({
+  token: Auth.token,
   steady: Auth.steady,
   isLogin: Auth.userInfo.active
 });
