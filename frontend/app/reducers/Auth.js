@@ -11,6 +11,7 @@ const InitialState = {
     active: false,
     client_id: '',
     exp: '',
+    role: '',
     scope: '',
     token_type: '',
     username: ''
@@ -50,13 +51,6 @@ export default function Auth(state = InitialState, action) {
       ...state,
       isLogin: action.isLogin,
       token: action.token
-    };
-
-  case actionTypes.LOGOUT:
-    return {
-      ...state,
-      isLogin: false,
-      userInfo: {}
     };
   default:
     return state;
