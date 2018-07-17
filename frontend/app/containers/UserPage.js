@@ -122,13 +122,33 @@ class UserPage extends Component {
 
   deleteSuccess = () => {
 
-    this.props.updateState({ open: !open });
+    this.props.uiAction.closeDialog();
     notify.show('課程刪除成功', 'success', 1800);
     Progress.hide();
     this.loadCourseList();
   }
 
   deleteCourse = (course) => {
+
+
+    const deleteRequest = {
+      title: '確認訊息',
+      info: `確定要刪除 ${course.name} 嗎？`,
+      target: course,
+      cancelText: '取消',
+      cancelMethod: this.cancelCourseDelete,
+      submitText: '確認',
+      submitMethod: this.submitCourseDelete
+    };
+    this.props.uiAction.openDialog(deleteRequest);   
+  }
+
+  cancelCourseDelete = () => {
+    this.props.uiAction.closeDialog();
+  }
+
+  submitCourseDelete = (course) => {
+
     const {
       userAction,
       token
@@ -137,6 +157,8 @@ class UserPage extends Component {
     Progress.show();
     userAction.deleteCourse(course.id, token, this.deleteSuccess);
   }
+
+
 
   // CourseEdit
 

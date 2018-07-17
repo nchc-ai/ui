@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { Table } from 'reactstrap';
 import TableList from '../common/TableList/index';
 
-const CourseList = ({ match, banner, title, data, tableData, startMethod, editMethod, deleteMethod }) => (
+const CourseList = ({ match, banner, title, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod }) => (
   <div className="course-list-comp">
     <div className="section-bn section-grp">
       <img className="bg-grp" alt="" src={banner} />
@@ -16,6 +16,7 @@ const CourseList = ({ match, banner, title, data, tableData, startMethod, editMe
         <TableList
           data={data}
           tableData={tableData}
+          isDialogOpen={isDialogOpen}
           startMethod={startMethod}
           editMethod={editMethod}
           deleteMethod={deleteMethod}

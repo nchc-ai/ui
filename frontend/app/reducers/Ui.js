@@ -8,14 +8,15 @@ const InitialState = {
     side: 'left',
     isWrapHidden: false
   },
-  Modal: {
+  Dialog: {
     isOpen: false,
-    headerText: '確認訊息',
-    content: '',
-    type: '',
+    title: '確認訊息',
+    info: '',
     target: '',
-    targetId: '',
-    query: ''
+    cancelText: '',
+    cancelMethod: '',
+    submitText: '',
+    submitMethod: ''
   },
   Dropdown: {
     pos: 0
@@ -23,79 +24,34 @@ const InitialState = {
   Status: {
     offline: false,
     isAdmin: false
-  },
-  Dialog: {
-    open: false
   }
 };
 
 export default function Ui(state = InitialState, action) {
   switch (action.type) {
-  case actionTypes.CLOSE_MODAL:
+  case actionTypes.CLOSE_DIALOG:
     return {
       ...state,
-      Modal: {
-        ...state.Modal,
+      Dialog: {
+        ...state.Dialog,
         isOpen: false
       }
     };
-  case actionTypes.OPEN_DELETE_MODAL:
+  case actionTypes.OPEN_DIALOG:
     return {
       ...state,
-      Modal: {
+      Dialog: {
         isOpen: true,
-        headerText: '刪除提醒',
-        content: `確定要刪除 '${action.targetId}' 嗎？`,
-        type: modalTypes.CONFIRM_DELETE,
-        target: action.target,
-        targetId: action.targetId
+        title: action.request.title,
+        info: action.request.info,
+        target: action.request.target,
+        cancelText: action.request.cancelText,
+        cancelMethod: action.request.cancelMethod,
+        submitText: action.request.submitText,
+        submitMethod: action.request.submitMethod
       }
     };
-  case actionTypes.OPEN_ADD_ITEM_MODAL:
-    return {
-      ...state,
-      Modal: {
-        isOpen: true,
-        headerText: '確認訊息',
-        content: '商品已新增',
-        type: modalTypes.CONFIRM_ONLY
-      }
-    };
-  case actionTypes.OPEN_RESET_MODAL:
-    return {
-      ...state,
-      Modal: {
-        ...state.Modal,
-        isOpen: true,
-        headerText: '確認訊息',
-        content: '確認要重置嗎？',
-        type: modalTypes.CONFIRM_RESET,
-        target: action.target
-      }
-    };
-  case actionTypes.OPEN_UPLOAD_MODAL:
-    return {
-      ...state,
-      Modal: {
-        ...state.Modal,
-        isOpen: true,
-        headerText: '確認訊息',
-        content: '確認要上傳嗎？',
-        type: modalTypes.CONFIRM_UPLOAD
-      }
-    };
-  case actionTypes.OPEN_CHECKOUT_MODAL:
-    return {
-      ...state,
-      Modal: {
-        ...state.Modal,
-        isOpen: true,
-        headerText: '確認訊息',
-        content: '請務必確認內容。',
-        type: modalTypes.CONFIRM_CHECKOUT,
-        query: action.query
-      }
-    };
+
   case actionTypes.SET_DROPDOWN_POS:
     return {
       ...state,
