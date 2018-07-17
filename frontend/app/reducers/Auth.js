@@ -19,8 +19,8 @@ const InitialState = {
 
 export default function Auth(state = InitialState, action) {
   switch (action.type) {
-  
-  case actionTypes.LOGOUT:
+
+  case actionTypes.RESET_AUTH:
     return {
       ...state,
       userInfo: InitialState.userInfo

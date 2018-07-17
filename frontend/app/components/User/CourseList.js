@@ -5,7 +5,7 @@ import { Row, Col } from 'reactstrap';
 import SectionTitle from '../common/SectionTitle/index';
 import TableList from '../common/TableList/index';
 
-const CourseList = ({ data, tableData, startMethod, editMethod, deleteMethod }) => (
+const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod }) => (
   <div className="user-course-bg">
     <Row>
       <Col>
@@ -24,6 +24,7 @@ const CourseList = ({ data, tableData, startMethod, editMethod, deleteMethod }) 
     <TableList
       data={data}
       tableData={tableData}
+      isDialogOpen={isDialogOpen}
       startMethod={startMethod}
       editMethod={editMethod}
       deleteMethod={deleteMethod}
