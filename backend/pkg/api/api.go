@@ -315,11 +315,17 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		proxy.POST("/introspection", server.Introspection)
 		proxy.OPTIONS("/introspection", resourceClient.handleOption)
 		proxy.OPTIONS("/logout", resourceClient.handleOption)
+		proxy.OPTIONS("/register", resourceClient.handleOption)
+		proxy.OPTIONS("/update", resourceClient.handleOption)
+		proxy.OPTIONS("/query", resourceClient.handleOption)
+		proxy.POST("/register", server.RegisterUser)
 	}
 
 	proxyAuth := router.Group("/v1").Group("/proxy").Use(server.AuthMiddleware())
 	{
 		proxyAuth.POST("/logout", server.Logout)
+		proxyAuth.POST("/update", server.UpdateUser)
+		proxyAuth.GET("/query", server.QueryUser)
 	}
 
 	dataset := router.Group("/v1").Group("/datasets")

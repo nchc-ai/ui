@@ -7,6 +7,8 @@ import (
 	"net/http"
 	log "github.com/golang/glog"
 	"fmt"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/provider"
+	"strings"
 )
 
 func (server *APIServer) GetToken(c *gin.Context) {
@@ -102,4 +104,81 @@ func (server *APIServer) Logout(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, logoutResp)
+}
+
+func (server *APIServer) RegisterUser(c *gin.Context) {
+
+	var req provider.UserInfo
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	registerResult, err := server.providerProxy.RegisterUser(&req)
+
+	if err != nil {
+		errStr := fmt.Sprintf("Regsiter new user {%s} fail: %s", req.Username, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, registerResult)
+
+}
+
+func (server *APIServer) UpdateUser(c *gin.Context) {
+
+	var req provider.UserInfo
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	result, err := server.providerProxy.UpdateUser(&req)
+
+	if err != nil {
+		errStr := fmt.Sprintf("update user {%s} fail: %s", req.Username, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
+
+}
+
+func (server *APIServer) QueryUser(c *gin.Context) {
+
+	authHeader := c.GetHeader("Authorization")
+	if authHeader == "" {
+		log.Error("Can not find token in Authorization header")
+		util.RespondWithError(c, http.StatusBadRequest, "Can not find token in Authorization header")
+		return
+	}
+
+	bearerToken := strings.Split(authHeader, " ")
+
+	if len(bearerToken) != 2 || bearerToken[0] != "Bearer" {
+		log.Errorf("Can not find token in Authorization header: %s", authHeader)
+		util.RespondWithError(c, http.StatusBadRequest, "Can not find token in Authorization header")
+		return
+	}
+
+	token := bearerToken[1]
+
+	result, err := server.providerProxy.QueryUser(token)
+
+	if err != nil {
+		errStr := fmt.Sprintf("query user from token fail: %s", err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
 }

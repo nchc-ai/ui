@@ -78,6 +78,9 @@ data:
           "refresh_url": "http://140.110.5.22:30010/v1/oauth/tokens",
           "introspect_url": "http://140.110.5.22:30010/v1/oauth/introspect",
           "logout_url": "http://140.110.5.22:30010/v1/oauth/logout",
+          "register_url": "http://140.110.5.22:30010/v1/oauth/register",
+          "update_url": "http://140.110.5.22:30010/v1/oauth/update",
+          "query_url": "http://140.110.5.22:30010/v1/oauth/query",
           "redirect_url": "http://140.110.18.35:30004/user/course"
         }
       },

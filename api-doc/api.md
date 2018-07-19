@@ -23,6 +23,10 @@
       * [X] [Token](#token)
       * [X] [Refresh](#refresh)
       * [X] [Introspection](#introspection)
+      * [X] [Logout](#logout)
+      * [X] [Register](#logout)
+      * [X] [Update](#update-1)
+      * [X] [UserInfo](#userinfo)
    * [Image](#image)
       * [ ] [List](#list-3)
       * [ ] [Add](#add)
@@ -2434,6 +2438,9 @@
 
   /v1/proxy/logout
 
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
 
 * **Method:**
 
@@ -2493,6 +2500,247 @@
     http://localhost:8080/v1/proxy/logout
     {
       "message": "user-name logout"
+    }
+   ```
+
+## Register
+
+* **Description**
+
+  Register a new user
+
+* **URL**
+
+  /v1/proxy/register
+
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+     "username":"jjj@abc.com",
+     "password":"654321",
+     "cName":"莊莊莊",
+     "company":"國網中心",
+     "email-1":"ogre@ggg.com",
+     "email-2":"ogre@ggg.com",
+     "phone":"09232329",
+     "text":"" 
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+      "message": "user {jjj@abc.com} is created "
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Regsiter new user {%s} fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+  $ curl -X POST \
+    -d '{"username":"jjj@abc.com","password":"654321","cName":"莊莊莊","company":"國網中心","email-1":"ogre@ggg.com","email-2":"ogre@ggg.com","phone":"09232329","text":""}' \
+    http://localhost:8080/v1/proxy/register
+    {
+        "message": "user {jj23@abc.com} is created "
+    }
+   ```
+   
+## Update 
+
+* **Description**
+
+  Update a existing user information
+
+* **URL**
+
+  /v1/proxy/update
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+     "username":"jjj@abc.com",
+     "password":"654321",
+     "cName":"莊莊莊",
+     "company":"國網中心",
+     "email-1":"ogre@ggg.com",
+     "email-2":"ogre@ggg.com",
+     "phone":"09232329",
+     "text":"" 
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+      "message": "user {jjj@abc.com} is created "
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "update user {%s} fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+  $ curl -X POST \
+    -H "Authorization: Bearer 81c5e423-44f9-4dc3-9141-0ba1db763faf" \
+    -d '{"username":"jjj@abc.com","password":"654321","cName":"莊莊莊","company":"國網中心","email-1":"ogre@ggg.com","email-2":"ogre@ggg.com","phone":"09232329","text":""}' \
+    http://localhost:8080/v1/proxy/update
+    {
+        "message": "user {jj23@abc.com} is updated"
+    }
+   ```
+
+## Query
+
+* **Description**
+
+  query a existing user information 
+
+* **URL**
+
+  /v1/proxy/query
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `GET`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+   None
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+        {
+          "username": "jjj@abc.com",
+          "cName": "莊莊莊",
+          "company": "國網中心",
+          "email-1": "ogre@ggg.com",
+          "email-2": "ogre@ggg.com",
+          "phone": "09232329",
+          "text": "123"
+        }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Can not find token in Authorization header"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "query user from token fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+  $ curl -H "Authorization: Bearer ea26b9ac-ae39-48e4-8a87-24950226767c" \ 
+    http://localhost:8080/v1/proxy/query
+    {
+      "username": "jjj@abc.com",
+      "cName": "莊莊莊",
+      "company": "國網中心",
+      "email-1": "ogre@ggg.com",
+      "email-2": "ogre@ggg.com",
+      "phone": "09232329",
+      "text": "123"
     }
    ```
 

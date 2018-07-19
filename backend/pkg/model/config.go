@@ -17,6 +17,9 @@ type Endpoint struct {
 	IntrospectURL string `json:"introspect_url"`
 	RefreshURL    string `json:"refresh_url"`
 	LogoutURL     string `json:"logout_url"`
+	RegisterURL   string `json:"register_url"`
+	UpdateURL     string `json:"update_url"`
+	QueryURL      string `json:"query_url"`
 }
 
 type ProviderConfig struct {

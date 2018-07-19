@@ -6,5 +6,8 @@ type Provider interface {
 	Introspection(token string) (*IntrospectResponse, error)
 	Validate(token string) (bool, error)
 	Name() string
-	Logout(token string) (*LogoutResponse, error)
+	Logout(token string) (*PlainResponse, error)
+	RegisterUser(user *UserInfo) (*PlainResponse, error)
+	UpdateUser(user *UserInfo) (*PlainResponse, error)
+	QueryUser(token string) (*UserInfo, error)
 }
