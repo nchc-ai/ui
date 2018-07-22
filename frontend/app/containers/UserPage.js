@@ -301,10 +301,13 @@ class UserPage extends Component {
       Course,
       Job,
       addCourse,
-      changeValue
+      changeValue,
+      userInfo
     } = this.props;
 
-    console.log('profile', profile);
+    const isEditable = userInfo.role === 'teacher';
+
+    // console.log('profile', profile);
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -322,6 +325,7 @@ class UserPage extends Component {
                 startMethod={this.startCourse}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
+                isEditable={isEditable}
               />
             </Route>
 
