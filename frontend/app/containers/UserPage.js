@@ -109,11 +109,16 @@ class UserPage extends Component {
   loadCourseList = () => {
     const {
       userAction,
+      courseAction,
       token,
       userInfo
     } = this.props;
-
-    userAction.getCourseList(userInfo, token);
+    if(userInfo.role === 'teacher') {
+      userAction.getCourseList(userInfo, token);
+    } else {
+      courseAction.getCourseListAll();
+    }
+    
   }
 
   // CourseList
@@ -297,6 +302,7 @@ class UserPage extends Component {
   render() {
     const {
       match,
+      courseAll,
       profile,
       Course,
       Job,
@@ -320,7 +326,7 @@ class UserPage extends Component {
             {/* 課程列表 */}
             <Route exact path="/user/course">
               <CourseList
-                data={Course.list}
+                data={isEditable ? Course.list : courseAll }
                 tableData={userCourseData}
                 startMethod={this.startCourse}
                 editMethod={this.editCourse}
@@ -404,7 +410,7 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ Auth, User, forms }) => ({
+const mapStateToProps = ({ Auth, User, forms, Course }) => ({
   profile: forms.profile,
   addCourse: forms.addCourse,
   token: Auth.token,
@@ -413,6 +419,8 @@ const mapStateToProps = ({ Auth, User, forms }) => ({
     loading: User.course.loading,
     list: User.course.data
   },
+  courseAll: Course.courseAll.data,
+  courseAllLoading: Course.courseAll.loading,
   Job: {
     loading: User.job.loading,
     list: User.job.data
