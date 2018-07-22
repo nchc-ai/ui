@@ -2,10 +2,12 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { actions as formActions } from 'react-redux-form';
 import { setToken } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
+import Profile from '../components/Auth/Profile';
 
 class AuthPage extends Component {
 
@@ -36,7 +38,34 @@ class AuthPage extends Component {
     console.log('fail', err);
   }
 
+
+  // Signup
+  onSignupSubmit = (formData) => {
+     // authAction.signup(user, this.onSignupSuccess);
+  }
+
+
+  onSignupSubmitSuccess = (formData) => {
+    
+  }
+
+  // Profile
+  onProfileSubmit = (formData) => {
+    // console.log('formData', formData);
+  }
+
+
+  onProfileSubmitSuccess = (formData) => {
+    // console.log('formData', formData);
+  }
+
+
   render() {
+    const {
+      forms,
+      changeValue
+    } = this.props;
+
     return (
       <div className="auth-bg global-content">
         <Switch>
@@ -47,17 +76,44 @@ class AuthPage extends Component {
               onFailure={this.onFailure}
             />
           </Route>
-          <Route exact path="/signup" component={Signup} />
+          <Route exact path="/signup">
+            <Signup
+              targetForm={forms.signup}
+              changeValue={changeValue}
+              onSubmit={this.onSignupSubmit}
+            />
+          </Route>
+
+          <Route exact path="/profile">
+            <Profile
+              targetForm={forms.profile}
+              changeValue={changeValue}
+              onSubmit={this.onProfileSubmit}
+            />
+          </Route>
+
         </Switch>
       </div>
     );
   }
 }
 
-const mapStateToProps = ({  }) => ({
+const mapStateToProps = ({ forms }) => ({
+  forms
 });
 
+const mapDispatchToProps = dispatch => ({
+  changeValue: (value, key, target) => dispatch(formActions.change(
+    `forms.${target}.${key}`,
+    value
+  ))
+});
+
+
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   bindActionCreatorHoc
 )(AuthPage);

@@ -92,26 +92,72 @@ export const logout = (token, next) => async (dispatch) => {
   }
 };
 
-
-
-export const login = next => async (dispatch) => {
+// Proxy > Register
+export const signup = formData => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${AUTH_PROVIDER_URL}/client_id=test_client_1`,
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json'},
-      types: types.LOGIN
+      endpoint: `${API_URL}/v1/proxy/register`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        formData
+      }),
+      types: types.SIGNUP
     }
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('login 失敗');
+    console.error('signup 失敗');
+  }
+};
+
+
+// Proxy > Updata
+export const updateProfile = (formData, token) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/proxy/update`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        formData
+      }),
+      types: types.UPDATE_PROFILE
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('updateProfile 失敗');
+  }
+};
+
+
+// Proxy > UserInfo
+export const getProfile = (formData, token) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/proxy/query`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_PROFILE
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getProfile 失敗');
   }
 };
 
 
 
-// 檢查健康狀況
+
+// Health Check > check-kubernetes
 export const healthCheck = () => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
@@ -127,7 +173,7 @@ export const healthCheck = () => async (dispatch) => {
   }
 };
 
-// 檢查DB狀況
+// Health Check > check-database
 export const checkDatabase = () => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
@@ -186,25 +232,4 @@ export const manualSignup = (formData, next) => async (dispatch) => {
   }
 
   // next(response.payload.result[0]);
-};
-
-export const updateUserInfoInDB = (email, formData, next) => async (dispatch) => {
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: '/updateUserInfo',
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, formData }),
-      types: types.UPDATE_USER_INFO
-    }
-  });
-
-  if (_.isUndefined(response) || !response.payload.success) {
-    console.error('updateUserInfo 失敗');
-  }
-
-  // console.log('formData', formData);
-  setLocalStorageItem('userInfo', formData);
-  dispatch(setUserInfo(formData));
-  next();
 };
