@@ -1,20 +1,21 @@
 import React from 'react';
 import { Form, actions as formActions } from 'react-redux-form';
+import { profileForm } from '../../constants/formsData';
 import HeaderBlock from '../common/HeaderBlock';
 import FormGroups from '../common/FormGroups/index';
 
-const Profile = () => (
+const Profile = ({ targetForm, changeValue, onSubmit }) => (
   <div className="profile-comp">
     <HeaderBlock headerArr={['關於我']}>
       <Form
         model="forms.signup"
         className="signup-form-comp"
-        onSubmit={formData => this.handleSubmit(formData)}
+        onSubmit={formData => onSubmit(formData)}
       >
         <div className="row-01">
           <FormGroups
-            formData={signupForm}
-            targetForm={signupUser}
+            formData={profileForm}
+            targetForm={targetForm}
             changeVal={changeValue}
           />
         </div>

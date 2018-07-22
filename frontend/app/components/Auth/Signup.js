@@ -8,8 +8,8 @@ import FormGroups from '../common/FormGroups/index';
 const Signup = ({ targetForm, changeValue, onSubmit }) => (
   <div className="signup-bg global-content">
     <Title
-      title="SIGNUP | 註冊KNOMO TAIWAN"
-      subTitle="您還不是 KNOMO TAIWAN 會員嗎？立刻註冊"
+      title="SIGNUP | 註冊 AI_LAB"
+      subTitle="您還不是 AI_LAB 會員嗎？立刻註冊"
     />
 
     <div className="signup-card-bg">
