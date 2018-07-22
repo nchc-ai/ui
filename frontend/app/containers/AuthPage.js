@@ -7,7 +7,6 @@ import { setToken } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
-import Profile from '../components/Auth/Profile';
 
 class AuthPage extends Component {
 
@@ -41,7 +40,9 @@ class AuthPage extends Component {
 
   // Signup
   onSignupSubmit = (formData) => {
-     // authAction.signup(user, this.onSignupSuccess);
+    console.log('formData', formData);
+    this.props.authAction.signup(formData);
+    // authAction.signup(user, this.onSignupSuccess);
   }
 
 
@@ -49,15 +50,7 @@ class AuthPage extends Component {
     
   }
 
-  // Profile
-  onProfileSubmit = (formData) => {
-    // console.log('formData', formData);
-  }
 
-
-  onProfileSubmitSuccess = (formData) => {
-    // console.log('formData', formData);
-  }
 
 
   render() {
@@ -83,15 +76,6 @@ class AuthPage extends Component {
               onSubmit={this.onSignupSubmit}
             />
           </Route>
-
-          <Route exact path="/profile">
-            <Profile
-              targetForm={forms.profile}
-              changeValue={changeValue}
-              onSubmit={this.onProfileSubmit}
-            />
-          </Route>
-
         </Switch>
       </div>
     );

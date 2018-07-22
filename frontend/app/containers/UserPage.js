@@ -18,6 +18,7 @@ import SideMenu from '../components/SideMenu/index';
 import CourseList from '../components/User/CourseList';
 import JobList from '../components/User/JobList';
 import CourseEdit from '../components/User/CourseEdit';
+import Profile from '../components/User/Profile';
 
 import DialogHOC from '../HOC/DialogHOC';
 
@@ -73,18 +74,22 @@ class UserPage extends Component {
 
 
     const {
+      authAction,
       userAction,
+      courseAction,
       token,
       match,
-      userInfo
+      userInfo,
+      resetForm
     } = nextProps;
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
     // console.log('part', part);
     if (part === 'course' && action === 'add') {
-      // TODO:
+      resetForm('addCourse');
     } else if (part === 'course' && action === 'edit') {
+      // courseAction.getCourseDetail();
       // TODO:應在此先change forms 表單
       // 先load 此course資訊(courseDetail)> next > change到formsData裡
       // this.changeForm(formObj, addCourse)
@@ -92,6 +97,8 @@ class UserPage extends Component {
       this.loadCourseList();
     } else if (part === 'job') {
       userAction.getJobList(userInfo.username, token);
+    } else if (part === 'profile') {
+      authAction.getProfile(token, this.setProfile);
     }
 
     window.scrollTo(0, 0);
@@ -262,15 +269,42 @@ class UserPage extends Component {
     notify.show('工作刪除成功', 'success', 1800);
   }
 
+  // Profile
+
+  setProfile = profile => {
+    // console.log('profile', profile);
+    this.props.changeForm(profile, 'profile');
+  }
+  
+  onProfileUpdate = (formData) => {
+    const {
+      authAction,
+      token
+    } = this.props;
+    authAction.updateProfile(formData, token);
+
+  }
+
+  onProfileCancel = () => {
+    this.props.history.push('/user/course');
+  }
+
+
+  onProfileSubmitSuccess = (formData) => {
+    // console.log('formData', formData);
+  }
 
   render() {
     const {
       match,
+      profile,
       Course,
       Job,
       addCourse,
       changeValue
     } = this.props;
+
+    console.log('profile', profile);
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -336,6 +370,16 @@ class UserPage extends Component {
               />
             </Route>
 
+            {/* 個人資料 */}
+            <Route exact path="/user/profile">
+              <Profile
+                targetForm={profile}
+                changeValue={changeValue}
+                onSubmit={this.onProfileUpdate}
+                cancelEdit={this.onProfileCancel}
+              />
+            </Route>
+
           </Switch>
         </div>
         
@@ -345,7 +389,7 @@ class UserPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  resetForm: () => dispatch(formActions.reset('forms.addCourse')),
+  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`)),
   changeValue: (value, key, target) => dispatch(formActions.change(
     `forms.${target}.${key}`,
     value
@@ -357,6 +401,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = ({ Auth, User, forms }) => ({
+  profile: forms.profile,
   addCourse: forms.addCourse,
   token: Auth.token,
   userInfo: Auth.userInfo,

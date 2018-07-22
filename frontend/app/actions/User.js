@@ -9,7 +9,7 @@ import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalSt
 // Course > List
 export const getCourseList = (userInfo, token) => async (dispatch) => {
 
-  console.log('[getCourseList] token', userInfo, token);
+  // console.log('[getCourseList] token', userInfo, token);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/list`,
@@ -32,7 +32,7 @@ export const getCourseList = (userInfo, token) => async (dispatch) => {
 
 // Course > Create
 export const createCourse = (token, userInfo, formData, next) => async (dispatch) => {
-  console.log('[createCourse] formData', formData, _.escape(formData.intro));
+  // console.log('[createCourse] formData', formData, _.escape(formData.intro));
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/create`,

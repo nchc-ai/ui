@@ -1,17 +1,27 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 
-const FormButtons = ({ cancelName, submitName, backMethod, submitMethod, resetMethod, isReset }) => (
+const FormButtons = ({ isForm, cancelName, submitName, backMethod, nextMethod, resetMethod, isReset }) => (
   <div className="submit-bg">
     <Row className="form-buttons-container">
       <Col md={{ size: 2 }}>
-        <button
-          type="submit"
-          className="next-btn btn-pair"
-          onClick={submitMethod}
-        >
-          {submitName || '繼續'}
-        </button>
+        {
+          isForm ?
+            <button
+              type="submit"
+              className="next-btn btn-pair"
+            >
+              {submitName || '繼續'}
+            </button>
+          :
+            <button
+              type="submit"
+              className="next-btn btn-pair"
+              onClick={nextMethod}
+            >
+              {submitName || '繼續'}
+            </button>
+        }
       </Col>
       <Col md={{ size: 2 }}>
         <button

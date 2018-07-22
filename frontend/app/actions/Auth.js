@@ -75,7 +75,10 @@ export const logout = (token, next) => async (dispatch) => {
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/logout`,
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify({
         token
       }),
@@ -94,13 +97,27 @@ export const logout = (token, next) => async (dispatch) => {
 
 // Proxy > Register
 export const signup = formData => async (dispatch) => {
+
+  const tempData = {
+    username: formData.username,
+    password: formData.password,
+    cName: formData.cName,
+    company: formData.company,
+    'email-1': formData.email,
+    'email-2': formData.secondaryEmail,
+    phone: formData.phone,
+    text: formData.text
+  };
+
+  // console.log('tempData', formData, tempData);
+
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        formData
+        formData: tempData
       }),
       types: types.SIGNUP
     }
@@ -114,6 +131,18 @@ export const signup = formData => async (dispatch) => {
 
 // Proxy > Updata
 export const updateProfile = (formData, token) => async (dispatch) => {
+  
+  const tempData = {
+    username: formData.username,
+    password: formData.password,
+    cName: formData.cName,
+    company: formData.company,
+    'email-1': formData.email,
+    'email-2': formData.secondaryEmail,
+    phone: formData.phone,
+    text: formData.text
+  };
+  
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/update`,
@@ -123,7 +152,7 @@ export const updateProfile = (formData, token) => async (dispatch) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        formData
+        formData: tempData
       }),
       types: types.UPDATE_PROFILE
     }
@@ -136,7 +165,7 @@ export const updateProfile = (formData, token) => async (dispatch) => {
 
 
 // Proxy > UserInfo
-export const getProfile = (formData, token) => async (dispatch) => {
+export const getProfile = (token, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/query`,
@@ -152,6 +181,9 @@ export const getProfile = (formData, token) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getProfile 失敗');
   }
+
+  console.log('[getProfile] payload', response.payload);
+  next(response.payload);
 };
 
 

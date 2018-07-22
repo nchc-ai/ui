@@ -157,10 +157,13 @@ export const setToken = (idToken) => {
   localStorage.setItem('id_token', idToken);
 };
 
-export const getToken = () => {
-  // Retrieves the user token from localStorage
-  return localStorage.getItem('id_token');
+export const getToken = () => localStorage.getItem('id_token');
+
+export const removeToken = () => {
+  // Saves user token to localStorage
+  localStorage.setItem('id_token', null);
 };
+
 
 /*---------------------------
   顯示 Hi~訪客 字樣

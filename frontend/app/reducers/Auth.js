@@ -24,6 +24,13 @@ export default function Auth(state = InitialState, action) {
   case actionTypes.RESET_AUTH:
     return {
       ...state,
+      isLogin: false,
+      userInfo: InitialState.userInfo
+    };
+  case actionTypes.LOGOUT[SUCCESS]:
+    return {
+      ...state,
+      isLogin: false,
       userInfo: InitialState.userInfo
     };
   case actionTypes.GET_USER_INFO[LOADING]:

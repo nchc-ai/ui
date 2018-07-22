@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import ga from 'react-google-analytics';
+import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { actions as formActions } from 'react-redux-form';
@@ -27,9 +28,7 @@ class SetUserInfo extends Component {
     // const isLogin = isItemExistInLocalStorage('userInfo');
     // authAction.setUserInfo(userInfo, isLogin);
 
-    const token = getToken();
-    authAction.setUserToken(token);
-    authAction.getUserInfo(token);
+    this.retrieveUser();
 
     // 可以做一些初始動作
   }
@@ -46,15 +45,42 @@ class SetUserInfo extends Component {
       // logout
     }
   }
+
+  retrieveUser = () => {
+    const {
+      match,
+      history,
+      authAction
+    } = this.props;
+    const token = getToken();
+    console.log('token', token, match);
+    if (token === null || token === '' || token === 'null') {
+      // console.log('A');
+      // history.push('/login');
+      authAction.resetAuth();
+    } else {
+      // console.log('B');
+      authAction.setUserToken(token);
+      authAction.getUserInfo(token);
+      
+    }
+  }
+
+
+
   render = () => (<span className="dn" />);
 }
+
 
 const mapStateToProps = ({ Auth }) => ({
   userInfo: Auth.userInfo
 });
 
 
+
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps
+  ),
   bindActionCreatorHoc
-)(SetUserInfo);
+)(withRouter(SetUserInfo));
