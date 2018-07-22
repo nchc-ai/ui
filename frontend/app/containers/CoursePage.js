@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
+import { actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
@@ -24,10 +25,14 @@ class CoursePage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
+      nextProps.resetForm('globalSearch');
       this.fetchData(nextProps);
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetForm('globalSearch');
+  }
 
   fetchData = (nextProps) => {
     const {
@@ -62,7 +67,7 @@ class CoursePage extends Component {
 
   onStartClassSuccess = () => {
 
-    console.log('create job success');
+    // console.log('create job success');
     Progress.hide();
     notify.show('新增工作成功', 'success', 1800);
     this.props.history.push('/user/job');
@@ -137,9 +142,15 @@ const mapStateToProps = ({ Auth, Course }) => ({
   searchResult: Course.searchResult.data
 });
 
+const mapDispatchToProps = dispatch => ({
+  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`))
+});
 
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   bindActionCreatorHoc,
   withRouter
 )(CoursePage);
