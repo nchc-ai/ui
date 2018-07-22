@@ -326,7 +326,7 @@ class UserPage extends Component {
             {/* 課程列表 */}
             <Route exact path="/user/course">
               <CourseList
-                data={isEditable ? Course.list : courseAll }
+                data={isEditable ? Course.list : courseAll}
                 tableData={userCourseData}
                 startMethod={this.startCourse}
                 editMethod={this.editCourse}

@@ -11,6 +11,8 @@ import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
 import { courseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+
+import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
 import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
@@ -25,8 +27,10 @@ class CoursePage extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
-      nextProps.resetForm('globalSearch');
       this.fetchData(nextProps);
+      if(nextProps.match.params.type !== 'search') {
+        nextProps.resetForm('globalSearch');
+      }
     }
   }
 
@@ -87,6 +91,10 @@ class CoursePage extends Component {
       searchResult
     } = this.props;
     const courseType = _.get(match, 'params.type');
+
+    // console.log('match', match);
+
+
     return (
       <div className="course-bg global-content">
         <Switch>
@@ -105,8 +113,8 @@ class CoursePage extends Component {
           <Route exact path="/course/:type/:query">
             <CourseList
               match={match}
-              banner={courseBasicBn}
-              title={'搜尋課程結果'}
+              banner={courseSearchBn}
+              title={`搜尋課程名稱含 "${match.params.courseId}" 的結果`}
               data={searchResult}
               tableData={courseData}
             />

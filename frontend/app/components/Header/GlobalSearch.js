@@ -29,7 +29,7 @@ class GlobalSearch extends React.Component {
           type="text"
           className="global-search"
           model="forms.globalSearch.searchText"
-          placeholder="Search"
+          placeholder="搜尋課程"
         />
         <button
           type="submit"

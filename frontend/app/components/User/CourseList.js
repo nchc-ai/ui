@@ -19,7 +19,7 @@ const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, de
           <span className="v-helper" />
           <button
             className="btn-pair add-btn"
-            style={{ display: isEditable ? 'block' : 'none' }}
+            style={{ display: isEditable ? 'inline' : 'none' }}
           >
           + 新增
           </button>
