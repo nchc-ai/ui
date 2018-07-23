@@ -3,7 +3,8 @@ import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import * as types from './actionTypes';
 import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
-import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem } from '../libraries/utils';
+import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData } from '../libraries/utils';
+
 
 // 設定userInfo
 
@@ -98,27 +99,14 @@ export const logout = (token, next) => async (dispatch) => {
 // Proxy > Register
 export const signup = formData => async (dispatch) => {
 
-  const tempData = {
-    username: formData.username,
-    password: formData.password,
-    cName: formData.cName,
-    company: formData.company,
-    'email-1': formData.email,
-    'email-2': formData.secondaryEmail,
-    phone: formData.phone,
-    text: formData.text
-  };
-
-  // console.log('tempData', formData, tempData);
+  const tempData = tempfyData(formData);
 
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        formData: tempData
-      }),
+      body: JSON.stringify(tempData),
       types: types.SIGNUP
     }
   });
@@ -131,18 +119,9 @@ export const signup = formData => async (dispatch) => {
 
 // Proxy > Updata
 export const updateProfile = (formData, token) => async (dispatch) => {
-  
-  const tempData = {
-    username: formData.username,
-    password: formData.password,
-    cName: formData.cName,
-    company: formData.company,
-    'email-1': formData.email,
-    'email-2': formData.secondaryEmail,
-    phone: formData.phone,
-    text: formData.text
-  };
-  
+ 
+  const tempData = tempfyData(formData);
+
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/update`,
@@ -151,9 +130,7 @@ export const updateProfile = (formData, token) => async (dispatch) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        formData: tempData
-      }),
+      body: JSON.stringify(tempData),
       types: types.UPDATE_PROFILE
     }
   });

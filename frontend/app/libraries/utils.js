@@ -45,6 +45,21 @@ export function isNotNull(string) {
 
 
 
+/*---------------------------
+//	轉換成有 dash 的 key 的 formObj
+----------------------------*/
+
+export const tempfyData = formData => ({
+  username: formData.username,
+  password: formData.password,
+  cName: formData.cName,
+  company: formData.company,
+  'email-1': formData.email,
+  'email-2': formData.secondaryEmail,
+  phone: formData.phone,
+  text: formData.text
+});
+
 
 /*---------------------------
   將某array分組

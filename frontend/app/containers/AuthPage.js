@@ -14,6 +14,15 @@ class AuthPage extends Component {
     window.scrollTo(0, 0);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      match,
+    } = nextProps;
+    if (this.props.match !== match && match) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   onClickLogin = () => {
     // console.log('click');
     this.props.authAction.login();
@@ -50,8 +59,9 @@ class AuthPage extends Component {
     
   }
 
-
-
+  onSignupCancel = () => {
+    this.props.history.push('/login');
+  }
 
   render() {
     const {
@@ -74,6 +84,7 @@ class AuthPage extends Component {
               targetForm={forms.signup}
               changeValue={changeValue}
               onSubmit={this.onSignupSubmit}
+              backMethod={this.onSignupCancel}
             />
           </Route>
         </Switch>
