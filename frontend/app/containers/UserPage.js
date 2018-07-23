@@ -280,13 +280,17 @@ class UserPage extends Component {
     // console.log('profile', profile);
     this.props.changeForm(profile, 'profile');
   }
-  
+
+  onProfileUpdateSuccess = () => { 
+    notify.show('個人資料更新成功', 'success', 1800);
+  }
+
   onProfileUpdate = (formData) => {
     const {
       authAction,
       token
     } = this.props;
-    authAction.updateProfile(formData, token);
+    authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
 
   }
 
@@ -295,9 +299,6 @@ class UserPage extends Component {
   }
 
 
-  onProfileSubmitSuccess = (formData) => {
-    // console.log('formData', formData);
-  }
 
   render() {
     const {

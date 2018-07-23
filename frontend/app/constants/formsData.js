@@ -119,7 +119,7 @@ export const signupForm = [
     name: 'username',
     inputType: 'text',
     mainLabel: '帳號',
-    placeholder: '請輸入使用者名稱',
+    placeholder: '請輸入您的信箱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -212,7 +212,7 @@ export const profileForm = [
     name: 'username',
     inputType: 'text',
     mainLabel: '帳號',
-    placeholder: '請輸入使用者名稱',
+    placeholder: '請輸入您的信箱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'

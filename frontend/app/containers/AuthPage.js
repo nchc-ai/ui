@@ -28,7 +28,7 @@ class AuthPage extends Component {
     this.props.authAction.login();
   }
 
-  onSuccess = (data) => {
+  onLoginSuccess = (data) => {
     this.props.authAction.retrieveToken(data.code, this.setUserInfo);
   }
 
@@ -42,7 +42,7 @@ class AuthPage extends Component {
     this.props.history.push('/user/course');
   }
 
-  onFailure = (err) => {
+  onLoginFail = (err) => {
     console.log('fail', err);
   }
 
@@ -56,7 +56,7 @@ class AuthPage extends Component {
 
 
   onSignupSubmitSuccess = (formData) => {
-    
+    this.props.history.push('/login');
   }
 
   onSignupCancel = () => {
@@ -75,8 +75,8 @@ class AuthPage extends Component {
           <Route exact path="/login">
             <Login
               onClickLogin={this.onClickLogin}
-              onSuccess={this.onSuccess}
-              onFailure={this.onFailure}
+              onSuccess={this.onLoginSuccess}
+              onFailure={this.onLoginFail}
             />
           </Route>
           <Route exact path="/signup">
