@@ -16,6 +16,8 @@ import { mainNav } from '../constants/navData';
 import logoImg from '../../public/images/header/header-logo.png';
 import GlobalSearch from '../components/Header/GlobalSearch';
 
+import { removeToken } from '../libraries/utils';
+
 import iconMemberBefore from '../../public/images/common/ic-nav-member-default.png';
 import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png';
 import iconLogoutBefore from '../../public/images/common/ic-nav-logout-default.png';
@@ -38,6 +40,8 @@ class Header extends Component {
   }
 
   redirect = () => {
+    //TODO: 刪除所有token
+    removeToken();
     this.props.history.push('/');
   }
 

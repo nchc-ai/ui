@@ -213,18 +213,12 @@ export const sideNav = [
     isLink: true
   }, {
     key: 2,
-    url: '/user/info',
+    url: '/user/profile',
     text: '個人資料',
     isMain: false,
     isLink: true
   }, {
     key: 3,
-    url: '/user/member',
-    text: '計畫人員',
-    isMain: false,
-    isLink: true
-  }, {
-    key: 4,
     url: '/logout',
     text: '登出',
     isMain: false,

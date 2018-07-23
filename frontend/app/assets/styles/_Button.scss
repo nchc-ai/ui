@@ -2,7 +2,7 @@ $button-cancel-color: #eaeaea;
 $button-error-color: $ai-input-border-hover;
 $button-success-color: $ai-input-border-hover;
 $button-add-color: $ai-secondary-light-green;
-
+$button-border-radius: 5px;
 // General
 // btn-pair next-btn
 
@@ -11,12 +11,15 @@ $button-add-color: $ai-secondary-light-green;
   font-size:16px;
   color:#fff;
   outline: none;
+  border-radius: $button-border-radius;
 }
 
 .back-btn{
   @include opacity-button;
-  background-color: $button-cancel-color;
+  // background-color: $button-cancel-color;
   opacity: 0.7;
+  border: 1px solid grey;
+  color: grey;
 }
 
 .reset-btn{

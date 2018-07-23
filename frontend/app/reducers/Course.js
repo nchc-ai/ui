@@ -3,6 +3,10 @@ import * as actionTypes from '../actions/actionTypes';
 import { LOADING, SUCCESS } from '../constants/apiActions';
 
 const InitialState = {
+  courseAll: {
+    loading: false,
+    data: []
+  },
   courseList: {
     loading: false,
     data: []
@@ -19,6 +23,23 @@ const InitialState = {
 
 export default function Course(state = InitialState, action) {
   switch (action.type) {
+
+  case actionTypes.GET_COURSE_LIST_ALL[LOADING]:
+    return {
+      ...state,
+      courseAll: {
+        ...state.courseAll,
+        isLoading: true
+      }
+    };
+  case actionTypes.GET_COURSE_LIST_ALL[SUCCESS]:
+    return {
+      ...state,
+      courseAll: {
+        isLoading: false,
+        data: action.payload.courses
+      }
+    };
   case actionTypes.GET_COURSE_LIST_BY_LEVEL[LOADING]:
     return {
       ...state,
@@ -35,7 +56,6 @@ export default function Course(state = InitialState, action) {
         data: action.payload.courses
       }
     };
-  
   case actionTypes.SEARCH_COURSE[LOADING]:
     return {
       ...state,

@@ -9,6 +9,7 @@ import ContactPage from './containers/ContactPage';
 import AuthPage from './containers/AuthPage';
 import UserPage from './containers/UserPage';
 import StaticPage from './containers/StaticPage';
+import Logout from './containers/Logout';
 
 // import { isItemExistInLocalStorage } from './libraries/utils';
 
@@ -16,6 +17,7 @@ const routeClient = ({ offline, isLogin }) => (
   <Client>
     <Switch>
       { offline ? <Route path="*" component={StaticPage} /> : null }
+
       <Route exact path="/" component={IndexPage} />
       <Route exact path="/course/:type/:courseId" component={CoursePage} />
       <Route exact path="/course/:type" component={CoursePage} />
@@ -25,6 +27,7 @@ const routeClient = ({ offline, isLogin }) => (
       <Route exact path="/user/:part/:action/:courseId" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="/user/:part/:action" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="/user/:part" component={isLogin ? UserPage : AuthPage} />
+      <Route exact path="/logout" component={Logout} />
       <Route exact path="*" component={StaticPage} />
     </Switch>
   </Client>

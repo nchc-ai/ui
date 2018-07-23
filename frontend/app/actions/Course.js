@@ -5,6 +5,23 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
 
+// Course > List all courses
+export const getCourseListAll = () => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/course/list`,
+      method: 'GET',
+      types: types.GET_COURSE_LIST_ALL
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getCourseListAll 失敗');
+  }
+};
+
+
 // Course > List different level course
 export const getCourseListByLevel = level => async (dispatch) => {
 

@@ -5,11 +5,14 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
+import { actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
 import { courseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+
+import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
 import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
@@ -25,9 +28,15 @@ class CoursePage extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
+      if(nextProps.match.params.type !== 'search') {
+        nextProps.resetForm('globalSearch');
+      }
     }
   }
 
+  componentWillUnmount() {
+    this.props.resetForm('globalSearch');
+  }
 
   fetchData = (nextProps) => {
     const {
@@ -62,7 +71,7 @@ class CoursePage extends Component {
 
   onStartClassSuccess = () => {
 
-    console.log('create job success');
+    // console.log('create job success');
     Progress.hide();
     notify.show('新增工作成功', 'success', 1800);
     this.props.history.push('/user/job');
@@ -82,6 +91,10 @@ class CoursePage extends Component {
       searchResult
     } = this.props;
     const courseType = _.get(match, 'params.type');
+
+    // console.log('match', match);
+
+
     return (
       <div className="course-bg global-content">
         <Switch>
@@ -100,8 +113,8 @@ class CoursePage extends Component {
           <Route exact path="/course/:type/:query">
             <CourseList
               match={match}
-              banner={courseBasicBn}
-              title={'搜尋課程結果'}
+              banner={courseSearchBn}
+              title={`搜尋課程名稱含 "${match.params.courseId}" 的結果`}
               data={searchResult}
               tableData={courseData}
             />
@@ -137,9 +150,15 @@ const mapStateToProps = ({ Auth, Course }) => ({
   searchResult: Course.searchResult.data
 });
 
+const mapDispatchToProps = dispatch => ({
+  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`))
+});
 
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   bindActionCreatorHoc,
   withRouter
 )(CoursePage);

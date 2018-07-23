@@ -45,6 +45,7 @@ const CourseEdit = ({ title, handleSubmit, handleSubmitFailed, state, formData, 
         cancelName="上一頁"
         submitName="儲存"
         backMethod={backMethod}
+        isForm
       />
 
     </Form>

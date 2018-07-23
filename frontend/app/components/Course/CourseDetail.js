@@ -40,7 +40,7 @@ const CourseDetail = ({ submitMethod, cancelEdit, detail }) => (
         cancelName="上一頁"
         submitName="開始課程"
         backMethod={cancelEdit}
-        submitMethod={submitMethod}
+        nextMethod={submitMethod}
       />
 
     </div>

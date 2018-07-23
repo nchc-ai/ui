@@ -15,3 +15,13 @@ export const initialAddCourseState = {
   datasets: []
 };
 
+export const initialUserState = {
+  username: '',
+  password: '',
+  cName: '',
+  company: '',
+  email: '',
+  secondaryEmail: '',
+  phone: '',
+  text: ''
+};
