@@ -10,7 +10,7 @@ const DogTag = ({ data, name }) => (
     <div className="content-container con-grp fl">
       <h5 className={data.username.length > 14 ? 'name-overflow' : 'name'}>{data.username}</h5>
       {/* <h5 className={name.length > 14 ? 'name' : 'name'}>{name}</h5> */}
-      <p>開課講師</p>
+      <p>{data.role === 'teacher' ? '開課教師' : '學生' }</p>
     </div>
   </div>
 );

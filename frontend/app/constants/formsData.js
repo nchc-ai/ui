@@ -166,7 +166,7 @@ export const signupForm = [
     size: 12,
     name: 'phone',
     inputType: 'text',
-    mainLabel: '手機號碼',
+    mainLabel: '手機',
     placeholder: '請輸入號碼',
     validators: { required },
     errorMessage: {
@@ -198,7 +198,7 @@ export const signupForm = [
     size: 12,
     name: 'text',
     inputType: 'textarea',
-    mainLabel: '申請用途',
+    mainLabel: '申請原因',
     placeholder: '請輸入申請用途',
     isRequired: false
   }
@@ -259,7 +259,7 @@ export const profileForm = [
     size: 8,
     name: 'phone',
     inputType: 'text',
-    mainLabel: '手機號碼',
+    mainLabel: '手機',
     placeholder: '請輸入號碼',
     validators: { required },
     errorMessage: {
@@ -291,7 +291,7 @@ export const profileForm = [
     size: 8,
     name: 'text',
     inputType: 'textarea',
-    mainLabel: '申請用途',
+    mainLabel: '申請原因',
     placeholder: '請輸入申請用途',
     isRequired: false
   }
