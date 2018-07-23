@@ -21,7 +21,7 @@ const FormGroups = ({
   loadTagsOptsMethod,
   onRadioChange,
   onDateChange,
-  onMdChange,
+  onMdChange
 }) => (
   <div className="form-groups-comp">
     {
@@ -94,6 +94,7 @@ const FormGroups = ({
                     validators={d.validators}
                     placeholder={d.placeholder}
                     style={d.suffix ? { width: '90%' } : null}
+                    disabled={d.isDisable}
                   />
 
                   {/* Material Design */}

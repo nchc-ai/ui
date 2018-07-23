@@ -217,7 +217,8 @@ export const profileForm = [
     errorMessage: {
       required: '您尚未輸入字元'
     },
-    isRequired: true
+    isRequired: true,
+    isDisable: true
   }, {
     key: 2,
     size: 8,
