@@ -70,6 +70,19 @@
     text-align: justify;
   }
 
+  .btn-signup {
+    border: 1px solid grey;
+    width: 97%;
+    padding: 12px 24px;
+    font-size: 21px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+    // background-color: 
+    &:hover {
+      background-color: rgba(113, 199, 206, 0.2);
+    }
+  }
+
   .signup-door-link {
     @include rect-center(202px, initial);
     margin-top: 20px;
