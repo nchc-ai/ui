@@ -37,9 +37,10 @@ export const mainNav = [
     key: 4,
     name: 'navbar.survey',
     nameCh: '需求調查表',
-    url: '/',
+    url: 'https://docs.google.com/forms/d/e/1FAIpQLSd3WTXGCQX0tjILHn6Dvlmnkzs3lLBdVX1Xfsuq0m0WzZfXzQ/viewform?usp=pp_url',
     // url: '/intro/survey',
-    isCate: true
+    isCate: true,
+    isOuter: true
   },
   {
     key: 5,

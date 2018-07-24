@@ -16,6 +16,8 @@ import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
 import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
+import SectionList from '../components/common/SectionList/index';
+import { basicCourseList } from '../constants/listData';
 
 class CoursePage extends Component {
 
@@ -93,7 +95,7 @@ class CoursePage extends Component {
     const courseType = _.get(match, 'params.type');
 
     // console.log('match', match);
-
+    const courseData = basicCourseList();
 
     return (
       <div className="course-bg global-content">
@@ -126,15 +128,54 @@ class CoursePage extends Component {
           </Route>
 
           {/* 基礎課程 vs 進階課程 */}
-          <Route exact path="/course/:type">
-            <CourseList
-              match={match}
-              banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
-              title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
-              data={courseList}
-              tableData={courseData}
-              courseType={courseType}
-            />
+          <Route exact path="/course/basic">
+            <div>
+              <SectionList
+                data={courseData}
+              />
+
+
+
+              <a href="/">
+                完整課程簡介請下載
+              </a>
+              {/* <CourseList
+                match={match}
+                banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
+                title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
+                data={courseList}
+                tableData={courseData}
+                courseType={courseType}
+              /> */}
+            </div>
+          </Route>
+
+          <Route exact path="/course/advance">
+            <div>
+
+              <div className="section-bn section-grp">
+                <img className="bg-grp" alt="" src={courseType === 'basic' ? courseBasicBn : courseAdvanceBn} />
+              </div>
+
+
+              <SectionList
+                data={courseData}
+              />
+
+              
+
+              <a href="/">
+                完整課程簡介請下載
+              </a>
+              {/* <CourseList
+                match={match}
+                banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
+                title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
+                data={courseList}
+                tableData={courseData}
+                courseType={courseType}
+              /> */}
+            </div>
           </Route>
         </Switch>
       </div>

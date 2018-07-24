@@ -35,3 +35,38 @@ export const courseDetailList = obj => ([
     comma: ','
   }
 ]);
+
+
+
+export const basicCourseList = () => ([
+  {
+    key: 1,
+    title: 'Series 1 基礎理論',
+    infos: [
+      {
+        key: 1,
+        value: '1. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }, {
+        key: 2,
+        value: '2. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }
+    ]
+  }, {
+    key: 2,
+    title: 'Series 2 DIGITS 框架',
+    infos: [
+      {
+        key: 1,
+        value: '1. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }, {
+        key: 2,
+        value: '2. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }
+    ]
+  }
+
+]);

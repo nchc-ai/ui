@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  required, mailIsValid
+  required, mailIsValid, atLeastSix
 } from '../libraries/validation';
 
 export const addCourseForm = [
@@ -120,9 +120,10 @@ export const signupForm = [
     inputType: 'text',
     mainLabel: '帳號',
     placeholder: '請輸入您的信箱',
-    validators: { required },
+    validators: { required, mailIsValid },
     errorMessage: {
-      required: '您尚未輸入字元'
+      required: '您尚未輸入字元',
+      mailIsValid: '帳號應為信箱格式'
     },
     isRequired: true
   }, {
@@ -132,9 +133,9 @@ export const signupForm = [
     inputType: 'password',
     mainLabel: '密碼',
     placeholder: '請輸入您的密碼',
-    validators: { required },
+    validators: { atLeastSix },
     errorMessage: {
-      required: '您尚未輸入字元'
+      atLeastSix: '密碼至少需為 6 個字元'
     },
     isRequired: true
   }, {
