@@ -1,5 +1,5 @@
 .login-comp {
-  @include rect-center(640px, 600px);
+  @include rect-center(640px, 540px);
   background-color: #ffffff;
   box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.21);
   overflow: hidden;
@@ -68,6 +68,19 @@
     margin-top: 30px;
     font-size: 14px;
     text-align: justify;
+  }
+
+  .btn-signup {
+    border: 1px solid grey;
+    width: 97%;
+    padding: 12px 24px;
+    font-size: 21px;
+    transition: all .2s ease-in-out;
+    cursor: pointer;
+    // background-color: 
+    &:hover {
+      background-color: rgba(113, 199, 206, 0.2);
+    }
   }
 
   .signup-door-link {

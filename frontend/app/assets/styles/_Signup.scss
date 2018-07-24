@@ -1,0 +1,35 @@
+.signup-comp {
+  @include rect-center(640px, initial);
+  background-color: #ffffff;
+  box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.21);
+  overflow: hidden;
+  margin-top: 50px;
+  margin-bottom: 50px;
+
+  .common-title-con {
+    @include rect-center(300px, initial);
+    margin-top: 64px;
+    margin-bottom: 20px;
+
+    img, h6 {
+      @include center;
+      text-align: center;
+    }
+
+    h6 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+
+  }
+
+  .row-01 {
+    @include rect-center(80%, initial);
+    margin-top: 40px;
+
+    .submit-bg {
+      margin-bottom: 30px;
+    }
+  }
+}

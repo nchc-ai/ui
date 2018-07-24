@@ -28,20 +28,23 @@ const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
       >
         <img alt="" src={localBtnImg} />
       </MyoauthButton>
-      {/* <h4>OR</h4>
-      <button className="btn-login-github btn-grp">
-        <img alt="" src={githubBtnImg} />
-      </button> */}
+      <h4>OR</h4>
+
+      <Link to="/signup">
+        <button className="btn-signup btn-grp">
+          立即註冊
+        </button>
+      </Link>
 
       <p className="policy-word">By continuing, you agree to NCHC.ai’s Terms of Service, Privacy Policy</p>
     </div>
 
-    <div className="line-h" />
+    {/* <div className="line-h" />
 
     <div className="signup-door-link">
       <span>請由此註冊您的帳號</span>
       <Link to="/signup">馬上加入</Link>
-    </div>
+    </div> */}
 
   </div>
 );

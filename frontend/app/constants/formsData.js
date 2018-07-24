@@ -115,11 +115,11 @@ export const addCourseForm = [
 export const signupForm = [
   {
     key: 1,
-    size: 8,
+    size: 12,
     name: 'username',
     inputType: 'text',
     mainLabel: '帳號',
-    placeholder: '請輸入使用者名稱',
+    placeholder: '請輸入您的信箱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -127,7 +127,7 @@ export const signupForm = [
     isRequired: true
   }, {
     key: 2,
-    size: 8,
+    size: 12,
     name: 'password',
     inputType: 'password',
     mainLabel: '密碼',
@@ -139,11 +139,11 @@ export const signupForm = [
     isRequired: true
   }, {
     key: 3,
-    size: 8,
+    size: 12,
     name: 'cName',
     inputType: 'text',
     mainLabel: '中文姓名',
-    placeholder: '請輸入課程名稱',
+    placeholder: '請輸入中文姓名',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -151,11 +151,11 @@ export const signupForm = [
     isRequired: true
   }, {
     key: 4,
-    size: 8,
+    size: 12,
     name: 'company',
     inputType: 'text',
     mainLabel: '公司名稱',
-    placeholder: '請輸入課程名稱',
+    placeholder: '請輸入公司名稱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -163,11 +163,11 @@ export const signupForm = [
     isRequired: true
   }, {
     key: 5,
-    size: 8,
-    name: 'email',
+    size: 12,
+    name: 'phone',
     inputType: 'text',
-    mainLabel: '信箱',
-    placeholder: '請輸入課程名稱',
+    mainLabel: '手機',
+    placeholder: '請輸入號碼',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -175,11 +175,11 @@ export const signupForm = [
     isRequired: true
   }, {
     key: 6,
-    size: 8,
-    name: 'secondaryEmail',
+    size: 12,
+    name: 'email',
     inputType: 'text',
-    mainLabel: '備用信箱',
-    placeholder: '請輸入課程名稱',
+    mainLabel: '信箱',
+    placeholder: '請輸入主要信箱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -187,28 +187,20 @@ export const signupForm = [
     isRequired: true
   }, {
     key: 7,
-    size: 8,
-    name: 'phone',
+    size: 12,
+    name: 'secondaryEmail',
     inputType: 'text',
-    mainLabel: '手機號碼',
-    placeholder: '請輸入課程名稱',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+    mainLabel: '備用信箱',
+    placeholder: '請輸入備用信箱',
+    isRequired: false
   }, {
     key: 8,
-    size: 8,
+    size: 12,
     name: 'text',
-    inputType: 'text',
-    mainLabel: '課程名稱',
-    placeholder: '請輸入課程名稱',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+    inputType: 'textarea',
+    mainLabel: '申請原因',
+    placeholder: '請輸入申請用途',
+    isRequired: false
   }
 ];
 
@@ -220,12 +212,13 @@ export const profileForm = [
     name: 'username',
     inputType: 'text',
     mainLabel: '帳號',
-    placeholder: '請輸入使用者名稱',
+    placeholder: '請輸入您的信箱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
     },
-    isRequired: true
+    isRequired: true,
+    isDisable: true
   }, {
     key: 2,
     size: 8,
@@ -267,7 +260,7 @@ export const profileForm = [
     size: 8,
     name: 'phone',
     inputType: 'text',
-    mainLabel: '手機號碼',
+    mainLabel: '手機',
     placeholder: '請輸入號碼',
     validators: { required },
     errorMessage: {
@@ -299,7 +292,7 @@ export const profileForm = [
     size: 8,
     name: 'text',
     inputType: 'textarea',
-    mainLabel: '申請用途',
+    mainLabel: '申請原因',
     placeholder: '請輸入申請用途',
     isRequired: false
   }

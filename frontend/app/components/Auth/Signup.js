@@ -2,18 +2,23 @@
 import React from 'react';
 import { Form } from 'react-redux-form';
 import { signupForm } from '../../constants/formsData';
-import Title from '../common/Title';
+import SectionTitle from '../common/SectionTitle/index';
+import logoImg from '../../../public/images/auth/login-logo.png';
 import FormGroups from '../common/FormGroups/index';
+import FormButtons from '../common/FormButtons/index';
 
-const Signup = ({ targetForm, changeValue, onSubmit }) => (
-  <div className="signup-bg global-content">
-    <Title
-      title="SIGNUP | 註冊 AI_LAB"
-      subTitle="您還不是 AI_LAB 會員嗎？立刻註冊"
+const Signup = ({ targetForm, changeValue, onSubmit, backMethod }) => (
+  <div className="signup-comp">
+    <SectionTitle
+      isTitleImg
+      titleImgUrl={logoImg}
+      subTitle={'歡迎註冊 NCHC.ai 帳戶'}
     />
 
+    <hr />
+
     <div className="signup-card-bg">
-      <div className="signup-container">
+      <div className="signup-container container">
         <Form
           model="forms.signup"
           className="signup-form-comp"
@@ -25,12 +30,17 @@ const Signup = ({ targetForm, changeValue, onSubmit }) => (
               targetForm={targetForm}
               changeVal={changeValue}
             />
-          </div>
+          
 
-          <div className="submit-bg">
-            <div className="submit-container">
-              <button className="submit-btn" type="submit">註冊</button>
-            </div>
+            {/* 下方按鈕 */}
+            <FormButtons
+              cancelName="取消"
+              submitName="註冊"
+              backMethod={backMethod}
+              size={4}
+              isForm
+            />
+
           </div>
         </Form>
       </div>

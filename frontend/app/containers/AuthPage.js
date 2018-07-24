@@ -14,12 +14,21 @@ class AuthPage extends Component {
     window.scrollTo(0, 0);
   }
 
+  componentWillReceiveProps(nextProps) {
+    const {
+      match,
+    } = nextProps;
+    if (this.props.match !== match && match) {
+      window.scrollTo(0, 0);
+    }
+  }
+
   onClickLogin = () => {
     // console.log('click');
     this.props.authAction.login();
   }
 
-  onSuccess = (data) => {
+  onLoginSuccess = (data) => {
     this.props.authAction.retrieveToken(data.code, this.setUserInfo);
   }
 
@@ -33,7 +42,7 @@ class AuthPage extends Component {
     this.props.history.push('/user/course');
   }
 
-  onFailure = (err) => {
+  onLoginFail = (err) => {
     console.log('fail', err);
   }
 
@@ -47,11 +56,12 @@ class AuthPage extends Component {
 
 
   onSignupSubmitSuccess = (formData) => {
-    
+    this.props.history.push('/login');
   }
 
-
-
+  onSignupCancel = () => {
+    this.props.history.push('/login');
+  }
 
   render() {
     const {
@@ -65,8 +75,8 @@ class AuthPage extends Component {
           <Route exact path="/login">
             <Login
               onClickLogin={this.onClickLogin}
-              onSuccess={this.onSuccess}
-              onFailure={this.onFailure}
+              onSuccess={this.onLoginSuccess}
+              onFailure={this.onLoginFail}
             />
           </Route>
           <Route exact path="/signup">
@@ -74,6 +84,7 @@ class AuthPage extends Component {
               targetForm={forms.signup}
               changeValue={changeValue}
               onSubmit={this.onSignupSubmit}
+              backMethod={this.onSignupCancel}
             />
           </Route>
         </Switch>

@@ -1,10 +1,10 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 
-const FormButtons = ({ isForm, cancelName, submitName, backMethod, nextMethod, resetMethod, isReset }) => (
+const FormButtons = ({ size, isForm, cancelName, submitName, backMethod, nextMethod, resetMethod, isReset }) => (
   <div className="submit-bg">
     <Row className="form-buttons-container">
-      <Col md={{ size: 2 }}>
+      <Col md={{ size: size || 2 }}>
         {
           isForm ?
             <button
@@ -23,7 +23,7 @@ const FormButtons = ({ isForm, cancelName, submitName, backMethod, nextMethod, r
             </button>
         }
       </Col>
-      <Col md={{ size: 2 }}>
+      <Col md={{ size: size || 2 }}>
         <button
           className="back-btn btn-pair"
           onClick={backMethod}
@@ -31,7 +31,7 @@ const FormButtons = ({ isForm, cancelName, submitName, backMethod, nextMethod, r
           {cancelName || '回上一步'}
         </button>
       </Col>
-      <Col md={{ size: 2, offset: 6 }}>
+      <Col md={{ size: size || 2, offset: 6 }}>
         {
           isReset ?
             <button
