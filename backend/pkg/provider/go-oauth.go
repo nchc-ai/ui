@@ -270,8 +270,6 @@ func (g *GoAuth) registerOrUpdate(user *UserInfo, url string) (*PlainResponse, e
 		return nil, err
 	}
 
-	log.Println(string(jsonStr))
-
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 	if err != nil {
