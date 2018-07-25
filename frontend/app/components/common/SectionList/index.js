@@ -3,15 +3,14 @@ import _ from 'lodash';
 import { Row, Col } from 'reactstrap';
 import DataFrame from '../../common/DataFrame/index';
 import { formatValue } from '../../../libraries/utils';
-import { basicCourseList } from '../../../constants/listData';
 
-const SectionList = ({ data, col }) => {
+const SectionList = ({ data, detail, col }) => {
   console.log('data', data);
   return (
   <div className="section-list-comp">
     <Row>
       <div className="info">
-        
+        {detail.info}
       </div>
     </Row>
     <Row>
@@ -47,7 +46,11 @@ const SectionList = ({ data, col }) => {
       <Col
         md={{ size: 8, offset: 4 }}
       >
-        <a href="/">
+        <a
+          href={detail.outerLink}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
           <button>
             完整課程簡介請下載
           </button>

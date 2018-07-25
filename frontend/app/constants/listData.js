@@ -38,7 +38,7 @@ export const courseDetailList = obj => ([
 
 
 
-export const basicCourseList = () => ([
+export const courseListBasic = [
   {
     key: 1,
     title: 'Series 1 基礎理論',
@@ -81,4 +81,60 @@ export const basicCourseList = () => ([
     ]
   }
 
-]);
+];
+
+
+export const courseListAdvance = [
+  {
+    key: 1,
+    title: 'Series 5 資料分析',
+    infos: [
+      {
+        key: 1,
+        value: '1. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }, {
+        key: 2,
+        value: '2. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }, {
+        key: 3,
+        value: '3. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
+      }
+    ]
+  }, {
+    key: 2,
+    title: 'Series 6 神經網路',
+    infos: [
+      {
+        key: 1,
+        value: '1. 機器學習與深度學習基礎概念及實作',
+        isRequired: true
+      }, {
+        key: 2,
+        value: '2. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
+      }, {
+        key: 3,
+        value: '3. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
+      }, {
+        key: 4,
+        value: '2. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
+      }
+    ]
+  }
+
+];
+
+export const courseDetailBasic = {
+  info: '',
+  outerLink: '/'
+};
+
+export const courseDetailAdvance = {
+  info: '',
+  outerLink: '/'
+};

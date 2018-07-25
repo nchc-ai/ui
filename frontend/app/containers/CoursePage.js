@@ -17,7 +17,7 @@ import courseBasicBn from '../../public/images/course/course-basic-bn.png';
 import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
 import SectionList from '../components/common/SectionList/index';
-import { basicCourseList } from '../constants/listData';
+import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
 
 class CoursePage extends Component {
 
@@ -95,7 +95,6 @@ class CoursePage extends Component {
     const courseType = _.get(match, 'params.type');
 
     // console.log('match', match);
-    const courseData = basicCourseList();
 
     return (
       <div className="course-bg global-content">
@@ -131,7 +130,8 @@ class CoursePage extends Component {
           <Route exact path="/course/basic">
             <div>
               <SectionList
-                data={courseData}
+                data={courseListBasic}
+                detail={courseDetailBasic}
               />
 
               {/* <CourseList
@@ -154,7 +154,8 @@ class CoursePage extends Component {
 
 
               <SectionList
-                data={courseData}
+                data={courseListAdvance}
+                detail={courseDetailAdvance}
               />
               {/* <CourseList
                 match={match}
