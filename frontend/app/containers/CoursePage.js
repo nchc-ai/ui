@@ -134,11 +134,6 @@ class CoursePage extends Component {
                 data={courseData}
               />
 
-
-
-              <a href="/">
-                完整課程簡介請下載
-              </a>
               {/* <CourseList
                 match={match}
                 banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
@@ -161,12 +156,6 @@ class CoursePage extends Component {
               <SectionList
                 data={courseData}
               />
-
-              
-
-              <a href="/">
-                完整課程簡介請下載
-              </a>
               {/* <CourseList
                 match={match}
                 banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}

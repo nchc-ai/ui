@@ -51,6 +51,10 @@ export const basicCourseList = () => ([
         key: 2,
         value: '2. 機器學習與深度學習基礎概念及實作',
         isRequired: true
+      }, {
+        key: 3,
+        value: '3. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
       }
     ]
   }, {
@@ -64,7 +68,15 @@ export const basicCourseList = () => ([
       }, {
         key: 2,
         value: '2. 機器學習與深度學習基礎概念及實作',
-        isRequired: true
+        isRequired: false
+      }, {
+        key: 3,
+        value: '3. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
+      }, {
+        key: 4,
+        value: '2. 機器學習與深度學習基礎概念及實作',
+        isRequired: false
       }
     ]
   }

@@ -1,0 +1,44 @@
+.section-list-comp {
+
+  .section-list-section {
+
+    padding-bottom: 15px;
+    .section-list-title {
+      font-weight: 600;
+      padding-bottom: 5px;
+      color: rgb(41, 86, 99);
+
+    }
+
+    .section-list-ul {
+
+      .section-list-li {
+        position: relative;
+        height: 25px;
+        margin-bottom: 5px;
+
+        .section-list-deco {
+          color: rgb(212, 110, 57);
+          width: 30px;
+          font-weight: 600;
+          vertical-align: middle;
+
+        }
+
+        .section-list-li-word {
+          padding-left: 10px;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+
+
+
+
+
+
+
+
+
+}

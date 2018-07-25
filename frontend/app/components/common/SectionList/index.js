@@ -10,25 +10,31 @@ const SectionList = ({ data, col }) => {
   return (
   <div className="section-list-comp">
     <Row>
+      <div className="info">
+        
+      </div>
+    </Row>
+    <Row>
       {
         data.map(section => (
           <Col
             key={section.key}
-            md={{ size: 12 }}
+            md={{ size: 8, offset: 4 }}
             className={`section-list-section`}
           >
             <h2 className="section-list-title">{section.title}</h2>
-            <ul>
+            <ul className="section-list-ul">
               { 
                 section.infos.map(info => (
-                  <li>
+                  <li  className="section-list-li">
+                    <span className="v-helper" />
                     <span
                       className="section-list-deco"
-                      style={{ display: info.isRequired ? 'block' : 'none' }}
+                      style={{ opacity: info.isRequired ? 1 : 0 }}
                     >
                       必修
                     </span>
-                    <p className="section-list-li-word">{info.value}</p>
+                    <span className="section-list-li-word">{info.value}</span>
                   </li>
                 ))
               }
@@ -36,6 +42,17 @@ const SectionList = ({ data, col }) => {
           </Col>
         ))
       }
+    </Row>
+    <Row>
+      <Col
+        md={{ size: 8, offset: 4 }}
+      >
+        <a href="/">
+          <button>
+            完整課程簡介請下載
+          </button>
+        </a>
+      </Col>
     </Row>
   </div>
 )};
