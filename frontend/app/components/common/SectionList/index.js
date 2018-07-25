@@ -44,7 +44,7 @@ const SectionList = ({ data, detail, col }) => {
     </Row>
     <Row>
       <Col
-        md={{ size: 8, offset: 4 }}
+        md={{ size: 9, offset: 3 }}
       >
         <a
           href={detail.outerLink}
