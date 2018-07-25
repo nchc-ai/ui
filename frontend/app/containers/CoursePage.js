@@ -129,6 +129,12 @@ class CoursePage extends Component {
           {/* 基礎課程 vs 進階課程 */}
           <Route exact path="/course/basic">
             <div>
+
+
+              <div className="section-bn section-grp">
+                <img className="bg-grp" alt="" src={courseBasicBn} />
+              </div>
+
               <SectionList
                 data={courseListBasic}
                 detail={courseDetailBasic}
@@ -149,7 +155,7 @@ class CoursePage extends Component {
             <div>
 
               <div className="section-bn section-grp">
-                <img className="bg-grp" alt="" src={courseType === 'basic' ? courseBasicBn : courseAdvanceBn} />
+                <img className="bg-grp" alt="" src={courseAdvanceBn} />
               </div>
 
 
