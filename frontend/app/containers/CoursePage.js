@@ -111,15 +111,27 @@ class CoursePage extends Component {
           </Route>
 
           {/* 課程搜尋 */}
+
           <Route exact path="/course/:type/:query">
             <CourseList
               match={match}
               banner={courseSearchBn}
-              title={`搜尋課程名稱含 "${match.params.courseId}" 的結果`}
+              title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
               data={searchResult}
               tableData={courseData}
             />
           </Route>
+
+          <Route exact path="/course/search">
+            <CourseList
+              match={match}
+              banner={courseSearchBn}
+              title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
+              data={searchResult}
+              tableData={courseData}
+            />
+          </Route>
+
 
           {/* 課程介紹 */}
           <Route exact path="/course/intro">

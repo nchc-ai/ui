@@ -77,7 +77,7 @@ export const searchCourse = query => async (dispatch) => {
     }
   });
 
-  console.log('[searchCourse] response', response);
+  // console.log('[searchCourse] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('searchCourse 失敗');
