@@ -23,15 +23,14 @@ const Signup = ({ targetForm, changeValue, onSubmit, onSubmitFailed, backMethod 
           model="forms.signup"
           className="signup-form-comp"
           onSubmit={formData => onSubmit(formData)}
-          onSubmitFailed={submitData => onSubmitFailed(submitData)}
         >
           <div className="row-01">
+    
             <FormGroups
               formData={signupForm}
               targetForm={targetForm}
               changeVal={changeValue}
             />
-          
 
             {/* 下方按鈕 */}
             <FormButtons

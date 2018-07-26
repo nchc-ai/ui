@@ -181,9 +181,10 @@ export const signupForm = [
     inputType: 'text',
     mainLabel: '信箱',
     placeholder: '請輸入主要信箱',
-    validators: { required },
+    validators: { required, mailIsValid },
     errorMessage: {
-      required: '您尚未輸入字元'
+      required: '您尚未輸入字元',
+      mailIsValid: '此欄位應為信箱格式'
     },
     isRequired: true
   }, {
@@ -275,9 +276,10 @@ export const profileForm = [
     inputType: 'text',
     mainLabel: '信箱',
     placeholder: '請輸入主要信箱',
-    validators: { required },
+    validators: { required, mailIsValid },
     errorMessage: {
-      required: '您尚未輸入字元'
+      required: '您尚未輸入字元',
+      mailIsValid: '此欄位應為信箱格式'
     },
     isRequired: true
   }, {
