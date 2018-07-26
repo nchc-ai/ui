@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { actions as formActions } from 'react-redux-form';
+import { notify } from 'react-notify-toast';
 import { setToken } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
@@ -12,6 +13,7 @@ class AuthPage extends Component {
 
   componentWillMount() {
     window.scrollTo(0, 0);
+    this.props.resetForm();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -20,6 +22,7 @@ class AuthPage extends Component {
     } = nextProps;
     if (this.props.match !== match && match) {
       window.scrollTo(0, 0);
+      this.props.resetForm();
     }
   }
 
@@ -50,13 +53,20 @@ class AuthPage extends Component {
   // Signup
   onSignupSubmit = (formData) => {
     console.log('formData', formData);
-    this.props.authAction.signup(formData);
-    // authAction.signup(user, this.onSignupSuccess);
+    this.props.authAction.signup(formData, this.onAfterSubmit);
   }
 
+  onSignupFailed = (formData) => {
+    notify.show('請確認是否填妥表單資料', 'error', 1800);
+  }
 
-  onSignupSubmitSuccess = (formData) => {
-    this.props.history.push('/login');
+  onAfterSubmit = (response) => {
+    if (response.error) {
+      notify.show(`註冊失敗 失敗原因：${response.payload.message}`, 'error', 2500);
+    } else {
+      notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', 1800);
+      this.props.history.push('/login');
+    }
   }
 
   onSignupCancel = () => {
@@ -84,6 +94,7 @@ class AuthPage extends Component {
               targetForm={forms.signup}
               changeValue={changeValue}
               onSubmit={this.onSignupSubmit}
+              onSubmitFailed={this.onSignupFailed}
               backMethod={this.onSignupCancel}
             />
           </Route>
@@ -98,6 +109,7 @@ const mapStateToProps = ({ forms }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
+  resetForm: () => dispatch(formActions.reset('forms.signup')),
   changeValue: (value, key, target) => dispatch(formActions.change(
     `forms.${target}.${key}`,
     value

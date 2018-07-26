@@ -7,7 +7,7 @@ import logoImg from '../../../public/images/auth/login-logo.png';
 import FormGroups from '../common/FormGroups/index';
 import FormButtons from '../common/FormButtons/index';
 
-const Signup = ({ targetForm, changeValue, onSubmit, backMethod }) => (
+const Signup = ({ targetForm, changeValue, onSubmit, onSubmitFailed, backMethod }) => (
   <div className="signup-comp">
     <SectionTitle
       isTitleImg
@@ -23,6 +23,7 @@ const Signup = ({ targetForm, changeValue, onSubmit, backMethod }) => (
           model="forms.signup"
           className="signup-form-comp"
           onSubmit={formData => onSubmit(formData)}
+          onSubmitFailed={submitData => onSubmitFailed(submitData)}
         >
           <div className="row-01">
             <FormGroups

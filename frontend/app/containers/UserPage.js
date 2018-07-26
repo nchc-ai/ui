@@ -18,7 +18,6 @@ import SideMenu from '../components/SideMenu/index';
 import CourseList from '../components/User/CourseList';
 import JobList from '../components/User/JobList';
 import CourseEdit from '../components/User/CourseEdit';
-import Profile from '../components/User/Profile';
 
 import DialogHOC from '../HOC/DialogHOC';
 
@@ -28,7 +27,7 @@ const initialValue = Value.fromJSON({
       {
         kind: 'block',
         type: 'paragraph',
-        nodes: [
+        nodes: 1[
           {
             kind: 'text',
             ranges: [
@@ -74,22 +73,18 @@ class UserPage extends Component {
 
 
     const {
-      authAction,
       userAction,
-      courseAction,
       token,
       match,
-      userInfo,
-      resetForm
+      userInfo
     } = nextProps;
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
     // console.log('part', part);
     if (part === 'course' && action === 'add') {
-      resetForm('addCourse');
+      // TODO:
     } else if (part === 'course' && action === 'edit') {
-      // courseAction.getCourseDetail();
       // TODO:應在此先change forms 表單
       // 先load 此course資訊(courseDetail)> next > change到formsData裡
       // this.changeForm(formObj, addCourse)
@@ -97,8 +92,6 @@ class UserPage extends Component {
       this.loadCourseList();
     } else if (part === 'job') {
       userAction.getJobList(userInfo.username, token);
-    } else if (part === 'profile') {
-      authAction.getProfile(token, this.setProfile);
     }
 
     window.scrollTo(0, 0);
@@ -109,16 +102,11 @@ class UserPage extends Component {
   loadCourseList = () => {
     const {
       userAction,
-      courseAction,
       token,
       userInfo
     } = this.props;
-    if(userInfo.role === 'teacher') {
-      userAction.getCourseList(userInfo, token);
-    } else {
-      courseAction.getCourseListAll();
-    }
-    
+
+    userAction.getCourseList(userInfo, token);
   }
 
   // CourseList
@@ -274,47 +262,15 @@ class UserPage extends Component {
     notify.show('工作刪除成功', 'success', 1800);
   }
 
-  // Profile
-
-  setProfile = profile => {
-    // console.log('profile', profile);
-    this.props.changeForm(profile, 'profile');
-  }
-
-  onProfileUpdateSuccess = () => { 
-    notify.show('個人資料更新成功', 'success', 1800);
-  }
-
-  onProfileUpdate = (formData) => {
-    const {
-      authAction,
-      token
-    } = this.props;
-    authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
-
-  }
-
-  onProfileCancel = () => {
-    this.props.history.push('/user/course');
-  }
-
-
 
   render() {
     const {
       match,
-      courseAll,
-      profile,
       Course,
       Job,
       addCourse,
-      changeValue,
-      userInfo
+      changeValue
     } = this.props;
-
-    const isEditable = userInfo.role === 'teacher';
-
-    // console.log('profile', profile);
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -327,12 +283,11 @@ class UserPage extends Component {
             {/* 課程列表 */}
             <Route exact path="/user/course">
               <CourseList
-                data={isEditable ? Course.list : courseAll}
+                data={Course.list}
                 tableData={userCourseData}
                 startMethod={this.startCourse}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
-                isEditable={isEditable}
               />
             </Route>
 
@@ -381,16 +336,6 @@ class UserPage extends Component {
               />
             </Route>
 
-            {/* 個人資料 */}
-            <Route exact path="/user/profile">
-              <Profile
-                targetForm={profile}
-                changeValue={changeValue}
-                onSubmit={this.onProfileUpdate}
-                cancelEdit={this.onProfileCancel}
-              />
-            </Route>
-
           </Switch>
         </div>
         
@@ -400,7 +345,7 @@ class UserPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`)),
+  resetForm: () => dispatch(formActions.reset('forms.addCourse')),
   changeValue: (value, key, target) => dispatch(formActions.change(
     `forms.${target}.${key}`,
     value
@@ -411,8 +356,7 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ Auth, User, forms, Course }) => ({
-  profile: forms.profile,
+const mapStateToProps = ({ Auth, User, forms }) => ({
   addCourse: forms.addCourse,
   token: Auth.token,
   userInfo: Auth.userInfo,
@@ -420,8 +364,6 @@ const mapStateToProps = ({ Auth, User, forms, Course }) => ({
     loading: User.course.loading,
     list: User.course.data
   },
-  courseAll: Course.courseAll.data,
-  courseAllLoading: Course.courseAll.loading,
   Job: {
     loading: User.job.loading,
     list: User.job.data
