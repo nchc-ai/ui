@@ -55,16 +55,27 @@ class UserPage extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+   
   }
 
 
   componentWillReceiveProps(nextProps) {
     const {
       match,
+      changeForm,
+      initialEditProfile
     } = nextProps;
     if (this.props.match !== match && match) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
+    } else if (this.props.initialEditProfile !== initialEditProfile && initialEditProfile) {
+      const newInitialEditProfile = {
+        ...initialEditProfile,
+        password: ''
+      };
+
+      console.log('newInitialEditProfile', newInitialEditProfile);
+      changeForm(newInitialEditProfile, 'profile');
     }
   }
 
@@ -95,7 +106,7 @@ class UserPage extends Component {
     } else if (part === 'job') {
       userAction.getJobList(userInfo.username, token);
     } else if (part === 'profile') {
-      authAction.getProfile(token, this.setProfile);
+      authAction.getProfile(token);
     }
 
     window.scrollTo(0, 0);
@@ -166,8 +177,6 @@ class UserPage extends Component {
     Progress.show();
     userAction.deleteCourse(course.id, token, this.deleteSuccess);
   }
-
-
 
   // CourseEdit
 
@@ -273,12 +282,6 @@ class UserPage extends Component {
 
 
     // Profile
-
-  setProfile = profile => {
-    // console.log('profile', profile);
-    this.props.changeForm(profile, 'profile');
-  }
-
   onProfileUpdateSuccess = () => { 
     notify.show('個人資料更新成功', 'success', 1800);
   }
@@ -439,8 +442,8 @@ const mapStateToProps = ({ Auth, User, forms, Course }) => ({
     list: User.job.data
   },
   courseAll: Course.courseAll.data,
-  courseAllLoading: Course.courseAll.loading
-
+  courseAllLoading: Course.courseAll.loading,
+  initialEditProfile: Auth.profile
 });
 
 export default compose(

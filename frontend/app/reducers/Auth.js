@@ -15,6 +15,16 @@ const InitialState = {
     scope: '',
     token_type: '',
     username: ''
+  },
+  profile: {
+    username: '',
+    password: '',
+    cName: '',
+    company: '',
+    'email-1': '',
+    'email-2': '',
+    phone: '',
+    text: ''
   }
 };
 
@@ -26,6 +36,11 @@ export default function Auth(state = InitialState, action) {
       ...state,
       isLogin: false,
       userInfo: InitialState.userInfo
+    };
+  case actionTypes.GET_PROFILE[SUCCESS]:
+    return {
+      ...state,
+      profile: action.payload
     };
   case actionTypes.LOGOUT[SUCCESS]:
     return {

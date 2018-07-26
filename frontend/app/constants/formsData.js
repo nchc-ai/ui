@@ -227,9 +227,9 @@ export const profileForm = [
     inputType: 'password',
     mainLabel: '密碼',
     placeholder: '請輸入您的密碼',
-    validators: { required },
+    validators: { atLeastSix },
     errorMessage: {
-      required: '您尚未輸入字元'
+      atLeastSix: '密碼至少需為 6 個字元'
     },
     isRequired: true
   }, {
@@ -271,7 +271,7 @@ export const profileForm = [
   }, {
     key: 6,
     size: 8,
-    name: 'email',
+    name: 'email-1',
     inputType: 'text',
     mainLabel: '信箱',
     placeholder: '請輸入主要信箱',
@@ -283,7 +283,7 @@ export const profileForm = [
   }, {
     key: 7,
     size: 8,
-    name: 'secondaryEmail',
+    name: 'email-2',
     inputType: 'text',
     mainLabel: '備用信箱',
     placeholder: '請輸入備用信箱',
