@@ -11,7 +11,7 @@ import MdDelete from 'react-icons/lib/md/delete';
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';
 
-const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isEditable }) => (
+const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -49,7 +49,15 @@ const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, del
                 case 'more':
                   return (
                     <td key={datum.key}>
-                      <button className="action-open-btn" style={{ display: isEditable ? 'block' : 'none' }}>
+                      {
+                        isAdmin ?
+                          <button className="action-open-btn">
+                            <MdMoreVert />
+                          </button>
+                        :
+                          <button onClick={addJob}> 開始課程 </button>
+                      }
+                      <button className="action-open-btn" style={{ display: isAdmin ? 'block' : 'none' }}>
                         <MdMoreVert />
                       </button>
                       <ul className="action-menu">

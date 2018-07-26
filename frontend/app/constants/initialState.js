@@ -25,3 +25,15 @@ export const initialUserState = {
   phone: '',
   text: ''
 };
+
+
+export const initialProfileState = {
+  username: '',
+  password: '',
+  cName: '',
+  company: '',
+  email: '',
+  secondaryEmail: '',
+  phone: '',
+  text: ''
+};

@@ -14,6 +14,7 @@ import { userCourseData } from '../constants/tableData';
 import { addCourseForm } from '../constants/formsData';
 import { jobs } from '../constants/tempData';
 import { groupArray } from '../libraries/utils';
+import Profile from '../components/User/Profile';
 import SideMenu from '../components/SideMenu/index';
 import CourseList from '../components/User/CourseList';
 import JobList from '../components/User/JobList';
@@ -73,6 +74,7 @@ class UserPage extends Component {
 
 
     const {
+      authAction,
       userAction,
       token,
       match,
@@ -92,6 +94,8 @@ class UserPage extends Component {
       this.loadCourseList();
     } else if (part === 'job') {
       userAction.getJobList(userInfo.username, token);
+    } else if (part === 'profile') {
+      authAction.getProfile(token, this.setProfile);
     }
 
     window.scrollTo(0, 0);
@@ -102,11 +106,16 @@ class UserPage extends Component {
   loadCourseList = () => {
     const {
       userAction,
+      courseAction,
       token,
       userInfo
     } = this.props;
 
-    userAction.getCourseList(userInfo, token);
+    if (userInfo.role === 'teacher') {
+      userAction.getCourseList(userInfo, token);
+    } else {
+      courseAction.getCourseListAll();
+    }
   }
 
   // CourseList
@@ -263,14 +272,45 @@ class UserPage extends Component {
   }
 
 
+    // Profile
+
+  setProfile = profile => {
+    // console.log('profile', profile);
+    this.props.changeForm(profile, 'profile');
+  }
+
+  onProfileUpdateSuccess = () => { 
+    notify.show('個人資料更新成功', 'success', 1800);
+  }
+
+  onProfileUpdate = (formData) => {
+    const {
+      authAction,
+      token
+    } = this.props;
+    authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
+  }
+
+  onProfileCancel = () => {
+    this.props.history.push('/user/course');
+  }
+
   render() {
     const {
       match,
+      courseAll,
+      profile,
       Course,
       Job,
       addCourse,
-      changeValue
+      changeValue,
+      userInfo
     } = this.props;
+
+    const isAdmin = _.get(userInfo, 'role', false) === 'teacher';
+    const listData = isAdmin ? Course.list : courseAll;
+    // console.log("isTeacher", isTeacher);
+
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -282,13 +322,21 @@ class UserPage extends Component {
           <Switch>
             {/* 課程列表 */}
             <Route exact path="/user/course">
-              <CourseList
-                data={Course.list}
-                tableData={userCourseData}
-                startMethod={this.startCourse}
-                editMethod={this.editCourse}
-                deleteMethod={this.deleteCourse}
-              />
+              <div>
+                {
+                  listData ?
+                    <CourseList
+                      data={listData}
+                      tableData={userCourseData}
+                      startMethod={this.startCourse}
+                      editMethod={this.editCourse}
+                      deleteMethod={this.deleteCourse}
+                      isAdmin={isAdmin}
+                      addJob={this.addJob}
+                    /> : null
+                }
+                
+                </div>
             </Route>
 
             {/* 新增課程 */}
@@ -336,6 +384,27 @@ class UserPage extends Component {
               />
             </Route>
 
+            {/* 個人資料 */}
+            <Route exact path="/user/profile">
+              <Profile
+                targetForm={profile}
+                changeValue={changeValue}
+                onSubmit={this.onProfileUpdate}
+                cancelEdit={this.onProfileCancel}
+              />
+            </Route>
+
+            {/* 修改個人資料 */}
+            {/* <Route exact path="/user/profile/edit">
+              <Profile
+                targetForm={profile}
+                changeValue={changeValue}
+                onSubmit={this.onProfileUpdate}
+                cancelEdit={this.onProfileCancel}
+              />
+            </Route> */}
+
+
           </Switch>
         </div>
         
@@ -356,7 +425,8 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ Auth, User, forms }) => ({
+const mapStateToProps = ({ Auth, User, forms, Course }) => ({
+  profile: forms.profile,
   addCourse: forms.addCourse,
   token: Auth.token,
   userInfo: Auth.userInfo,
@@ -367,7 +437,9 @@ const mapStateToProps = ({ Auth, User, forms }) => ({
   Job: {
     loading: User.job.loading,
     list: User.job.data
-  }
+  },
+  courseAll: Course.courseAll.data,
+  courseAllLoading: Course.courseAll.loading
 
 });
 
