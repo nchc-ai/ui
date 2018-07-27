@@ -15,6 +15,9 @@ import (
 	"k8s.io/apimachinery/pkg/util/intstr"
 
 	"k8s.io/apimachinery/pkg/api/resource"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/provider"
+	"net/http"
+	"github.com/gin-gonic/gin"
 )
 
 func findServiceNodePort(K8sClient *kubernetes.Clientset, job model.Job, exposeip string, namespace string) ([]model.LabelValue, error) {
@@ -350,4 +353,25 @@ func queryCourse(DB *gorm.DB, query interface{}, args ...interface{}) ([]model.C
 	}
 
 	return resp, nil
+}
+
+func updateUser(server *APIServer, c *gin.Context) {
+	var req provider.UserInfo
+	err := c.BindJSON(&req)
+	if err != nil {
+		log.Errorf("Failed to parse spec request request: %s", err.Error())
+		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
+		return
+	}
+
+	result, err := server.providerProxy.UpdateUser(&req)
+
+	if err != nil {
+		errStr := fmt.Sprintf("update user {%s} fail: %s", req.Username, err.Error())
+		log.Errorf(errStr)
+		util.RespondWithError(c, http.StatusInternalServerError, errStr)
+		return
+	}
+
+	c.JSON(http.StatusOK, result)
 }

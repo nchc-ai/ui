@@ -129,27 +129,8 @@ func (server *APIServer) RegisterUser(c *gin.Context) {
 
 }
 
-func (server *APIServer) UpdateUser(c *gin.Context) {
-
-	var req provider.UserInfo
-	err := c.BindJSON(&req)
-	if err != nil {
-		log.Errorf("Failed to parse spec request request: %s", err.Error())
-		util.RespondWithError(c, http.StatusBadRequest, "Failed to parse spec request request: %s", err.Error())
-		return
-	}
-
-	result, err := server.providerProxy.UpdateUser(&req)
-
-	if err != nil {
-		errStr := fmt.Sprintf("update user {%s} fail: %s", req.Username, err.Error())
-		log.Errorf(errStr)
-		util.RespondWithError(c, http.StatusInternalServerError, errStr)
-		return
-	}
-
-	c.JSON(http.StatusOK, result)
-
+func (server *APIServer) UpdateUserBasicInfo(c *gin.Context) {
+	updateUser(server, c)
 }
 
 func (server *APIServer) QueryUser(c *gin.Context) {
@@ -181,4 +162,8 @@ func (server *APIServer) QueryUser(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, result)
+}
+
+func (server *APIServer) ChangeUserPassword(c *gin.Context) {
+	updateUser(server, c)
 }

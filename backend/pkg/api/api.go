@@ -317,6 +317,7 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 		proxy.OPTIONS("/logout", resourceClient.handleOption)
 		proxy.OPTIONS("/register", resourceClient.handleOption)
 		proxy.OPTIONS("/update", resourceClient.handleOption)
+		proxy.OPTIONS("/changePW", resourceClient.handleOption)
 		proxy.OPTIONS("/query", resourceClient.handleOption)
 		proxy.POST("/register", server.RegisterUser)
 	}
@@ -324,7 +325,8 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	proxyAuth := router.Group("/v1").Group("/proxy").Use(server.AuthMiddleware())
 	{
 		proxyAuth.POST("/logout", server.Logout)
-		proxyAuth.POST("/update", server.UpdateUser)
+		proxyAuth.POST("/update", server.UpdateUserBasicInfo)
+		proxyAuth.POST("/changePW", server.ChangeUserPassword)
 		proxyAuth.GET("/query", server.QueryUser)
 	}
 

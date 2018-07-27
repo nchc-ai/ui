@@ -2608,7 +2608,6 @@
   ```json
     {
      "username":"jjj@abc.com",
-     "password":"654321",
      "cName":"莊莊莊",
      "company":"國網中心",
      "email-1":"ogre@ggg.com",
@@ -2656,8 +2655,85 @@
   ```sh
   $ curl -X POST \
     -H "Authorization: Bearer 81c5e423-44f9-4dc3-9141-0ba1db763faf" \
-    -d '{"username":"jjj@abc.com","password":"654321","cName":"莊莊莊","company":"國網中心","email-1":"ogre@ggg.com","email-2":"ogre@ggg.com","phone":"09232329","text":""}' \
+    -d '{"username":"jjj@abc.com","cName":"莊莊莊","company":"國網中心","email-1":"ogre@ggg.com","email-2":"ogre@ggg.com","phone":"09232329","text":""}' \
     http://localhost:8080/v1/proxy/update
+    {
+        "message": "user {jj23@abc.com} is updated"
+    }
+   ```
+
+
+## Change Password
+
+* **Description**
+
+  Change user password 
+
+* **URL**
+
+  /v1/proxy/changePW
+
+* **Header:**
+
+  `Authorization=Bearer <token-string>`
+
+* **Method:**
+
+  `POST`
+
+* **URL Params**
+
+   None
+
+* **Data Params**
+
+  ```json
+    {
+     "username":"jjj@abc.com",
+     "password":"654321"
+    }
+  ```
+
+* **Success Response:**
+
+  * **Code:** 200 <br />
+    **Content:**
+
+    ```json
+    {
+      "message": "user {jjj@abc.com} is update "
+    }
+    ```
+
+* **Error Response:**
+
+  * **Code:**  400 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "Failed to parse spec request request: %s"
+     }
+    ```
+
+  * **Code:**  500 <br />
+    **Content:**
+
+    ```json
+    {
+        "error": true,
+        "message" : "update user {%s} fail: %s"
+     }
+    ```
+
+* **Sample Call:**
+
+  ```sh
+  $ curl -X POST \
+    -H "Authorization: Bearer 81c5e423-44f9-4dc3-9141-0ba1db763faf" \
+    -d '{"username":"jjj@abc.com","password":"654321"}' \
+    http://localhost:8080/v1/proxy/changePW
     {
         "message": "user {jj23@abc.com} is updated"
     }
@@ -2731,7 +2807,7 @@
 * **Sample Call:**
 
   ```sh
-  $ curl -H "Authorization: Bearer ea26b9ac-ae39-48e4-8a87-24950226767c" \ 
+  $ curl -H "Authorization: Bearer ea26b9ac-ae39-48e4-8a87-24950226767c" \
     http://localhost:8080/v1/proxy/query
     {
       "username": "jjj@abc.com",
