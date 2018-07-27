@@ -1,6 +1,6 @@
 import _ from 'lodash';
 import * as actionTypes from '../actions/actionTypes';
-import { LOADING, SUCCESS } from '../constants/apiActions';
+import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
 
 const InitialState = {
   courseAll: {
@@ -70,6 +70,15 @@ export default function Course(state = InitialState, action) {
       searchResult: {
         isLoading: false,
         data: action.payload.courses
+      }
+    };
+  case actionTypes.SEARCH_COURSE[FAIL]:
+  // console.log('action.payload', action.payload);
+    return {
+      ...state,
+      searchResult: {
+        loading: false,
+        data: []
       }
     };
   case actionTypes.GET_COURSE_DETAIL[LOADING]:

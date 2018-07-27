@@ -5,21 +5,25 @@ import { Row, Col } from 'reactstrap';
 import SectionTitle from '../common/SectionTitle/index';
 import TableList from '../common/TableList/index';
 
-const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isEditable }) => (
+const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob }) => (
   <div className="user-course-bg">
     <Row>
-      <Col>
+      <Col size={12}>
         <SectionTitle
           title={'課程列表'}
         />
+
         <hr />
       </Col>
-      <Col>
+     
+    </Row>
+    <Row>
+      <Col className="col-second">
         <Link to="/user/course/add">
           <span className="v-helper" />
           <button
             className="btn-pair add-btn"
-            style={{ display: isEditable ? 'inline' : 'none' }}
+            style={{ display: isAdmin ? 'inline' : 'none' }}
           >
           + 新增
           </button>
@@ -33,7 +37,8 @@ const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, de
       startMethod={startMethod}
       editMethod={editMethod}
       deleteMethod={deleteMethod}
-      isEditable={isEditable}
+      isAdmin={isAdmin}
+      addJob={addJob}
     />
   </div>
 );

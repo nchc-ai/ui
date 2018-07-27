@@ -24,26 +24,27 @@
 
       h6 {
         margin-top: 15px;
-        margin-bottom: 35px;
+        // margin-bottom: 35px;
 
       }
-    }
-
-    hr {
-      margin-top: 36px;
-      margin-bottom: 60px;
     }
 
     .user-course-bg {
       width: 1000px;
 
       .col {
-        text-align: right;
+        // text-align: right;
         h1 {
           text-align: left;
         }
 
       }
+
+      .col-second {
+        margin-bottom: 20px;
+      }
+
+
 
       .add-btn {
         @include rect(120px, 35px);

@@ -20,8 +20,20 @@ export const initialUserState = {
   password: '',
   cName: '',
   company: '',
-  email: '',
-  secondaryEmail: '',
+  'email-1': '',
+  'email-2': '',
+  phone: '',
+  text: ''
+};
+
+
+export const initialProfileState = {
+  username: '',
+  password: '',
+  cName: '',
+  company: '',
+  'email-1': '',
+  'email-2': '',
   phone: '',
   text: ''
 };

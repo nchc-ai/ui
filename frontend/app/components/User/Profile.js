@@ -5,7 +5,9 @@ import FormGroups from '../common/FormGroups/index';
 import FormButtons from '../common/FormButtons/index';
 import SectionTitle from '../common/SectionTitle/index';
 
-const Profile = ({ targetForm, changeValue, onSubmit, cancelEdit }) => (
+const Profile = ({ targetForm, changeValue, onSubmit, cancelEdit }) => {
+  // console.log('profileForm', targetForm )
+  return (
   <div className="profile-comp">
     <SectionTitle
       title={'個人資料'}
@@ -33,7 +35,7 @@ const Profile = ({ targetForm, changeValue, onSubmit, cancelEdit }) => (
       />
     </Form>
   </div>
-);
+)};
 
 
 export default Profile;

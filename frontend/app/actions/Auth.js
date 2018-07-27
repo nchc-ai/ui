@@ -97,31 +97,33 @@ export const logout = (token, next) => async (dispatch) => {
 };
 
 // Proxy > Register
-export const signup = formData => async (dispatch) => {
+export const signup = (formData, next) => async (dispatch) => {
 
-  const tempData = tempfyData(formData);
-  console.log('tempData', tempData);
+  // const tempData = tempfyData(formData);
+  // console.log('tempData', tempData);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(tempData),
+      body: JSON.stringify(formData),
       types: types.SIGNUP
     }
   });
-  console.log('[signup] response');
+  // console.log('[signup] response');
 
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('signup 失敗');
-  }
+  // if (_.isUndefined(response) || response.payload.error) {
+  //   console.error('signup 失敗');
+  // }
+
+  next(response);
 };
 
 
 // Proxy > Updata
 export const updateProfile = (formData, token, next) => async (dispatch) => {
  
-  const tempData = tempfyData(formData);
+  // const tempData = tempfyData(formData);
 
   const response = await dispatch({
     [RSAA]: {
@@ -131,7 +133,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(tempData),
+      body: JSON.stringify(formData),
       types: types.UPDATE_PROFILE
     }
   });
@@ -146,7 +148,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
 
 
 // Proxy > UserInfo
-export const getProfile = (token, next) => async (dispatch) => {
+export const getProfile = (token) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/query`,
@@ -162,9 +164,6 @@ export const getProfile = (token, next) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getProfile 失敗');
   }
-
-  console.log('[getProfile] payload', response.payload);
-  next(response.payload);
 };
 
 

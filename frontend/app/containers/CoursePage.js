@@ -16,6 +16,8 @@ import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
 import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
+import SectionList from '../components/common/SectionList/index';
+import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
 
 class CoursePage extends Component {
 
@@ -94,7 +96,6 @@ class CoursePage extends Component {
 
     // console.log('match', match);
 
-
     return (
       <div className="course-bg global-content">
         <Switch>
@@ -110,15 +111,27 @@ class CoursePage extends Component {
           </Route>
 
           {/* 課程搜尋 */}
+
           <Route exact path="/course/:type/:query">
             <CourseList
               match={match}
               banner={courseSearchBn}
-              title={`搜尋課程名稱含 "${match.params.courseId}" 的結果`}
+              title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
               data={searchResult}
               tableData={courseData}
             />
           </Route>
+
+          <Route exact path="/course/search">
+            <CourseList
+              match={match}
+              banner={courseSearchBn}
+              title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
+              data={searchResult}
+              tableData={courseData}
+            />
+          </Route>
+
 
           {/* 課程介紹 */}
           <Route exact path="/course/intro">
@@ -126,15 +139,51 @@ class CoursePage extends Component {
           </Route>
 
           {/* 基礎課程 vs 進階課程 */}
-          <Route exact path="/course/:type">
-            <CourseList
-              match={match}
-              banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
-              title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
-              data={courseList}
-              tableData={courseData}
-              courseType={courseType}
-            />
+          <Route exact path="/course/basic">
+            <div>
+
+
+              <div className="section-bn section-grp">
+                <img className="bg-grp" alt="" src={courseBasicBn} />
+              </div>
+
+              <SectionList
+                data={courseListBasic}
+                detail={courseDetailBasic}
+              />
+
+              {/* <CourseList
+                match={match}
+                banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
+                title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
+                data={courseList}
+                tableData={courseData}
+                courseType={courseType}
+              /> */}
+            </div>
+          </Route>
+
+          <Route exact path="/course/advance">
+            <div>
+
+              <div className="section-bn section-grp">
+                <img className="bg-grp" alt="" src={courseAdvanceBn} />
+              </div>
+
+
+              <SectionList
+                data={courseListAdvance}
+                detail={courseDetailAdvance}
+              />
+              {/* <CourseList
+                match={match}
+                banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
+                title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
+                data={courseList}
+                tableData={courseData}
+                courseType={courseType}
+              /> */}
+            </div>
           </Route>
         </Switch>
       </div>

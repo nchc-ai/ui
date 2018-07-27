@@ -14,11 +14,11 @@ import { userCourseData } from '../constants/tableData';
 import { addCourseForm } from '../constants/formsData';
 import { jobs } from '../constants/tempData';
 import { groupArray } from '../libraries/utils';
+import Profile from '../components/User/Profile';
 import SideMenu from '../components/SideMenu/index';
 import CourseList from '../components/User/CourseList';
 import JobList from '../components/User/JobList';
 import CourseEdit from '../components/User/CourseEdit';
-import Profile from '../components/User/Profile';
 
 import DialogHOC from '../HOC/DialogHOC';
 
@@ -28,7 +28,7 @@ const initialValue = Value.fromJSON({
       {
         kind: 'block',
         type: 'paragraph',
-        nodes: [
+        nodes: 1[
           {
             kind: 'text',
             ranges: [
@@ -55,16 +55,27 @@ class UserPage extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
+   
   }
 
 
   componentWillReceiveProps(nextProps) {
     const {
       match,
+      changeForm,
+      initialEditProfile
     } = nextProps;
     if (this.props.match !== match && match) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
+    } else if (this.props.initialEditProfile !== initialEditProfile && initialEditProfile) {
+      const newInitialEditProfile = {
+        ...initialEditProfile,
+        password: ''
+      };
+
+      console.log('newInitialEditProfile', newInitialEditProfile);
+      changeForm(newInitialEditProfile, 'profile');
     }
   }
 
@@ -76,20 +87,17 @@ class UserPage extends Component {
     const {
       authAction,
       userAction,
-      courseAction,
       token,
       match,
-      userInfo,
-      resetForm
+      userInfo
     } = nextProps;
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
     // console.log('part', part);
     if (part === 'course' && action === 'add') {
-      resetForm('addCourse');
+      // TODO:
     } else if (part === 'course' && action === 'edit') {
-      // courseAction.getCourseDetail();
       // TODO:應在此先change forms 表單
       // 先load 此course資訊(courseDetail)> next > change到formsData裡
       // this.changeForm(formObj, addCourse)
@@ -98,7 +106,7 @@ class UserPage extends Component {
     } else if (part === 'job') {
       userAction.getJobList(userInfo.username, token);
     } else if (part === 'profile') {
-      authAction.getProfile(token, this.setProfile);
+      authAction.getProfile(token);
     }
 
     window.scrollTo(0, 0);
@@ -113,12 +121,12 @@ class UserPage extends Component {
       token,
       userInfo
     } = this.props;
-    if(userInfo.role === 'teacher') {
+
+    if (userInfo.role === 'teacher') {
       userAction.getCourseList(userInfo, token);
     } else {
       courseAction.getCourseListAll();
     }
-    
   }
 
   // CourseList
@@ -169,8 +177,6 @@ class UserPage extends Component {
     Progress.show();
     userAction.deleteCourse(course.id, token, this.deleteSuccess);
   }
-
-
 
   // CourseEdit
 
@@ -274,13 +280,8 @@ class UserPage extends Component {
     notify.show('工作刪除成功', 'success', 1800);
   }
 
-  // Profile
 
-  setProfile = profile => {
-    // console.log('profile', profile);
-    this.props.changeForm(profile, 'profile');
-  }
-
+    // Profile
   onProfileUpdateSuccess = () => { 
     notify.show('個人資料更新成功', 'success', 1800);
   }
@@ -291,14 +292,11 @@ class UserPage extends Component {
       token
     } = this.props;
     authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
-
   }
 
   onProfileCancel = () => {
     this.props.history.push('/user/course');
   }
-
-
 
   render() {
     const {
@@ -312,9 +310,10 @@ class UserPage extends Component {
       userInfo
     } = this.props;
 
-    const isEditable = userInfo.role === 'teacher';
+    const isAdmin = _.get(userInfo, 'role', false) === 'teacher';
+    const listData = isAdmin ? Course.list : courseAll;
+    // console.log("isTeacher", isTeacher);
 
-    // console.log('profile', profile);
     return (
       <div id="page-wrap" className="user-bg global-content">
         <div className="side-menu-wrap fl">
@@ -326,14 +325,21 @@ class UserPage extends Component {
           <Switch>
             {/* 課程列表 */}
             <Route exact path="/user/course">
-              <CourseList
-                data={isEditable ? Course.list : courseAll}
-                tableData={userCourseData}
-                startMethod={this.startCourse}
-                editMethod={this.editCourse}
-                deleteMethod={this.deleteCourse}
-                isEditable={isEditable}
-              />
+              <div>
+                {
+                  listData ?
+                    <CourseList
+                      data={listData}
+                      tableData={userCourseData}
+                      startMethod={this.startCourse}
+                      editMethod={this.editCourse}
+                      deleteMethod={this.deleteCourse}
+                      isAdmin={isAdmin}
+                      addJob={this.addJob}
+                    /> : null
+                }
+                
+                </div>
             </Route>
 
             {/* 新增課程 */}
@@ -391,6 +397,17 @@ class UserPage extends Component {
               />
             </Route>
 
+            {/* 修改個人資料 */}
+            {/* <Route exact path="/user/profile/edit">
+              <Profile
+                targetForm={profile}
+                changeValue={changeValue}
+                onSubmit={this.onProfileUpdate}
+                cancelEdit={this.onProfileCancel}
+              />
+            </Route> */}
+
+
           </Switch>
         </div>
         
@@ -400,7 +417,7 @@ class UserPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`)),
+  resetForm: () => dispatch(formActions.reset('forms.addCourse')),
   changeValue: (value, key, target) => dispatch(formActions.change(
     `forms.${target}.${key}`,
     value
@@ -420,13 +437,13 @@ const mapStateToProps = ({ Auth, User, forms, Course }) => ({
     loading: User.course.loading,
     list: User.course.data
   },
-  courseAll: Course.courseAll.data,
-  courseAllLoading: Course.courseAll.loading,
   Job: {
     loading: User.job.loading,
     list: User.job.data
-  }
-
+  },
+  courseAll: Course.courseAll.data,
+  courseAllLoading: Course.courseAll.loading,
+  initialEditProfile: Auth.profile
 });
 
 export default compose(

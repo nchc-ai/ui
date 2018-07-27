@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Switch, Route } from 'react-router';
 // import { I18nextProvider } from 'react-i18next';
 
-
+import 'jquery';
 import 'react-select/dist/react-select.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
@@ -14,6 +14,7 @@ import './assets/styles/style.scss';
 import 'react-progress-2/main.css';
 
 // import i18n from './i18n';
+
 import store from './store';
 import routeAdmin from './routeAdmin';
 import routeClient from './routeClient';

@@ -12,7 +12,14 @@ const FooterTop = ({ offline, offlineWarning }) => (
         offline ?
           <span className="footer-top-text" onClick={offlineWarning}>需求調查表</span>
           :
-          <Link className="footer-top-text" to="/">需求調查表</Link>
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSd3WTXGCQX0tjILHn6Dvlmnkzs3lLBdVX1Xfsuq0m0WzZfXzQ/viewform?usp=pp_url"
+            rel="noopener noreferrer"
+            target="_blank"
+            className="footer-top-text" to="/"
+          >
+            需求調查表
+          </a>
       }
       
     </div>

@@ -33,12 +33,26 @@ const NavBar = ({ match, data, offline, t, dropDownPos, offlineWarning }) => (
                         {d.nameCh}
                       </ScrollLink>
                     :
-                      <Link
-                        to={d.url}
-                        className={d.url === _.get(match, 'url') ? 'main-link li-active' : 'main-link'}
-                      >
-                        {d.nameCh}
-                      </Link>
+                      <span>
+                        {
+                          d.isOuter ?
+                            <a
+                              href={d.url}
+                              rel="noopener noreferrer"
+                              target="_blank"
+                              className={d.url === _.get(match, 'url') ? 'main-link li-active' : 'main-link'}
+                            >
+                              {d.nameCh}
+                            </a>
+                          :
+                            <Link
+                              to={d.url}
+                              className={d.url === _.get(match, 'url') ? 'main-link li-active' : 'main-link'}
+                            >
+                              {d.nameCh}
+                            </Link>
+                        }
+                      </span>
                   }
                 </div>
             }

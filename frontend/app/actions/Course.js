@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
 
+
 // Course > List all courses
 export const getCourseListAll = () => async (dispatch) => {
 
@@ -40,7 +41,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
 
 // Course > Get
 export const getCourseDetail = (courseId, token) => async (dispatch) => {
-
+  
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/get/${courseId}`,
@@ -76,7 +77,7 @@ export const searchCourse = query => async (dispatch) => {
     }
   });
 
-  console.log('[searchCourse] response', response);
+  // console.log('[searchCourse] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('searchCourse 失敗');

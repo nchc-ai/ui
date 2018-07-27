@@ -60,7 +60,6 @@ export const tempfyData = formData => ({
   text: formData.text
 });
 
-
 /*---------------------------
   將某array分組
   依序給group的名字又不失為一個array
