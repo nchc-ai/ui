@@ -38,5 +38,5 @@ export const initialProfileState = {
 
 export const initialPasswordState = {
   password: '',
-  passwordConfirm: ''
+  confirmPassword: ''
 };

@@ -133,6 +133,11 @@ class UserPage extends Component {
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
+  handleSubmitPasswordFailed = (formData) => {
+    // console.log('[handleSubmitFailed] formData', formData);
+    notify.show('請確認密碼是否相同', 'error', 1800);
+  }
+
   handleCancel = () => {
     this.props.history.push('/user/course');
   }
@@ -306,16 +311,18 @@ class UserPage extends Component {
 
   // Password
   onPasswordUpdateSuccess = () => { 
-    notify.show('個人資料更新成功', 'success', 1800);
+    notify.show('您的密碼已更新成功', 'success', 1800);
   }
 
 
   onPasswordUpdate = (formData) => {
     const {
       authAction,
-      token
+      token,
+      userInfo
     } = this.props;
-    authAction.updatePassword(formData, token, this.onPasswordUpdateSuccess);
+    // console.log('update', userInfo);
+    authAction.updatePassword(userInfo.username, formData, token, this.onPasswordUpdateSuccess);
   }
 
   onPasswordCancel = () => {
@@ -363,7 +370,6 @@ class UserPage extends Component {
                       addJob={this.addJob}
                     /> : null
                 }
-                
                 </div>
             </Route>
 
@@ -420,7 +426,6 @@ class UserPage extends Component {
                 onSubmit={this.onProfileUpdate}
                 onSubmitFailed={this.handleSubmitFailed}
                 cancelEdit={this.handleCancel}
-                
               />
             </Route>
 
@@ -430,12 +435,10 @@ class UserPage extends Component {
                 targetForm={forms.password}
                 changeValue={changeValue}
                 onSubmit={this.onPasswordUpdate}
-                onSubmitFailed={this.handleSubmitFailed}
+                onSubmitFailed={this.handleSubmitPasswordFailed}
                 cancelEdit={this.handleCancel}
-                
               />
             </Route>
-
             {/* 修改個人資料 */}
             {/* <Route exact path="/user/profile/edit">
               <Profile
@@ -445,11 +448,8 @@ class UserPage extends Component {
                 cancelEdit={this.onProfileCancel}
               />
             </Route> */}
-
-
           </Switch>
         </div>
-        
       </div>
     );
   }

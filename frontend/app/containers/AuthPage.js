@@ -36,13 +36,16 @@ class AuthPage extends Component {
   }
 
   setUserInfo = (token) => {
+    const { history } = this.props;
     setToken(token);
     this.props.authAction.setUserToken(token);
-    this.props.authAction.getUserInfo(token, this.redirect);
+    this.props.authAction.getUserInfo(token, history, this.redirect);
   }
 
-  redirect = () => {
-    this.props.history.push('/user/course');
+  redirect = (error) => {
+    if(!error) {
+      this.props.history.push('/user/course');
+    }
   }
 
   onLoginFail = (err) => {
