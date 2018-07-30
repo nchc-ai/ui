@@ -18,7 +18,7 @@ const config = require('./webpack.config.dev');
 const app = express();
 
 
-const isDev = process.env.NODE_ENV !== 'production';
+const isDev = process.env.NODE_ENV !== 'PROD';
 let port;
 let host;
 
@@ -35,8 +35,8 @@ if (isDev) {
   host = 'localhost';
   port = 3010;
 } else {
-  host = '127.0.0.1';
-  port = 80;
+  host = 'localhost';
+  port = 3010;
 }
 
 // -------------------  DEV vs RELEASE  -------------------------//
@@ -58,9 +58,9 @@ if (isDev) {
   });
 } else {
   app.use(express.static('public'));
-  app.use(express.static(`${__dirname}/app/dist`));
+  app.use(express.static(`${__dirname}/dist`));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'app/dist/index.html'));
+    res.sendFile(path.join(__dirname, 'dist/index.html'));
   });
 }
 // -------------------  Error Handler -------------------------//

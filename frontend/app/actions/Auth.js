@@ -120,9 +120,11 @@ export const signup = (formData, next) => async (dispatch) => {
 };
 
 
-// Proxy > Updata
+// Proxy > UpdataProfile
 export const updateProfile = (formData, token, next) => async (dispatch) => {
- 
+  
+
+  // console.log('formData', formData);
   // const tempData = tempfyData(formData);
 
   const response = await dispatch({
@@ -143,7 +145,31 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
   }
 
   next();
+};
 
+
+// Proxy > UpdataPassword
+export const updatePassword = (formData, token, next) => async (dispatch) => {
+
+  // const tempData = tempfyData(formData);
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/proxy/changePW`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(formData),
+      types: types.UPDATE_PASSWORD
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('updatePassword 失敗');
+  }
+  next();
 };
 
 

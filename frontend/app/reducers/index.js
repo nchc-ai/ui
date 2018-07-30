@@ -11,7 +11,8 @@ import {
   initialGlobalSearchState,
   initialAddCourseState,
   initialUserState,
-  initialProfileState
+  initialProfileState,
+  initialPasswordState
 } from '../constants/initialState';
 
 const rootReducer = combineReducers({
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
     globalSearch: modelReducer('globalSearch', initialGlobalSearchState),
     addCourse: modelReducer('addCourse', initialAddCourseState),
     signup: modelReducer('signup', initialUserState),
-    profile: modelReducer('profile', initialProfileState)
+    profile: modelReducer('profile', initialProfileState),
+    password: modelReducer('password', initialPasswordState)
   }, 'forms'),
   Auth,
   Course,

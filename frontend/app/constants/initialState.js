@@ -17,7 +17,6 @@ export const initialAddCourseState = {
 
 export const initialUserState = {
   username: '',
-  password: '',
   cName: '',
   company: '',
   'email-1': '',
@@ -29,11 +28,15 @@ export const initialUserState = {
 
 export const initialProfileState = {
   username: '',
-  password: '',
   cName: '',
   company: '',
   'email-1': '',
   'email-2': '',
   phone: '',
   text: ''
+};
+
+export const initialPasswordState = {
+  password: '',
+  passwordConfirm: ''
 };
