@@ -7,7 +7,7 @@ import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import { Value } from 'slate';
 import Progress from 'react-progress-2';
-
+import { jobInterval } from '../constants/parameters';
 
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import { userCourseData } from '../constants/tableData';
@@ -54,9 +54,27 @@ class UserPage extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-   
+    const intervalId = setInterval(this.timer, jobInterval);
+    this.setState({ intervalId });
   }
 
+  componentWillUnmount() {
+    // use intervalId from the state to clear the interval
+    clearInterval(this.state.intervalId);
+  }
+
+  timer = () => {
+    // setState method is used to update the state
+    const {
+      match
+    } = this.props;
+    const part = match.params.part;
+    // console.log('do something', part);
+    if (part === 'job') {
+      this.fetchData(this.props);
+      console.log('get job');
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     const {
