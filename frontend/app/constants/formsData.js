@@ -224,18 +224,6 @@ export const profileForm = [
   }, {
     key: 2,
     size: 8,
-    name: 'password',
-    inputType: 'password',
-    mainLabel: '密碼',
-    placeholder: '請輸入您的密碼',
-    validators: { atLeastSix },
-    errorMessage: {
-      atLeastSix: '密碼至少需為 6 個字元'
-    },
-    isRequired: true
-  }, {
-    key: 3,
-    size: 8,
     name: 'cName',
     inputType: 'text',
     mainLabel: '中文姓名',
@@ -246,7 +234,7 @@ export const profileForm = [
     },
     isRequired: true
   }, {
-    key: 4,
+    key: 3,
     size: 8,
     name: 'company',
     inputType: 'text',
@@ -258,7 +246,7 @@ export const profileForm = [
     },
     isRequired: true
   }, {
-    key: 5,
+    key: 4,
     size: 8,
     name: 'phone',
     inputType: 'text',
@@ -270,7 +258,7 @@ export const profileForm = [
     },
     isRequired: true
   }, {
-    key: 6,
+    key: 5,
     size: 8,
     name: 'email-1',
     inputType: 'text',
@@ -283,7 +271,7 @@ export const profileForm = [
     },
     isRequired: true
   }, {
-    key: 7,
+    key: 6,
     size: 8,
     name: 'email-2',
     inputType: 'text',
@@ -291,7 +279,7 @@ export const profileForm = [
     placeholder: '請輸入備用信箱',
     isRequired: false
   }, {
-    key: 8,
+    key: 7,
     size: 8,
     name: 'text',
     inputType: 'textarea',
