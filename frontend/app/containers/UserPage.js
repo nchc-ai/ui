@@ -7,7 +7,7 @@ import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import { Value } from 'slate';
 import Progress from 'react-progress-2';
-import { jobInterval } from '../constants/parameters';
+import { jobInterval } from '../config/api';
 
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import { userCourseData } from '../constants/tableData';
