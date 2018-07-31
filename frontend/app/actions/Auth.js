@@ -154,7 +154,7 @@ export const updatePassword = (username, formData, token, next) => async (dispat
 
   const tempData = {
     username,
-    psassword: formData.password
+    password: formData.password
   };
 
   const response = await dispatch({
