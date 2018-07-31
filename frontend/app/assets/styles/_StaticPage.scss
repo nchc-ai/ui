@@ -1,11 +1,29 @@
 .static-bg {
   background-image: url(../images/static/static-bg.png);
   .static-container {
-    @include rect-center(180px, initial);
+    @include rect-center(600px, initial);
+    margin-top: 110px;
 
-    .common-title-underline {
-      @include rect-center(600px, 2px);
-      background-color: #000;
+    h5 {
+      font-size: 144px;
+      line-height: 144px;
+      letter-spacing: 1px;
+      text-align: center;
+      color: $ailab-primary-dark-text;
     }
+    .line-h {
+      @include rect-center(90%, 2px);
+      background-color: $ailab-primary-dark-text;
+      margin-top: 25px;
+      margin-bottom: 15px;
+    }
+
+    p {
+      font-size: 32px;
+      line-height: 48px;
+      text-align: center;
+      color: $ailab-primary-dark-text;
+    }
+   
   }
 }
