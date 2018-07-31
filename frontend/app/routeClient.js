@@ -18,7 +18,6 @@ const routeClient = ({ offline, isLogin }) => (
     <Switch>
       { offline ? <Route path="*" component={StaticPage} /> : null }
 
-      <Route exact path="/" component={IndexPage} />
       <Route exact path="/course/:type/:courseId" component={CoursePage} />
       <Route exact path="/course/:type" component={CoursePage} />
       <Route exact path="/contact" component={ContactPage} />
@@ -28,6 +27,7 @@ const routeClient = ({ offline, isLogin }) => (
       <Route exact path="/user/:part/:action" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="/user/:part" component={isLogin ? UserPage : AuthPage} />
       <Route exact path="/logout" component={Logout} />
+      <Route exact path="/" component={IndexPage} />
       <Route exact path="*" component={StaticPage} />
     </Switch>
   </Client>

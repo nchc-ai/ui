@@ -159,14 +159,14 @@ class MarkdownShortcuts extends React.Component {
       <div className="md-editor-comp">
         <Editor
           placeholder="請輸入字元後按下Space鍵即可轉換為Markdown形式..."
-          value={this.state.value}
+          value={this.state.value || this.props.value}
           onChange={this.onChange}
           onKeyDown={this.onKeyDown}
           renderNode={this.renderNode}
           renderMark={this.renderMark}
         />
       </div>
-    )
+    );
   }
 
 

@@ -22,7 +22,9 @@ import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdva
 class CoursePage extends Component {
 
   componentWillMount() {
+    
     // this.props.userAction.getCourseList('jimmy', token)
+    window.scrollTo(0, 0);
     this.fetchData(this.props);
   }
 

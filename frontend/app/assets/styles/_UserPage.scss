@@ -49,7 +49,23 @@
         margin-bottom: 20px;
       }
 
+      .table-list-comp {
+        .btn-student {
+          font-size: 12px;
+          border-radius: 2px;
+          color: $ailab-primary-dark-green;
+          border: 1px solid $ailab-primary-dark-green;
 
+          cursor: pointer;
+
+          &:hover {
+            // background-color: #ddd;
+
+            // color: #fff;
+          }
+        }
+      }
+      
 
       .add-btn {
         @include rect(120px, 35px);
@@ -96,6 +112,7 @@
 
 
       .job-group {
+        margin-top: 20px;
         margin-bottom: 20px;
 
         .title-row {

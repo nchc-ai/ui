@@ -20,6 +20,7 @@ import JobList from '../components/User/JobList';
 import CourseEdit from '../components/User/CourseEdit';
 
 import DialogHOC from '../HOC/DialogHOC';
+import { cloneFragment } from '../../node_modules/slate-react';
 
 const initialValue = Value.fromJSON({
   document: {
@@ -49,6 +50,7 @@ class UserPage extends Component {
   }
 
   componentWillMount() {
+    window.scrollTo(0, 0);
     this.fetchData(this.props);
   }
 
@@ -72,7 +74,7 @@ class UserPage extends Component {
     // console.log('do something', part);
     if (part === 'job') {
       this.fetchData(this.props);
-      console.log('get job');
+      // console.log('get job');
     }
   }
 
@@ -86,6 +88,7 @@ class UserPage extends Component {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
     } else if (this.props.initialEditProfile !== initialEditProfile && initialEditProfile) {
+      
       const newInitialEditProfile = {
         ...initialEditProfile,
         password: ''
@@ -104,18 +107,23 @@ class UserPage extends Component {
     const {
       authAction,
       userAction,
+      courseAction,
       token,
       match,
-      userInfo
+      userInfo,
+      resetForm
     } = nextProps;
 
     const part = _.get(match, 'params.part');
     const action = _.get(match, 'params.action');
     // console.log('part', part);
     if (part === 'course' && action === 'add') {
-      // TODO:
+      // TODO: 
+      resetForm();
     } else if (part === 'course' && action === 'edit') {
-      // TODO:應在此先change forms 表單
+      resetForm();
+      courseAction.getCourseDetail(match.params.courseId, token, this.setDefaultForm);
+      // TODO: 應在此先change forms 表單
       // 先load 此course資訊(courseDetail)> next > change到formsData裡
       // this.changeForm(formObj, addCourse)
     } else if (part === 'course') {
@@ -162,7 +170,8 @@ class UserPage extends Component {
 
   // CourseList
 
-  startCourse = (course) => {
+  startCourse = (e, course) => {
+    // console.log('course', course);
     this.addJob('e', course.id);
   }
 
@@ -210,19 +219,47 @@ class UserPage extends Component {
   }
 
   // CourseEdit
+  setDefaultForm = (formData) => {
 
-  redirect = () => {
+    const newData = {
+      ...formData,
+      intro: formData.introduction,
+      level: { value: formData.level }
+    };
+
+
+    this.props.changeForm(newData, 'addCourse');
+    console.log('setdefault', formData, newData);
+  }
+
+
+  onCreateCourseSuccess = () => {
     const {
       userAction,
       token,
       history,
       userInfo
     } = this.props;
+
+    Progress.hide();
     this.loadCourseList();
     history.push('/user/course');
   }
 
-  handleSubmit = (formData) => {
+  handleCreateCourse = (formData) => {
+    // console.log('[handleSubmit] submit', formData);
+
+    const {
+      userAction,
+      token,
+      userInfo
+    } = this.props;
+    userAction.createCourse(token, userInfo, formData, this.onCreateCourseSuccess);
+
+    Progress.show();
+  }
+
+  handleUpdateCourse = (formData) => {
     // console.log('[handleSubmit] submit', formData);
 
     const {
@@ -231,7 +268,10 @@ class UserPage extends Component {
       userInfo
     } = this.props;
 
-    userAction.createCourse(token, userInfo, formData, this.redirect);
+    // console.log('formData', formData)
+    userAction.updateCourse(token, userInfo, formData, this.onCreateCourseSuccess);
+
+    Progress.show();
   }
 
 
@@ -282,6 +322,8 @@ class UserPage extends Component {
     } = this.props;
 
     Progress.show();
+
+    // console.log('userInfo.username, courseId, token', userInfo.username, courseId, token);
     userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
   }
 
@@ -395,7 +437,7 @@ class UserPage extends Component {
             <Route exact path="/user/course/add">
               <CourseEdit
                 title={'新增課程'}
-                handleSubmit={this.handleSubmit}
+                handleSubmit={this.handleCreateCourse}
                 handleSubmitFailed={this.handleSubmitFailed}
                 state={this.state}
                 formData={addCourseForm}
@@ -413,7 +455,7 @@ class UserPage extends Component {
             <Route exact path="/user/course/edit/:courseId">
               <CourseEdit
                 title={'編輯課程'}
-                handleSubmit={this.handleSubmit}
+                handleSubmit={this.handleUpdateCourse}
                 handleSubmitFailed={this.handleSubmitFailed}
                 state={this.state}
                 formData={addCourseForm}

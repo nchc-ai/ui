@@ -44,7 +44,7 @@ export const createCourse = (token, userInfo, formData, next) => async (dispatch
       body: JSON.stringify({
         user: userInfo.username,
         name: formData.name,
-        introduction: _.escape(formData.intro),
+        intro: _.escape(formData.intro),
         image: formData.image.value,
         level: formData.level.value,
         GPU: parseInt(formData.gpu.value, 10),
@@ -63,6 +63,40 @@ export const createCourse = (token, userInfo, formData, next) => async (dispatch
 };
 
 
+
+// Course > Update
+export const updateCourse = (token, userInfo, formData, next) => async (dispatch) => {
+  // console.log('[createCourse] formData', formData, _.escape(formData.intro));
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/course/update`,
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        id: formData.id,
+        user: userInfo.username,
+        name: formData.name,
+        intro: _.escape(formData.intro),
+        image: formData.image.value,
+        level: formData.level.value,
+        GPU: parseInt(formData.gpu.value, 10),
+        datasets: formData.datasets.map(d => d.value)
+      }
+    ),
+      types: types.UPDATE_USER_COURSE
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('updateCourse 失敗');
+  }
+
+  next();
+};
+
 // Course > Luanch
 // export const luanchCourse = (token, formData) => async (dispatch) => {
 //   const response = await dispatch({
@@ -76,7 +110,7 @@ export const createCourse = (token, userInfo, formData, next) => async (dispatch
 //       body: JSON.stringify({
 //         user: 'jimmy',
 //         name: formData.user,
-//         introduction: formData.intro,
+//         intro: formData.intro,
 //         image: formData.image,
 //         level: formData.level,
 //         GPU: parseInt(formData.gpu, 10),

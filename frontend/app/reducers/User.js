@@ -36,7 +36,7 @@ export default function User(state = InitialState, action) {
     return {
       ...state,
       job: {
-        ...state.course,
+        ...state.job,
         loading: true
       }
     };

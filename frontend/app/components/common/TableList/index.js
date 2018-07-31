@@ -55,7 +55,7 @@ const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, del
                             <MdMoreVert />
                           </button>
                         :
-                          <button onClick={addJob}> 開始課程 </button>
+                          <button className="btn-student" onClick={e => startMethod(e, d)}> 開始課程 </button>
                       }
                       <ul className="action-menu">
                         <li>

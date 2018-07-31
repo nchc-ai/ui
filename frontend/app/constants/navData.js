@@ -83,17 +83,19 @@ export const footer = {
       key: 0,
       name: 'navbar.class',
       nameCh: '登入',
-      url: '/',
+      url: '/login',
       // url: '/intro/class',
-      isCate: true
+      isCate: true,
+      isOuter: false
     },
     {
       key: 1,
       name: 'navbar.intro',
       nameCh: '課程介紹',
-      url: '/',
+      url: '/course/intro',
       // url: '/intro/intro',
-      isCate: true
+      isCate: true,
+      isOuter: false
     },
     {
       key: 2,
@@ -101,15 +103,17 @@ export const footer = {
       nameCh: '中心介紹',
       url: '/',
       // url: '/intro/survey',
-      isCate: true
+      isCate: true,
+      isOuter: false
     },
     {
       key: 3,
       name: 'navbar.contact',
       nameCh: '聯絡我們',
-      url: '/',
+      url: '/contact',
       // url: '/intro/contact',
-      isCate: true
+      isCate: true,
+      isOuter: false
     }
   ],
   midInfoArr: [

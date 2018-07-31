@@ -26,50 +26,52 @@ const JobList = ({ data, addJob, deleteJob }) => (
                   <button className="fl btn-add" onClick={e => addJob(e, obj.data[0].courseId)}>+ 新增</button>
                 </Col>
               </Row>
-              <Row>
+              <div>
                 <DataFrame
                   data={obj.data}
                   cols={8}
                 >
-                  {
-                    obj.data.map((thumb, j) => (
-                      <Col key={j} md={4} >
-                        <div className="job-card">
-                          <button className="btn-cancel" onClick={e => deleteJob(e, thumb)}>X</button>
-                          <p className="job-card-status">
-                            <span className={`light light-${thumb.status}`} />
-                            <span className="status-word">
-                              {formatStatus(thumb.status)}
-                            </span>
-                          </p>
-                          <p className="job-card-id">{thumb.id}</p>
+                  <Row>
+                    {
+                      obj.data.map((thumb, j) => (
+                        <Col key={j} md={4} >
+                          <div className="job-card">
+                            <button className="btn-cancel" onClick={e => deleteJob(e, thumb)}>X</button>
+                            <p className="job-card-status">
+                              <span className={`light light-${thumb.status}`} />
+                              <span className="status-word">
+                                {formatStatus(thumb.status)}
+                              </span>
+                            </p>
+                            <p className="job-card-id">{thumb.id}</p>
 
-                          <div className="job-card-link-li">
-                            {
-                              thumb.service ?
-                              thumb.service.map(
-                                (service, k) => (
-                                  <span key={k} className="job-card-link">
-                                    <a
-                                      href={service.value}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                    >
-                                      {service.label}
-                                    </a>
-                                    <span className="divide-line">|</span>
-                                  </span>
-                                )
-                              ) : null
-                            }
+                            <div className="job-card-link-li">
+                              {
+                                thumb.service ?
+                                thumb.service.map(
+                                  (service, k) => (
+                                    <span key={k} className="job-card-link">
+                                      <a
+                                        href={service.value}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                      >
+                                        {service.label}
+                                      </a>
+                                      <span className="divide-line">|</span>
+                                    </span>
+                                  )
+                                ) : null
+                              }
+                            </div>
+                            <div className="corner-triangle" />
                           </div>
-                          <div className="corner-triangle" />
-                        </div>
-                      </Col>
-                    ))
-                  }
+                        </Col>
+                      ))
+                    }
+                  </Row>
                 </DataFrame>
-              </Row>
+              </div>
             </div>
           )
         )

@@ -5,7 +5,7 @@ export const initialGlobalSearchState = {
 
 export const initialAddCourseState = {
   name: '',
-  intro: '',
+  introduction: '',
   image: '',
   level: { label: '基礎', value: 'basic' },
   startAt: '',

@@ -40,7 +40,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
 };
 
 // Course > Get
-export const getCourseDetail = (courseId, token) => async (dispatch) => {
+export const getCourseDetail = (courseId, token, next) => async (dispatch) => {
   
   const response = await dispatch({
     [RSAA]: {
@@ -58,6 +58,10 @@ export const getCourseDetail = (courseId, token) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getCourseDetail 失敗');
+  }
+
+  if (next) {
+    next(response.payload.course);
   }
 };
 

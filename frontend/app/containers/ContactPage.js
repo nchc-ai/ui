@@ -6,6 +6,13 @@ import imgTitle from '../../public/images/index/section03-title-logo.png';
 import * as models from '../constants/models';
 
 class ContactPage extends Component {
+ 
+  componentWillMount() {
+    
+    // this.props.userAction.getCourseList('jimmy', token)
+    window.scrollTo(0, 0);
+  }
+
   render() {
     return (
       <div className="contact-bg global-content">

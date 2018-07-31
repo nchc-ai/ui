@@ -22,7 +22,9 @@ const FormGroups = ({
   onRadioChange,
   onDateChange,
   onMdChange
-}) => (
+}) => {
+
+  return (
   <div className="form-groups-comp">
     {
       formData.map(d => (
@@ -204,6 +206,7 @@ const FormGroups = ({
               ?
                 <div className="form-input">
                   <MarkdownShortcuts
+                    value={_.get(targetForm, d.name)}
                     onMdChange={val => changeVal(val, d.name, d.target)}
                   />
                 </div>
@@ -242,6 +245,6 @@ const FormGroups = ({
       ))
     }
   </div>
-);
+)};
 
 export default FormGroups;
