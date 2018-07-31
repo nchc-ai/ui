@@ -46,7 +46,7 @@ export const retrieveToken = (code, next) => async (dispatch) => {
 };
 
 // Proxy > Introspection
-export const getUserInfo = (token, next) => async (dispatch) => {
+export const getUserInfo = (token, history, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/proxy/introspection`,
@@ -59,12 +59,13 @@ export const getUserInfo = (token, next) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
+    next(response.error);
     console.error('getUserInfo 失敗', response);
   }
 
   if (next) {
-    next();
+    next(response.error);
   }
 };
 
@@ -120,9 +121,11 @@ export const signup = (formData, next) => async (dispatch) => {
 };
 
 
-// Proxy > Updata
+// Proxy > UpdataProfile
 export const updateProfile = (formData, token, next) => async (dispatch) => {
- 
+  
+
+  // console.log('formData', formData);
   // const tempData = tempfyData(formData);
 
   const response = await dispatch({
@@ -143,7 +146,34 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
   }
 
   next();
+};
 
+
+// Proxy > UpdataPassword
+export const updatePassword = (username, formData, token, next) => async (dispatch) => {
+
+  const tempData = {
+    username,
+    psassword: formData.password
+  };
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/v1/proxy/changePW`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(tempData),
+      types: types.UPDATE_PASSWORD
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('updatePassword 失敗');
+  }
+  next();
 };
 
 

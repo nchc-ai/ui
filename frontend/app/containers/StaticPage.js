@@ -14,12 +14,9 @@ class StaticPage extends Component {
     return (
       <div className="static-bg global-content">
         <div className="static-container">
-          <SectionTitle
-            titleImgUrl={"/"}
-            info="抱歉，您要找的頁面不存在。"
-            isTitleImg
-            isUnderline
-          />
+          <h5>404</h5>
+          <div className="line-h"></div>
+          <p>抱歉，您要找的頁面不存在。 </p>
         </div>
       </div>
     );

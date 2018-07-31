@@ -7,14 +7,13 @@ import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import { Value } from 'slate';
 import Progress from 'react-progress-2';
-
+import { jobInterval } from '../constants/parameters';
 
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import { userCourseData } from '../constants/tableData';
 import { addCourseForm } from '../constants/formsData';
-import { jobs } from '../constants/tempData';
-import { groupArray } from '../libraries/utils';
 import Profile from '../components/User/Profile';
+import Password from '../components/User/Password';
 import SideMenu from '../components/SideMenu/index';
 import CourseList from '../components/User/CourseList';
 import JobList from '../components/User/JobList';
@@ -55,9 +54,27 @@ class UserPage extends Component {
 
   componentDidMount() {
     window.scrollTo(0, 0);
-   
+    const intervalId = setInterval(this.timer, jobInterval);
+    this.setState({ intervalId });
   }
 
+  componentWillUnmount() {
+    // use intervalId from the state to clear the interval
+    clearInterval(this.state.intervalId);
+  }
+
+  timer = () => {
+    // setState method is used to update the state
+    const {
+      match
+    } = this.props;
+    const part = match.params.part;
+    // console.log('do something', part);
+    if (part === 'job') {
+      this.fetchData(this.props);
+      console.log('get job');
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     const {
@@ -127,6 +144,20 @@ class UserPage extends Component {
     } else {
       courseAction.getCourseListAll();
     }
+  }
+
+  handleSubmitFailed = (formData) => {
+    // console.log('[handleSubmitFailed] formData', formData);
+    notify.show('請確認是否填妥表單資料', 'error', 1800);
+  }
+
+  handleSubmitPasswordFailed = (formData) => {
+    // console.log('[handleSubmitFailed] formData', formData);
+    notify.show('請確認密碼是否相同', 'error', 1800);
+  }
+
+  handleCancel = () => {
+    this.props.history.push('/user/course');
   }
 
   // CourseList
@@ -203,10 +234,7 @@ class UserPage extends Component {
     userAction.createCourse(token, userInfo, formData, this.redirect);
   }
 
-  handleSubmitFailed = (formData) => {
-    // console.log('[handleSubmitFailed] formData', formData);
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
-  }
+
 
   loadImagesOpts = () => {
     const {
@@ -286,6 +314,7 @@ class UserPage extends Component {
     notify.show('個人資料更新成功', 'success', 1800);
   }
 
+
   onProfileUpdate = (formData) => {
     const {
       authAction,
@@ -298,8 +327,29 @@ class UserPage extends Component {
     this.props.history.push('/user/course');
   }
 
+  // Password
+  onPasswordUpdateSuccess = () => { 
+    notify.show('您的密碼已更新成功', 'success', 1800);
+  }
+
+
+  onPasswordUpdate = (formData) => {
+    const {
+      authAction,
+      token,
+      userInfo
+    } = this.props;
+    // console.log('update', userInfo);
+    authAction.updatePassword(userInfo.username, formData, token, this.onPasswordUpdateSuccess);
+  }
+
+  onPasswordCancel = () => {
+    this.props.history.push('/user/course');
+  }
+
   render() {
     const {
+      forms,
       match,
       courseAll,
       profile,
@@ -338,7 +388,6 @@ class UserPage extends Component {
                       addJob={this.addJob}
                     /> : null
                 }
-                
                 </div>
             </Route>
 
@@ -390,13 +439,24 @@ class UserPage extends Component {
             {/* 個人資料 */}
             <Route exact path="/user/profile">
               <Profile
-                targetForm={profile}
+                targetForm={forms.profile}
                 changeValue={changeValue}
                 onSubmit={this.onProfileUpdate}
-                cancelEdit={this.onProfileCancel}
+                onSubmitFailed={this.handleSubmitFailed}
+                cancelEdit={this.handleCancel}
               />
             </Route>
 
+            {/* 密碼變更 */}
+            <Route exact path="/user/password">
+              <Password
+                targetForm={forms.password}
+                changeValue={changeValue}
+                onSubmit={this.onPasswordUpdate}
+                onSubmitFailed={this.handleSubmitPasswordFailed}
+                cancelEdit={this.handleCancel}
+              />
+            </Route>
             {/* 修改個人資料 */}
             {/* <Route exact path="/user/profile/edit">
               <Profile
@@ -406,11 +466,8 @@ class UserPage extends Component {
                 cancelEdit={this.onProfileCancel}
               />
             </Route> */}
-
-
           </Switch>
         </div>
-        
       </div>
     );
   }
@@ -429,6 +486,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = ({ Auth, User, forms, Course }) => ({
+  forms,
   profile: forms.profile,
   addCourse: forms.addCourse,
   token: Auth.token,

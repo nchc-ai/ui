@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 // import ga from 'react-google-analytics';
+import { notify } from 'react-notify-toast';
 import { withRouter } from 'react-router';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
@@ -53,7 +54,7 @@ class SetUserInfo extends Component {
       authAction
     } = this.props;
     const token = getToken();
-    console.log('token', token, match);
+    // console.log('token', token, match);
     if (token === null || token === '' || token === 'null') {
       // console.log('A');
       // history.push('/login');
@@ -61,11 +62,17 @@ class SetUserInfo extends Component {
     } else {
       // console.log('B');
       authAction.setUserToken(token);
-      authAction.getUserInfo(token);
+      authAction.getUserInfo(token, history, this.afterGetUserInfo);
       
     }
   }
 
+  afterGetUserInfo = error => {
+    if (error) {
+      notify.show('您尚未登入', 'error', 1800);
+      this.props.history.push('/login');
+    }
+  }
 
 
   render = () => (<span className="dn" />);

@@ -5,7 +5,7 @@ import DataFrame from '../../common/DataFrame/index';
 import { formatValue } from '../../../libraries/utils';
 
 const SectionList = ({ data, detail, col }) => {
-  console.log('data', data);
+  // console.log('data', data);
   return (
   <div className="section-list-comp">
     <Row>

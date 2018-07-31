@@ -220,6 +220,12 @@ export const sideNav = [
     isLink: true
   }, {
     key: 3,
+    url: '/user/password',
+    text: '密碼設定',
+    isMain: false,
+    isLink: true
+  }, {
+    key: 4,
     url: '/logout',
     text: '登出',
     isMain: false,
