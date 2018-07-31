@@ -111,7 +111,13 @@ const config = {
     inline: true,
     historyApiFallback: true,
     port: 3010,
-    host: '0.0.0.0'
+    host: '0.0.0.0',
+    // fix Invalid Host header when use domain name
+    // https://blog.csdn.net/Gxiaoqin/article/details/77685786
+    // https://stackoverflow.com/questions/43619644/i-am-getting-an-invalid-host-header-message-when-running-my-react-app-in-a-we#43621275
+    allowedHosts: [
+        '.nchc.org.tw'
+    ]
   }
 };
 
