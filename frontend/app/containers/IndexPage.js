@@ -51,11 +51,13 @@ class IndexPage extends Component {
             isDivide
           />
           
+          <div id="index-intro"></div>
 
         </div>
 
-
+        
         <div name="intro" className="section-03 section-grp">
+          
           <SectionTitle
             isTitleImg
             titleImgUrl={section03Title}

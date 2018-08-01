@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import { Link as ScrollLink } from 'react-scroll';
+import { HashLink } from "react-router-hash-link";
 // import { translate } from 'react-i18next';
 import _ from 'lodash';
 
@@ -17,21 +18,18 @@ const NavBar = ({ match, data, offline, t, dropDownPos, offlineWarning }) => (
                   <span
                     className="main-link"
                     onClick={offlineWarning}
-                  >{t(d.name)}</span>
+                  >
+                    {t(d.name)}
+                  </span>
                 </div>
               :
                 <div className="navbar-li fl">
                   {
                     d.isAnchor ?
-                      <ScrollLink
-                        to={d.anchorTarget}
+                      <HashLink
+                        to="/#index-intro"
                         className="main-link"
-                        duration={1000}
-                        offset={d.offset}
-                        smooth
-                      >
-                        {d.nameCh}
-                      </ScrollLink>
+                      >{d.nameCh}</HashLink>
                     :
                       <span>
                         {
@@ -65,3 +63,14 @@ const NavBar = ({ match, data, offline, t, dropDownPos, offlineWarning }) => (
 
 
 export default (withRouter(NavBar));
+
+
+ // <ScrollLink
+//   to={d.anchorTarget}
+//   className="main-link"
+//   duration={1000}
+//   offset={d.offset}
+//   smooth
+// >
+//   {d.nameCh}
+// </ScrollLink>
