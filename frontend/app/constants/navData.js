@@ -99,12 +99,21 @@ export const footer = {
     },
     {
       key: 2,
-      name: 'navbar.survey',
+      // name: 'navbar.survey',
+      // nameCh: '中心介紹',
+      // url: '/',
+      // // url: '/intro/survey',
+      // isCate: true,
+      // isOuter: false
+      text: '中心介紹',
       nameCh: '中心介紹',
-      url: '/',
-      // url: '/intro/survey',
-      isCate: true,
-      isOuter: false
+      icon: null,
+      href: true,
+      url: '/info/center',
+      isLink: true,
+      anchorTarget: 'intro',
+      isAnchor: true,
+      offset: -60
     },
     {
       key: 3,
@@ -130,10 +139,14 @@ export const footer = {
           isLink: true
         }, {
           text: '中心介紹',
+          nameCh: '中心介紹',
           icon: null,
           href: true,
           url: '/info/center',
-          isLink: true
+          isLink: true,
+          anchorTarget: 'intro',
+          isAnchor: true,
+          offset: 10
         }
       ]
     }, {

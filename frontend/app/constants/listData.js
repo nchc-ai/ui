@@ -4,6 +4,7 @@ import IconCalendar from '../../public/images/course/ic-course-detail-date.png';
 import IconImage from '../../public/images/course/ic-course-detail-image.png';
 import IconGpu from '../../public/images/course/ic-course-detail-gpu.png';
 import IconDatasets from '../../public/images/course/ic-course-detail-datasets.png';
+import { pdfLink } from '../config/api';
 
 export const courseDetailList = obj => ([
   {
@@ -191,10 +192,10 @@ export const courseListAdvance = [
 
 export const courseDetailBasic = {
   info: '以AI Framework的使用作為主體,規劃教材及課程內容, 讓學員能快速應用到實際場域中。',
-  outerLink: 'https://drive.google.com/drive/folders/14L5gPhE_YC7Yt0j6jvdDebAYl-h--22M'
+  outerLink: pdfLink
 };
 
 export const courseDetailAdvance = {
   info: '以產業實際應用的需要做課程設計。內容涵蓋從資料分析、神經網路到佈署階段的應用。',
-  outerLink: 'https://drive.google.com/drive/folders/14L5gPhE_YC7Yt0j6jvdDebAYl-h--22M'
+  outerLink: pdfLink
 };

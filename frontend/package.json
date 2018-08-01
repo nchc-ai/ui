@@ -65,6 +65,7 @@
     "react-redux-form": "^1.16.8",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
+    "react-router-hash-link": "^1.2.0",
     "react-router-redux": "^4.0.8",
     "react-scroll": "^1.7.9",
     "react-select": "^1.2.1",
