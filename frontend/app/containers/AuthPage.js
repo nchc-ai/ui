@@ -64,8 +64,9 @@ class AuthPage extends Component {
   }
 
   onAfterSubmit = (response) => {
+    console.log('[signup] response', response);
     if (response.error) {
-      notify.show(`註冊失敗 失敗原因：${response.message}`, 'error', 2500);
+      notify.show(`註冊失敗 失敗原因：${response.payload.response.message}`, 'error', 2700);
     } else {
       notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', 1800);
       this.props.history.push('/login');
