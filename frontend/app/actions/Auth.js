@@ -111,11 +111,12 @@ export const signup = (formData, next) => async (dispatch) => {
       types: types.SIGNUP
     }
   });
-  // console.log('[signup] response');
 
-  // if (_.isUndefined(response) || response.payload.error) {
-  //   console.error('signup 失敗');
-  // }
+  console.log('[signup] payload', response)
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('signup 失敗');
+  }
 
   next(response);
 };
