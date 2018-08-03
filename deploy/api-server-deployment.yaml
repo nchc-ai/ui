@@ -81,7 +81,7 @@ data:
           "register_url": "http://140.110.18.35:30008/v1/oauth/register",
           "update_url": "http://140.110.18.35:30008/v1/oauth/update",
           "query_url": "http://140.110.18.35:30008/v1/oauth/query",
-          "redirect_url": "http://aitrain.nchc.org.tw:30004/user/course""
+          "redirect_url": "http://aitrain.nchc.org.tw:30004/user/course"
         }
       },
       "database": {
