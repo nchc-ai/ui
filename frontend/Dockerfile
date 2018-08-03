@@ -4,6 +4,4 @@ WORKDIR /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/frontend
 
 COPY . .
 
-RUN yarn install
-
-CMD ["yarn", "proxy"]
+CMD ["sh", "-c","yarn install && yarn proxy"]

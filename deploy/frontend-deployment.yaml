@@ -14,7 +14,7 @@ spec:
         tier: twgc-ui
     spec:
       containers:
-      # use nginx to serve built ui
+      # use nginx to serve built page
       - name: twgc-nginx
         image: nginx:1.15-alpine
         ports:
@@ -25,10 +25,10 @@ spec:
         - name: dist
           mountPath: /usr/share/nginx/html
       initContainers:
-      # build before serve by Nginx
+      # some configuration is stored in configMap, we need a initContainer to build before serve
       - name: twgc-ui
         image: ogre0403/twgc:ui-a6d6368
-        command: ["yarn","build"]
+        command: ["sh", "-c","yarn install && yarn build"]
         volumeMounts:
         - name: twgc-ui-conf
           mountPath: /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/frontend/app/config/
@@ -46,7 +46,7 @@ spec:
           name: twgc-nginx-cm
           items:
           - key: nginx-conf
-            path:  default.cong
+            path:  default.conf
       - name: dist
         emptyDir: {}
 ---
