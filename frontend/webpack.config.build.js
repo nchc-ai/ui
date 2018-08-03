@@ -20,7 +20,8 @@ module.exports = {
     path.join(__dirname, 'app/main.js')
   ],
   output: {
-    path: path.join(__dirname, '/dist'),
+    // path: path.join(__dirname, '/dist'),
+    path: path.join('/tmp', '/dist'),
     filename: 'index_bundle.js',
     publicPath: '/'
   },
@@ -57,7 +58,7 @@ module.exports = {
     new CleanWebpackPlugin(
       ['dist'],
       {
-        root: __dirname,
+        root: '/tmp',
         verbose: true,
         dry: false
       }
