@@ -27,7 +27,7 @@ spec:
       initContainers:
       # some configuration is stored in configMap, we need a initContainer to build before serve
       - name: twgc-ui
-        image: ogre0403/twgc:ui-a6d6368
+        image: ogre0403/twgc:ui-3862a24
         command: ["sh", "-c","yarn install && yarn build"]
         volumeMounts:
         - name: twgc-ui-conf
@@ -55,12 +55,23 @@ kind: Service
 metadata:
   name: twgc-ui
 spec:
-  type: NodePort
   ports:
     - port: 3010
-      nodePort: 30004
   selector:
     tier: twgc-ui
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: aitrain-ingress
+spec:
+  rules:
+  - host: aitrain.nchc.org.tw
+    http:
+      paths:
+      - backend:
+          serviceName: twgc-ui
+          servicePort: 3010
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -68,7 +79,7 @@ metadata:
   name: twgc-ui-cm
 data:
   endpoint-conf: |-
-    export const WEBSITE_URL = 'http://aitrain.nchc.org.tw:30004';
+    export const WEBSITE_URL = 'http://aitrain.nchc.org.tw';
     export const API_URL = '';
     export const AUTH_PROVIDER_URL = 'http://140.110.18.35:30008';
     export const jobInterval = 60000;
