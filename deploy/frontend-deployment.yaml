@@ -60,19 +60,6 @@ spec:
   selector:
     tier: twgc-ui
 ---
-apiVersion: extensions/v1beta1
-kind: Ingress
-metadata:
-  name: aitrain-ingress
-spec:
-  rules:
-  - host: aitrain.nchc.org.tw
-    http:
-      paths:
-      - backend:
-          serviceName: twgc-ui
-          servicePort: 3010
----
 apiVersion: v1
 kind: ConfigMap
 metadata:
