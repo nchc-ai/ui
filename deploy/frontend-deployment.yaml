@@ -68,7 +68,7 @@ data:
   endpoint-conf: |-
     export const WEBSITE_URL = 'http://aitrain.nchc.org.tw';
     export const API_URL = '';
-    export const AUTH_PROVIDER_URL = 'http://140.110.18.35:30008';
+    export const AUTH_PROVIDER_URL = 'http://aioauth.nchc.org.tw';
     export const jobInterval = 60000;
     export const pdfLink = 'https://drive.google.com/file/d/1MvfNxfLkBr4yvbxsJhh-D6PeaFsovNPl/view';
 ---

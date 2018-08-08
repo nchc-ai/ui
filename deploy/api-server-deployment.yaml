@@ -73,14 +73,14 @@ data:
           "name": "test-provider",
           "client_id": "test_client_1",
           "client_secret": "test_secret",
-          "auth_url": "http://140.110.18.35:30008/web/authorize",
-          "token_url": "http://140.110.18.35:30008/v1/oauth/tokens",
-          "refresh_url": "http://140.110.18.35:30008/v1/oauth/tokens",
-          "introspect_url": "http://140.110.18.35:30008/v1/oauth/introspect",
-          "logout_url": "http://140.110.18.35:30008/v1/oauth/logout",
-          "register_url": "http://140.110.18.35:30008/v1/oauth/register",
-          "update_url": "http://140.110.18.35:30008/v1/oauth/update",
-          "query_url": "http://140.110.18.35:30008/v1/oauth/query",
+          "auth_url": "http://aioauth.nchc.org.tw/web/authorize",
+          "token_url": "http://aioauth.nchc.org.tw/v1/oauth/tokens",
+          "refresh_url": "http://aioauth.nchc.org.tw/v1/oauth/tokens",
+          "introspect_url": "http://aioauth.nchc.org.tw/v1/oauth/introspect",
+          "logout_url": "http://aioauth.nchc.org.tw/v1/oauth/logout",
+          "register_url": "http://aioauth.nchc.org.tw/v1/oauth/register",
+          "update_url": "http://aioauth.nchc.org.tw/v1/oauth/update",
+          "query_url": "http://aioauth.nchc.org.tw/v1/oauth/query",
           "redirect_url": "http://aitrain.nchc.org.tw/user/course"
         }
       },
@@ -96,8 +96,8 @@ data:
         "expose_ip": "http://140.110.18.35",
         "namespace": "default",
         "resourceLimit": {
-          "cpu": "500m",
-          "memory": "64Mi"
+          "cpu": "4",
+          "memory": "10Gi"
         },
         "expose_port": {
           "web": 80,
