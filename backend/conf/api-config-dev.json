@@ -15,7 +15,7 @@
       "register_url": "http://140.110.5.22:30010/v1/oauth/register",
       "update_url": "http://140.110.5.22:30010/v1/oauth/update",
       "query_url": "http://140.110.5.22:30010/v1/oauth/query",
-      "redirect_url": "https://www.example.com"
+      "redirect_url": "http://localhost:3010/user/course"
     }
   },
   "database": {

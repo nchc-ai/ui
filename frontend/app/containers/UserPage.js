@@ -170,9 +170,9 @@ class UserPage extends Component {
 
   // CourseList
 
-  startCourse = (e, course) => {
+  startCourse = (course) => {
     // console.log('course', course);
-    this.addJob('e', course.id);
+    this.addJob(course.id);
   }
 
   editCourse = (course) => {
@@ -314,7 +314,7 @@ class UserPage extends Component {
 
   // Job
 
-  addJob = (e, courseId) => {
+  addJob = (courseId) => {
     const {
       token,
       userInfo,
