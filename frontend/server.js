@@ -58,9 +58,9 @@ if (isDev) {
   });
 } else {
   app.use(express.static('public'));
-  app.use(express.static(`${__dirname}/dist`));
+  app.use(express.static('/tmp/dist'));
   app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist/index.html'));
+    res.sendFile(path.join("/tmp", 'dist/index.html'));
   });
 }
 // -------------------  Error Handler -------------------------//

@@ -172,7 +172,7 @@ class UserPage extends Component {
 
   startCourse = (e, course) => {
     // console.log('course', course);
-    this.addJob('e', course.id);
+    this.addJob(e, course.id);
   }
 
   editCourse = (course) => {

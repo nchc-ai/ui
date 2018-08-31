@@ -14,13 +14,26 @@ spec:
         tier: twgc-ui
     spec:
       containers:
-      - name: twgc-ui
-        image: ogre0403/twgc:ui-a6d6368
+      # use nginx to serve built page
+      - name: twgc-nginx
+        image: nginx:1.15-alpine
         ports:
         - containerPort: 3010
         volumeMounts:
+        - name: twgc-nginx-conf
+          mountPath: /etc/nginx/conf.d
+        - name: dist
+          mountPath: /usr/share/nginx/html
+      initContainers:
+      # some configuration is stored in configMap, we need a initContainer to build before serve
+      - name: twgc-ui
+        image: ogre0403/twgc:ui-3862a24
+        command: ["sh", "-c","yarn install && yarn build"]
+        volumeMounts:
         - name: twgc-ui-conf
           mountPath: /go/src/gitlab.com/nchc-ai/AI-Eduational-Platform/frontend/app/config/
+        - name: dist
+          mountPath: /tmp/dist
       volumes:
       - name: twgc-ui-conf
         configMap:
@@ -28,16 +41,22 @@ spec:
           items:
           - key: endpoint-conf
             path: api.js
+      - name: twgc-nginx-conf
+        configMap:
+          name: twgc-nginx-cm
+          items:
+          - key: nginx-conf
+            path:  default.conf
+      - name: dist
+        emptyDir: {}
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: twgc-ui
 spec:
-  type: NodePort
   ports:
     - port: 3010
-      nodePort: 30004
   selector:
     tier: twgc-ui
 ---
@@ -47,8 +66,40 @@ metadata:
   name: twgc-ui-cm
 data:
   endpoint-conf: |-
-    export const WEBSITE_URL = 'http://140.110.18.35:30004';
+    export const WEBSITE_URL = 'http://aitrain.nchc.org.tw';
     export const API_URL = '';
-    export const AUTH_PROVIDER_URL = 'http://140.110.5.22:30010';
+    export const AUTH_PROVIDER_URL = 'http://aioauth.nchc.org.tw';
     export const jobInterval = 60000;
     export const pdfLink = 'https://drive.google.com/file/d/1MvfNxfLkBr4yvbxsJhh-D6PeaFsovNPl/view';
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: twgc-nginx-cm
+data:
+  nginx-conf: |-
+    server {
+        listen       3010;
+        server_name  localhost;
+
+
+        location / {
+            root   /usr/share/nginx/html;
+            index  index.html index.htm;
+
+            # fix Single Page Application cannot found when proxy
+            # https://stackoverflow.com/questions/32593739/nginx-config-for-single-page-app-with-html5-app-cache
+            try_files $uri /index.html =404;
+        }
+
+        # proxy /v1/* apis to api-server server
+        location /v1 {
+            proxy_pass http://twgc-api-svc.default:38080;
+        }
+
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   /usr/share/nginx/html;
+        }
+    }
+

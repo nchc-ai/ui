@@ -10,3 +10,9 @@
     NFS-mountpoint: 172.16.0.100:/nfs (無登入資訊)
     worker: 172.16.0.1-8 (chou/nchc@ccw)
     IPMI: 192.168.0.1 (admin/password)
+    
+政宇七台：
+    admin-node(VM):
+        public ip:  140.110.18.132 (0503119/0503119)-對外窗口
+        private ip: 172.16.0.200 (0503119/0503119)
+    NFS-mountpoint: 172.16.0.100:/nfs (無登入資訊)

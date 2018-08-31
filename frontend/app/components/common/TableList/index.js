@@ -59,7 +59,7 @@ const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, del
                       }
                       <ul className="action-menu">
                         <li>
-                          <button className="action-btn" onClick={() => startMethod(d)}>
+                          <button className="action-btn" onClick={e => startMethod(e, d)}>
                             <span className="action-word">開始</span>
                             <MdAdd />
                           </button>
