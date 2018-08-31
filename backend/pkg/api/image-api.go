@@ -6,62 +6,75 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	log "github.com/golang/glog"
+	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/util"
+	"fmt"
+	"errors"
 )
 
-func listhubimage()[100]string{
-						    url := "https://registry.hub.docker.com/v2/repositories/nchcai/train/tags/"
-							req, _ := http.NewRequest("GET", url, nil)
-							req.Header.Add("Cache-Control", "no-cache")
-							res, _ := http.DefaultClient.Do(req)
-							defer res.Body.Close()
-							data, _ := ioutil.ReadAll(res.Body)
-							jdata := []byte(string(data))
-							var u interface{}
-							json.Unmarshal(jdata, &u)
-							result,ok := u.(map[string]interface{})
-							var tag [100]string
-					if ok{
-						for _, v := range result {
-							switch v2 := v.(type) {
-								case []interface{}:
-									for i, iv := range v2 {
-									resultiv,_ := iv.(map[string]interface{})
-							  		x := resultiv["name"].(string)
-									tag[i] = x
-									}
-							}
-						}
-					}
-				return  tag
+const DockerHubURL = "https://registry.hub.docker.com/v2/repositories/nchcai/train/tags/"
+
+func listhubimage() ([]string, error) {
+	req, err := http.NewRequest("GET", DockerHubURL, nil)
+
+	if err != nil {
+		return nil, err
+	}
+
+	req.Header.Add("Cache-Control", "no-cache")
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, err
+	}
+
+	defer res.Body.Close()
+	data, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, err
+	}
+
+	var arbitrary_json map[string]interface{}
+	err = json.Unmarshal(data, &arbitrary_json)
+	if err != nil {
+		return nil, err
+	}
+
+	var tag []string
+	for k, v := range arbitrary_json {
+		if k == "results" {
+			ja, ok := v.([]interface{})
+			if !ok {
+				return nil, errors.New(fmt.Sprintf("cast json array fail: { %s }", v))
 			}
 
-
-// todo: implement real list image
-func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
-	
-	x :=listhubimage()
-	hubimage := map[string]string{}
-	for i:=0;i<100;i++{
-		if x[i]!=""{
-			fmt.Println(x[i])
-			imagename := "nchcai/train:"+x[i]
-			hubimage[imagename]=imagename
+			for _, vv := range ja {
+				resultiv, ok := vv.(map[string]interface{})
+				if !ok {
+					return nil, errors.New(fmt.Sprintf("cast map fail: %s", vv))
+				}
+				tag = append(tag, resultiv["name"].(string))
+			}
 		}
 	}
 
+	return tag, nil
+}
 
-/*	image := map[string]string{
-		"tensorflow/tensorflow:1.5.1": "tensorflow/tensorflow:1.5.1",
-		"nvidia/digits:5.0":           "nvidia/digits:5.0",
-		"nginx:1.7.9":                 "nginx:1.7.9",
+func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
+
+	imgs, err := listhubimage()
+	if err != nil {
+		log.Errorf("Failed to get images information from Dockerhub: %s", err.Error())
+		util.RespondWithError(c, http.StatusInternalServerError, "Failed to get images information from Dockerhub: %s", err.Error())
+		return
 	}
-*/
+
 	imageList := []model.LabelValue{}
 
-	for k, v := range hubimage {
+	for _, n := range imgs {
 		lbval := model.LabelValue{
-			Label: k,
-			Value: v,
+			Label: fmt.Sprintf("nchcai/train:%s", n),
+			Value: fmt.Sprintf("nchcai/train:%s", n),
 		}
 		imageList = append(imageList, lbval)
 	}
