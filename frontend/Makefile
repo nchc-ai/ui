@@ -1,8 +1,8 @@
 COMMIT_HASH = $(shell git rev-parse --short HEAD)
-RET = $(shell git describe --tags $(COMMIT_HASH) 1>&2 2> /dev/null; echo $$?)
+RET = $(shell git describe --contains $(COMMIT_HASH) 1>&2 2> /dev/null; echo $$?)
 
 ifeq ($(RET),0)
-    TAG = $(shell git describe --tags $(COMMIT_HASH))
+    TAG = $(shell git describe --contains $(COMMIT_HASH))
 else
 	TAG = $(COMMIT_HASH)
 endif
