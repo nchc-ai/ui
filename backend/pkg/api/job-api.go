@@ -225,7 +225,9 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 
 	exposeip := resourceClient.config.GetString("kubernetes.expose_ip")
 	var newPorts []apiv1.ServicePort
-        time.Sleep(45 * time.Second)
+
+	// todo: user must specify desired port number (#42)
+	time.Sleep(45 * time.Second)
 	// check every nodePort, only keep reachable one
 	for _, p := range svc.Spec.Ports {
 		svcIp := strings.TrimPrefix(fmt.Sprintf("%s:%d", exposeip, p.NodePort), "http://")
