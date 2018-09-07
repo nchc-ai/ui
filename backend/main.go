@@ -4,8 +4,19 @@ import (
 	"flag"
 	"github.com/spf13/viper"
 	"gitlab.com/nchc-ai/AI-Eduational-Platform/backend/pkg/api"
+	_ "gitlab.com/nchc-ai/AI-Eduational-Platform/backend/docs"
 	log "github.com/golang/glog"
 )
+// @title AI Train API
+// @version 1.0
+// @description AI Train API.
+
+// @host localhost:38080
+// @BasePath /v1
+
+// @securityDefinitions.apikey ApiKeyAuth
+// @in header
+// @name Authorization
 
 func main() {
 

@@ -13,6 +13,19 @@ import (
 	"strings"
 )
 
+// @Summary List someone's all courses information
+// @Description List someone's all courses information
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param list_user body model.OauthUser true "search user course"
+// @Success 200 {object} model.ListCourseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /course/list [post]
 func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
 	provider, exist := c.Get("Provider")
 	if exist == false {
@@ -56,6 +69,16 @@ func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
 
 }
 
+// @Summary List basic or advance courses information
+// @Description List basic or advance courses information
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param level path string true "basic or advance"
+// @Success 200 {object} model.ListCourseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /course/level/{level} [get]
 func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
 	level := c.Param("level")
 
@@ -85,6 +108,14 @@ func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
 
 }
 
+// @Summary List all course information
+// @Description get all course information
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} model.ListCourseResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /course/list [get]
 func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 	course := model.Course{}
 
@@ -103,6 +134,18 @@ func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 	})
 }
 
+
+
+// @Summary Search course name
+// @Description Search course name
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param search body model.Search true "search keyword"
+// @Success 200 {object} model.ListCourseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /course/search [post]
 func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 
 	req := model.Search{}
@@ -133,6 +176,20 @@ func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 	})
 }
 
+
+// @Summary Add new course information
+// @Description Add new course information into database
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param course body model.Course true "course information"
+// @Success 200 {object} model.GenericResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /course/create/ [post]
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 
 	var req model.Course
@@ -199,6 +256,20 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s created successfully", req.Name)
 }
 
+
+// @Summary Delete course information
+// @Description All associated job, Deployment and svc in kubernetes are also deleted.
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param id path string true "course uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41"
+// @Success 200 {object} model.GenericResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /course/delete/{id} [delete]
 func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	courseId := c.Param("id")
 
@@ -243,6 +314,20 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s is deleted successfully, associated jobs are also deleted", courseId)
 }
 
+
+// @Summary Get one courses information by course id
+// @Description Get one courses information by course id
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param id path string true "course uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41"
+// @Success 200 {object} model.GetCourseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /course/get/{id} [get]
 func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 	id := c.Param("id")
 
@@ -290,6 +375,19 @@ func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 }
 
 // todo: do we allow user to modify image/gpu, if so, we need to restart job deployment
+// @Summary Update course information
+// @Description Update course information
+// @Tags Course
+// @Accept  json
+// @Produce  json
+// @Param course body model.Course true "new course information"
+// @Success 200 {object} model.GenericResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /course/update/ [put]
 func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {
 	var req model.Course
 

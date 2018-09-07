@@ -19,6 +19,9 @@ import (
 	apiv1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/resource"
 	"github.com/spf13/cast"
+
+	"github.com/swaggo/gin-swagger"
+	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
 
 type KClient struct {
@@ -349,6 +352,10 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	{
 		imageAuth.GET("/", resourceClient.ListImage)
 	}
+
+	// swagger route
+	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
 }
 
 func (server *APIServer) Resume() {

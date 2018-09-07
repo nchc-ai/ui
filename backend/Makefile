@@ -12,7 +12,7 @@ install_deps:
 
 run-backend:
 	rm -rf bin/*
-	go build -o bin/app ./cmd
+	go build -o bin/app .
 	./bin/app --conf=./conf/api-config.json
 
 run-backend-docker:
@@ -24,8 +24,11 @@ build-backend-img:
 
 build-in-docker:
 	rm -rf bin/*
-	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/app ./cmd
+	CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o bin/app .
 
+
+build-doc:
+	$(GOPATH)/bin/swag init
 
 clean:
 	rm -rf bin/*

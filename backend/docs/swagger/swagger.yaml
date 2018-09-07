@@ -1,0 +1,415 @@
+basePath: /v1
+definitions:
+  model.Course:
+    properties:
+      createAt:
+        example: "2018-06-28T07:58:18Z"
+        format: string
+        type: string
+      datasets:
+        description: gorm many-to-many associations
+        example:
+        - dataset2
+        - dateset3
+        format: string
+        items:
+          type: string
+        type: array
+      gpu:
+        example: 1
+        format: int64
+        type: integer
+      id:
+        example: 550e8400-e29b-41d4-a716-446655440000
+        format: uuid
+        type: string
+      image:
+        example: nginx:1.7.9
+        format: string
+        type: string
+      introduction:
+        example: 課程說明
+        format: string
+        type: string
+      level:
+        example: basic
+        format: string
+        type: string
+      name:
+        example: jimmy的課
+        format: string
+        type: string
+      user:
+        description: 'todo: go-swagger still show user json field in example when
+          empty'
+        type: string
+    type: object
+  model.GenericResponse:
+    properties:
+      error:
+        example: false
+        format: bool
+        type: boolean
+      message:
+        example: response message
+        format: string
+        type: string
+    type: object
+  model.GetCourseResponse:
+    properties:
+      course:
+        $ref: '#/definitions/model.Course'
+        type: object
+      error:
+        type: boolean
+    type: object
+  model.ListCourseResponse:
+    properties:
+      courses:
+        items:
+          $ref: '#/definitions/model.Course'
+        type: array
+      error:
+        example: false
+        format: bool
+        type: boolean
+    type: object
+  model.OauthUser:
+    properties:
+      user:
+        description: 'todo: go-swagger still show user json field in example when
+          empty'
+        type: string
+    type: object
+  model.Search:
+    properties:
+      query:
+        example: course keyword
+        type: string
+    type: object
+host: localhost:38080
+info:
+  contact: {}
+  description: AI Train API.
+  license: {}
+  title: AI Train API
+  version: "1.0"
+paths:
+  /course/create/:
+    post:
+      consumes:
+      - application/json
+      description: Add new course information into database
+      parameters:
+      - description: course information
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/model.Course'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Add new course information
+      tags:
+      - Course
+  /course/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: All associated job, Deployment and svc in kubernetes are also deleted.
+      parameters:
+      - description: 'course uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41'
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Delete course information
+      tags:
+      - Course
+  /course/get/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get one courses information by course id
+      parameters:
+      - description: 'course uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41'
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GetCourseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Get one courses information by course id
+      tags:
+      - Course
+  /course/level/{level}:
+    get:
+      consumes:
+      - application/json
+      description: List basic or advance courses information
+      parameters:
+      - description: basic or advance
+        in: path
+        name: level
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ListCourseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: List basic or advance courses information
+      tags:
+      - Course
+  /course/list:
+    get:
+      consumes:
+      - application/json
+      description: get all course information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ListCourseResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: List all course information
+      tags:
+      - Course
+    post:
+      consumes:
+      - application/json
+      description: List someone's all courses information
+      parameters:
+      - description: search user course
+        in: body
+        name: list_user
+        required: true
+        schema:
+          $ref: '#/definitions/model.OauthUser'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ListCourseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: List someone's all courses information
+      tags:
+      - Course
+  /course/search:
+    post:
+      consumes:
+      - application/json
+      description: Search course name
+      parameters:
+      - description: search keyword
+        in: body
+        name: search
+        required: true
+        schema:
+          $ref: '#/definitions/model.Search'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ListCourseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: Search course name
+      tags:
+      - Course
+  /course/update/:
+    put:
+      consumes:
+      - application/json
+      description: Update course information
+      parameters:
+      - description: new course information
+        in: body
+        name: course
+        required: true
+        schema:
+          $ref: '#/definitions/model.Course'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update course information
+      tags:
+      - Course
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
