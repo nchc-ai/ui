@@ -66,10 +66,10 @@ func listhubimage() ([]string, error) {
 // @Tags Image
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.ImagesListResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.ImagesListResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /images [get]
 func (resourceClient *ResourceClient) ListImage(c *gin.Context) {

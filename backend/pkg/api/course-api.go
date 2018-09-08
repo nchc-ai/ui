@@ -18,12 +18,12 @@ import (
 // @Tags Course
 // @Accept  json
 // @Produce  json
-// @Param list_user body model.OauthUser true "search user course"
-// @Success 200 {object} model.ListCourseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param list_user body docs.OauthUser true "search user course"
+// @Success 200 {object} docs.ListCourseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /course/list [post]
 func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
@@ -75,9 +75,9 @@ func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
 // @Accept  json
 // @Produce  json
 // @Param level path string true "basic or advance"
-// @Success 200 {object} model.ListCourseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.ListCourseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Router /course/level/{level} [get]
 func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
 	level := c.Param("level")
@@ -113,8 +113,8 @@ func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
 // @Tags Course
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.ListCourseResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.ListCourseResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Router /course/list [get]
 func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 	course := model.Course{}
@@ -134,17 +134,15 @@ func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 	})
 }
 
-
-
 // @Summary Search course name
 // @Description Search course name
 // @Tags Course
 // @Accept  json
 // @Produce  json
-// @Param search body model.Search true "search keyword"
-// @Success 200 {object} model.ListCourseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param search body docs.Search true "search keyword"
+// @Success 200 {object} docs.ListCourseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Router /course/search [post]
 func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 
@@ -176,18 +174,17 @@ func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 	})
 }
 
-
 // @Summary Add new course information
 // @Description Add new course information into database
 // @Tags Course
 // @Accept  json
 // @Produce  json
-// @Param course body model.Course true "course information"
-// @Success 200 {object} model.GenericResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param course body docs.AddCourse true "course information"
+// @Success 200 {object} docs.GenericOKResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /course/create/ [post]
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
@@ -256,18 +253,17 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s created successfully", req.Name)
 }
 
-
 // @Summary Delete course information
 // @Description All associated job, Deployment and svc in kubernetes are also deleted.
 // @Tags Course
 // @Accept  json
 // @Produce  json
 // @Param id path string true "course uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41"
-// @Success 200 {object} model.GenericResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.GenericOKResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /course/delete/{id} [delete]
 func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
@@ -314,18 +310,17 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	util.RespondWithOk(c, "Course %s is deleted successfully, associated jobs are also deleted", courseId)
 }
 
-
 // @Summary Get one courses information by course id
 // @Description Get one courses information by course id
 // @Tags Course
 // @Accept  json
 // @Produce  json
 // @Param id path string true "course uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41"
-// @Success 200 {object} model.GetCourseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.GetCourseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /course/get/{id} [get]
 func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
@@ -380,12 +375,12 @@ func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 // @Tags Course
 // @Accept  json
 // @Produce  json
-// @Param course body model.Course true "new course information"
-// @Success 200 {object} model.GenericResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param course body docs.UpdateCourse true "new course information"
+// @Success 200 {object} docs.GenericOKResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /course/update/ [put]
 func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {

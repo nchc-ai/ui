@@ -1,16 +1,11 @@
 basePath: /v1
 definitions:
-  model.Course:
+  docs.AddCourse:
     properties:
-      createAt:
-        example: "2018-06-28T07:58:18Z"
-        format: string
-        type: string
       datasets:
-        description: gorm many-to-many associations
         example:
-        - dataset2
-        - dateset3
+        - cifar-10
+        - caltech256
         format: string
         items:
           type: string
@@ -19,10 +14,6 @@ definitions:
         example: 1
         format: int64
         type: integer
-      id:
-        example: 550e8400-e29b-41d4-a716-446655440000
-        format: uuid
-        type: string
       image:
         example: nginx:1.7.9
         format: string
@@ -40,237 +31,426 @@ definitions:
         format: string
         type: string
       user:
-        description: 'todo: go-swagger still show user json field in example when
-          empty'
+        example: ogre@gamil.com
         type: string
     type: object
-  model.DatasetsListResponse:
+  docs.Course:
     properties:
+      createAt:
+        example: "2018-06-25T09:24:38Z"
+        type: string
       datasets:
-        items:
-          $ref: '#/definitions/model.LabelValue'
-        type: array
-      error:
-        type: boolean
-    type: object
-  model.GenericRequest:
-    properties:
-      message:
-        type: string
-    type: object
-  model.GenericResponse:
-    properties:
-      error:
-        example: false
-        format: bool
-        type: boolean
-      message:
-        example: response message
+        example:
+        - cifar-10
+        - caltech256
         format: string
-        type: string
-    type: object
-  model.GetCourseResponse:
-    properties:
-      course:
-        $ref: '#/definitions/model.Course'
-        type: object
-      error:
-        type: boolean
-    type: object
-  model.HealthDatabaseResponse:
-    properties:
-      error:
-        example: false
-        format: bool
-        type: boolean
-      message:
-        example: response message
-        format: string
-        type: string
-      tables:
-        items:
-          type: string
-        type: array
-    type: object
-  model.HealthKubernetesResponse:
-    properties:
-      error:
-        type: boolean
-      message:
-        items:
-          $ref: '#/definitions/model.Node'
-        type: array
-    type: object
-  model.ImagesListResponse:
-    properties:
-      error:
-        type: boolean
-      images:
-        items:
-          $ref: '#/definitions/model.LabelValue'
-        type: array
-    type: object
-  model.IntrospectionReq:
-    properties:
-      token:
-        type: string
-    type: object
-  model.JobInfo:
-    properties:
-      course_id:
-        type: string
-      dataset:
         items:
           type: string
         type: array
       gpu:
+        example: 1
+        format: int64
         type: integer
       id:
+        example: 49a31009-7d1b-4ff2-badd-e8c717e2256c
         type: string
       image:
+        example: nginx:1.7.9
+        format: string
         type: string
       introduction:
+        example: 課程說明
+        format: string
         type: string
       level:
+        example: basic
+        format: string
         type: string
       name:
+        example: jimmy的課
+        format: string
+        type: string
+    type: object
+  docs.DatasetLabelValue:
+    properties:
+      label:
+        example: dataset1
+        type: string
+      value:
+        example: dataset1
+        type: string
+    type: object
+  docs.DatasetsListResponse:
+    properties:
+      datasets:
+        items:
+          $ref: '#/definitions/docs.DatasetLabelValue'
+        type: array
+      error:
+        type: boolean
+    type: object
+  docs.GenericDBRequest:
+    properties:
+      message:
+        example: test
+        type: string
+    type: object
+  docs.GenericErrorResponse:
+    properties:
+      error:
+        example: true
+        format: bool
+        type: boolean
+      message:
+        example: error response message
+        format: string
+        type: string
+    type: object
+  docs.GenericOKResponse:
+    properties:
+      error:
+        example: false
+        format: bool
+        type: boolean
+      message:
+        example: response message
+        format: string
+        type: string
+    type: object
+  docs.GetCourseResponse:
+    properties:
+      course:
+        $ref: '#/definitions/docs.Course'
+        type: object
+      error:
+        example: false
+        format: bool
+        type: boolean
+    type: object
+  docs.HealthDatabaseResponse:
+    properties:
+      error:
+        example: false
+        format: bool
+        type: boolean
+      message:
+        example: test
+        format: string
+        type: string
+      tables:
+        example:
+        - jobs
+        - courses
+        items:
+          type: string
+        type: array
+    type: object
+  docs.HealthKubernetesResponse:
+    properties:
+      error:
+        example: false
+        format: bool
+        type: boolean
+      message:
+        items:
+          $ref: '#/definitions/docs.Node'
+        type: array
+    type: object
+  docs.ImageLabelValue:
+    properties:
+      label:
+        example: tensorflow/tensorflow:1.5.1
+        type: string
+      value:
+        example: tensorflow/tensorflow:1.5.1
+        type: string
+    type: object
+  docs.ImagesListResponse:
+    properties:
+      error:
+        example: false
+        format: bool
+        type: boolean
+      images:
+        items:
+          $ref: '#/definitions/docs.ImageLabelValue'
+        type: array
+    type: object
+  docs.IntrospectResponse:
+    properties:
+      active:
+        example: true
+        format: bool
+        type: boolean
+      client_id:
+        example: test_client_1
+        type: string
+      exp:
+        example: 1530672296
+        format: int64
+        type: integer
+      role:
+        example: user
+        type: string
+      scope:
+        example: read_write
+        type: string
+      token_type:
+        example: Bearer
+        type: string
+      username:
+        example: ogre0403@gmail.com
+        type: string
+    type: object
+  docs.IntrospectionReq:
+    properties:
+      token:
+        example: 045e8bd5-58dc-4bd5-8254-dc3d1571c9cd
+        type: string
+    type: object
+  docs.JobInfo:
+    properties:
+      course_id:
+        example: b86b2893-b876-45c2-a3f6-5e099c15d638
+        type: string
+      dataset:
+        example:
+        - cifar-10
+        - mnist
+        items:
+          type: string
+        type: array
+      gpu:
+        example: 1
+        format: int64
+        type: integer
+      id:
+        example: 49a31009-7d1b-4ff2-badd-e8c717e2256c
+        type: string
+      image:
+        example: nvidia/caffe:latest
+        type: string
+      introduction:
+        example: markdown text with escape
+        type: string
+      level:
+        example: basic
+        type: string
+      name:
+        example: mage process
         type: string
       service:
         items:
-          $ref: '#/definitions/model.LabelValue'
+          $ref: '#/definitions/docs.SVCLabelValue'
         type: array
       startAt:
+        example: "2018-06-25T09:24:38Z"
         type: string
       status:
+        example: Ready
         type: string
     type: object
-  model.JobListResponse:
+  docs.JobListResponse:
     properties:
       error:
+        example: false
+        format: bool
         type: boolean
       jobs:
         items:
-          $ref: '#/definitions/model.JobInfo'
+          $ref: '#/definitions/docs.JobInfo'
         type: array
     type: object
-  model.JobStatus:
+  docs.JobStatus:
     properties:
       job_id:
+        example: 5ab02011-9ab7-40c3-b691-d335f93a12ee
         type: string
       ready:
+        example: false
+        format: bool
         type: boolean
       status:
+        example: Created
         type: string
     type: object
-  model.LabelValue:
-    properties:
-      label:
-        type: string
-      value:
-        type: string
-    type: object
-  model.LaunchCourseRequest:
+  docs.LaunchCourseRequest:
     properties:
       course_id:
+        example: 5ab02011-9ab7-40c3-b691-d335f93a12ee
         type: string
       user:
+        example: ogre@gamil.com
         type: string
     type: object
-  model.LaunchCourseResponse:
+  docs.LaunchCourseResponse:
     properties:
       error:
+        example: false
+        format: bool
         type: boolean
       job:
-        $ref: '#/definitions/model.JobStatus'
+        $ref: '#/definitions/docs.JobStatus'
         type: object
     type: object
-  model.ListCourseResponse:
+  docs.ListCourseResponse:
     properties:
       courses:
         items:
-          $ref: '#/definitions/model.Course'
+          $ref: '#/definitions/docs.Course'
         type: array
       error:
         example: false
         format: bool
         type: boolean
     type: object
-  model.Node:
+  docs.Node:
     properties:
       name:
+        example: 10.0.1.85
         type: string
       status:
+        example: Ready
         type: string
     type: object
-  model.OauthUser:
+  docs.OauthUser:
     properties:
       user:
-        description: 'todo: go-swagger still show user json field in example when
-          empty'
+        example: ogre@gamil.com
         type: string
     type: object
-  model.RefreshTokenReq:
+  docs.PasswordInfo:
+    properties:
+      password:
+        example: "654321"
+        type: string
+      username:
+        example: jjj@abc.com
+        type: string
+    type: object
+  docs.PlainResponse:
+    properties:
+      message:
+        example: response from proxy
+        type: string
+    type: object
+  docs.RefreshTokenReq:
     properties:
       refresh_token:
+        example: 7e7f6442-09e0-44f3-a05b-d7ea516cc6c5
         type: string
     type: object
-  model.Search:
+  docs.SVCLabelValue:
+    properties:
+      label:
+        example: jupyter
+        type: string
+      value:
+        example: http://140.110.5.22:30010
+        type: string
+    type: object
+  docs.Search:
     properties:
       query:
         example: course keyword
         type: string
     type: object
-  model.TokenReq:
+  docs.TokenReq:
     properties:
       code:
+        example: f1bd4604-e5ce-469d-b3d7-5e1d8a3e87d7
         type: string
     type: object
-  model.TokenResp:
+  docs.TokenResp:
     properties:
       refresh_token:
+        example: 7e7f6442-09e0-44f3-a05b-d7ea516cc6c5
         type: string
       token:
+        example: 045e8bd5-58dc-4bd5-8254-dc3d1571c9cd
         type: string
     type: object
-  provider.IntrospectResponse:
+  docs.UpdateCourse:
     properties:
-      active:
-        type: boolean
-      client_id:
-        type: string
-      exp:
+      datasets:
+        example:
+        - cifar-10
+        - caltech256
+        format: string
+        items:
+          type: string
+        type: array
+      gpu:
+        example: 1
+        format: int64
         type: integer
-      role:
+      id:
+        example: 49a31009-7d1b-4ff2-badd-e8c717e2256c
         type: string
-      scope:
+      image:
+        example: nginx:1.7.9
+        format: string
         type: string
-      token_type:
+      introduction:
+        example: 課程說明
+        format: string
         type: string
-      username:
+      level:
+        example: basic
+        format: string
+        type: string
+      name:
+        example: jimmy的課
+        format: string
         type: string
     type: object
-  provider.PlainResponse:
-    properties:
-      message:
-        type: string
-    type: object
-  provider.UserInfo:
+  docs.UpdatedUser:
     properties:
       cName:
+        example: 莊莊莊
         type: string
       company:
+        example: 國網中心
         type: string
       email-1:
+        example: ogre@ggg.com
         type: string
       email-2:
-        type: string
-      password:
+        example: ogre@ggg.com
         type: string
       phone:
+        example: "0911234567"
         type: string
       text:
         type: string
       username:
+        example: jjj@abc.com
+        type: string
+    type: object
+  docs.UserInfo:
+    properties:
+      cName:
+        example: 莊莊莊
+        type: string
+      company:
+        example: 國網中心
+        type: string
+      email-1:
+        example: ogre@ggg.com
+        type: string
+      email-2:
+        example: ogre@ggg.com
+        type: string
+      password:
+        example: "654321"
+        type: string
+      phone:
+        example: "0911234567"
+        type: string
+      text:
+        type: string
+      username:
+        example: jjj@abc.com
         type: string
     type: object
 host: localhost:38080
@@ -279,7 +459,7 @@ info:
   description: AI Train API.
   license: {}
   title: AI Train API
-  version: "1.0"
+  version: "0.2"
 paths:
   /course/create/:
     post:
@@ -292,7 +472,7 @@ paths:
         name: course
         required: true
         schema:
-          $ref: '#/definitions/model.Course'
+          $ref: '#/definitions/docs.AddCourse'
           type: object
       produces:
       - application/json
@@ -300,27 +480,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericOKResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -344,27 +524,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericOKResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -388,27 +568,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GetCourseResponse'
+            $ref: '#/definitions/docs.GetCourseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -432,17 +612,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.ListCourseResponse'
+            $ref: '#/definitions/docs.ListCourseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: List basic or advance courses information
       tags:
@@ -458,12 +638,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.ListCourseResponse'
+            $ref: '#/definitions/docs.ListCourseResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: List all course information
       tags:
@@ -478,7 +658,7 @@ paths:
         name: list_user
         required: true
         schema:
-          $ref: '#/definitions/model.OauthUser'
+          $ref: '#/definitions/docs.OauthUser'
           type: object
       produces:
       - application/json
@@ -486,27 +666,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.ListCourseResponse'
+            $ref: '#/definitions/docs.ListCourseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -524,7 +704,7 @@ paths:
         name: search
         required: true
         schema:
-          $ref: '#/definitions/model.Search'
+          $ref: '#/definitions/docs.Search'
           type: object
       produces:
       - application/json
@@ -532,17 +712,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.ListCourseResponse'
+            $ref: '#/definitions/docs.ListCourseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: Search course name
       tags:
@@ -558,7 +738,7 @@ paths:
         name: course
         required: true
         schema:
-          $ref: '#/definitions/model.Course'
+          $ref: '#/definitions/docs.UpdateCourse'
           type: object
       produces:
       - application/json
@@ -566,27 +746,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericOKResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -604,27 +784,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.DatasetsListResponse'
+            $ref: '#/definitions/docs.DatasetsListResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -642,7 +822,7 @@ paths:
         name: db_name
         required: true
         schema:
-          $ref: '#/definitions/model.GenericRequest'
+          $ref: '#/definitions/docs.GenericDBRequest'
           type: object
       produces:
       - application/json
@@ -650,17 +830,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.HealthDatabaseResponse'
+            $ref: '#/definitions/docs.HealthDatabaseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: check backend database is running
       tags:
@@ -676,7 +856,7 @@ paths:
         name: db_name
         required: true
         schema:
-          $ref: '#/definitions/model.GenericRequest'
+          $ref: '#/definitions/docs.GenericDBRequest'
           type: object
       produces:
       - application/json
@@ -684,27 +864,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.HealthDatabaseResponse'
+            $ref: '#/definitions/docs.HealthDatabaseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -722,12 +902,12 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.HealthKubernetesResponse'
+            $ref: '#/definitions/docs.HealthKubernetesResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: check backend kubernetes is running
       tags:
@@ -743,22 +923,22 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.HealthKubernetesResponse'
+            $ref: '#/definitions/docs.HealthKubernetesResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -776,22 +956,22 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.ImagesListResponse'
+            $ref: '#/definitions/docs.ImagesListResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -815,27 +995,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericOKResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -853,7 +1033,7 @@ paths:
         name: launch_course
         required: true
         schema:
-          $ref: '#/definitions/model.LaunchCourseRequest'
+          $ref: '#/definitions/docs.LaunchCourseRequest'
           type: object
       produces:
       - application/json
@@ -861,27 +1041,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.LaunchCourseResponse'
+            $ref: '#/definitions/docs.LaunchCourseResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -899,7 +1079,7 @@ paths:
         name: list_user
         required: true
         schema:
-          $ref: '#/definitions/model.OauthUser'
+          $ref: '#/definitions/docs.OauthUser'
           type: object
       produces:
       - application/json
@@ -907,27 +1087,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.JobListResponse'
+            $ref: '#/definitions/docs.JobListResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -945,7 +1125,7 @@ paths:
         name: user_password
         required: true
         schema:
-          $ref: '#/definitions/provider.UserInfo'
+          $ref: '#/definitions/docs.PasswordInfo'
           type: object
       produces:
       - application/json
@@ -953,27 +1133,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/provider.PlainResponse'
+            $ref: '#/definitions/docs.PlainResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -991,7 +1171,7 @@ paths:
         name: Introspection_token
         required: true
         schema:
-          $ref: '#/definitions/model.IntrospectionReq'
+          $ref: '#/definitions/docs.IntrospectionReq'
           type: object
       produces:
       - application/json
@@ -999,17 +1179,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/provider.IntrospectResponse'
+            $ref: '#/definitions/docs.IntrospectResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: Get token meta information from provider
       tags:
@@ -1025,7 +1205,7 @@ paths:
         name: user_token
         required: true
         schema:
-          $ref: '#/definitions/model.IntrospectionReq'
+          $ref: '#/definitions/docs.IntrospectionReq'
           type: object
       produces:
       - application/json
@@ -1033,27 +1213,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/provider.PlainResponse'
+            $ref: '#/definitions/docs.PlainResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -1071,27 +1251,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/provider.UserInfo'
+            $ref: '#/definitions/docs.UserInfo'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []
@@ -1109,7 +1289,7 @@ paths:
         name: refresh_token
         required: true
         schema:
-          $ref: '#/definitions/model.RefreshTokenReq'
+          $ref: '#/definitions/docs.RefreshTokenReq'
           type: object
       produces:
       - application/json
@@ -1117,17 +1297,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.TokenResp'
+            $ref: '#/definitions/docs.TokenResp'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: Refresh token with provider
       tags:
@@ -1143,7 +1323,7 @@ paths:
         name: new_user_info
         required: true
         schema:
-          $ref: '#/definitions/provider.UserInfo'
+          $ref: '#/definitions/docs.UserInfo'
           type: object
       produces:
       - application/json
@@ -1151,17 +1331,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/provider.PlainResponse'
+            $ref: '#/definitions/docs.PlainResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: Register a new user
       tags:
@@ -1177,7 +1357,7 @@ paths:
         name: token_request
         required: true
         schema:
-          $ref: '#/definitions/model.TokenReq'
+          $ref: '#/definitions/docs.TokenReq'
           type: object
       produces:
       - application/json
@@ -1185,17 +1365,17 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/model.TokenResp'
+            $ref: '#/definitions/docs.TokenResp'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       summary: Exchange token from Provider
       tags:
@@ -1211,7 +1391,7 @@ paths:
         name: user_info
         required: true
         schema:
-          $ref: '#/definitions/provider.UserInfo'
+          $ref: '#/definitions/docs.UpdatedUser'
           type: object
       produces:
       - application/json
@@ -1219,27 +1399,27 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/provider.PlainResponse'
+            $ref: '#/definitions/docs.PlainResponse'
             type: object
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "403":
           description: Forbidden
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/model.GenericResponse'
+            $ref: '#/definitions/docs.GenericErrorResponse'
             type: object
       security:
       - ApiKeyAuth: []

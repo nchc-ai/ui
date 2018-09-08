@@ -14,10 +14,10 @@ import (
 // @Tags HealthCheck
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.HealthKubernetesResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.HealthKubernetesResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /health/kubernetesAuth [get]
 func (resourceClient *ResourceClient) checkK8sAuth(c *gin.Context) {
@@ -29,8 +29,8 @@ func (resourceClient *ResourceClient) checkK8sAuth(c *gin.Context) {
 // @Tags HealthCheck
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.HealthKubernetesResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.HealthKubernetesResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Router /health/kubernetes [get]
 func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	resourceClient._checkK8s(c)
@@ -67,12 +67,12 @@ func (resourceClient *ResourceClient) _checkK8s(c *gin.Context) {
 // @Tags HealthCheck
 // @Accept  json
 // @Produce  json
-// @Param db_name body model.GenericRequest true "show tables in db"
-// @Success 200 {object} model.HealthDatabaseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param db_name body docs.GenericDBRequest true "show tables in db"
+// @Success 200 {object} docs.HealthDatabaseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /health/databaseAuth [post]
 func (resourceClient *ResourceClient) checkDatabaseAuth(c *gin.Context) {
@@ -84,10 +84,10 @@ func (resourceClient *ResourceClient) checkDatabaseAuth(c *gin.Context) {
 // @Tags HealthCheck
 // @Accept  json
 // @Produce  json
-// @Param db_name body model.GenericRequest true "show tables in db"
-// @Success 200 {object} model.HealthDatabaseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param db_name body docs.GenericDBRequest true "show tables in db"
+// @Success 200 {object} docs.HealthDatabaseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Router /health/database [post]
 func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 	resourceClient._checkDatabase(c)

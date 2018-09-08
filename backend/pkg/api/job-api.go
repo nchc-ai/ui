@@ -29,11 +29,11 @@ const (
 // @Accept  json
 // @Produce  json
 // @Param id path string true "job uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41"
-// @Success 200 {object} model.GenericResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.GenericOKResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /job/delete/{id} [delete]
 func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
@@ -59,12 +59,12 @@ func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 // @Tags Job
 // @Accept  json
 // @Produce  json
-// @Param list_user body model.OauthUser true "search user's job"
-// @Success 200 {object} model.JobListResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param list_user body docs.OauthUser true "search user's job"
+// @Success 200 {object} docs.JobListResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /job/list [post]
 func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
@@ -288,12 +288,12 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 // @Tags Job
 // @Accept  json
 // @Produce  json
-// @Param launch_course body model.LaunchCourseRequest true "course want to launch"
-// @Success 200 {object} model.LaunchCourseResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Param launch_course body docs.LaunchCourseRequest true "course want to launch"
+// @Success 200 {object} docs.LaunchCourseResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /job/launch [post]
 func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {

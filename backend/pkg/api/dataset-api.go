@@ -15,11 +15,11 @@ import (
 // @Tags DataSet
 // @Accept  json
 // @Produce  json
-// @Success 200 {object} model.DatasetsListResponse
-// @Failure 400 {object} model.GenericResponse
-// @Failure 401 {object} model.GenericResponse
-// @Failure 403 {object} model.GenericResponse
-// @Failure 500 {object} model.GenericResponse
+// @Success 200 {object} docs.DatasetsListResponse
+// @Failure 400 {object} docs.GenericErrorResponse
+// @Failure 401 {object} docs.GenericErrorResponse
+// @Failure 403 {object} docs.GenericErrorResponse
+// @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
 // @Router /datasets [get]
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {

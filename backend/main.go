@@ -8,7 +8,7 @@ import (
 	log "github.com/golang/glog"
 )
 // @title AI Train API
-// @version 1.0
+// @version 0.2
 // @description AI Train API.
 
 // @host localhost:38080

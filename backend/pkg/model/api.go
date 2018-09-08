@@ -11,8 +11,8 @@ type HealthDatabaseResponse struct {
 }
 
 type GenericResponse struct {
-	Error   bool   `json:"error" example:"false" format:"bool"`
-	Message string `json:"message" example:"response message" format:"string"`
+	Error   bool   `json:"error"`
+	Message string `json:"message"`
 }
 
 type Node struct {
@@ -30,7 +30,7 @@ type GenericRequest struct {
 }
 
 type ListCourseResponse struct {
-	Error   bool     `json:"error" example:"false" format:"bool"`
+	Error   bool     `json:"error"`
 	Courses []Course `json:"courses"`
 }
 
@@ -90,5 +90,5 @@ type JobInfo struct {
 }
 
 type Search struct {
-	Query string `json:"query" example:"course keyword"`
+	Query string `json:"query"`
 }
