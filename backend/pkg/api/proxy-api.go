@@ -11,6 +11,17 @@ import (
 	"strings"
 )
 
+
+// @Summary Exchange token from Provider
+// @Description Exchange token from Provider
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param token_request body model.TokenReq true "token request"
+// @Success 200 {object} model.TokenResp
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /proxy/token [post]
 func (server *APIServer) GetToken(c *gin.Context) {
 
 	var req model.TokenReq
@@ -37,6 +48,16 @@ func (server *APIServer) GetToken(c *gin.Context) {
 	)
 }
 
+// @Summary Refresh token with provider
+// @Description Refresh token with provider
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param refresh_token body model.RefreshTokenReq true "refresh token"
+// @Success 200 {object} model.TokenResp
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /proxy/refresh [post]
 func (server *APIServer) RefreshToken(c *gin.Context) {
 	var req model.RefreshTokenReq
 	err := c.BindJSON(&req)
@@ -62,6 +83,16 @@ func (server *APIServer) RefreshToken(c *gin.Context) {
 	)
 }
 
+// @Summary Get token meta information from provider
+// @Description Get token meta information from provider
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param Introspection_token body model.IntrospectionReq true "Introspection token"
+// @Success 200 {object} provider.IntrospectResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /proxy/introspection [post]
 func (server *APIServer) Introspection(c *gin.Context) {
 
 	var req model.IntrospectionReq
@@ -84,6 +115,19 @@ func (server *APIServer) Introspection(c *gin.Context) {
 	c.JSON(http.StatusOK, introspectionResult)
 }
 
+// @Summary Revoke all tokens of a user
+// @Description Revoke all tokens of a user
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param user_token body model.IntrospectionReq true "user token"
+// @Success 200 {object} provider.PlainResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /proxy/logout [post]
 func (server *APIServer) Logout(c *gin.Context) {
 	// Logout and Introspection use the same request format
 	var req model.IntrospectionReq
@@ -106,6 +150,17 @@ func (server *APIServer) Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, logoutResp)
 }
 
+
+// @Summary Register a new user
+// @Description Register a new user
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param new_user_info body provider.UserInfo true "user information"
+// @Success 200 {object} provider.PlainResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /proxy/register [post]
 func (server *APIServer) RegisterUser(c *gin.Context) {
 
 	var req provider.UserInfo
@@ -129,10 +184,37 @@ func (server *APIServer) RegisterUser(c *gin.Context) {
 
 }
 
+
+// @Summary Update a existing user information
+// @Description Update a existing user information
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param user_info body provider.UserInfo true "user information"
+// @Success 200 {object} provider.PlainResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /proxy/update [post]
 func (server *APIServer) UpdateUserBasicInfo(c *gin.Context) {
 	updateUser(server, c)
 }
 
+
+// @Summary query a existing user information
+// @Description query a existing user information
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} provider.UserInfo
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /proxy/query [get]
 func (server *APIServer) QueryUser(c *gin.Context) {
 
 	authHeader := c.GetHeader("Authorization")
@@ -164,6 +246,19 @@ func (server *APIServer) QueryUser(c *gin.Context) {
 	c.JSON(http.StatusOK, result)
 }
 
+// @Summary Change user password
+// @Description Change user password
+// @Tags Proxy
+// @Accept  json
+// @Produce  json
+// @Param user_password body provider.UserInfo true "new password"
+// @Success 200 {object} provider.PlainResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /proxy/changePW [post]
 func (server *APIServer) ChangeUserPassword(c *gin.Context) {
 	updateUser(server, c)
 }

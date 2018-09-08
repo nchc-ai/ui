@@ -60,6 +60,18 @@ func listhubimage() ([]string, error) {
 	return tag, nil
 }
 
+
+// @Summary List images in nchcai/train dockerhub repo
+// @Description List images in nchcai/train dockerhub repo
+// @Tags Image
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} model.ImagesListResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /images [get]
 func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
 
 	imgs, err := listhubimage()

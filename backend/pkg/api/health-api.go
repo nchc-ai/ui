@@ -9,7 +9,34 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
+// @Summary check backend kubernetes is running, token required
+// @Description check backend kubernetes is running, token required
+// @Tags HealthCheck
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} model.HealthKubernetesResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /health/kubernetesAuth [get]
+func (resourceClient *ResourceClient) checkK8sAuth(c *gin.Context) {
+	resourceClient._checkK8s(c)
+}
+
+// @Summary check backend kubernetes is running
+// @Description check backend kubernetes is running
+// @Tags HealthCheck
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} model.HealthKubernetesResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /health/kubernetes [get]
 func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
+	resourceClient._checkK8s(c)
+}
+
+func (resourceClient *ResourceClient) _checkK8s(c *gin.Context) {
 	statusList := []model.Node{}
 	nList, err := resourceClient.K8sClient.KClientSet.CoreV1().Nodes().List(metav1.ListOptions{})
 
@@ -35,7 +62,38 @@ func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	c.JSON(http.StatusOK, resp)
 }
 
+// @Summary check backend database is running, token required
+// @Description check backend database is running, token required
+// @Tags HealthCheck
+// @Accept  json
+// @Produce  json
+// @Param db_name body model.GenericRequest true "show tables in db"
+// @Success 200 {object} model.HealthDatabaseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /health/databaseAuth [post]
+func (resourceClient *ResourceClient) checkDatabaseAuth(c *gin.Context) {
+	resourceClient._checkDatabase(c)
+}
+
+// @Summary check backend database is running
+// @Description check backend database is running
+// @Tags HealthCheck
+// @Accept  json
+// @Produce  json
+// @Param db_name body model.GenericRequest true "show tables in db"
+// @Success 200 {object} model.HealthDatabaseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Router /health/database [post]
 func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
+	resourceClient._checkDatabase(c)
+}
+
+func (resourceClient *ResourceClient) _checkDatabase(c *gin.Context) {
 	var req model.GenericRequest
 	err := c.BindJSON(&req)
 	if err != nil {

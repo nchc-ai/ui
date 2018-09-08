@@ -44,6 +44,20 @@ definitions:
           empty'
         type: string
     type: object
+  model.DatasetsListResponse:
+    properties:
+      datasets:
+        items:
+          $ref: '#/definitions/model.LabelValue'
+        type: array
+      error:
+        type: boolean
+    type: object
+  model.GenericRequest:
+    properties:
+      message:
+        type: string
+    type: object
   model.GenericResponse:
     properties:
       error:
@@ -63,6 +77,113 @@ definitions:
       error:
         type: boolean
     type: object
+  model.HealthDatabaseResponse:
+    properties:
+      error:
+        example: false
+        format: bool
+        type: boolean
+      message:
+        example: response message
+        format: string
+        type: string
+      tables:
+        items:
+          type: string
+        type: array
+    type: object
+  model.HealthKubernetesResponse:
+    properties:
+      error:
+        type: boolean
+      message:
+        items:
+          $ref: '#/definitions/model.Node'
+        type: array
+    type: object
+  model.ImagesListResponse:
+    properties:
+      error:
+        type: boolean
+      images:
+        items:
+          $ref: '#/definitions/model.LabelValue'
+        type: array
+    type: object
+  model.IntrospectionReq:
+    properties:
+      token:
+        type: string
+    type: object
+  model.JobInfo:
+    properties:
+      course_id:
+        type: string
+      dataset:
+        items:
+          type: string
+        type: array
+      gpu:
+        type: integer
+      id:
+        type: string
+      image:
+        type: string
+      introduction:
+        type: string
+      level:
+        type: string
+      name:
+        type: string
+      service:
+        items:
+          $ref: '#/definitions/model.LabelValue'
+        type: array
+      startAt:
+        type: string
+      status:
+        type: string
+    type: object
+  model.JobListResponse:
+    properties:
+      error:
+        type: boolean
+      jobs:
+        items:
+          $ref: '#/definitions/model.JobInfo'
+        type: array
+    type: object
+  model.JobStatus:
+    properties:
+      job_id:
+        type: string
+      ready:
+        type: boolean
+      status:
+        type: string
+    type: object
+  model.LabelValue:
+    properties:
+      label:
+        type: string
+      value:
+        type: string
+    type: object
+  model.LaunchCourseRequest:
+    properties:
+      course_id:
+        type: string
+      user:
+        type: string
+    type: object
+  model.LaunchCourseResponse:
+    properties:
+      error:
+        type: boolean
+      job:
+        $ref: '#/definitions/model.JobStatus'
+        type: object
+    type: object
   model.ListCourseResponse:
     properties:
       courses:
@@ -74,6 +195,13 @@ definitions:
         format: bool
         type: boolean
     type: object
+  model.Node:
+    properties:
+      name:
+        type: string
+      status:
+        type: string
+    type: object
   model.OauthUser:
     properties:
       user:
@@ -81,10 +209,68 @@ definitions:
           empty'
         type: string
     type: object
+  model.RefreshTokenReq:
+    properties:
+      refresh_token:
+        type: string
+    type: object
   model.Search:
     properties:
       query:
         example: course keyword
+        type: string
+    type: object
+  model.TokenReq:
+    properties:
+      code:
+        type: string
+    type: object
+  model.TokenResp:
+    properties:
+      refresh_token:
+        type: string
+      token:
+        type: string
+    type: object
+  provider.IntrospectResponse:
+    properties:
+      active:
+        type: boolean
+      client_id:
+        type: string
+      exp:
+        type: integer
+      role:
+        type: string
+      scope:
+        type: string
+      token_type:
+        type: string
+      username:
+        type: string
+    type: object
+  provider.PlainResponse:
+    properties:
+      message:
+        type: string
+    type: object
+  provider.UserInfo:
+    properties:
+      cName:
+        type: string
+      company:
+        type: string
+      email-1:
+        type: string
+      email-2:
+        type: string
+      password:
+        type: string
+      phone:
+        type: string
+      text:
+        type: string
+      username:
         type: string
     type: object
 host: localhost:38080
@@ -407,6 +593,659 @@ paths:
       summary: Update course information
       tags:
       - Course
+  /datasets:
+    get:
+      consumes:
+      - application/json
+      description: List all shared data set stored in PV
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.DatasetsListResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: List all shared data set stored in PV
+      tags:
+      - DataSet
+  /health/database:
+    post:
+      consumes:
+      - application/json
+      description: check backend database is running
+      parameters:
+      - description: show tables in db
+        in: body
+        name: db_name
+        required: true
+        schema:
+          $ref: '#/definitions/model.GenericRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.HealthDatabaseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: check backend database is running
+      tags:
+      - HealthCheck
+  /health/databaseAuth:
+    post:
+      consumes:
+      - application/json
+      description: check backend database is running, token required
+      parameters:
+      - description: show tables in db
+        in: body
+        name: db_name
+        required: true
+        schema:
+          $ref: '#/definitions/model.GenericRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.HealthDatabaseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: check backend database is running, token required
+      tags:
+      - HealthCheck
+  /health/kubernetes:
+    get:
+      consumes:
+      - application/json
+      description: check backend kubernetes is running
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.HealthKubernetesResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: check backend kubernetes is running
+      tags:
+      - HealthCheck
+  /health/kubernetesAuth:
+    get:
+      consumes:
+      - application/json
+      description: check backend kubernetes is running, token required
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.HealthKubernetesResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: check backend kubernetes is running, token required
+      tags:
+      - HealthCheck
+  /images:
+    get:
+      consumes:
+      - application/json
+      description: List images in nchcai/train dockerhub repo
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.ImagesListResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: List images in nchcai/train dockerhub repo
+      tags:
+      - Image
+  /job/delete/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a running job deployment in user namespace
+      parameters:
+      - description: 'job uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41'
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a running job deployment in user namespace
+      tags:
+      - Job
+  /job/launch:
+    post:
+      consumes:
+      - application/json
+      description: Create a course deployment in kubernetes
+      parameters:
+      - description: course want to launch
+        in: body
+        name: launch_course
+        required: true
+        schema:
+          $ref: '#/definitions/model.LaunchCourseRequest'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.LaunchCourseResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Create a course deployment in kubernetes
+      tags:
+      - Job
+  /job/list:
+    post:
+      consumes:
+      - application/json
+      description: List all running course deployment for a user
+      parameters:
+      - description: search user's job
+        in: body
+        name: list_user
+        required: true
+        schema:
+          $ref: '#/definitions/model.OauthUser'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.JobListResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: List all running course deployment for a user
+      tags:
+      - Job
+  /proxy/changePW:
+    post:
+      consumes:
+      - application/json
+      description: Change user password
+      parameters:
+      - description: new password
+        in: body
+        name: user_password
+        required: true
+        schema:
+          $ref: '#/definitions/provider.UserInfo'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/provider.PlainResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Change user password
+      tags:
+      - Proxy
+  /proxy/introspection:
+    post:
+      consumes:
+      - application/json
+      description: Get token meta information from provider
+      parameters:
+      - description: Introspection token
+        in: body
+        name: Introspection_token
+        required: true
+        schema:
+          $ref: '#/definitions/model.IntrospectionReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/provider.IntrospectResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: Get token meta information from provider
+      tags:
+      - Proxy
+  /proxy/logout:
+    post:
+      consumes:
+      - application/json
+      description: Revoke all tokens of a user
+      parameters:
+      - description: user token
+        in: body
+        name: user_token
+        required: true
+        schema:
+          $ref: '#/definitions/model.IntrospectionReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/provider.PlainResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Revoke all tokens of a user
+      tags:
+      - Proxy
+  /proxy/query:
+    get:
+      consumes:
+      - application/json
+      description: query a existing user information
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/provider.UserInfo'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: query a existing user information
+      tags:
+      - Proxy
+  /proxy/refresh:
+    post:
+      consumes:
+      - application/json
+      description: Refresh token with provider
+      parameters:
+      - description: refresh token
+        in: body
+        name: refresh_token
+        required: true
+        schema:
+          $ref: '#/definitions/model.RefreshTokenReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TokenResp'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: Refresh token with provider
+      tags:
+      - Proxy
+  /proxy/register:
+    post:
+      consumes:
+      - application/json
+      description: Register a new user
+      parameters:
+      - description: user information
+        in: body
+        name: new_user_info
+        required: true
+        schema:
+          $ref: '#/definitions/provider.UserInfo'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/provider.PlainResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: Register a new user
+      tags:
+      - Proxy
+  /proxy/token:
+    post:
+      consumes:
+      - application/json
+      description: Exchange token from Provider
+      parameters:
+      - description: token request
+        in: body
+        name: token_request
+        required: true
+        schema:
+          $ref: '#/definitions/model.TokenReq'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.TokenResp'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      summary: Exchange token from Provider
+      tags:
+      - Proxy
+  /proxy/update:
+    post:
+      consumes:
+      - application/json
+      description: Update a existing user information
+      parameters:
+      - description: user information
+        in: body
+        name: user_info
+        required: true
+        schema:
+          $ref: '#/definitions/provider.UserInfo'
+          type: object
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/provider.PlainResponse'
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/model.GenericResponse'
+            type: object
+      security:
+      - ApiKeyAuth: []
+      summary: Update a existing user information
+      tags:
+      - Proxy
 securityDefinitions:
   ApiKeyAuth:
     in: header

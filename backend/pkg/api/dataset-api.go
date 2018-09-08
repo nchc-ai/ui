@@ -9,6 +9,19 @@ import (
 	"strings"
 )
 
+
+// @Summary  List all shared data set stored in PV
+// @Description  List all shared data set stored in PV
+// @Tags DataSet
+// @Accept  json
+// @Produce  json
+// @Success 200 {object} model.DatasetsListResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /datasets [get]
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 
 	pvcNameList := []model.LabelValue{}

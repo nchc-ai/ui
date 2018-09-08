@@ -82,7 +82,7 @@ type JobInfo struct {
 	Status       string       `json:"status"`
 	Name         string       `json:"name"`
 	Introduction string       `json:"introduction"`
-	Image        string       `json:"image"`
+	Image        string       `json:"image"`
 	GPU          uint8        `json:"gpu"`
 	Level        string       `json:"level"`
 	Dataset      []string     `json:"dataset"`

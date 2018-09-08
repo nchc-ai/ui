@@ -23,6 +23,19 @@ const (
 	JoBStatueReady   = "Ready"
 )
 
+// @Summary Delete a running job deployment in user namespace
+// @Description Delete a running job deployment in user namespace
+// @Tags Job
+// @Accept  json
+// @Produce  json
+// @Param id path string true "job uuid, eg: 131ba8a9-b60b-44f9-83b5-46590f756f41"
+// @Success 200 {object} model.GenericResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /job/delete/{id} [delete]
 func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 	jobId := c.Param("id")
 
@@ -40,6 +53,20 @@ func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 	util.RespondWithOk(c, "Job {%s} is deleted successfully", jobId)
 }
 
+
+// @Summary List all running course deployment for a user
+// @Description List all running course deployment for a user
+// @Tags Job
+// @Accept  json
+// @Produce  json
+// @Param list_user body model.OauthUser true "search user's job"
+// @Success 200 {object} model.JobListResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /job/list [post]
 func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 
 	provider, exist := c.Get("Provider")
@@ -255,6 +282,20 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 
 }
 
+
+// @Summary Create a course deployment in kubernetes
+// @Description Create a course deployment in kubernetes
+// @Tags Job
+// @Accept  json
+// @Produce  json
+// @Param launch_course body model.LaunchCourseRequest true "course want to launch"
+// @Success 200 {object} model.LaunchCourseResponse
+// @Failure 400 {object} model.GenericResponse
+// @Failure 401 {object} model.GenericResponse
+// @Failure 403 {object} model.GenericResponse
+// @Failure 500 {object} model.GenericResponse
+// @Security ApiKeyAuth
+// @Router /job/launch [post]
 func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
 
 	var req model.LaunchCourseRequest

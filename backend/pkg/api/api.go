@@ -265,8 +265,8 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	// health check require token
 	healthAuth := router.Group("/v1").Group("/health").Use(server.AuthMiddleware())
 	{
-		healthAuth.GET("/kubernetesAuth", resourceClient.checkK8s)
-		healthAuth.POST("/databaseAuth", resourceClient.checkDatabase)
+		healthAuth.GET("/kubernetesAuth", resourceClient.checkK8sAuth)
+		healthAuth.POST("/databaseAuth", resourceClient.checkDatabaseAuth)
 	}
 
 	// list advance and basic course, do not required token
