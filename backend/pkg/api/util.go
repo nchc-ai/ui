@@ -78,14 +78,60 @@ func getRequiredDataset(DB *gorm.DB, id string) []string {
 	return courseDataset
 }
 
+func createPVC(clientset *kubernetes.Clientset, namespace string, jobId string) (*apiv1.PersistentVolumeClaim, error) {
+
+	resourceRequest := apiv1.ResourceList{
+		apiv1.ResourceStorage: resource.MustParse("1Gi"),
+	}
+	resources := apiv1.ResourceRequirements{
+		Requests: resourceRequest,
+	}
+
+	pvcClient := clientset.CoreV1().PersistentVolumeClaims(namespace)
+	pvc := &apiv1.PersistentVolumeClaim{
+		ObjectMeta: metav1.ObjectMeta{
+			Name: jobId,
+		},
+		Spec: apiv1.PersistentVolumeClaimSpec{
+			AccessModes: []apiv1.PersistentVolumeAccessMode{
+				apiv1.ReadWriteMany,
+			},
+			Resources: resources,
+		},
+	}
+
+	result, err := pvcClient.Create(pvc)
+	if err != nil {
+		return nil, err
+	}
+	return result, nil
+}
+
+func deletePVC(clientset *kubernetes.Clientset, pvc string, namespace string) error {
+	pvcClient := clientset.CoreV1().PersistentVolumeClaims(namespace)
+	deletePolicy := metav1.DeletePropagationForeground
+	if err := pvcClient.Delete(pvc, &metav1.DeleteOptions{
+		PropagationPolicy: &deletePolicy,}); err != nil {
+		return err
+	}
+	return nil
+}
+
 func createDeployment(clientset *kubernetes.Clientset, course *model.Course, datasets []string,
 	namespace string, exposePort map[string]int32, defaultResourceLimit apiv1.ResourceList) (*appsv1.Deployment, error) {
 	jobId := uuid.New().String()
 
 	deploymentsClient := clientset.AppsV1().Deployments(namespace)
 
+	// todo: writable PVC is not always required, define flag in Course to create PVC or not (#45)
+	pvc, err := createPVC(clientset, namespace, jobId)
+	if err != nil {
+		return nil, err
+	}
+
 	volumes := []apiv1.Volume{}
 	volumeMounts := []apiv1.VolumeMount{}
+	// Mount Read-only dataset
 	for _, dataset := range datasets {
 		// prepare volume array
 		vol := apiv1.Volume{
@@ -106,6 +152,24 @@ func createDeployment(clientset *kubernetes.Clientset, course *model.Course, dat
 		}
 		volumeMounts = append(volumeMounts, vm)
 	}
+
+	// todo: writable PVC is not always required, define flag in Course to create PVC or not (#45)
+	// Mount writable work PVC
+	vol := apiv1.Volume{
+		Name: "writable",
+		VolumeSource: apiv1.VolumeSource{
+			PersistentVolumeClaim: &apiv1.PersistentVolumeClaimVolumeSource{
+				ClaimName: pvc.Name,
+			},
+		},
+	}
+	volumes = append(volumes, vol)
+
+	vm := apiv1.VolumeMount{
+		Name:      "writable",
+		MountPath: "/tmp/work",
+	}
+	volumeMounts = append(volumeMounts, vm)
 
 	// prepare expose port
 	exposePorts := []apiv1.ContainerPort{}

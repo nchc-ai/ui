@@ -16,6 +16,7 @@ type Model struct {
 	DeletedAt *time.Time `sql:"index" json:"-"`
 }
 
+// todo: writable PVC is not always required, define flag in Course to create PVC or not (#45)
 type Course struct {
 	Model
 	OauthUser

@@ -10,7 +10,7 @@
     "host": "localhost:38080",
     "basePath": "/",
     "paths": {
-        "/v1/course/create/": {
+        "/v1/course/create": {
             "post": {
                 "security": [
                     {
@@ -406,7 +406,7 @@
                 }
             }
         },
-        "/v1/course/update/": {
+        "/v1/course/update": {
             "put": {
                 "security": [
                     {

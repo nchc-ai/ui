@@ -461,7 +461,7 @@ info:
   title: AI Train API
   version: "0.2"
 paths:
-  /v1/course/create/:
+  /v1/course/create:
     post:
       consumes:
       - application/json
@@ -727,7 +727,7 @@ paths:
       summary: Search course name
       tags:
       - Course
-  /v1/course/update/:
+  /v1/course/update:
     put:
       consumes:
       - application/json

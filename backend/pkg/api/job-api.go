@@ -53,7 +53,6 @@ func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 	util.RespondWithOk(c, "Job {%s} is deleted successfully", jobId)
 }
 
-
 // @Summary List all running course deployment for a user
 // @Description List all running course deployment for a user
 // @Tags Job
@@ -169,6 +168,11 @@ func (resourceClient *ResourceClient) deleteJobDeploymentAndSvc(jobId string) (s
 		return fmt.Sprintf("Failed to delete service {%s}: %s", job.Service, err.Error()), nil
 	}
 
+	//todo: PVC might be not exist for Job, need to check before delete
+	if err := deletePVC(resourceClient.K8sClient.KClientSet, jobId, namespace); err != nil {
+		return fmt.Sprintf("Failed to delete PVC {%s}: %s", jobId, err.Error()), nil
+	}
+
 	if err := resourceClient.DB.Unscoped().Delete(&job).Error; err != nil {
 		return fmt.Sprintf("Failed to delete job {%s} information : %s", jobId, err.Error()), nil
 	}
@@ -281,7 +285,6 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 	}
 
 }
-
 
 // @Summary Create a course deployment in kubernetes
 // @Description Create a course deployment in kubernetes

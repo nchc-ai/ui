@@ -186,7 +186,7 @@ func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /v1/course/create/ [post]
+// @Router /v1/course/create [post]
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 
 	var req model.Course
@@ -382,7 +382,7 @@ func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /v1/course/update/ [put]
+// @Router /v1/course/update [put]
 func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {
 	var req model.Course
 
