@@ -21,7 +21,7 @@ import (
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /datasets [get]
+// @Router /v1/datasets [get]
 func (resourceClient *ResourceClient) ListPVC(c *gin.Context) {
 
 	pvcNameList := []model.LabelValue{}

@@ -179,7 +179,9 @@ func (server *APIServer) RunServer() error {
 	server.router.Use(server.CORSHeaderMiddleware())
 
 	// add route
-	server.AddRoute(server.router, server.resourceClient)
+	server.AddV1Route(server.router, server.resourceClient)
+	server.AddBetaRoute(server.router, server.resourceClient)
+	server.AddSwaggerRoute(server.router)
 
 	err := server.router.Run(":" + strconv.Itoa(server.config.GetInt("api-server.port")))
 	if err != nil {
@@ -249,7 +251,7 @@ func (resourceClient *ResourceClient) handleOption(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceClient) {
+func (server *APIServer) AddV1Route(router *gin.Engine, resourceClient *ResourceClient) {
 
 	// health check api
 	health := router.Group("/v1").Group("/health")
@@ -352,10 +354,12 @@ func (server *APIServer) AddRoute(router *gin.Engine, resourceClient *ResourceCl
 	{
 		imageAuth.GET("/", resourceClient.ListImage)
 	}
+}
 
-	// swagger route
+func (server *APIServer) AddBetaRoute(router *gin.Engine, resourceClient *ResourceClient) {}
+
+func (server *APIServer) AddSwaggerRoute(router *gin.Engine) {
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
 }
 
 func (server *APIServer) Resume() {

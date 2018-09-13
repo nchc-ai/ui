@@ -21,7 +21,7 @@ import (
 // @Success 200 {object} docs.TokenResp
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /proxy/token [post]
+// @Router /v1/proxy/token [post]
 func (server *APIServer) GetToken(c *gin.Context) {
 
 	var req model.TokenReq
@@ -57,7 +57,7 @@ func (server *APIServer) GetToken(c *gin.Context) {
 // @Success 200 {object} docs.TokenResp
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /proxy/refresh [post]
+// @Router /v1/proxy/refresh [post]
 func (server *APIServer) RefreshToken(c *gin.Context) {
 	var req model.RefreshTokenReq
 	err := c.BindJSON(&req)
@@ -92,7 +92,7 @@ func (server *APIServer) RefreshToken(c *gin.Context) {
 // @Success 200 {object} docs.IntrospectResponse
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /proxy/introspection [post]
+// @Router /v1/proxy/introspection [post]
 func (server *APIServer) Introspection(c *gin.Context) {
 
 	var req model.IntrospectionReq
@@ -127,7 +127,7 @@ func (server *APIServer) Introspection(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /proxy/logout [post]
+// @Router /v1/proxy/logout [post]
 func (server *APIServer) Logout(c *gin.Context) {
 	// Logout and Introspection use the same request format
 	var req model.IntrospectionReq
@@ -160,7 +160,7 @@ func (server *APIServer) Logout(c *gin.Context) {
 // @Success 200 {object} docs.PlainResponse
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /proxy/register [post]
+// @Router /v1/proxy/register [post]
 func (server *APIServer) RegisterUser(c *gin.Context) {
 
 	var req provider.UserInfo
@@ -197,7 +197,7 @@ func (server *APIServer) RegisterUser(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /proxy/update [post]
+// @Router /v1/proxy/update [post]
 func (server *APIServer) UpdateUserBasicInfo(c *gin.Context) {
 	updateUser(server, c)
 }
@@ -214,7 +214,7 @@ func (server *APIServer) UpdateUserBasicInfo(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /proxy/query [get]
+// @Router /v1/proxy/query [get]
 func (server *APIServer) QueryUser(c *gin.Context) {
 
 	authHeader := c.GetHeader("Authorization")
@@ -258,7 +258,7 @@ func (server *APIServer) QueryUser(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /proxy/changePW [post]
+// @Router /v1/proxy/changePW [post]
 func (server *APIServer) ChangeUserPassword(c *gin.Context) {
 	updateUser(server, c)
 }

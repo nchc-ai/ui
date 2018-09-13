@@ -1,4 +1,4 @@
-basePath: /v1
+basePath: /
 definitions:
   docs.AddCourse:
     properties:
@@ -461,7 +461,7 @@ info:
   title: AI Train API
   version: "0.2"
 paths:
-  /course/create/:
+  /v1/course/create/:
     post:
       consumes:
       - application/json
@@ -507,7 +507,7 @@ paths:
       summary: Add new course information
       tags:
       - Course
-  /course/delete/{id}:
+  /v1/course/delete/{id}:
     delete:
       consumes:
       - application/json
@@ -551,7 +551,7 @@ paths:
       summary: Delete course information
       tags:
       - Course
-  /course/get/{id}:
+  /v1/course/get/{id}:
     get:
       consumes:
       - application/json
@@ -595,7 +595,7 @@ paths:
       summary: Get one courses information by course id
       tags:
       - Course
-  /course/level/{level}:
+  /v1/course/level/{level}:
     get:
       consumes:
       - application/json
@@ -627,7 +627,7 @@ paths:
       summary: List basic or advance courses information
       tags:
       - Course
-  /course/list:
+  /v1/course/list:
     get:
       consumes:
       - application/json
@@ -693,7 +693,7 @@ paths:
       summary: List someone's all courses information
       tags:
       - Course
-  /course/search:
+  /v1/course/search:
     post:
       consumes:
       - application/json
@@ -727,7 +727,7 @@ paths:
       summary: Search course name
       tags:
       - Course
-  /course/update/:
+  /v1/course/update/:
     put:
       consumes:
       - application/json
@@ -773,7 +773,7 @@ paths:
       summary: Update course information
       tags:
       - Course
-  /datasets:
+  /v1/datasets:
     get:
       consumes:
       - application/json
@@ -811,7 +811,7 @@ paths:
       summary: List all shared data set stored in PV
       tags:
       - DataSet
-  /health/database:
+  /v1/health/database:
     post:
       consumes:
       - application/json
@@ -845,7 +845,7 @@ paths:
       summary: check backend database is running
       tags:
       - HealthCheck
-  /health/databaseAuth:
+  /v1/health/databaseAuth:
     post:
       consumes:
       - application/json
@@ -891,7 +891,7 @@ paths:
       summary: check backend database is running, token required
       tags:
       - HealthCheck
-  /health/kubernetes:
+  /v1/health/kubernetes:
     get:
       consumes:
       - application/json
@@ -912,7 +912,7 @@ paths:
       summary: check backend kubernetes is running
       tags:
       - HealthCheck
-  /health/kubernetesAuth:
+  /v1/health/kubernetesAuth:
     get:
       consumes:
       - application/json
@@ -945,7 +945,7 @@ paths:
       summary: check backend kubernetes is running, token required
       tags:
       - HealthCheck
-  /images:
+  /v1/images:
     get:
       consumes:
       - application/json
@@ -978,7 +978,7 @@ paths:
       summary: List images in nchcai/train dockerhub repo
       tags:
       - Image
-  /job/delete/{id}:
+  /v1/job/delete/{id}:
     delete:
       consumes:
       - application/json
@@ -1022,7 +1022,7 @@ paths:
       summary: Delete a running job deployment in user namespace
       tags:
       - Job
-  /job/launch:
+  /v1/job/launch:
     post:
       consumes:
       - application/json
@@ -1068,7 +1068,7 @@ paths:
       summary: Create a course deployment in kubernetes
       tags:
       - Job
-  /job/list:
+  /v1/job/list:
     post:
       consumes:
       - application/json
@@ -1114,7 +1114,7 @@ paths:
       summary: List all running course deployment for a user
       tags:
       - Job
-  /proxy/changePW:
+  /v1/proxy/changePW:
     post:
       consumes:
       - application/json
@@ -1160,7 +1160,7 @@ paths:
       summary: Change user password
       tags:
       - Proxy
-  /proxy/introspection:
+  /v1/proxy/introspection:
     post:
       consumes:
       - application/json
@@ -1194,7 +1194,7 @@ paths:
       summary: Get token meta information from provider
       tags:
       - Proxy
-  /proxy/logout:
+  /v1/proxy/logout:
     post:
       consumes:
       - application/json
@@ -1240,7 +1240,7 @@ paths:
       summary: Revoke all tokens of a user
       tags:
       - Proxy
-  /proxy/query:
+  /v1/proxy/query:
     get:
       consumes:
       - application/json
@@ -1278,7 +1278,7 @@ paths:
       summary: query a existing user information
       tags:
       - Proxy
-  /proxy/refresh:
+  /v1/proxy/refresh:
     post:
       consumes:
       - application/json
@@ -1312,7 +1312,7 @@ paths:
       summary: Refresh token with provider
       tags:
       - Proxy
-  /proxy/register:
+  /v1/proxy/register:
     post:
       consumes:
       - application/json
@@ -1346,7 +1346,7 @@ paths:
       summary: Register a new user
       tags:
       - Proxy
-  /proxy/token:
+  /v1/proxy/token:
     post:
       consumes:
       - application/json
@@ -1380,7 +1380,7 @@ paths:
       summary: Exchange token from Provider
       tags:
       - Proxy
-  /proxy/update:
+  /v1/proxy/update:
     post:
       consumes:
       - application/json

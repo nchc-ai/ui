@@ -71,7 +71,7 @@ func listhubimage() ([]string, error) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /images [get]
+// @Router /v1/images [get]
 func (resourceClient *ResourceClient) ListImage(c *gin.Context) {
 
 	imgs, err := listhubimage()

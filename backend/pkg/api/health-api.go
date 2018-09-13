@@ -19,7 +19,7 @@ import (
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /health/kubernetesAuth [get]
+// @Router /v1/health/kubernetesAuth [get]
 func (resourceClient *ResourceClient) checkK8sAuth(c *gin.Context) {
 	resourceClient._checkK8s(c)
 }
@@ -31,7 +31,7 @@ func (resourceClient *ResourceClient) checkK8sAuth(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} docs.HealthKubernetesResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /health/kubernetes [get]
+// @Router /v1/health/kubernetes [get]
 func (resourceClient *ResourceClient) checkK8s(c *gin.Context) {
 	resourceClient._checkK8s(c)
 }
@@ -74,7 +74,7 @@ func (resourceClient *ResourceClient) _checkK8s(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /health/databaseAuth [post]
+// @Router /v1/health/databaseAuth [post]
 func (resourceClient *ResourceClient) checkDatabaseAuth(c *gin.Context) {
 	resourceClient._checkDatabase(c)
 }
@@ -88,7 +88,7 @@ func (resourceClient *ResourceClient) checkDatabaseAuth(c *gin.Context) {
 // @Success 200 {object} docs.HealthDatabaseResponse
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /health/database [post]
+// @Router /v1/health/database [post]
 func (resourceClient *ResourceClient) checkDatabase(c *gin.Context) {
 	resourceClient._checkDatabase(c)
 }

@@ -12,7 +12,7 @@ import (
 // @description AI Train API.
 
 // @host localhost:38080
-// @BasePath /v1
+// @BasePath /
 
 // @securityDefinitions.apikey ApiKeyAuth
 // @in header

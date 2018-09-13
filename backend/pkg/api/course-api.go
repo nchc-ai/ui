@@ -25,7 +25,7 @@ import (
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /course/list [post]
+// @Router /v1/course/list [post]
 func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
 	provider, exist := c.Get("Provider")
 	if exist == false {
@@ -78,7 +78,7 @@ func (resourceClient *ResourceClient) ListUserCourse(c *gin.Context) {
 // @Success 200 {object} docs.ListCourseResponse
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /course/level/{level} [get]
+// @Router /v1/course/level/{level} [get]
 func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
 	level := c.Param("level")
 
@@ -115,7 +115,7 @@ func (resourceClient *ResourceClient) ListLevelCourse(c *gin.Context) {
 // @Produce  json
 // @Success 200 {object} docs.ListCourseResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /course/list [get]
+// @Router /v1/course/list [get]
 func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 	course := model.Course{}
 
@@ -143,7 +143,7 @@ func (resourceClient *ResourceClient) ListAllCourse(c *gin.Context) {
 // @Success 200 {object} docs.ListCourseResponse
 // @Failure 400 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
-// @Router /course/search [post]
+// @Router /v1/course/search [post]
 func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 
 	req := model.Search{}
@@ -186,7 +186,7 @@ func (resourceClient *ResourceClient) SearchCourse(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /course/create/ [post]
+// @Router /v1/course/create/ [post]
 func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 
 	var req model.Course
@@ -265,7 +265,7 @@ func (resourceClient *ResourceClient) AddCourse(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /course/delete/{id} [delete]
+// @Router /v1/course/delete/{id} [delete]
 func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 	courseId := c.Param("id")
 
@@ -322,7 +322,7 @@ func (resourceClient *ResourceClient) DeleteCourse(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /course/get/{id} [get]
+// @Router /v1/course/get/{id} [get]
 func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 	id := c.Param("id")
 
@@ -382,7 +382,7 @@ func (resourceClient *ResourceClient) GetCourse(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /course/update/ [put]
+// @Router /v1/course/update/ [put]
 func (resourceClient *ResourceClient) UpdateCourse(c *gin.Context) {
 	var req model.Course
 

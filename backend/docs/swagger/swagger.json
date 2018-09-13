@@ -8,9 +8,9 @@
         "version": "0.2"
     },
     "host": "localhost:38080",
-    "basePath": "/v1",
+    "basePath": "/",
     "paths": {
-        "/course/create/": {
+        "/v1/course/create/": {
             "post": {
                 "security": [
                     {
@@ -79,7 +79,7 @@
                 }
             }
         },
-        "/course/delete/{id}": {
+        "/v1/course/delete/{id}": {
             "delete": {
                 "security": [
                     {
@@ -145,7 +145,7 @@
                 }
             }
         },
-        "/course/get/{id}": {
+        "/v1/course/get/{id}": {
             "get": {
                 "security": [
                     {
@@ -211,7 +211,7 @@
                 }
             }
         },
-        "/course/level/{level}": {
+        "/v1/course/level/{level}": {
             "get": {
                 "description": "List basic or advance courses information",
                 "consumes": [
@@ -258,7 +258,7 @@
                 }
             }
         },
-        "/course/list": {
+        "/v1/course/list": {
             "get": {
                 "description": "get all course information",
                 "consumes": [
@@ -356,7 +356,7 @@
                 }
             }
         },
-        "/course/search": {
+        "/v1/course/search": {
             "post": {
                 "description": "Search course name",
                 "consumes": [
@@ -406,7 +406,7 @@
                 }
             }
         },
-        "/course/update/": {
+        "/v1/course/update/": {
             "put": {
                 "security": [
                     {
@@ -475,7 +475,7 @@
                 }
             }
         },
-        "/datasets": {
+        "/v1/datasets": {
             "get": {
                 "security": [
                     {
@@ -532,7 +532,7 @@
                 }
             }
         },
-        "/health/database": {
+        "/v1/health/database": {
             "post": {
                 "description": "check backend database is running",
                 "consumes": [
@@ -582,7 +582,7 @@
                 }
             }
         },
-        "/health/databaseAuth": {
+        "/v1/health/databaseAuth": {
             "post": {
                 "security": [
                     {
@@ -651,7 +651,7 @@
                 }
             }
         },
-        "/health/kubernetes": {
+        "/v1/health/kubernetes": {
             "get": {
                 "description": "check backend kubernetes is running",
                 "consumes": [
@@ -682,7 +682,7 @@
                 }
             }
         },
-        "/health/kubernetesAuth": {
+        "/v1/health/kubernetesAuth": {
             "get": {
                 "security": [
                     {
@@ -732,7 +732,7 @@
                 }
             }
         },
-        "/images": {
+        "/v1/images": {
             "get": {
                 "security": [
                     {
@@ -782,7 +782,7 @@
                 }
             }
         },
-        "/job/delete/{id}": {
+        "/v1/job/delete/{id}": {
             "delete": {
                 "security": [
                     {
@@ -848,7 +848,7 @@
                 }
             }
         },
-        "/job/launch": {
+        "/v1/job/launch": {
             "post": {
                 "security": [
                     {
@@ -917,7 +917,7 @@
                 }
             }
         },
-        "/job/list": {
+        "/v1/job/list": {
             "post": {
                 "security": [
                     {
@@ -986,7 +986,7 @@
                 }
             }
         },
-        "/proxy/changePW": {
+        "/v1/proxy/changePW": {
             "post": {
                 "security": [
                     {
@@ -1055,7 +1055,7 @@
                 }
             }
         },
-        "/proxy/introspection": {
+        "/v1/proxy/introspection": {
             "post": {
                 "description": "Get token meta information from provider",
                 "consumes": [
@@ -1105,7 +1105,7 @@
                 }
             }
         },
-        "/proxy/logout": {
+        "/v1/proxy/logout": {
             "post": {
                 "security": [
                     {
@@ -1174,7 +1174,7 @@
                 }
             }
         },
-        "/proxy/query": {
+        "/v1/proxy/query": {
             "get": {
                 "security": [
                     {
@@ -1231,7 +1231,7 @@
                 }
             }
         },
-        "/proxy/refresh": {
+        "/v1/proxy/refresh": {
             "post": {
                 "description": "Refresh token with provider",
                 "consumes": [
@@ -1281,7 +1281,7 @@
                 }
             }
         },
-        "/proxy/register": {
+        "/v1/proxy/register": {
             "post": {
                 "description": "Register a new user",
                 "consumes": [
@@ -1331,7 +1331,7 @@
                 }
             }
         },
-        "/proxy/token": {
+        "/v1/proxy/token": {
             "post": {
                 "description": "Exchange token from Provider",
                 "consumes": [
@@ -1381,7 +1381,7 @@
                 }
             }
         },
-        "/proxy/update": {
+        "/v1/proxy/update": {
             "post": {
                 "security": [
                     {

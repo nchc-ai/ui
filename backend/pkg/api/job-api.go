@@ -35,7 +35,7 @@ const (
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /job/delete/{id} [delete]
+// @Router /v1/job/delete/{id} [delete]
 func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 	jobId := c.Param("id")
 
@@ -66,7 +66,7 @@ func (resourceClient *ResourceClient) DeleteJob(c *gin.Context) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /job/list [post]
+// @Router /v1/job/list [post]
 func (resourceClient *ResourceClient) ListJob(c *gin.Context) {
 
 	provider, exist := c.Get("Provider")
@@ -295,7 +295,7 @@ func (resourceClient *ResourceClient) checkJobStatus(jobId, svcName string) {
 // @Failure 403 {object} docs.GenericErrorResponse
 // @Failure 500 {object} docs.GenericErrorResponse
 // @Security ApiKeyAuth
-// @Router /job/launch [post]
+// @Router /v1/job/launch [post]
 func (resourceClient *ResourceClient) LaunchJob(c *gin.Context) {
 
 	var req model.LaunchCourseRequest
