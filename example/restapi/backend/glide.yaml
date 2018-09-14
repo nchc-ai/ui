@@ -1,8 +1,0 @@
-package: gitlab.com/nchc-ai/AI-Eduational-Platform/example/restapi
-import:
-- package: k8s.io/client-go
-  version: v7.0.0
-  subpackages:
-  - kubernetes
-  - rest
-  - tools/clientcmd
