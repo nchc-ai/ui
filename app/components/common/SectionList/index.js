@@ -24,8 +24,8 @@ const SectionList = ({ data, detail, col }) => {
             <h2 className="section-list-title">{section.title}</h2>
             <ul className="section-list-ul">
               {
-                section.infos.map(info => (
-                  <li className="section-list-li">
+                section.infos.map((info, index) => (
+                  <li key={index} className="section-list-li">
                     <span className="v-helper" />
                     <span
                       className="section-list-deco"

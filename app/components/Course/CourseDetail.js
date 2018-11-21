@@ -26,11 +26,11 @@ const CourseDetail = ({ submitMethod, cancelEdit, detail }) => (
         info={_.get(detail, 'introduction')}
       />
 
-     
+
       <ListView
         data={courseDetailList(detail)}
       />
-        
+
 
       <hr className="my-2" />
 

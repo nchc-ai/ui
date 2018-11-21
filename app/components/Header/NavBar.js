@@ -1,7 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { withRouter } from 'react-router';
-import { Link as ScrollLink } from 'react-scroll';
+import { Link, withRouter } from 'react-router-dom';
 import { HashLink } from "react-router-hash-link";
 // import { translate } from 'react-i18next';
 import _ from 'lodash';

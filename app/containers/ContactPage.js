@@ -6,9 +6,9 @@ import imgTitle from '../../public/images/index/section03-title-logo.png';
 import * as models from '../constants/models';
 
 class ContactPage extends Component {
- 
+
   componentWillMount() {
-    
+
     // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
   }
@@ -23,7 +23,7 @@ class ContactPage extends Component {
           <Row className="section-01-container">
             {/* <Col md={{ size: 6 }}>
               <img className="intro-img" alt="intro-img" src={imgServer} />
-            
+
             </Col> */}
             <Col md={{ size: 12 }}>
               <img alt="" className="intro-title-img" src={imgTitle} />

@@ -41,7 +41,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
 
 // Course > Get
 export const getCourseDetail = (courseId, token, next) => async (dispatch) => {
-  
+
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/v1/course/get/${courseId}`,

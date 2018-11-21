@@ -42,7 +42,7 @@ class IndexPage extends Component {
             titleImgUrl={section02Title}
             subTitle={models.indexPage.section02.subTitle}
           />
-          
+
 
           <Thumbnails
             className="section-02-thumb"
@@ -50,23 +50,23 @@ class IndexPage extends Component {
             col={3}
             isDivide
           />
-          
+
           <div id="index-intro"></div>
 
         </div>
 
-        
+
         <div name="intro" className="section-03 section-grp">
-          
+
           <SectionTitle
             isTitleImg
             titleImgUrl={section03Title}
           />
-          
+
           <Row className="section-03-container">
             <Col md={{ size: 6 }}>
               <img className="intro-img" alt="intro-img" src={imgServer} />
-            
+
             </Col>
             <Col md={{ size: 6 }}>
               <img alt="intro-title-img" src={imgTitle} />
@@ -78,7 +78,7 @@ class IndexPage extends Component {
             </Col>
 
           </Row>
-          
+
           <div className="line-h" />
 
           <SectionTitle
@@ -86,7 +86,7 @@ class IndexPage extends Component {
             titleImgUrl={section03Title02}
             subTitle={models.indexPage.section04.subTitle}
           />
-          
+
           <Thumbnails
             className="section-03-thumb"
             data={models.indexPage.section04.thumbs}

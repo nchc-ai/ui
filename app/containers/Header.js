@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
@@ -88,7 +88,7 @@ class Header extends Component {
                         </Link>
                       )}
                     </Hover>
-                    
+
                     <Hover>
                       {({ hovered, bind }) => (
                         <span onClick={this.logout} className="fl" {...bind}>
@@ -120,7 +120,7 @@ class Header extends Component {
 const mapStateToProps = ({ Auth }) => ({
   token: Auth.token,
   steady: Auth.steady,
-  isLogin: Auth.userInfo.active
+  isLogin: true
 });
 
 export default compose(

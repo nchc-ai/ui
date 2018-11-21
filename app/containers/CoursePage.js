@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router';
+import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
@@ -141,7 +141,7 @@ class CoursePage extends Component {
           </Route>
 
           {/* 基礎課程 vs 進階課程 */}
-          <Route exact path="/course/basic">
+          <Route path="/course/basic">
             <div>
 
 
@@ -165,7 +165,7 @@ class CoursePage extends Component {
             </div>
           </Route>
 
-          <Route exact path="/course/advance">
+          <Route path="/course/advance">
             <div>
 
               <div className="section-bn section-grp">

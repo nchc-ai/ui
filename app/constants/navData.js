@@ -71,10 +71,10 @@ export const subNav = [
 export const footer = {
   topIconArr: [
     {
-      url: 'https://www.facebook.com/KNOMOTW/',
+      url: 'https://www.facebook.com',
       imgUrl: '/'
     }, {
-      url: 'https://www.instagram.com/knomotaiwan',
+      url: 'https://www.instagram.com',
       imgUrl: '/'
     }
   ],
@@ -214,7 +214,6 @@ export const footer = {
     }
   ]
 };
-
 
 export const sideNav = [
   {

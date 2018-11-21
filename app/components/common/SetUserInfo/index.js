@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import ga from 'react-google-analytics';
 import { notify } from 'react-notify-toast';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { actions as formActions } from 'react-redux-form';
@@ -70,7 +70,7 @@ class SetUserInfo extends Component {
   afterGetUserInfo = error => {
     if (error) {
       notify.show('您尚未登入', 'error', 1800);
-      this.props.history.push('/login');
+      // this.props.history.push('/login');
     }
   }
 

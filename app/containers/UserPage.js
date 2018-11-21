@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Switch, Route } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
 import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import { Value } from 'slate';

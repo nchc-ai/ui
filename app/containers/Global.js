@@ -1,7 +1,7 @@
 
 import React, { Component } from 'react';
 import createReactClass from 'create-react-class';
-import { withRouter } from 'react-router';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 // import { translate } from 'react-i18next';
@@ -19,7 +19,7 @@ import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 
 // const GAInitiailizer = ga.Initializer;
 
-class Client extends Component {
+class Global extends Component {
 
   setDropdownPos = (pos) => {
     this.props.uiAction.setDropdownPos(pos);
@@ -28,7 +28,7 @@ class Client extends Component {
   offlineWarning = () => {
     notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', 1800);
   }
-  
+
   render() {
     const {
       match,
@@ -55,7 +55,10 @@ class Client extends Component {
         />
         <Progress.Component/>
         <Notifications />
-        {children}
+        <div className="global-body">
+
+          {children}
+        </div>
         <Footer
           offline={offline}
           offlineWarning={this.offlineWarning}
@@ -76,5 +79,5 @@ const mapStateToProps = ({ Auth, Ui }) => ({
 export default compose(
   connect(mapStateToProps),
   bindActionCreatorHoc
-)(withRouter(Client));
+)(Global);
 
