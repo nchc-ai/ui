@@ -3,7 +3,9 @@ $highlight-font-color: #000;
 
 .side-menu-comp {
   @include rect(225px, 100%);
+  position: fixed;
   background-color: #f8f4f4;
+  z-index: 40;
 
   // DogTag ----
   .dog-tag-comp {

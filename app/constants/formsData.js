@@ -3,6 +3,73 @@ import {
   required, mailIsValid, atLeastSix, samePassword 
 } from '../libraries/validation';
 
+
+export const addRoomForm = [
+  {
+    key: 1,
+    size: 8,
+    name: 'name',
+    inputType: 'text',
+    mainLabel: '教室描述',
+    placeholder: '請輸入課程名稱',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: true
+  }, {
+    key: 2,
+    size: 8,
+    name: 'name',
+    inputType: 'cron-input',
+    mainLabel: '時間選擇',
+    placeholder: '可建立多個 cron 格式',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: true
+  }, {
+    key: 3,
+    size: 8,
+    name: 'name',
+    inputType: 'text',
+    mainLabel: '課程選擇',
+    placeholder: '',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: false
+  }, {
+    key: 4,
+    size: 8,
+    name: 'name',
+    inputType: 'text',
+    mainLabel: '老師',
+    placeholder: '請輸入老師名稱',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: false
+  }, {
+    key: 5,
+    size: 8,
+    name: 'name',
+    inputType: 'text',
+    mainLabel: '學生',
+    placeholder: '請輸入欲上課學生',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: false
+  }
+];
+
+
+
 export const addCourseForm = [
   {
     key: 1,

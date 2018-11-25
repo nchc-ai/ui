@@ -312,44 +312,6 @@ class UserPage extends Component {
   }
 
 
-  // Job
-
-  addJob = (e, courseId) => {
-    const {
-      token,
-      userInfo,
-      userAction
-    } = this.props;
-
-    Progress.show();
-
-    // console.log('userInfo.username, courseId, token', userInfo.username, courseId, token);
-    userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
-  }
-
-  onAddJobSuccess = () => {
-    this.fetchData();
-    Progress.hide();
-    notify.show('工作新增成功', 'success', 1800);
-    this.props.history.push('/user/job');
-  }
-
-
-  deleteJob = (e, thumb) => {
-    const {
-      token,
-      userAction
-    } = this.props;
-    Progress.show();
-    userAction.deleteJob(thumb.id, token, this.onDeleteJobSuccess);
-  }
-
-  onDeleteJobSuccess = () => {
-    this.fetchData();
-    Progress.hide();
-    notify.show('工作刪除成功', 'success', 1800);
-  }
-
 
     // Profile
   onProfileUpdateSuccess = () => { 
@@ -469,15 +431,7 @@ class UserPage extends Component {
               />
             </Route>
 
-            {/* 工作清單 */}
-            <Route exact path="/user/job">
-              <JobList
-                data={Job.list}
-                addJob={this.addJob}
-                deleteJob={this.deleteJob}
-              />
-            </Route>
-
+        
             {/* 個人資料 */}
             <Route exact path="/user/profile">
               <Profile
@@ -536,10 +490,6 @@ const mapStateToProps = ({ Auth, User, forms, Course }) => ({
   Course: {
     loading: User.course.loading,
     list: User.course.data
-  },
-  Job: {
-    loading: User.job.loading,
-    list: User.job.data
   },
   courseAll: Course.courseAll.data,
   courseAllLoading: Course.courseAll.loading,

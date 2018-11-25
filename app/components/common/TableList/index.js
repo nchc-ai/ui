@@ -11,7 +11,7 @@ import MdDelete from 'react-icons/lib/md/delete';
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';
 
-const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob }) => (
+const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -31,13 +31,19 @@ const TableList = ({ data, tableData, isDialogOpen, startMethod, editMethod, del
                 case 'link':
                   return (
                     <td key={datum.key}>
-                      <Link to={`/course/detail/${_.get(d, 'id')}`}>{_.get(d, datum.value)}</Link>
+                      <Link to={`${prefixUrl ? prefixUrl : `/course/detail/`}${_.get(d, 'id')}`}>{_.get(d, datum.value)}</Link>
                     </td>
                   );
                 case 'level':
                   return (
                     <td key={datum.key}>
                       { _.get(d, datum.value, 'basic') === 'advance' ? '進階' : '基礎' }
+                    </td>
+                  );
+                case 'bool':
+                  return (
+                    <td key={datum.key}>
+                      { _.get(d, datum.value, false) ? '是' : '否' }
                     </td>
                   );
                 case 'date':

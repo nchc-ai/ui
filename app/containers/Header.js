@@ -77,13 +77,12 @@ class Header extends Component {
 
             <Col md={{ size: 5 }} >
               <GlobalSearch />
-              
               {
                 isLogin && steady ?
                   <span className="login-container">
                     <Hover>
                       {({ hovered, bind }) => (
-                        <Link to="/user/course" className="fl" {...bind}>
+                        <Link to="/course/list" className="fl" {...bind}>
                           <img alt="" src={hovered ? iconMemberAfter : iconMemberBefore} />
                         </Link>
                       )}

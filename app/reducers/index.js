@@ -9,6 +9,7 @@ import User from './User';
 
 import {
   initialGlobalSearchState,
+  initialAddClassroomState,
   initialAddCourseState,
   initialUserState,
   initialProfileState,
@@ -18,6 +19,7 @@ import {
 const rootReducer = combineReducers({
   forms: combineForms({
     globalSearch: modelReducer('globalSearch', initialGlobalSearchState),
+    addClassroom: modelReducer('addClassroom', initialAddClassroomState),
     addCourse: modelReducer('addCourse', initialAddCourseState),
     signup: modelReducer('signup', initialUserState),
     profile: modelReducer('profile', initialProfileState),

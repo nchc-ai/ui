@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import * as Auth from '../actions/Auth';
+import * as Room from '../actions/Room';
 import * as Course from '../actions/Course';
 import * as User from '../actions/User';
 import * as Ui from '../actions/Ui';
@@ -14,6 +15,7 @@ export default function bindActionCreatorHoc(WrappedComponent) {
 
   const mapDispatchToProps = dispatch => ({
     authAction: bindActionCreators(Auth, dispatch),
+    roomAction: bindActionCreators(Room, dispatch),
     courseAction: bindActionCreators(Course, dispatch),
     userAction: bindActionCreators(User, dispatch),
     uiAction: bindActionCreators(Ui, dispatch)

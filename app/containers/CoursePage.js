@@ -11,6 +11,7 @@ import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
 import { courseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import TableList from '../components/common/TableList';
 
 import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
@@ -96,7 +97,33 @@ class CoursePage extends Component {
     } = this.props;
     const courseType = _.get(match, 'params.type');
 
-    // console.log('match', match);
+    const tempData = [
+      {
+        "createAt": "2018-06-25T09:24:38Z",
+        "datasets": [
+          "cifar-10",
+          "caltech256"
+        ],
+        "gpu": 1,
+        "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+        "image": "nginx:1.7.9",
+        "introduction": "課程說明",
+        "level": "basic",
+        "name": "jimmy的課"
+      }, {
+        "createAt": "2018-06-25T09:24:38Z",
+        "datasets": [
+          "cifar-10",
+          "caltech256"
+        ],
+        "gpu": 1,
+        "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+        "image": "nginx:1.7.9",
+        "introduction": "課程說明",
+        "level": "basic",
+        "name": "jimmy的課"
+      }
+    ];
 
     return (
       <div className="course-bg global-content">
@@ -112,79 +139,28 @@ class CoursePage extends Component {
             />
           </Route>
 
-          {/* 課程搜尋 */}
-
-          <Route exact path="/course/:type/:query">
-            <CourseList
-              match={match}
-              banner={courseSearchBn}
-              title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
-              data={searchResult}
-              tableData={courseData}
-            />
-          </Route>
-
-          <Route exact path="/course/search">
-            <CourseList
-              match={match}
-              banner={courseSearchBn}
-              title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
-              data={searchResult}
-              tableData={courseData}
-            />
+          {/* 課程編輯 */}
+          <Route exact path="/course/edit/:courseId">
           </Route>
 
 
-          {/* 課程介紹 */}
-          <Route exact path="/course/intro">
-            <CourseIntro />
-          </Route>
-
-          {/* 基礎課程 vs 進階課程 */}
-          <Route path="/course/basic">
+          {/* 課程列表 */}
+          <Route path="/course/list">
             <div>
-
-
-              <div className="section-bn section-grp">
-                <img className="bg-grp" alt="" src={courseBasicBn} />
-              </div>
-
-              <SectionList
-                data={courseListBasic}
-                detail={courseDetailBasic}
-              />
-
-              {/* <CourseList
-                match={match}
-                banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
-                title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
-                data={courseList}
+              <TableList
+                data={tempData}
                 tableData={courseData}
-                courseType={courseType}
-              /> */}
+                isDialogOpen={true}
+                startMethod={this.startCourse}
+                editMethod={this.editCourse}
+                deleteMethod={this.deleteCourse}
+              />
             </div>
           </Route>
 
-          <Route path="/course/advance">
+          <Route path="/course/create">
             <div>
-
-              <div className="section-bn section-grp">
-                <img className="bg-grp" alt="" src={courseAdvanceBn} />
-              </div>
-
-
-              <SectionList
-                data={courseListAdvance}
-                detail={courseDetailAdvance}
-              />
-              {/* <CourseList
-                match={match}
-                banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
-                title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
-                data={courseList}
-                tableData={courseData}
-                courseType={courseType}
-              /> */}
+              <span>編輯課程</span>
             </div>
           </Route>
         </Switch>

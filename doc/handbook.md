@@ -11,8 +11,16 @@
             + SideNav     # 側邊欄 (只有登入才出現)
                 - DogTag
                 - LinkFormat
-            + RoomPage
-                - table 形式
+            + RoomPage (CRUD)
+                - TableList     [list]
+                    - Table
+                        - DataFrameTable
+                - [detail]
+                - []
+                - Form          [create]
+                    - FormGroups
+                - [edit]
+                
             + RoomTime
                 - 甘特圖
             + RoleSelection
@@ -27,6 +35,7 @@
                 - SectionList
                     - TableList
             + RoomPage
+                - TableList
             + JobPage
                 - JobList
             + UserPage
@@ -38,6 +47,7 @@
                 - SectionTitle
                 - Thumbnails
             + IntroPage
+                - 
             + ContactPage
             + AuthPage
                 - Login

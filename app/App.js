@@ -44,8 +44,8 @@ class App extends Component {
             <Route exact path="/login" component={RouteGuest} />
             <Route exact path="/signup" component={RouteGuest} />
             <Route exact path="/logout"  render={() => <Redirect to='/login' />} />
-            <Route path="/" component={RouteGuest} />
-            <Route path="*" component={StaticPage} />
+            <Route exact path="/" component={RouteGuest} />
+            <Route exact path="*" component={StaticPage} />
           </Switch>
         </Router>
       </div>

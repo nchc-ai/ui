@@ -7,6 +7,8 @@ import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
 import MarkdownShortcuts from '../MarkdownShortcuts/index';
+import CronBuilder from  'react-cron-builder';
+import 'react-cron-builder/dist/bundle.css'
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
@@ -179,6 +181,26 @@ const FormGroups = ({
               :
                 null
             }
+
+            {/* [input] cron 輸入 */}
+
+            {
+              d.inputType === 'cron-input'
+              ?
+                <CronBuilder 
+                  cronExpression="*/4 2,12,22 * * 1-5"
+                  onChange={(e) => {console.log('change', e)}}
+                  showResult
+                />
+              :
+                null
+            
+            }
+
+
+
+
+
 
             {/* [副input] 下拉式input*/}
             {

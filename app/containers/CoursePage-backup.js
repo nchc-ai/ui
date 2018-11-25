@@ -19,7 +19,7 @@ import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 import SectionList from '../components/common/SectionList/index';
 import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
 
-class IntroPage extends Component {
+class CoursePage extends Component {
 
   componentWillMount() {
     
@@ -96,7 +96,7 @@ class IntroPage extends Component {
     } = this.props;
     const courseType = _.get(match, 'params.type');
 
-    // console.log('match', match);
+    console.log('match inside', match);
 
     return (
       <div className="course-bg global-content">
@@ -105,70 +105,59 @@ class IntroPage extends Component {
 
           {/* 課程細項 */}
           <Route exact path="/course/detail/:courseId">
-            <CourseDetail
+            {/* <CourseDetail
               detail={courseDetail}
               submitMethod={this.startCourse}
               cancelEdit={this.backFromCourseDetail}
-            />
+            /> */}
           </Route>
 
           {/* 課程搜尋 */}
 
           <Route exact path="/course/:type/:query">
-            <CourseList
+            {/* <CourseList
               match={match}
               banner={courseSearchBn}
               title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
               data={searchResult}
               tableData={courseData}
-            />
+            /> */}
           </Route>
 
           <Route exact path="/course/search">
-            <CourseList
+            {/* <CourseList
               match={match}
               banner={courseSearchBn}
               title={`搜尋課程名稱含 "${_.get(match, 'params.courseId', '')}" 的結果`}
               data={searchResult}
               tableData={courseData}
-            />
+            /> */}
           </Route>
 
 
           {/* 課程介紹 */}
           <Route exact path="/course/intro">
-            <CourseIntro />
+            {/* <CourseIntro /> */}
           </Route>
 
           {/* 基礎課程 vs 進階課程 */}
-          <Route path="/course/basic">
+          <Route path="/course/list">
             <div>
-
-
-              <div className="section-bn section-grp">
-                <img className="bg-grp" alt="" src={courseBasicBn} />
-              </div>
-
-              <SectionList
-                data={courseListBasic}
-                detail={courseDetailBasic}
-              />
-
-              {/* <CourseList
+              <CourseList
                 match={match}
                 banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
                 title={courseType === 'basic' ? '基礎課程列表' : '進階課程列表'}
                 data={courseList}
                 tableData={courseData}
                 courseType={courseType}
-              /> */}
+              />
             </div>
           </Route>
 
           <Route path="/course/advance">
             <div>
-
-              <div className="section-bn section-grp">
+              <span>123</span>
+              {/* <div className="section-bn section-grp">
                 <img className="bg-grp" alt="" src={courseAdvanceBn} />
               </div>
 
@@ -176,7 +165,7 @@ class IntroPage extends Component {
               <SectionList
                 data={courseListAdvance}
                 detail={courseDetailAdvance}
-              />
+              /> */}
               {/* <CourseList
                 match={match}
                 banner={courseType === 'basic' ? courseBasicBn : courseAdvanceBn}
@@ -212,4 +201,4 @@ export default compose(
   ),
   bindActionCreatorHoc,
   withRouter
-)(IntroPage);
+)(CoursePage);
