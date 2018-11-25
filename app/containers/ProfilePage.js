@@ -11,8 +11,8 @@ class ProfilePage extends Component {
 
   render() {
     return (
-      <div className="room-page-bg global-content">
-        <div>123</div>
+      <div className="profile-bg global-content">
+        <h1>個人資料</h1>
       </div>
     );
   }

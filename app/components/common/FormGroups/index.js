@@ -7,8 +7,7 @@ import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
 import MarkdownShortcuts from '../MarkdownShortcuts/index';
-import CronBuilder from  'react-cron-builder';
-import 'react-cron-builder/dist/bundle.css'
+import CronBuilder from  '../../../vendor/CronBuilder';
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用

@@ -1,4 +1,18 @@
+.common-title-con {
+  overflow: hidden;
 
+  h1 {
+    font-size: 24px;
+    margin-bottom: 0px;
+  }
+
+  .common-title-underline {
+    width: 100%;
+    height: 5px;
+    margin-top: 4px;
+    background: $ai-secondary-light-green;
+  }
+}
 
 
 // Index

@@ -4,10 +4,7 @@ import { Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import ToggleButton from 'react-toggle-button';
-import MdMoreVert from 'react-icons/lib/md/more-vert';
-import MdAdd from 'react-icons/lib/md/add';
-import MdEdit from 'react-icons/lib/md/edit';
-import MdDelete from 'react-icons/lib/md/delete';
+import { MdMoreVert, MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';
 

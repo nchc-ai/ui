@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
+import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
+import { Button } from 'reactstrap';
 import { actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
@@ -19,6 +20,11 @@ import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
 import SectionList from '../components/common/SectionList/index';
 import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
+
+
+import SectionTitle from '../components/common/SectionTitle';
+import TitleIcon from '../assets/images/user/title-icon.png';
+
 
 class CoursePage extends Component {
 
@@ -129,24 +135,26 @@ class CoursePage extends Component {
       <div className="course-bg global-content">
         <Switch>
 
+          
+          {/* [User] 課程列表 */}
+          <Route path="/ongoing-course/list">
+            <div class="ongoing-course__list ongoing-course__grp">
+              <SectionTitle
+                title='開課列表'
+                iconImgUrl={TitleIcon}
+                isUnderline
+                isIcon
+              />
 
-          {/* 課程細項 */}
-          <Route exact path="/course/detail/:courseId">
-            <CourseDetail
-              detail={courseDetail}
-              submitMethod={this.startCourse}
-              cancelEdit={this.backFromCourseDetail}
-            />
-          </Route>
+              <Link to="/classroom-manage/create" className="fl add-btn-con">
+                <Button className="fl add-btn" color="success">新增容器課程</Button>
+              </Link>
 
-          {/* 課程編輯 */}
-          <Route exact path="/course/edit/:courseId">
-          </Route>
+              <Link to="/classroom-manage/create" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
+                <Button className="fl add-btn" color="success">新增教室</Button>
+              </Link>
 
 
-          {/* 課程列表 */}
-          <Route path="/course/list">
-            <div>
               <TableList
                 data={tempData}
                 tableData={courseData}
@@ -158,11 +166,28 @@ class CoursePage extends Component {
             </div>
           </Route>
 
-          <Route path="/course/create">
+          {/* [User] 課程細項 */}
+          <Route exact path="/ongoing-course/detail/:courseId">
+            <CourseDetail
+              detail={courseDetail}
+              submitMethod={this.startCourse}
+              cancelEdit={this.backFromCourseDetail}
+            />
+          </Route>
+
+          {/* [User] 課程編輯 */}
+          <Route exact path="/ongoing-course/edit/:courseId">
+          </Route>
+
+
+          
+          {/* [User] 新建課程 */}
+          <Route exact path="/ongoing-course/create">
             <div>
               <span>編輯課程</span>
             </div>
           </Route>
+
         </Switch>
       </div>
     );

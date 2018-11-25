@@ -33,7 +33,7 @@ class Index extends Component {
           sideNav.map(d => (
             <li
               key={d.key}
-              className={d.url === match.url ? 'side-menu-li active' : 'side-menu-li'}
+              className={match.url.includes(d.urlPrefix) ? 'side-menu-li active' : 'side-menu-li'}
             >
               <LinkFormat
                 textObj={d}

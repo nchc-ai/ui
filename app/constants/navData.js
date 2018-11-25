@@ -218,49 +218,57 @@ export const footer = {
 export const sideNav = [
   {
     key: 0,
-    url: '/classroom/list',
+    url: '/classroom-manage/list',
+    urlPrefix: '/classroom-manage',
     text: '教室管理',
     isMain: true,
     isLink: true
   }, {
     key: 1,
-    url: '/classroom/timeline',
+    url: '/classroom-time',
+    urlPrefix: '/classroom-time',
     text: '教室時間',
     isMain: true,
     isLink: true
   }, {
     key: 2,
-    url: '/course/list',
-    text: '課程列表',
+    url: '/ongoing-course/list',
+    urlPrefix: '/ongoing-course',
+    text: '開課列表',
     isMain: true,
     isLink: true
   }, {
     key: 3,
-    url: '/classroom/group',
+    url: '/classroom-group',
+    urlPrefix: '/classroom-group',
     text: '教室列表',
     isMain: false,
     isLink: true
   }, {
     key: 4,
     url: '/job/list',
+    urlPrefix: '/job',
     text: '工作清單',
     isMain: false,
     isLink: true
   }, {
     key: 5,
     url: '/profile/list',
+    urlPrefix: '/profile',
     text: '個人資料',
     isMain: false,
     isLink: true
   }, {
     key: 6,
     url: '/password-forgot',
+    urlPrefix: '/password',
     text: '密碼設定',
     isMain: false,
     isLink: true
   }, {
     key: 7,
     url: '/logout',
+    urlPrefix: '/logout',
     text: '登出',
     isMain: false,
     isLink: true

@@ -3,7 +3,6 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Button } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
 import { Form, actions as formActions } from 'react-redux-form';
@@ -17,7 +16,6 @@ import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 
 import TableList from '../components/common/TableList';
-import SectionTitle from '../components/common/SectionTitle';
 import { addRoomForm } from '../constants/formsData';
 import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
@@ -26,9 +24,7 @@ import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 import SectionList from '../components/common/SectionList/index';
 import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
 
-import TitleIcon from '../assets/images/user/title-icon.png';
-
-class RoomPage extends Component {
+class RoomGroup extends Component {
 
   componentWillMount() {
     
@@ -153,86 +149,13 @@ class RoomPage extends Component {
     return (
       <div className="classroom-bg global-content">
         <Switch>
-
           {/* 教室列表 */}
-          <Route path="/classroom-manage/list">
-            <div class="room-page__list room-page__grp">
-            
-              <SectionTitle
-                title={'教室管理'}
-                iconImgUrl={TitleIcon}
-                isUnderline
-                isIcon
-              />
-
-              <Link to="/classroom-manage/create" className="fl add-btn-con">
-                <Button className="add-btn" color="success">新增教室</Button>
-              </Link>
-
-              <TableList
-                data={tempData}
-                prefixUrl="/classroom-manage/detail/"
-                tableData={roomData}
-                isDialogOpen={true}
-                startMethod={this.startRoom}
-                editMethod={this.editRoom}
-                deleteMethod={this.deleteRoom}
-              />
+          <Route path="/classroom-group">
+            <div>
+              <h1>教室列表</h1>
+              
             </div>
           </Route>
-
-          {/* 教室細項 */}
-          <Route exact path="/classroom-manage/detail/:courseId">
-            <div className="room-page__detail room-page__grp">            
-              <h1>教室細項</h1>
-
-              <CourseDetail
-                detail={courseDetail}
-                submitMethod={this.startCourse}
-                cancelEdit={this.backFromCourseDetail}
-                isBanner={false}
-              />
-              </div>
-          </Route>
-
-          {/* 教室新建 */}
-          <Route path="/classroom-manage/create">
-            <div className="room-page__create room-page__grp">
-                        
-            <h1>新增教室</h1>
-
-              <Form
-                model="forms.profile"
-                className="signup-form-comp"
-                onSubmit={formData => onSubmit(formData)}
-              >
-                <div className="row-01">
-                  <FormGroups
-                    formData={addRoomForm}
-                    targetForm={addClassroom}
-                    changeVal={this.changeRoomValue}
-                  />
-                </div>
-
-                <FormButtons
-                  cancelName="回課程列表"
-                  submitName="修改"
-                  backMethod={this.cancelRoomEdit}
-                  isForm
-                />
-              </Form>
-
-            </div>
-          </Route>
-
-          {/* 教室編輯 */}
-          <Route exact path="/classroom-manage/edit/:courseId">
-          
-          </Route>
-
-
-          
-          
         </Switch>
       </div>
     );
@@ -259,4 +182,4 @@ export default compose(
   ),
   bindActionCreatorHoc,
   withRouter
-)(RoomPage);
+)(RoomGroup);

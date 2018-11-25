@@ -9,10 +9,10 @@ import { courseDetailList } from '../../constants/listData';
 import { courseDetailData } from '../../constants/tempData';
 import circleIcon from '../../../public/images/course/course-detail-ai-logo.png';
 
-const CourseDetail = ({ submitMethod, cancelEdit, detail }) => (
+const CourseDetail = ({ submitMethod, cancelEdit, detail, isBanner }) => (
   <div className="course-detail-bg">
 
-    <div className="section-bn section-grp">
+    <div className="section-bn section-grp" style={{ display: isBanner ? 'block' : 'none' }}>
       {/* <img className="bg-grp" alt="" src={courseBn} /> */}
       <h1>課程細項</h1>
       <img alt="" src={circleIcon} />

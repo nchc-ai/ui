@@ -5,7 +5,7 @@ import DataFrame from '../../common/DataFrame/index';
 import { formatValue } from '../../../libraries/utils';
 
 const ListView = ({ data, col }) => {
-  console.log('data', data);
+  // console.log('data', data);
   return (
   <div className="list-view-comp">
     <DataFrame

@@ -29,7 +29,11 @@ class App extends Component {
         <Router>
           <Switch>
             { offline ? <Route path="*" component={StaticPage} /> : null }
-            <Route exact path="/classroom/:action/:roomId" component={isLogin ? RouteUser : AuthPage} />
+            <Route path="/classroom-time" component={isLogin ? RouteUser : AuthPage} />
+            <Route path="/classroom-manage" component={isLogin ? RouteUser : AuthPage} />
+            <Route path="/classroom-group" component={isLogin ? RouteUser : AuthPage} />
+            <Route path="/ongoing-course" component={isLogin ? RouteUser : AuthPage} />
+        
             <Route exact path="/classroom/:action" component={isLogin ? RouteUser : AuthPage} />
             <Route exact path="/role/select" component={isLogin ? RouteUser : AuthPage} />
             <Route exact path="/course/:action/:courseId" component={isLogin ? RouteUser : AuthPage} />
