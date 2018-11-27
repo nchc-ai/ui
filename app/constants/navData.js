@@ -260,7 +260,7 @@ export const sideNav = [
     isLink: true
   }, {
     key: 6,
-    url: '/password-forgot',
+    url: '/password-setting',
     urlPrefix: '/password',
     text: '密碼設定',
     isMain: false,

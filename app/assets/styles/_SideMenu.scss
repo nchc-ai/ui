@@ -11,7 +11,6 @@ $highlight-font-color: #000;
   .dog-tag-comp {
     @include margin-leftop(20px, 30px);
     margin-bottom: 20px;
-    
     .content-container p {
       color:#9b9b9b;
     }
@@ -22,17 +21,21 @@ $highlight-font-color: #000;
   li.side-menu-li {
     @include rect(100%, 60px);
     transition: all .2s ease-in-out;
-    
+
     // LinkFormat
     .link-format-comp {
-      padding-left: 70px;
-      .link-format-container {
-        a.link-text, span.link-text {
-          p.title, p.info {
-            color: $nav-font-color;
-          }
-        }
-      }
+      @include rect(100%, 60px);
+      padding-left: 60px;
+      line-height: 60px;
+      letter-spacing: 5px;
+      display: inline-block;
+      color: $nav-font-color;
+
+    }
+
+    .link-format-disable {
+      pointer-events: none;
+      cursor: default;
     }
   }
 
@@ -43,7 +46,6 @@ $highlight-font-color: #000;
       content: '';
       position: absolute;
       background-color:#2a9b9d;
-      
     }
     // color: $highlight-font-color;
   }

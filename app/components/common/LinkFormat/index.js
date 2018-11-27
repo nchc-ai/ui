@@ -2,8 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 // 判斷offline > 判斷isLink > 判斷isMain
 const LinkFormat = ({ textObj, isMain, offline, offlineWarning, onClick }) => (
-  <div className="link-format-comp">
-    {
+  <Link to={textObj.url} className={`link-format-${textObj.isLink ? 'comp' : 'disable'}`}>
+    <span className={isMain ? 'title' : 'info'}>{textObj.text}</span>
+
+    {/* {
       offline ?
         <div className="link-format-container">
           <span className="v-helper" />
@@ -32,8 +34,8 @@ const LinkFormat = ({ textObj, isMain, offline, offlineWarning, onClick }) => (
               </span>
           }
         </div>
-    }
-  </div>
+    } */}
+  </Link>
 );
 
 export default LinkFormat;

@@ -10,7 +10,7 @@ import { actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
-import { courseData } from '../constants/tableData';
+import { ongoingCourseData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import TableList from '../components/common/TableList';
 
@@ -151,13 +151,13 @@ class CoursePage extends Component {
               </Link>
 
               <Link to="/classroom-manage/create" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
-                <Button className="fl add-btn" color="success">新增教室</Button>
+                <Button className="fl add-btn" color="success">新增 VM 課程</Button>
               </Link>
 
 
               <TableList
                 data={tempData}
-                tableData={courseData}
+                tableData={ongoingCourseData}
                 isDialogOpen={true}
                 startMethod={this.startCourse}
                 editMethod={this.editCourse}

@@ -3,10 +3,10 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import SectionTitle from '../components/common/SectionTitle/index';
 import DataFrame from '../components/common/DataFrame/index';
 import { groupArray, formatStatus } from '../libraries/utils';
-
+import SectionTitle from '../components/common/SectionTitle';
+import TitleIcon from '../assets/images/user/title-icon.png';
 
 class JobPage extends Component {
   componentWillMount() {
@@ -63,8 +63,11 @@ class JobPage extends Component {
 
           <SectionTitle
             title={'工作清單'}
-            subTitle={'以下是您開始的課程中，正在執行的工作內容。'}
+            iconImgUrl={TitleIcon}
+            isUnderline
+            isIcon
           />
+
           <DataFrame
             data={groupArray(data, 'name')}
             cols={8}

@@ -4,26 +4,14 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { notify } from 'react-notify-toast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import Profile from '../components/User/Profile';
-
+import Password from '../components/User/Password';
 import SectionTitle from '../components/common/SectionTitle';
 import TitleIcon from '../assets/images/user/title-icon.png';
-class ProfilePage extends Component {
+
+
+class PasswordPage extends Component {
   componentWillMount() {
 
-  }
-
-  onProfileUpdateSuccess = () => {
-    notify.show('個人資料更新成功', 'success', 1800);
-  }
-
-
-  onProfileUpdate = (formData) => {
-    const {
-      authAction,
-      token
-    } = this.props;
-    authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
   }
 
   handleSubmitFailed = (formData) => {
@@ -40,6 +28,27 @@ class ProfilePage extends Component {
     this.props.history.push('/user/course');
   }
 
+  // Password
+  onPasswordUpdateSuccess = () => {
+    notify.show('您的密碼已更新成功', 'success', 1800);
+  }
+
+
+  onPasswordUpdate = (formData) => {
+    const {
+      authAction,
+      token,
+      userInfo
+    } = this.props;
+    // console.log('update', userInfo);
+    authAction.updatePassword(userInfo.username, formData, token, this.onPasswordUpdateSuccess);
+  }
+
+
+  handleCancel = () => {
+    this.props.history.push('/user/course');
+  }
+
   render() {
     const {
       forms,
@@ -49,18 +58,17 @@ class ProfilePage extends Component {
     return (
       <div className="profile-bg global-content">
         <SectionTitle
-          title={'個人資料'}
+          title={'密碼變更'}
           iconImgUrl={TitleIcon}
           isUnderline
           isIcon
         />
-
-        <Profile
-          targetForm={forms.profile}
-          changeValue={changeValue}
-          onSubmit={this.onProfileUpdate}
-          onSubmitFailed={this.handleSubmitFailed}
-          cancelEdit={this.handleCancel}
+        <Password
+            targetForm={forms.password}
+            changeValue={changeValue}
+            onSubmit={this.onPasswordUpdate}
+            onSubmitFailed={this.handleSubmitPasswordFailed}
+            cancelEdit={this.handleCancel}
         />
       </div>
     );
@@ -92,4 +100,4 @@ export default compose(
   ),
   bindActionCreatorHoc,
   withRouter
-)(ProfilePage);
+)(PasswordPage);

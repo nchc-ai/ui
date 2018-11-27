@@ -25,9 +25,15 @@ export default class RoleSelect extends React.Component {
           視角切換
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem><FaKey />管理員</DropdownItem>
-          <DropdownItem><FaChalkboardTeacher />老師</DropdownItem>
-          <DropdownItem><FaUserGraduate />學生</DropdownItem>
+          <DropdownItem>
+            <Link to="/role-select/admin"><FaKey />管理員</Link>
+          </DropdownItem>
+          <DropdownItem>
+            <Link to="/role-select/teacher"><FaChalkboardTeacher />老師</Link>
+          </DropdownItem>
+          <DropdownItem>
+            <Link to="/role-select/student"><FaUserGraduate />學生</Link>
+          </DropdownItem>
         </DropdownMenu>
       </Dropdown>
     );

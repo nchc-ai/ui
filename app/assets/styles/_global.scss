@@ -14,19 +14,17 @@
       min-height:500px;
       overflow: hidden;
     }
-    
   }
 
   .content-user {
     .global-content{
       position: relative;
-      margin-top: 50px;
-      @include margin(80px);
+      padding: 50px 80px 0 80px;
       min-height:500px;
       overflow: hidden;
     }
   }
-  
+
 
   .global-body{
     position: relative;

@@ -9,11 +9,6 @@ const Profile = ({ targetForm, changeValue, onSubmit, cancelEdit }) => {
   // console.log('profileForm', targetForm )
   return (
   <div className="profile-comp">
-    <SectionTitle
-      title={'個人資料'}
-      subTitle={'以下是您的個人資料，可修改上傳。'}
-    />
-
     <Form
       model="forms.profile"
       className="signup-form-comp"

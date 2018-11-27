@@ -17,7 +17,6 @@ import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 
 import TableList from '../components/common/TableList';
-import SectionTitle from '../components/common/SectionTitle';
 import { addRoomForm } from '../constants/formsData';
 import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
@@ -26,12 +25,13 @@ import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 import SectionList from '../components/common/SectionList/index';
 import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
 
+import SectionTitle from '../components/common/SectionTitle';
 import TitleIcon from '../assets/images/user/title-icon.png';
 
 class RoomPage extends Component {
 
   componentWillMount() {
-    
+
     // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);
@@ -157,7 +157,7 @@ class RoomPage extends Component {
           {/* 教室列表 */}
           <Route path="/classroom-manage/list">
             <div class="room-page__list room-page__grp">
-            
+
               <SectionTitle
                 title={'教室管理'}
                 iconImgUrl={TitleIcon}

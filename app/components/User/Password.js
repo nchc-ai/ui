@@ -10,10 +10,7 @@ const Password = ({ targetForm, changeValue, onSubmit, onSubmitFailed, cancelEdi
   // console.log('profileForm', targetForm )
   return (
   <div className="profile-comp">
-    <SectionTitle
-      title={'密碼設定'}
-      subTitle={'您可在此修改密碼。'}
-    />
+
     <Form
       model="forms.password"
       className="signup-form-comp"

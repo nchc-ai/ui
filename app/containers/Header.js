@@ -82,7 +82,7 @@ class Header extends Component {
                   <span className="login-container">
                     <Hover>
                       {({ hovered, bind }) => (
-                        <Link to="/course/list" className="fl" {...bind}>
+                        <Link to="/classroom-manage/list" className="fl" {...bind}>
                           <img alt="" src={hovered ? iconMemberAfter : iconMemberBefore} />
                         </Link>
                       )}
