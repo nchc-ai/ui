@@ -16,12 +16,17 @@
     }
   }
 
-  .content-user {
+  .user-node {
     .global-content{
       position: relative;
+      margin-left: 224px;
       padding: 50px 80px 0 80px;
       min-height:500px;
       overflow: hidden;
+    }
+
+    .user-content {
+      padding-top: 50px;
     }
   }
 
@@ -31,10 +36,6 @@
     margin-top: 80px;
     min-height:500px;
     overflow: hidden;
-
-    .content-user {
-      margin-left: 224px;
-    }
   }
 
 }

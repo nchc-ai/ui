@@ -47,7 +47,7 @@ module.exports = {
       allChunks: false
     }),
     new HtmlWebpackPlugin({
-      template: path.join(__dirname, '/index.html'),
+      template: __dirname + '/index.html',
       filename: 'index.html',
       inject: 'body'
     }),
@@ -96,6 +96,9 @@ module.exports = {
       }, {
         test: /\.(ico|eot|woff|woff2|ttf|svg|png|jpg|gif)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
         loader: 'url-loader?limit=3000'
+      }, {
+        test: /\.styl$/,
+        use: ExtractTextPlugin.extract(['css-loader', 'stylus-loader'])
       }
     ]
   }

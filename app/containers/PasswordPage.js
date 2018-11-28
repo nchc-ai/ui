@@ -5,8 +5,7 @@ import { connect } from 'react-redux';
 import { notify } from 'react-notify-toast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Password from '../components/User/Password';
-import SectionTitle from '../components/common/SectionTitle';
-import TitleIcon from '../assets/images/user/title-icon.png';
+import CommonPageContent from '../components/CommonPageContent'
 
 
 class PasswordPage extends Component {
@@ -56,13 +55,10 @@ class PasswordPage extends Component {
     } = this.props;
 
     return (
-      <div className="profile-bg global-content">
-        <SectionTitle
-          title={'密碼變更'}
-          iconImgUrl={TitleIcon}
-          isUnderline
-          isIcon
-        />
+      <CommonPageContent
+        className="password-page-bg"
+        pageTitle="密碼變更"
+      >
         <Password
             targetForm={forms.password}
             changeValue={changeValue}
@@ -70,7 +66,7 @@ class PasswordPage extends Component {
             onSubmitFailed={this.handleSubmitPasswordFailed}
             cancelEdit={this.handleCancel}
         />
-      </div>
+      </CommonPageContent>
     );
   }
 }

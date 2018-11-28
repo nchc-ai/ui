@@ -166,7 +166,7 @@ class RoomPage extends Component {
               />
 
               <Link to="/classroom-manage/create" className="fl add-btn-con">
-                <Button className="add-btn" color="success">新增教室</Button>
+                <button className="add-btn btn-pair" color="success">新增教室</button>
               </Link>
 
               <TableList

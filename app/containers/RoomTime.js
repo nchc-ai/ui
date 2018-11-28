@@ -17,6 +17,7 @@ import Modal from 'react-bootstrap/lib/Modal';
 import CalendarData from '../constants/calendarData';
 import SectionTitle from '../components/common/SectionTitle';
 import TitleIcon from '../assets/images/user/title-icon.png';
+import CommonPageContent from '../components/CommonPageContent'
 
 
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -115,73 +116,65 @@ class RoomTime extends Component {
     }
 
   render() {
-    
-    const styles = {
-      position: 'relative',
-  };
 
-  return (
-      <div className="room-time-bg global-content" style={styles}>
-        <SectionTitle
-          title={'教室時間'}
-          iconImgUrl={TitleIcon}
-          isUnderline
-          isIcon
-        />
+    return (
+      <CommonPageContent
+        className="room-time-bg"
+        pageTitle="教室時間"
+      >
+        <Overlay
+            show={this.state.showPopover}
+            rootClose
+            onHide = {()=>this.setState({showPopover: false, })}
+            placement="top"
+            container={this}
+            target={this.state.popoverTarget}>
+            <Popover id="event">{this.state.overlayTitle}</Popover>
+        </Overlay>
 
-          <Overlay
-              show={this.state.showPopover}
-              rootClose
-              onHide = {()=>this.setState({showPopover: false, })}
-              placement="top"
-              container={this}
-              target={this.state.popoverTarget}>
-              <Popover id="event">{this.state.overlayTitle}</Popover>
-          </Overlay>
+        <Modal show={this.state.showModal} onHide={this.handleModalClose}>
+            <Modal.Header closeButton>
+                <Modal.Title>{this.state.overlayTitle}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+                {this.state.overlayContent}
+            </Modal.Body>
+            <Modal.Footer>
+                <Button onClick={this.handleModalClose}>Close</Button>
+            </Modal.Footer>
+        </Modal>
 
-          <Modal show={this.state.showModal} onHide={this.handleModalClose}>
-              <Modal.Header closeButton>
-                  <Modal.Title>{this.state.overlayTitle}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                  {this.state.overlayContent}
-              </Modal.Body>
-              <Modal.Footer>
-                  <Button onClick={this.handleModalClose}>Close</Button>
-              </Modal.Footer>
-          </Modal>
+        <Grid>
+            <Row>
+                <Col xs={6}>
+                    <ButtonToolbar>
+                        <Button onClick={this.handlePreviousMonth}>&lt;</Button>
+                        <Button onClick={this.handleNextMonth}>&gt;</Button>
+                        <Button onClick={this.handleToday}>Today</Button>
+                    </ButtonToolbar>
+                </Col>
+                <Col xs={6}>
+                    <div className="pull-right h2">{this.getHumanDate()}</div>
+                </Col>
+            </Row>
+            <br />
+            <Row>
+                <Col xs={12}>
+                    <EventCalendar
+                        month={this.state.moment.month()}
+                        year={this.state.moment.year()}
+                        events={CalendarData.getEvents()}
+                        onEventClick={this.handleEventClick}
+                        onEventMouseOver={this.handleEventMouseOver}
+                        onEventMouseOut={this.handleEventMouseOut}
+                        onDayClick={this.handleDayClick}
+                        maxEventSlots={10}
+                    />
+                </Col>
+            </Row>
+        </Grid>
 
-          <Grid>
-              <Row>
-                  <Col xs={6}>
-                      <ButtonToolbar>
-                          <Button onClick={this.handlePreviousMonth}>&lt;</Button>
-                          <Button onClick={this.handleNextMonth}>&gt;</Button>
-                          <Button onClick={this.handleToday}>Today</Button>
-                      </ButtonToolbar>
-                  </Col>
-                  <Col xs={6}>
-                      <div className="pull-right h2">{this.getHumanDate()}</div>
-                  </Col>
-              </Row>
-              <br />
-              <Row>
-                  <Col xs={12}>
-                      <EventCalendar
-                          month={this.state.moment.month()}
-                          year={this.state.moment.year()}
-                          events={CalendarData.getEvents()}
-                          onEventClick={this.handleEventClick}
-                          onEventMouseOver={this.handleEventMouseOver}
-                          onEventMouseOut={this.handleEventMouseOut}
-                          onDayClick={this.handleDayClick}
-                          maxEventSlots={10}
-                      />
-                  </Col>
-              </Row>
-          </Grid> 
-
-      </div>
+      </CommonPageContent>
     );
   }
 }

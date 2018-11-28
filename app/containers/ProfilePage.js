@@ -5,9 +5,7 @@ import { connect } from 'react-redux';
 import { notify } from 'react-notify-toast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Profile from '../components/User/Profile';
-
-import SectionTitle from '../components/common/SectionTitle';
-import TitleIcon from '../assets/images/user/title-icon.png';
+import CommonPageContent from '../components/CommonPageContent';
 class ProfilePage extends Component {
   componentWillMount() {
 
@@ -47,14 +45,10 @@ class ProfilePage extends Component {
     } = this.props;
 
     return (
-      <div className="profile-bg global-content">
-        <SectionTitle
-          title={'個人資料'}
-          iconImgUrl={TitleIcon}
-          isUnderline
-          isIcon
-        />
-
+      <CommonPageContent
+        className="profile-page-bg"
+        pageTitle="個人資料"
+      >
         <Profile
           targetForm={forms.profile}
           changeValue={changeValue}
@@ -62,7 +56,7 @@ class ProfilePage extends Component {
           onSubmitFailed={this.handleSubmitFailed}
           cancelEdit={this.handleCancel}
         />
-      </div>
+      </CommonPageContent>
     );
   }
 }

@@ -35,7 +35,7 @@ const config = {
   // resolve :{
   //   alias: {
   //     'react': bower_dir + '/react/react.production.min.js'
-  //   }
+  //   } 
   // },
   // output: {
   //   path: __dirname + '/build',
@@ -47,7 +47,7 @@ const config = {
     new webpack.HotModuleReplacementPlugin(),
     new ExtractTextPlugin('style.css'),
     new HtmlWebpackPlugin({
-      template: __dirname + '/build/index.html',
+      template: __dirname + '/index.html',
       filename: 'index.html',
       inject: 'body'
     })

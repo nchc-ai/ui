@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import Select from 'react-select';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import CommonPageContent from '../components/CommonPageContent'
+
+const options = [
+  { value: 'chocolate', label: 'Serena' },
+  { value: 'strawberry', label: 'Jimmy' },
+  { value: 'vanilla', label: 'Allen' }
+]
 
 class RolePage extends Component {
   componentWillMount() {
@@ -11,12 +19,13 @@ class RolePage extends Component {
 
   render() {
     return (
-      <div className="room-page-bg global-content">
-        <Switch>
-          <Route path=""></Route>
-        </Switch>
-        <Link to="/">12345</Link>
-      </div>
+      <CommonPageContent
+        className="role-page-bg"
+        pageTitle="視角切換"
+      >
+        <Select options={options} />
+
+      </CommonPageContent>
     );
   }
 }

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FaKey, FaChalkboardTeacher, FaUserGraduate }  from 'react-icons/fa';
 
@@ -25,15 +26,26 @@ export default class RoleSelect extends React.Component {
           視角切換
         </DropdownToggle>
         <DropdownMenu>
-          <DropdownItem>
-            <Link to="/role-select/admin"><FaKey />管理員</Link>
-          </DropdownItem>
-          <DropdownItem>
-            <Link to="/role-select/teacher"><FaChalkboardTeacher />老師</Link>
-          </DropdownItem>
-          <DropdownItem>
-            <Link to="/role-select/student"><FaUserGraduate />學生</Link>
-          </DropdownItem>
+          <Link to="/role-select/admin" className="dropdown-link">
+            <DropdownItem>
+              <FaKey />
+              <span>管理員</span>
+            </DropdownItem>
+          </Link>
+
+          <Link to="/role-select/teacher" className="dropdown-link">
+            <DropdownItem>
+              <FaChalkboardTeacher />
+              <span>老師</span>
+            </DropdownItem>
+          </Link>
+
+          <Link to="/role-select/student" className="dropdown-link">
+              <DropdownItem>
+                  <FaUserGraduate />
+                  <span>學生</span>
+              </DropdownItem>
+          </Link>
         </DropdownMenu>
       </Dropdown>
     );

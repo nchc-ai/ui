@@ -7,7 +7,7 @@ $button-border-radius: 5px;
 // btn-pair next-btn
 
 .btn-pair{
-  @include rect(100%,40px);       
+  @include rect(100%,40px);
   font-size:16px;
   color:#fff;
   outline: none;

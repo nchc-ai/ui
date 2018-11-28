@@ -23,11 +23,12 @@ import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
 import SectionList from '../components/common/SectionList/index';
 import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
+import CommonPageContent from '../components/CommonPageContent'
+
 
 class RoomGroup extends Component {
 
   componentWillMount() {
-    
     // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);
@@ -147,17 +148,12 @@ class RoomGroup extends Component {
     ];
 
     return (
-      <div className="classroom-bg global-content">
-        <Switch>
-          {/* 教室列表 */}
-          <Route path="/classroom-group">
-            <div>
-              <h1>教室列表</h1>
-              
-            </div>
-          </Route>
-        </Switch>
-      </div>
+      <CommonPageContent
+        className="role-page-bg"
+        pageTitle="教室列表"
+      >
+        
+      </CommonPageContent>
     );
   }
 }
