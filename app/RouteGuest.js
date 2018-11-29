@@ -15,7 +15,7 @@ import Logout from './containers/Logout';
 import IndexPage from './containers/IndexPage';
 import StaticPage from './containers/StaticPage';
 import Global from './containers/Global';
-import Footer from './components/Footer';
+import Footer from './components/Footer/Index';
 
 class RouteGuest extends Component {
   setDropdownPos = (pos) => {
