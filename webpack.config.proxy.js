@@ -75,6 +75,9 @@ const config = {
       }, {
         test: /\.(ico|eot|woff|woff2|ttf|svg|png|jpg|gif)(\?v=[a-z0-9]\.[a-z0-9]\.[a-z0-9])?$/,
         loader: 'url-loader?limit=3000'
+      }, {
+        test: /\.styl$/,
+        use: ExtractTextPlugin.extract(['css-loader', 'stylus-loader'])
       }
     ]
   },
