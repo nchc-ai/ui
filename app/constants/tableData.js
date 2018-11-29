@@ -79,6 +79,44 @@ export const ongoingCourseData = {
   ]
 };
 
+
+export const classroomGroupData = {
+  headers: [
+    {
+      key: 1,
+      text: '課程名稱'
+    }, {
+      key: 2,
+      text: '課程程度'
+    }, {
+      key: 3,
+      text: '建立時間'
+    }, {
+      key: 4,
+      text: '操作'
+    }
+  ],
+  cols: [
+    {
+      key: 1,
+      type: 'link',
+      value: 'name'
+    }, {
+      key: 2,
+      type: 'level',
+      value: 'level'
+    }, {
+      key: 3,
+      type: 'date',
+      value: 'createAt'
+    }, {
+      key: 4,
+      type: 'more',
+      value: ''
+    }
+  ]
+};
+
 export const courseData = {
   headers: [
     {

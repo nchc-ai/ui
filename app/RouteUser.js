@@ -28,18 +28,27 @@ class RouteUser extends Component {
             <div className="user-node">
               <RoleSelect/>
               <Switch>
-                <Route exact path="/classroom-time" component={RoomTime} />
+
                 <Route exact path="/classroom-manage/:action/:roomId" component={RoomPage} />
                 <Route exact path="/classroom-manage/:action" component={RoomPage} />
-                <Route exact path="/role-select" component={RolePage} />
+
+                <Route exact path="/classroom-time" component={RoomTime} />
+
                 <Route exact path="/role-select/:level" component={RolePage} />
+
+                <Route exact path="/job/list" component={JobPage} />
+
+                <Route exact path="/ongoing-course/create/:courseType" component={CoursePage} />
                 <Route exact path="/ongoing-course/:action/:courseId" component={CoursePage} />
                 <Route exact path="/ongoing-course/:action" component={CoursePage} />
-                <Route exact path="/classroom-group" component={RoomGroup} />
-                <Route exact path="/job/list" component={JobPage} />
-                <Route exact path="/password-setting" component={PasswordPage} />
+
+                <Route exact path="/classroom-group/:action" component={RoomGroup} />
+
                 <Route exact path="/profile/:action/:courseId" component={ProfilePage} />
                 <Route exact path="/profile/:action" component={ProfilePage} />
+
+                <Route exact path="/password-setting" component={PasswordPage} />
+
                 <Route exact path="*" component={StaticPage} />
               </Switch>
             </div>

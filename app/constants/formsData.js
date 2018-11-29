@@ -70,7 +70,7 @@ export const addRoomForm = [
 
 
 
-export const addCourseForm = [
+export const courseConForm = [
   {
     key: 1,
     size: 8,
@@ -177,6 +177,151 @@ export const addCourseForm = [
   }
 ];
 
+
+export const courseVMForm = [
+  {
+    key: 1,
+    size: 8,
+    name: 'name',
+    inputType: 'text',
+    mainLabel: '課程名稱',
+    placeholder: '請輸入課程名稱',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: true
+  }, {
+    key: 2,
+    size: 8,
+    name: 'intro',
+    target: 'addCourse',
+    inputType: 'markdown',
+    mainLabel: '課程介紹',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: true
+  }, {
+    key: 3,
+    size: 8,
+    name: 'level',
+    target: 'addCourse',
+    inputType: 'radio',
+    mainLabel: '課程程度',
+    className: 'fl',
+    radioArr: [
+      {
+        key: 1,
+        value: 'basic',
+        label: '基礎'
+      }, {
+        key: 2,
+        value: 'advance',
+        label: '進階'
+      }
+    ],
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入課程程度'
+    },
+    isRequired: true
+  }, {
+    key: 4,
+    size: 4,
+    name: 'image',
+    target: 'addCourse',
+    placeholder: '請選擇映像檔',
+    inputType: 'async-select',
+    mainLabel: '映像檔',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未選擇映像檔'
+    },
+    isRequired: true
+  }, {
+    key: 5,
+    size: 4,
+    name: 'gpu',
+    target: 'addCourse',
+    inputType: 'select',
+    mainLabel: '資源規模',
+    options: [
+      { label: 'small', value: 0 },
+      { label: 'medium', value: 1 },
+      { label: 'large', value: 2 },
+    ],
+    validators: { required },
+    errorMessage: {
+      required: '請輸入GPU核心數'
+    },
+    isRequired: true
+  }, {
+    key: 6,
+    size: 8,
+    name: 'datasets',
+    target: 'addCourse',
+    inputType: 'tags-input',
+    mainLabel: 'Associate Flooting IP',
+    options: [
+      {
+        key: 1,
+        value: 1,
+        label: 'asc'
+      }, {
+        key: 2,
+        value: 2,
+        label: '進階'
+      }
+    ],
+    isRequired: false
+  }, {
+    key: 7,
+    size: 8,
+    name: 'datasets',
+    target: 'addCourse',
+    inputType: 'tags-input',
+    mainLabel: 'Extra Ports',
+    options: [
+      {
+        key: 1,
+        value: 1,
+        label: 'asc'
+      }, {
+        key: 2,
+        value: 2,
+        label: '進階'
+      }
+    ],
+    isRequired: false
+  }, {
+    key: 8,
+    size: 8,
+    name: 'datasets',
+    target: 'addCourse',
+    inputType: 'text',
+    mainLabel: 'SSH Key',
+    isRequired: false
+  }, {
+    key: 9,
+    size: 8,
+    name: 'level',
+    target: 'addCourse',
+    inputType: 'select',
+    mainLabel: 'Mount Volume',
+    options: [
+      { label: '0', value: 0 },
+      { label: '10', value: 1 },
+      { label: '30', value: 2 },
+    ],
+    validators: { required },
+    errorMessage: {
+      required: '請輸入GPU核心數'
+    },
+    isRequired: true
+  }
+];
 
 
 export const signupForm = [

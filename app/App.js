@@ -29,20 +29,31 @@ class App extends Component {
         <Router>
           <Switch>
             { offline ? <Route path="*" component={StaticPage} /> : null }
+            <Route path="/classroom-manage/:action/:roomId" component={isLogin ? RouteUser : AuthPage} />
+            <Route path="/classroom-manage/:action" component={isLogin ? RouteUser : AuthPage} />
+
             <Route path="/classroom-time" component={isLogin ? RouteUser : AuthPage} />
-            <Route path="/classroom-manage" component={isLogin ? RouteUser : AuthPage} />
+
             <Route path="/classroom-group" component={isLogin ? RouteUser : AuthPage} />
-            <Route path="/ongoing-course" component={isLogin ? RouteUser : AuthPage} />
-            <Route path="/password-setting" component={isLogin ? RouteUser : AuthPage} />
-            <Route path="/role-select" component={isLogin ? RouteUser : AuthPage} />
-            <Route exact path="/classroom/:action" component={isLogin ? RouteUser : AuthPage} />
 
+            <Route path="/role-select/:level" component={isLogin ? RouteUser : AuthPage} />
 
-            <Route exact path="/course/:action/:courseId" component={isLogin ? RouteUser : AuthPage} />
-            <Route exact path="/course/:action" component={isLogin ? RouteUser : AuthPage} />
             <Route exact path="/job/:action" component={isLogin ? RouteUser : AuthPage} />
+
+            <Route exact path="/ongoing-course/create/:courseType" component={isLogin ? RouteUser : AuthPage} />
+            <Route exact path="/ongoing-course/:action/:courseId" component={isLogin ? RouteUser : AuthPage} />
+            <Route exact path="/ongoing-course/:action" component={isLogin ? RouteUser : AuthPage} />
+
+            <Route exact path="/classroom-group/:action" component={isLogin ? RouteUser : AuthPage} />
+
             <Route exact path="/profile/:action/:courseId" component={isLogin ? RouteUser : AuthPage} />
             <Route exact path="/profile/:action" component={isLogin ? RouteUser : AuthPage} />
+
+            <Route path="/password-setting" component={isLogin ? RouteUser : AuthPage} />
+
+
+
+
 
             <Route exact path="/intro/:action/:type" component={RouteGuest} />
             <Route exact path="/intro/:action" component={RouteGuest} />

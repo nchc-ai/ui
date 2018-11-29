@@ -239,7 +239,7 @@ export const sideNav = [
     isLink: true
   }, {
     key: 3,
-    url: '/classroom-group',
+    url: '/classroom-group/list',
     urlPrefix: '/classroom-group',
     text: '教室列表',
     isMain: false,

@@ -12,7 +12,6 @@ import Progress from 'react-progress-2';
 
 import SetUserInfo from '../components/common/SetUserInfo/index';
 import Header from './Header';
-import Footer from '../components/Footer/Index';
 import Dialog from '../components/common/Dialog/index';
 
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -59,10 +58,6 @@ class Global extends Component {
 
           {children}
         </div>
-        <Footer
-          offline={offline}
-          offlineWarning={this.offlineWarning}
-        />
         <Dialog />
       </div>
     );

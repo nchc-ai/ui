@@ -15,6 +15,7 @@ import Logout from './containers/Logout';
 import IndexPage from './containers/IndexPage';
 import StaticPage from './containers/StaticPage';
 import Global from './containers/Global';
+import Footer from './components/Footer';
 
 class RouteGuest extends Component {
   setDropdownPos = (pos) => {
@@ -49,6 +50,10 @@ class RouteGuest extends Component {
             <Route exact path="/" component={IndexPage} />
             <Route exact path="*" component={StaticPage} />
           </Switch>
+          <Footer
+            offline={offline}
+            offlineWarning={this.offlineWarning}
+          />
         </Global>
       </div>
     )

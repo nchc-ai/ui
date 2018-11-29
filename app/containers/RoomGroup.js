@@ -6,25 +6,10 @@ import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
 import { Form, actions as formActions } from 'react-redux-form';
-import CourseDetail from '../components/Course/CourseDetail';
-import CourseList from '../components/Course/CourseList';
-import CourseIntro from '../components/Course/CourseIntro';
-import { roomData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-
-import FormGroups from '../components/common/FormGroups/index';
-import FormButtons from '../components/common/FormButtons/index';
-
 import TableList from '../components/common/TableList';
-import { addRoomForm } from '../constants/formsData';
-import courseSearchBn from '../../public/images/course/course-search-bn.png';
-import courseBasicBn from '../../public/images/course/course-basic-bn.png';
-import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
-
-import SectionList from '../components/common/SectionList/index';
-import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
 import CommonPageContent from '../components/CommonPageContent'
-
+import ClassroomGroup from '../components/ClassroomGroup';
 
 class RoomGroup extends Component {
 
@@ -114,6 +99,18 @@ class RoomGroup extends Component {
     console.log('cancel');
   }
 
+  startCourse () {
+    console.log('start course');
+  }
+
+  editCourse () {
+    console.log('start course');
+  }
+
+  deleteCourse () {
+    console.log('start course');
+  }
+
 
   render() {
     const {
@@ -127,24 +124,60 @@ class RoomGroup extends Component {
 
     // console.log('match', match);
 
-    const tempData = [
+    const classRooms = [
       {
+        "key": 1,
+        "courseInfo": [
+          {
+            "createAt": "2018-06-25T09:24:38Z",
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "level": "basic",
+            "name": "jimmy的課"
+          }, {
+            "createAt": "2018-06-25T09:24:38Z",
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "level": "basic",
+            "name": "jimmy的課2"
+          }
+        ],
         "id": "default",
         "name": "Public Course",
         "public": true,
+        "schedules": [
+          "* * * * * *"
+        ],
+        "studentCount": 18,
         "teachers": [
           "teacher1@gmail.com",
           "teacher2@nchc.org.tw"
         ]
       }, {
+        "key": 2,
+        "courseInfo": [
+          {
+            "createAt": "2018-06-25T09:24:38Z",
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "level": "basic",
+            "name": "jimmy的課"
+          }, {
+            "createAt": "2018-06-25T09:24:38Z",
+            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+            "level": "basic",
+            "name": "jimmy的課2"
+          }
+        ],
         "id": "default",
         "name": "Public Course",
         "public": true,
+        "schedules": [
+          "* * * * * *"
+        ],
+        "studentCount": 18,
         "teachers": [
           "teacher1@gmail.com",
           "teacher2@nchc.org.tw"
         ]
-      },
+      }
     ];
 
     return (
@@ -152,7 +185,12 @@ class RoomGroup extends Component {
         className="role-page-bg"
         pageTitle="教室列表"
       >
-        
+        <ClassroomGroup
+          classrooms={classRooms}
+          startCourse={this.startCourse}
+          seditCourse={this.editCourse}
+          deleteCourse={this.deleteCourse}
+        />
       </CommonPageContent>
     );
   }

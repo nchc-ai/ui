@@ -28,7 +28,7 @@ const initialValue = Value.fromJSON({
       {
         kind: 'block',
         type: 'paragraph',
-        nodes: 1[
+        nodes: [
           {
             kind: 'text',
             ranges: [

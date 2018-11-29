@@ -12,7 +12,7 @@ import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
 import { roomData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-
+import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 
@@ -151,20 +151,15 @@ class RoomPage extends Component {
     ];
 
     return (
-      <div className="classroom-bg global-content">
+      <div className="classroom-bg">
         <Switch>
 
           {/* 教室列表 */}
           <Route path="/classroom-manage/list">
-            <div class="room-page__list room-page__grp">
-
-              <SectionTitle
-                title={'教室管理'}
-                iconImgUrl={TitleIcon}
-                isUnderline
-                isIcon
-              />
-
+            <CommonPageContent
+              className="room-page-bg"
+              pageTitle="教室管理"
+            >
               <Link to="/classroom-manage/create" className="fl add-btn-con">
                 <button className="add-btn btn-pair" color="success">新增教室</button>
               </Link>
@@ -178,13 +173,15 @@ class RoomPage extends Component {
                 editMethod={this.editRoom}
                 deleteMethod={this.deleteRoom}
               />
-            </div>
+            </CommonPageContent>
           </Route>
 
           {/* 教室細項 */}
           <Route exact path="/classroom-manage/detail/:courseId">
-            <div className="room-page__detail room-page__grp">            
-              <h1>教室細項</h1>
+            <CommonPageContent
+              className="room-page-bg"
+              pageTitle="教室細項"
+            >
 
               <CourseDetail
                 detail={courseDetail}
@@ -192,14 +189,15 @@ class RoomPage extends Component {
                 cancelEdit={this.backFromCourseDetail}
                 isBanner={false}
               />
-              </div>
+            </CommonPageContent>
           </Route>
 
           {/* 教室新建 */}
           <Route path="/classroom-manage/create">
-            <div className="room-page__create room-page__grp">
-                        
-            <h1>新增教室</h1>
+            <CommonPageContent
+              className="room-page-bg"
+              pageTitle="新增教室"
+            >
 
               <Form
                 model="forms.profile"
@@ -222,17 +220,13 @@ class RoomPage extends Component {
                 />
               </Form>
 
-            </div>
+            </CommonPageContent>
           </Route>
 
           {/* 教室編輯 */}
           <Route exact path="/classroom-manage/edit/:courseId">
-          
+
           </Route>
-
-
-          
-          
         </Switch>
       </div>
     );

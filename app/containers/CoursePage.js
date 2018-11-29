@@ -5,28 +5,43 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
-import { Button } from 'reactstrap';
+import { Value } from 'slate';
 import { actions as formActions } from 'react-redux-form';
-import CourseDetail from '../components/Course/CourseDetail';
-import CourseList from '../components/Course/CourseList';
-import CourseIntro from '../components/Course/CourseIntro';
 import { ongoingCourseData } from '../constants/tableData';
+import { courseConForm, courseVMForm } from '../constants/formsData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import CourseDetail from '../components/Course/CourseDetail';
 import TableList from '../components/common/TableList';
-
-import courseSearchBn from '../../public/images/course/course-search-bn.png';
-import courseBasicBn from '../../public/images/course/course-basic-bn.png';
-import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
-
-import SectionList from '../components/common/SectionList/index';
-import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
-
-
+import CourseEdit from '../components/User/CourseEdit';
 import SectionTitle from '../components/common/SectionTitle';
 import TitleIcon from '../assets/images/user/title-icon.png';
+import CommonPageContent from '../components/CommonPageContent';
 
-
+const quillObj = Value.fromJSON({
+  document: {
+    nodes: [
+      {
+        kind: 'block',
+        type: 'paragraph',
+        nodes: [
+          {
+            kind: 'text',
+            ranges: [
+              {
+                text: 'A line of text in a paragraph.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+});
 class CoursePage extends Component {
+
+  state = {
+    quillObj
+  }
 
   componentWillMount() {
     
@@ -94,12 +109,70 @@ class CoursePage extends Component {
     this.props.history.goBack();
   }
 
+
+  // 共用
+  handleSubmitFailed = (formData) => {
+    notify.show('請確認是否填妥表單資料', 'error', 1800);
+  }
+
+
+  // 新建容器課程
+
+  handleCreateCourse = (formData) => {
+    // console.log('[handleSubmit] submit', formData);
+
+    const {
+      userAction,
+      token,
+      userInfo
+    } = this.props;
+    userAction.createCourse(token, userInfo, formData, this.onCreateCourseSuccess);
+
+    Progress.show();
+  }
+
+  loadImagesOpts = () => {
+    const {
+      userAction,
+      token
+    } = this.props;
+    return userAction.getImagesOpts(token);
+  };
+
+  loadTagsOpts = () => {
+    const {
+      userAction,
+      token
+    } = this.props;
+    return userAction.getDatasetsOpts(token);
+  };
+
+  changeCourseLevel = (e) => {
+    console.log('[changeCourseLevel] val', e.target.value);
+  }
+
+
+  changeCourseIntro = ({ value }) => {
+    this.setState({ value });
+  }
+
+
+  backFromCourseAdd = () => {
+    this.props.history.goBack();
+  }
+
+
+  // 新建 vm 課程
+
+
+
   render() {
     const {
       match,
-      courseList,
+      forms,
       courseDetail,
-      searchResult
+      addCourse,
+      changeValue,
     } = this.props;
     const courseType = _.get(match, 'params.type');
 
@@ -132,23 +205,20 @@ class CoursePage extends Component {
     ];
 
     return (
-      <div className="course-bg global-content">
+      <div className="course-bg">
         <Switch>
-          {/* [User] 課程列表 */}
+          {/* [User] 開課列表 */}
           <Route path="/ongoing-course/list">
-            <div class="ongoing-course__list ongoing-course__grp">
-              <SectionTitle
-                title='開課列表'
-                iconImgUrl={TitleIcon}
-                isUnderline
-                isIcon
-              />
+            <CommonPageContent
+              className="ongoing-course-bg"
+              pageTitle="開課列表"
+            >
 
-              <Link to="/classroom-manage/create" className="fl add-btn-con">
+              <Link to="/ongoing-course/create/container" className="fl add-btn-con">
                 <button className="fl add-btn btn-pair" color="success">新增容器課程</button>
               </Link>
 
-              <Link to="/classroom-manage/create" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
+              <Link to="/ongoing-course/create/vm" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
                 <button className="fl add-btn btn-pair" color="success">新增 VM 課程</button>
               </Link>
 
@@ -161,7 +231,8 @@ class CoursePage extends Component {
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
               />
-            </div>
+
+            </CommonPageContent>
           </Route>
 
           {/* [User] 課程細項 */}
@@ -178,12 +249,48 @@ class CoursePage extends Component {
           </Route>
 
 
-          
-          {/* [User] 新建課程 */}
-          <Route exact path="/ongoing-course/create">
-            <div>
-              <span>編輯課程</span>
-            </div>
+          {/* [User] 新建容器課程 */}
+          <Route exact path="/ongoing-course/create/container">
+            <CommonPageContent
+              className="profile-page-bg"
+              pageTitle="新建容器課程"
+            >
+              <CourseEdit
+                handleSubmit={this.handleCreateCourse}
+                handleSubmitFailed={this.handleSubmitFailed}
+                state={this.state}
+                formData={courseConForm}
+                targetForm={forms.courseCon}
+                changeVal={changeValue}
+                loadOptsMethod={this.loadImagesOpts}
+                loadTagsOptsMethod={this.loadTagsOpts}
+                onRadioChange={this.changeCourseLevel}
+                onMdChange={this.changeCourseIntro}
+                backMethod={this.backFromCourseAdd}
+              />
+            </CommonPageContent>
+          </Route>
+
+          {/* [User] 新建 vm 課程 */}
+          <Route exact path="/ongoing-course/create/vm">
+            <CommonPageContent
+              className="ongoing-course-bg"
+              pageTitle="新建 VM 課程"
+            >
+              <CourseEdit
+                handleSubmit={this.handleCreateCourse}
+                handleSubmitFailed={this.handleSubmitFailed}
+                state={this.state}
+                formData={courseVMForm}
+                targetForm={forms.courseVM}
+                changeVal={changeValue}
+                loadOptsMethod={this.loadImagesOpts}
+                loadTagsOptsMethod={this.loadTagsOpts}
+                onRadioChange={this.changeCourseLevel}
+                onMdChange={this.changeCourseIntro}
+                backMethod={this.backFromCourseAdd}
+              />
+            </CommonPageContent>
           </Route>
 
         </Switch>
@@ -192,16 +299,26 @@ class CoursePage extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, Course }) => ({
+
+const mapDispatchToProps = dispatch => ({
+  resetForm: () => dispatch(formActions.reset('forms.addCourse')),
+  changeValue: (value, key, target) => dispatch(formActions.change(
+    `forms.${target}.${key}`,
+    value
+  )),
+  changeForm: (formObj, target) => dispatch(formActions.change(
+    `forms.${target}`,
+    formObj
+  ))
+});
+
+const mapStateToProps = ({ forms, Auth, Course }) => ({
+  forms,
   token: Auth.token,
   userInfo: Auth.userInfo,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data
-});
-
-const mapDispatchToProps = dispatch => ({
-  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`))
 });
 
 export default compose(

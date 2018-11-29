@@ -10,16 +10,31 @@ export const initialAddClassroomState = {
   student: ''
 };
 
-export const initialAddCourseState = {
+export const initialCourseConState = {
   name: '',
   introduction: '',
   image: '',
   level: { label: '基礎', value: 'basic' },
-  startAt: '',
-  endAt: '',
   server: '',
   gpu: '',
-  datasets: []
+  datasets: [],
+  startAt: '',
+  endAt: ''
+};
+
+
+export const initialCourseVMState = {
+  name: '',
+  introduction: '',
+  image: '',
+  level: { label: '基礎', value: 'basic' },
+  scale: { label: 'small', value: 'small' },
+  floatIP: { label: '是', value: true },
+  extraPorts: '',
+  sshKey: '',
+  mountVolume: { label: '0', value: 0 },
+  startAt: '',
+  endAt: '',
 };
 
 export const initialUserState = {
