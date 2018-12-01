@@ -2,31 +2,30 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
-
 import DocumentMeta from 'react-document-meta';
+import Cookies from 'js-cookie';
 
 import RouteUser from './RouteUser';
 import RouteGuest from './RouteGuest';
-
-import SetUserInfo from './components/common/SetUserInfo/index';
-import AuthPage from './containers/AuthPage';
 import StaticPage from './containers/StaticPage';
 import Dialog from './components/common/Dialog';
 import { metaObj } from './constants/models';
+import SetUserInfo from './components/common/SetUserInfo/index';
+import bindActionCreatorHoc from './libraries/bindActionCreatorHoc';
+
 
 const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
-  <Route {...rest} render={(props) => {
-    console.log('isLogin', isLogin, props);
-    return (
-      isLogin ? <Component {...props} /> : <Redirect to='/login' />
-  )}} />
+  <Route exarct {...rest} render={(props) => (
+    Cookies.get('is_login') || false ? <Component {...props} /> : <Redirect to='/login' />
+  )} />
 );
+
 class App extends Component {
   render = () => {
     const {
-      isLogin,
       offline,
     } = this.props;
+
     return (
       <div id="outer-container" style={{ height: '100%' }}>
         <DocumentMeta {...metaObj} />
@@ -34,7 +33,20 @@ class App extends Component {
         <Router>
           <Switch>
             { offline ? <Route path="*" component={StaticPage} /> : null }
-            <PrivateRoute path='/user' isLogin={isLogin} component={RouteUser} />
+
+            <PrivateRoute path="/user/classroom-manage/:action/:roomId" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-manage/:action" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-time" component={RouteUser} />
+            <PrivateRoute path="/user/role-select/:level" component={RouteUser} />
+            <PrivateRoute path="/user/job/list" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/create/:courseType" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/:action/:courseId" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/:action" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-group/:action" component={RouteUser} />
+            <PrivateRoute path="/user/profile/:action/:courseId" component={RouteUser} />
+            <PrivateRoute path="/user/profile/:action" component={RouteUser} />
+            <PrivateRoute path="/user/password-setting" component={RouteUser} />
+
             <Route path="/" component={RouteGuest} />
 
             <Route exact path="*" component={StaticPage} />
@@ -53,5 +65,8 @@ const mapStateToProps = ({ Auth, Ui }) => ({
 });
 
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps
+  ),
+  bindActionCreatorHoc
 )(App);

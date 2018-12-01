@@ -21,6 +21,9 @@ class Index extends Component {
       match,
       userInfo
     } = this.props;
+
+    console.log('matchurl', match.url);
+
     return (
       <div
         className="side-menu-comp"

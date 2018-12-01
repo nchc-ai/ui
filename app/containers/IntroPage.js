@@ -104,13 +104,13 @@ class IntroPage extends Component {
 
 
           {/* 課程細項 */}
-          <Route exact path="/course/detail/:courseId">
+          {/* <Route exact path="/course/detail/:courseId">
             <CourseDetail
               detail={courseDetail}
               submitMethod={this.startCourse}
               cancelEdit={this.backFromCourseDetail}
             />
-          </Route>
+          </Route> */}
 
           {/* 課程搜尋 */}
 
@@ -136,12 +136,12 @@ class IntroPage extends Component {
 
 
           {/* 課程介紹 */}
-          <Route exact path="/course/intro">
+          <Route exact path="/intro/course">
             <CourseIntro />
           </Route>
 
           {/* 基礎課程 vs 進階課程 */}
-          <Route path="/course/basic">
+          <Route path="/intro/course/basic">
             <div>
 
 
@@ -165,7 +165,7 @@ class IntroPage extends Component {
             </div>
           </Route>
 
-          <Route path="/course/advance">
+          <Route path="/intro/course/advance">
             <div>
 
               <div className="section-bn section-grp">

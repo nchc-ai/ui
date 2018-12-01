@@ -6,6 +6,7 @@ import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Hover } from 'react-powerplug';
+import Cookies from 'js-cookie';
 // import TopBar from './TopBar.js';
 
 
@@ -22,8 +23,6 @@ import iconMemberBefore from '../../public/images/common/ic-nav-member-default.p
 import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png';
 import iconLogoutBefore from '../../public/images/common/ic-nav-logout-default.png';
 import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png';
-import { withCookies } from 'react-cookie';
-
 // import IconList from './IconList';
 
 class Header extends Component {
@@ -43,12 +42,11 @@ class Header extends Component {
     const {
       authAction,
       history,
-      cookies
     } = this.props;
     // 重置 state > 重置 cookie > 重置 token
 
     authAction.resetAuth();
-    cookies.set('is_login', false);
+    Cookies.set('is_login', false);
     removeToken();
     history.push('/');
   }
@@ -135,4 +133,4 @@ export default compose(
     mapStateToProps
   ),
   bindActionCreatorHoc
-)(withRouter(withCookies(Header)));
+)(Header);

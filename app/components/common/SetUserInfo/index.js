@@ -4,9 +4,9 @@ import { notify } from 'react-notify-toast';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
+import Cookies from 'js-cookie';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
 import { getToken, dayToSecond } from '../../../libraries/utils';
-import { withCookies } from 'react-cookie';
 
 class SetUserInfo extends Component {
 
@@ -45,20 +45,16 @@ class SetUserInfo extends Component {
 
   retrieveUser = () => {
     const {
-      match,
-      cookies,
       history,
       authAction
     } = this.props;
 
-    const isLogin = cookies.get('is_login') || false;
     const token = getToken();
 
-    if (token === null || token === '' || token === 'null' || !isLogin) {
+    if (token === null || token === '' || token === 'null') {
       authAction.resetAuth();
     } else {
       // 設定 isLogin > 設定 userToken > 抓取 userInfo
-      authAction.setLoginState(isLogin);
       authAction.setUserToken(token);
       authAction.getUserInfo(token, history, this.onGetUserInfoSuccess);
     }
@@ -66,7 +62,7 @@ class SetUserInfo extends Component {
 
   onGetUserInfoSuccess = () => {
     const maxAge = dayToSecond(1);
-    this.props.cookies.set('is_login', true, { path: '/', maxAge});
+    Cookies.set('is_login', true, { path: '/', maxAge});
   }
 
   render = () => (<span className="dn" />);
@@ -84,4 +80,4 @@ export default compose(
     mapStateToProps
   ),
   bindActionCreatorHoc
-)(withCookies(SetUserInfo));
+)(SetUserInfo);

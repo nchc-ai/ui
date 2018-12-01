@@ -155,7 +155,7 @@ class RoomPage extends Component {
         <Switch>
 
           {/* 教室列表 */}
-          <Route path="/classroom-manage/list">
+          <Route exact path="/user/classroom-manage/list">
             <CommonPageContent
               className="room-page-bg"
               pageTitle="教室管理"
@@ -177,7 +177,7 @@ class RoomPage extends Component {
           </Route>
 
           {/* 教室細項 */}
-          <Route exact path="/classroom-manage/detail/:courseId">
+          <Route exact path="/user/classroom-manage/detail/:courseId">
             <CommonPageContent
               className="room-page-bg"
               pageTitle="教室細項"
@@ -193,7 +193,7 @@ class RoomPage extends Component {
           </Route>
 
           {/* 教室新建 */}
-          <Route path="/classroom-manage/create">
+          <Route path="/user/classroom-manage/create">
             <CommonPageContent
               className="room-page-bg"
               pageTitle="新增教室"
@@ -224,7 +224,7 @@ class RoomPage extends Component {
           </Route>
 
           {/* 教室編輯 */}
-          <Route exact path="/classroom-manage/edit/:courseId">
+          <Route exact path="/user/classroom-manage/edit/:courseId">
 
           </Route>
         </Switch>

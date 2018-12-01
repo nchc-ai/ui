@@ -12,7 +12,7 @@ export const mainNav = [
     key: 0,
     name: 'navbar.class',
     nameCh: '課程介紹',
-    url: '/course/intro',
+    url: '/intro/course',
     // url: '/intro/class',
     isCate: true
   },
@@ -21,7 +21,7 @@ export const mainNav = [
     name: 'navbar.intro',
     nameCh: '基礎課程',
     anchorTarget: 'intro',
-    url: '/course/basic',
+    url: '/intro/course/basic',
     // url: '/intro/intro',
     isCate: true
   },
@@ -30,7 +30,7 @@ export const mainNav = [
     name: 'navbar.intro',
     nameCh: '進階課程',
     anchorTarget: 'intro',
-    url: '/course/advance',
+    url: '/intro/course/advance',
     // url: '/intro/intro',
     isCate: true
   }, {
@@ -219,49 +219,49 @@ export const sideNav = [
   {
     key: 0,
     url: '/user/classroom-manage/list',
-    urlPrefix: '/classroom-manage',
+    urlPrefix: '/user/classroom-manage',
     text: '教室管理',
     isMain: true,
     isLink: true
   }, {
     key: 1,
     url: '/user/classroom-time',
-    urlPrefix: '/classroom-time',
+    urlPrefix: '/user/classroom-time',
     text: '教室時間',
     isMain: true,
     isLink: true
   }, {
     key: 2,
     url: '/user/ongoing-course/list',
-    urlPrefix: '/ongoing-course',
+    urlPrefix: '/user/ongoing-course',
     text: '開課列表',
     isMain: true,
     isLink: true
   }, {
     key: 3,
     url: '/user/classroom-group/list',
-    urlPrefix: '/classroom-group',
+    urlPrefix: '/user/classroom-group',
     text: '教室列表',
     isMain: false,
     isLink: true
   }, {
     key: 4,
     url: '/user/job/list',
-    urlPrefix: '/job',
+    urlPrefix: '/user/job',
     text: '工作清單',
     isMain: false,
     isLink: true
   }, {
     key: 5,
     url: '/user/profile/list',
-    urlPrefix: '/profile',
+    urlPrefix: '/user/profile',
     text: '個人資料',
     isMain: false,
     isLink: true
   }, {
     key: 6,
     url: '/user/password-setting',
-    urlPrefix: '/password',
+    urlPrefix: '/user/password',
     text: '密碼設定',
     isMain: false,
     isLink: true
