@@ -26,6 +26,9 @@ class SetUserInfo extends Component {
     // authAction.healthCheck();
     authAction.checkDatabase();
 
+    // 3. 同步 local session
+    this.syncUserInfo();
+
     // 3. 檢查 userInfo
     this.retrieveUser();
   }
@@ -43,6 +46,13 @@ class SetUserInfo extends Component {
     }
   }
 
+
+  syncUserInfo () {
+    // 匯出 userInfo
+    const userObj = Cookies.getJSON('user_info');
+    this.props.authAction.setUserInfo(userObj, Cookies.get('is_login'));
+  }
+
   retrieveUser = () => {
     const {
       history,
@@ -55,14 +65,21 @@ class SetUserInfo extends Component {
       authAction.resetAuth();
     } else {
       // 設定 isLogin > 設定 userToken > 抓取 userInfo
+      // 先同步 cookie
+
       authAction.setUserToken(token);
       authAction.getUserInfo(token, history, this.onGetUserInfoSuccess);
     }
   }
 
-  onGetUserInfoSuccess = () => {
+  onGetUserInfoSuccess = (payload) => {
     const maxAge = dayToSecond(1);
     Cookies.set('is_login', true, { path: '/', maxAge});
+    // 匯入 cookie
+    Cookies.set('user_info', {
+      username: payload.username,
+      role: payload.role
+    });
   }
 
   render = () => (<span className="dn" />);

@@ -31,8 +31,6 @@ import TitleIcon from '../assets/images/user/title-icon.png';
 class RoomPage extends Component {
 
   componentWillMount() {
-
-    // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);
   }
@@ -54,13 +52,14 @@ class RoomPage extends Component {
   fetchData = (nextProps) => {
     const {
       roomAction,
+      userInfo,
       token,
       match
     } = nextProps;
 
     const type = _.get(match, 'params.type');
-
-    // roomAction.getClassroomList();
+    console.log('userInfo', userInfo);
+    roomAction.getClassroomList(userInfo.username, token);
 
     // console.log('type', match, type);
     // if (type === 'basic' || type === 'advance') {
@@ -121,35 +120,15 @@ class RoomPage extends Component {
   render() {
     const {
       match,
-      courseList,
+      roomList,
       courseDetail,
       searchResult,
-      addClassroom
+      addClassroom,
+      list
     } = this.props;
     const courseType = _.get(match, 'params.type');
 
     // console.log('match', match);
-
-    const tempData = [
-      {
-        "id": "default",
-        "name": "Public Course",
-        "public": true,
-        "teachers": [
-          "teacher1@gmail.com",
-          "teacher2@nchc.org.tw"
-        ]
-      }, {
-        "id": "default",
-        "name": "Public Course",
-        "public": true,
-        "teachers": [
-          "teacher1@gmail.com",
-          "teacher2@nchc.org.tw"
-        ]
-      },
-    ];
-
     return (
       <div className="classroom-bg">
         <Switch>
@@ -165,7 +144,7 @@ class RoomPage extends Component {
               </Link>
 
               <TableList
-                data={tempData}
+                data={roomList}
                 prefixUrl="/classroom-manage/detail/"
                 tableData={roomData}
                 isDialogOpen={true}
@@ -233,7 +212,9 @@ class RoomPage extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, Course, forms }) => ({
+const mapStateToProps = ({ Auth, Course, forms, Classroom }) => ({
+  loading: Classroom.list.loading,
+  roomList: Classroom.list.data,
   addClassroom: forms.addClassroom,
   token: Auth.token,
   userInfo: Auth.userInfo,

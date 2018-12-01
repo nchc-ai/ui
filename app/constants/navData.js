@@ -215,7 +215,9 @@ export const footer = {
   ]
 };
 
-export const sideNav = [
+// SideNav
+
+export const sideNavAdmin = [
   {
     key: 0,
     url: '/user/classroom-manage/list',
@@ -230,43 +232,63 @@ export const sideNav = [
     text: '教室時間',
     isMain: true,
     isLink: true
-  }, {
-    key: 2,
+  }
+];
+
+export const sideNavTeacher = [
+  {
+    key: 0,
     url: '/user/ongoing-course/list',
     urlPrefix: '/user/ongoing-course',
     text: '開課列表',
     isMain: true,
     isLink: true
   }, {
-    key: 3,
+    key: 1,
     url: '/user/classroom-group/list',
     urlPrefix: '/user/classroom-group',
     text: '教室列表',
     isMain: false,
     isLink: true
-  }, {
-    key: 4,
+  }
+];
+
+export const sideNavStudent = [
+  {
+    key: 0,
+    url: '/user/classroom-group/list',
+    urlPrefix: '/user/classroom-group',
+    text: '教室列表',
+    isMain: false,
+    isLink: true
+  }
+];
+
+
+export const sideNavCommon = [
+  {
+    key: 0,
     url: '/user/job/list',
     urlPrefix: '/user/job',
     text: '工作清單',
     isMain: false,
     isLink: true
   }, {
-    key: 5,
+    key: 1,
     url: '/user/profile/list',
     urlPrefix: '/user/profile',
     text: '個人資料',
     isMain: false,
     isLink: true
   }, {
-    key: 6,
+    key: 2,
     url: '/user/password-setting',
     urlPrefix: '/user/password',
     text: '密碼設定',
     isMain: false,
     isLink: true
   }, {
-    key: 7,
+    key: 3,
     url: '/logout',
     urlPrefix: '/logout',
     text: '登出',

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import PopupWindow from './PopWindow';
 import { toQuery } from '../../libraries/utils';
-import { AUTH_PROVIDER_URL } from '../../config/api';
+import { WEBSITE_URL, AUTH_PROVIDER_URL } from '../../config/api';
 
 class MyoauthButton extends Component {
   static propTypes = {
@@ -28,7 +28,7 @@ class MyoauthButton extends Component {
       client_id: 'test_client_1',
       scope: 'read_write',
       login_redirect_uri: '/web/authorize',
-      redirect_uri: 'http://localhost:3010/user/course',
+      redirect_uri: `${WEBSITE_URL}/user/course`,
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',

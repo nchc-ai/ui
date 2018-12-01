@@ -3,7 +3,63 @@ import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import axios from 'axios';
 import * as types from './actionTypes';
-import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
+import { API_URL, API_VM_URL, AUTH_PROVIDER_URL } from '../config/api';
+
+
+
+
+
+export const getCourseVMList = (user, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/v1/course/list`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        user
+      }),
+      types: types.GET_COURSE_VM_LIST
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getCourseVMList 失敗');
+  }
+};
+
+
+
+
+export const getCourseConList = (user, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/beta/course/list`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        user
+      }),
+      types: types.GET_COURSE_CON_LIST
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getCourseConList 失敗');
+  }
+};
+
+
+
+
+
 
 
 // Course > List all courses

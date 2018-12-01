@@ -67,7 +67,7 @@ export const getUserInfo = (token, history, next) => async (dispatch) => {
     console.error('getUserInfo 失敗', response);
   }
 
-  next();
+  next(response.payload);
 };
 
 

@@ -4,16 +4,19 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import { API_URL } from '../config/api';
 
-export const getClassroomList = () => async (dispatch, token) => {
+export const getClassroomList = (user, token) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/beta/classroom/list`,
-      method: 'GET',
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
+      body: JSON.stringify({
+        user
+      }),
       types: types.GET_CLASSROOM_LIST
     }
   });

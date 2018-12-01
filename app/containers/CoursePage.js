@@ -44,7 +44,7 @@ class CoursePage extends Component {
   }
 
   componentWillMount() {
-    
+
     // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);
@@ -67,20 +67,25 @@ class CoursePage extends Component {
   fetchData = (nextProps) => {
     const {
       courseAction,
+      userInfo,
       token,
       match
     } = nextProps;
 
     const type = _.get(match, 'params.type');
 
+    courseAction.getCourseVMList(userInfo.username, token);
+    courseAction.getCourseConList(userInfo.username, token);
+
+
     // console.log('type', match, type);
-    if (type === 'basic' || type === 'advance') {
-      courseAction.getCourseListByLevel(type);
-    } else if (type === 'detail') {
-      courseAction.getCourseDetail(match.params.courseId, token);
-    } else if (type === 'search') {
-      courseAction.searchCourse(match.params.courseId);
-    }
+    // if (type === 'basic' || type === 'advance') {
+    //   courseAction.getCourseListByLevel(type);
+    // } else if (type === 'detail') {
+    //   courseAction.getCourseDetail(match.params.courseId, token);
+    // } else if (type === 'search') {
+    //   courseAction.searchCourse(match.params.courseId);
+    // }
   }
 
   startCourse = () => {
@@ -208,17 +213,17 @@ class CoursePage extends Component {
       <div className="course-bg">
         <Switch>
           {/* [User] 開課列表 */}
-          <Route path="/ongoing-course/list">
+          <Route path="/user/ongoing-course/list">
             <CommonPageContent
               className="ongoing-course-bg"
               pageTitle="開課列表"
             >
 
-              <Link to="/ongoing-course/create/container" className="fl add-btn-con">
+              <Link to="/user/ongoing-course/create/container" className="fl add-btn-con">
                 <button className="fl add-btn btn-pair" color="success">新增容器課程</button>
               </Link>
 
-              <Link to="/ongoing-course/create/vm" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
+              <Link to="/user/ongoing-course/create/vm" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
                 <button className="fl add-btn btn-pair" color="success">新增 VM 課程</button>
               </Link>
 
@@ -236,7 +241,7 @@ class CoursePage extends Component {
           </Route>
 
           {/* [User] 課程細項 */}
-          <Route exact path="/ongoing-course/detail/:courseId">
+          <Route exact path="/user/ongoing-course/detail/:courseId">
             <CourseDetail
               detail={courseDetail}
               submitMethod={this.startCourse}
@@ -245,12 +250,12 @@ class CoursePage extends Component {
           </Route>
 
           {/* [User] 課程編輯 */}
-          <Route exact path="/ongoing-course/edit/:courseId">
+          <Route exact path="/user/ongoing-course/edit/:courseId">
           </Route>
 
 
           {/* [User] 新建容器課程 */}
-          <Route exact path="/ongoing-course/create/container">
+          <Route exact path="/user/ongoing-course/create/container">
             <CommonPageContent
               className="profile-page-bg"
               pageTitle="新建容器課程"
@@ -272,7 +277,7 @@ class CoursePage extends Component {
           </Route>
 
           {/* [User] 新建 vm 課程 */}
-          <Route exact path="/ongoing-course/create/vm">
+          <Route exact path="/user/ongoing-course/create/vm">
             <CommonPageContent
               className="ongoing-course-bg"
               pageTitle="新建 VM 課程"

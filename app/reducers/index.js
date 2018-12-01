@@ -6,6 +6,7 @@ import Auth from './Auth';
 import Ui from './Ui';
 import Course from './Course';
 import User from './User';
+import Classroom from './Classroom';
 
 import {
   initialGlobalSearchState,
@@ -28,6 +29,7 @@ const rootReducer = combineReducers({
     password: modelReducer('password', initialPasswordState)
   }, 'forms'),
   Auth,
+  Classroom,
   Course,
   User,
   Ui

@@ -3,6 +3,14 @@ import * as actionTypes from '../actions/actionTypes';
 import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
 
 const InitialState = {
+  coursesVM: {
+    loading: false,
+    data: []
+  },
+  courseCon: {
+    loading: false,
+    data: []
+  },
   courseAll: {
     loading: false,
     data: []
@@ -23,7 +31,38 @@ const InitialState = {
 
 export default function Course(state = InitialState, action) {
   switch (action.type) {
-
+  case actionTypes.GET_COURSE_VM_LIST[LOADING]:
+    return {
+      ...state,
+      coursesVM: {
+        ...state.coursesVM,
+        isLoading: true
+      }
+    };
+  case actionTypes.GET_COURSE_VM_LIST[SUCCESS]:
+    return {
+      ...state,
+      coursesVM: {
+        isLoading: false,
+        data: action.payload.courses
+      }
+    };
+  case actionTypes.GET_COURSE_CON_LIST[LOADING]:
+    return {
+      ...state,
+      courseCon: {
+        ...state.courseCon,
+        isLoading: true
+      }
+    };
+  case actionTypes.GET_COURSE_CON_LIST[SUCCESS]:
+    return {
+      ...state,
+      courseCon: {
+        isLoading: false,
+        data: action.payload.courses
+      }
+    };
   case actionTypes.GET_COURSE_LIST_ALL[LOADING]:
     return {
       ...state,

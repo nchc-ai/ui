@@ -47,6 +47,7 @@ class Header extends Component {
 
     authAction.resetAuth();
     Cookies.set('is_login', false);
+    Cookies.set('user_info', {});
     removeToken();
     history.push('/');
   }
@@ -133,4 +134,4 @@ export default compose(
     mapStateToProps
   ),
   bindActionCreatorHoc
-)(Header);
+)(withRouter(Header));
