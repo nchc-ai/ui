@@ -4,34 +4,30 @@ import { notify } from 'react-notify-toast';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
-import { getToken, getLocalStorageItem, isItemExistInLocalStorage } from '../../../libraries/utils';
-
+import { getToken, dayToSecond } from '../../../libraries/utils';
+import { withCookies } from 'react-cookie';
 
 class SetUserInfo extends Component {
 
   static propTypes = {
   }
+
   componentWillMount() {
     const {
       authAction,
-      orderAction,
-      categoryAction,
     } = this.props;
-
+    // 1. 置入 GA
     // ga('create', 'UA-112418828-2', 'auto');
     // ga('send', 'pageview');
 
+
+    // 2. DB health check
     // authAction.healthCheck();
     authAction.checkDatabase();
-    // const userInfo = getLocalStorageItem('userInfo');
-    // const isLogin = isItemExistInLocalStorage('userInfo');
-    // authAction.setUserInfo(userInfo, isLogin);
 
+    // 3. 檢查 userInfo
     this.retrieveUser();
-
-    // 可以做一些初始動作
   }
 
   componentWillReceiveProps(nextProps) {
@@ -50,30 +46,28 @@ class SetUserInfo extends Component {
   retrieveUser = () => {
     const {
       match,
+      cookies,
       history,
       authAction
     } = this.props;
+
+    const isLogin = cookies.get('is_login') || false;
     const token = getToken();
-    // console.log('token', token, match);
-    if (token === null || token === '' || token === 'null') {
-      // console.log('A');
-      // history.push('/login');
+
+    if (token === null || token === '' || token === 'null' || !isLogin) {
       authAction.resetAuth();
     } else {
-      // console.log('B');
+      // 設定 isLogin > 設定 userToken > 抓取 userInfo
+      authAction.setLoginState(isLogin);
       authAction.setUserToken(token);
-      authAction.getUserInfo(token, history, this.afterGetUserInfo);
-      
+      authAction.getUserInfo(token, history, this.onGetUserInfoSuccess);
     }
   }
 
-  afterGetUserInfo = error => {
-    if (error) {
-      notify.show('您尚未登入', 'error', 1800);
-      // this.props.history.push('/login');
-    }
+  onGetUserInfoSuccess = () => {
+    const maxAge = dayToSecond(1);
+    this.props.cookies.set('is_login', true, { path: '/', maxAge});
   }
-
 
   render = () => (<span className="dn" />);
 }
@@ -90,4 +84,4 @@ export default compose(
     mapStateToProps
   ),
   bindActionCreatorHoc
-)(withRouter(SetUserInfo));
+)(withCookies(SetUserInfo));

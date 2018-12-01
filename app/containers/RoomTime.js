@@ -80,6 +80,7 @@ class RoomTime extends Component {
     }
 
     handleEventClick(target, eventData, day) {
+        console.log('show');
         this.setState({
             showPopover: false,
             showModal: true,
@@ -125,7 +126,7 @@ class RoomTime extends Component {
         <Overlay
             show={this.state.showPopover}
             rootClose
-            onHide = {()=>this.setState({showPopover: false, })}
+            onHide = {()=>this.setState({showPopover: false })}
             placement="top"
             container={this}
             target={this.state.popoverTarget}>

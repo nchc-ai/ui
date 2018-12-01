@@ -3,7 +3,7 @@ import React from 'react';
 const Index = ({ title, subTitle, children, isUnderline, isTitleImg, isIcon, iconImgUrl, titleImgUrl, info }) => (
   <div className="common-title-con">
     {
-      isIcon ? 
+      isIcon ?
       <div className="fl">
         <img alt="" src={iconImgUrl} />
       </div>
@@ -23,14 +23,13 @@ const Index = ({ title, subTitle, children, isUnderline, isTitleImg, isIcon, ico
         :
         null
       }
-      
+
       {children}
       {
         isUnderline ? <div className="common-title-underline" /> : null
       }
       <p>{info}</p>
     </div>
-   
   </div>
 );
 

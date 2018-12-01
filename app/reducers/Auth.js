@@ -6,7 +6,6 @@ const InitialState = {
   isLogin: false,
   data: [],
   token: '',
-  steady: true,
   userInfo: {
     active: false,
     client_id: '',
@@ -30,13 +29,6 @@ const InitialState = {
 
 export default function Auth(state = InitialState, action) {
   switch (action.type) {
-
-  case actionTypes.RESET_AUTH:
-    return {
-      ...state,
-      isLogin: false,
-      userInfo: InitialState.userInfo
-    };
   case actionTypes.GET_PROFILE[SUCCESS]:
     return {
       ...state,
@@ -56,8 +48,14 @@ export default function Auth(state = InitialState, action) {
   case actionTypes.GET_USER_INFO[SUCCESS]:
     return {
       ...state,
-      steady: true,
+      isLogin: true,
+      loading: false,
       userInfo: action.payload
+    };
+  case actionTypes.SET_LOGIN_STATE:
+    return {
+      ...state,
+      isLogin: action.isLogin,
     };
   case actionTypes.SET_USER_INFO:
     return {
@@ -73,6 +71,12 @@ export default function Auth(state = InitialState, action) {
       ...state,
       isLogin: action.isLogin,
       token: action.token
+    };
+  case actionTypes.RESET_AUTH:
+    return {
+      ...state,
+      isLogin: false,
+      userInfo: InitialState.userInfo
     };
   default:
     return state;

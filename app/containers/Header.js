@@ -22,6 +22,7 @@ import iconMemberBefore from '../../public/images/common/ic-nav-member-default.p
 import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png';
 import iconLogoutBefore from '../../public/images/common/ic-nav-logout-default.png';
 import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png';
+import { withCookies } from 'react-cookie';
 
 // import IconList from './IconList';
 
@@ -33,21 +34,28 @@ class Header extends Component {
   logout = () => {
     const {
       authAction,
-      history,
       token
     } = this.props;
-    authAction.logout(token, this.redirect);
+    authAction.logout(token, this.onLogoutSuccess);
   }
 
-  redirect = () => {
-    //TODO: 刪除所有token
+  onLogoutSuccess = () => {
+    const {
+      authAction,
+      history,
+      cookies
+    } = this.props;
+    // 重置 state > 重置 cookie > 重置 token
+
+    authAction.resetAuth();
+    cookies.set('is_login', false);
     removeToken();
-    this.props.history.push('/');
+    history.push('/');
   }
 
   render() {
     const {
-      match, steady, t, userInfo, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning
+      t, loading, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning
     } = this.props;
 
     return (
@@ -78,11 +86,11 @@ class Header extends Component {
             <Col md={{ size: 5 }} >
               <GlobalSearch />
               {
-                isLogin && steady ?
+                isLogin && !loading ?
                   <span className="login-container">
                     <Hover>
                       {({ hovered, bind }) => (
-                        <Link to="/classroom-manage/list" className="fl" {...bind}>
+                        <Link to="/user/classroom-manage/list" className="fl" {...bind}>
                           <img alt="" src={hovered ? iconMemberAfter : iconMemberBefore} />
                         </Link>
                       )}
@@ -101,7 +109,7 @@ class Header extends Component {
               }
 
               {
-                !isLogin && steady ?
+                !isLogin && !loading ?
                   <Link to="/login">
                     <button className="login-btn">登入</button>
                   </Link>
@@ -118,8 +126,8 @@ class Header extends Component {
 
 const mapStateToProps = ({ Auth }) => ({
   token: Auth.token,
-  steady: Auth.steady,
-  isLogin: true
+  isLogin: Auth.isLogin,
+  loading: Auth.loading
 });
 
 export default compose(
@@ -127,4 +135,4 @@ export default compose(
     mapStateToProps
   ),
   bindActionCreatorHoc
-)(withRouter(Header));
+)(withRouter(withCookies(Header)));

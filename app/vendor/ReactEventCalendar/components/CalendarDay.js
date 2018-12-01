@@ -14,7 +14,7 @@ export default class CalendarDay extends React.Component {
         });
 
         return (
-            <div 
+            <div
                 onClick={onClick.bind(null, this, day)}
                 className={dayClasses}>
                 <div className="inner-grid">

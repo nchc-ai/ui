@@ -163,6 +163,12 @@ export function toQuery(params, delimiter = '&') {
 }
 
 /*---------------------------
+// 秒數換算
+----------------------------*/
+
+export const dayToSecond = (day) => 3600 * 24 * day;
+
+/*---------------------------
 // 存取token至localStorage
 ----------------------------*/
 

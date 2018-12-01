@@ -10,12 +10,9 @@ class MyoauthButton extends Component {
     buttonText: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string,
-    clientId: PropTypes.string.isRequired,
     onRequest: PropTypes.func,
     onSuccess: PropTypes.func,
     onFailure: PropTypes.func,
-    redirectUri: PropTypes.string.isRequired,
-    scope: PropTypes.string
   }
 
   static defaultProps = {
@@ -27,15 +24,15 @@ class MyoauthButton extends Component {
   }
 
   onBtnClick = () => {
-    const { clientId, scope, redirectUri } = this.props;
-    const search = toQuery({
-      client_id: clientId,
-      scope,
-      redirect_uri: redirectUri
+    const queryString = toQuery({
+      client_id: 'test_client_1',
+      scope: 'read_write',
+      login_redirect_uri: '/web/authorize',
+      redirect_uri: 'http://localhost:3010/user/course',
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
-      `${AUTH_PROVIDER_URL}/web/authorize?response_type=code&${search}`,
+      `${AUTH_PROVIDER_URL}/web/login?response_type=code&${queryString}`,
       { height: 1000, width: 600 }
     );
 

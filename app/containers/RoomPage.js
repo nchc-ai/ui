@@ -60,7 +60,7 @@ class RoomPage extends Component {
 
     const type = _.get(match, 'params.type');
 
-    roomAction.getClassroomList();
+    // roomAction.getClassroomList();
 
     // console.log('type', match, type);
     // if (type === 'basic' || type === 'advance') {

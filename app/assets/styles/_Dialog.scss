@@ -11,6 +11,26 @@ $cancel-color: $ailab-grey-03;
 
 }
 
+// modal 特效修正
+.modal-dialog {
+	margin-top: 90px;
+	.modal-header .close {
+		position: absolute;
+		right: 20px;
+	}
+}
+
+.fade.in {
+	opacity: 1;
+}
+.modal.in .modal-dialog {
+	-webkit-transform: translate(0, 0);
+	-o-transform: translate(0, 0);
+	transform: translate(0, 0);
+}
+.modal-backdrop.in {
+	opacity: 0.5;
+}
 
 
 // 客製化Modal

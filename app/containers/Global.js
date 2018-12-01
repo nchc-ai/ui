@@ -9,8 +9,6 @@ import { notify } from 'react-notify-toast';
 // import ga from 'react-google-analytics';
 import Notifications from 'react-notify-toast';
 import Progress from 'react-progress-2';
-
-import SetUserInfo from '../components/common/SetUserInfo/index';
 import Header from './Header';
 import Dialog from '../components/common/Dialog/index';
 
@@ -41,7 +39,6 @@ class Global extends Component {
     return (
       <div className="normal-outer-bg">
         {/* <GAInitiailizer /> */}
-        <SetUserInfo />
         <Header
           userInfo={userInfo}
           isLogin={isLogin}

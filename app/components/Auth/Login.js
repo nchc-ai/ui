@@ -20,11 +20,8 @@ const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
 
     <div className="btn-container">
       <MyoauthButton
-        clientId="test_client_1"
         onSuccess={onSuccess}
         onFailure={onFailure}
-        scope={"read_write"}
-        redirectUri={`${WEBSITE_URL}/user/course`}
       >
         <img alt="" src={localBtnImg} />
       </MyoauthButton>

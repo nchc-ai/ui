@@ -13,6 +13,9 @@
   },
   "author": "FreeFolk TM Studio",
   "license": "ISC",
+  "engines" : {
+    "node" : ">=8.11.3"
+  },
   "dependencies": {
     "@opuscapita/react-markdown": "2.2.3",
     "axios": "^0.18.0",
@@ -51,6 +54,7 @@
     "react-avatar": "^3.0.2",
     "react-bootstrap-table": "^4.3.1",
     "react-burger-menu": "^2.5.0",
+    "react-cookie": "^3.0.7",
     "react-cron-builder": "^1.0.3",
     "react-datepicker": "^1.5.0",
     "react-document-meta": "^3.0.0-beta.2",

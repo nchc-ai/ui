@@ -2,11 +2,16 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import * as types from './actionTypes';
-import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
+import { API_URL, API_VERSION, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData } from '../libraries/utils';
 
 
 // 設定userInfo
+
+export const setLoginState = (isLogin) => ({
+  type: types.SET_LOGIN_STATE,
+  isLogin
+});
 
 export const setUserInfo = (userInfo, isLogin) => ({
   type: types.SET_USER_INFO,
@@ -25,15 +30,13 @@ export const resetAuth = () => ({
 
 
 // Proxy > Token
-export const retrieveToken = (code, next) => async (dispatch) => {
+export const retrieveToken = (codeObj, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/token`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/token`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        code
-      }),
+      body: JSON.stringify(codeObj),
       types: types.RETRIEVE_TOKEN
     }
   });
@@ -41,7 +44,7 @@ export const retrieveToken = (code, next) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('retrieveToken 失敗', response);
   }
-
+  console.log('response.payload.token', codeObj, response.payload);
   next(response.payload.token);
 };
 
@@ -49,7 +52,7 @@ export const retrieveToken = (code, next) => async (dispatch) => {
 export const getUserInfo = (token, history, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/introspection`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/introspection`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -64,9 +67,7 @@ export const getUserInfo = (token, history, next) => async (dispatch) => {
     console.error('getUserInfo 失敗', response);
   }
 
-  if (next) {
-    next(response.error);
-  }
+  next();
 };
 
 
@@ -75,7 +76,7 @@ export const logout = (token, next) => async (dispatch) => {
   // console.log('token', token);
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/logout`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/logout`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -104,7 +105,7 @@ export const signup = (formData, next) => async (dispatch) => {
   // console.log('tempData', tempData);
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/register`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -124,14 +125,13 @@ export const signup = (formData, next) => async (dispatch) => {
 
 // Proxy > UpdataProfile
 export const updateProfile = (formData, token, next) => async (dispatch) => {
-  
 
   // console.log('formData', formData);
   // const tempData = tempfyData(formData);
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/update`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/update`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ export const updatePassword = (username, formData, token, next) => async (dispat
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/changePW`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/changePW`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ export const updatePassword = (username, formData, token, next) => async (dispat
 export const getProfile = (token) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/proxy/query`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/query`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ export const getProfile = (token) => async (dispatch) => {
 export const healthCheck = () => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/health/kubernetes`,
+      endpoint: `${API_URL}/${API_VERSION}/health/kubernetes`,
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
       types: types.HEALTH_CHECK
@@ -220,7 +220,7 @@ export const healthCheck = () => async (dispatch) => {
 export const checkDatabase = () => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/health/database`,
+      endpoint: `${API_URL}/${API_VERSION}/health/database`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'test' }),
@@ -238,7 +238,7 @@ export const checkDatabase = () => async (dispatch) => {
 export const manualLogin = (formData, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/auth/login`,
+      endpoint: `${API_URL}/${API_VERSION}/auth/login`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -259,7 +259,7 @@ export const manualLogin = (formData, next) => async (dispatch) => {
 export const manualSignup = (formData, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/v1/auth/register`,
+      endpoint: `${API_URL}/${API_VERSION}/auth/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({

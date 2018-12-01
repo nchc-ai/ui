@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+import { CookiesProvider } from 'react-cookie';
 
 import 'jquery';
 import 'react-select/dist/react-select.css';
@@ -14,6 +15,8 @@ import App from './App';
 
 ReactDOM.render((
   <Provider store={store}>
-    <App />
+    <CookiesProvider>
+      <App />
+    </CookiesProvider>
   </Provider>
 ), document.getElementById('body'));

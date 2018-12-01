@@ -31,14 +31,15 @@ class AuthPage extends Component {
     this.props.authAction.login();
   }
 
-  onLoginSuccess = (data) => {
-    this.props.authAction.retrieveToken(data.code, this.setUserInfo);
+  onLoginSuccess = (codeObj) => {
+    this.props.authAction.retrieveToken(codeObj, this.setUserInfo);
   }
 
   setUserInfo = (token) => {
     const { history } = this.props;
     setToken(token);
     this.props.authAction.setUserToken(token);
+    console.log('authpage');
     this.props.authAction.getUserInfo(token, history, this.redirect);
   }
 

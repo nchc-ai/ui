@@ -62,7 +62,7 @@ class RouteGuest extends Component {
 
 const mapStateToProps = ({ Auth, Ui }) => ({
   userInfo: Auth.userInfo,
-  isLogin: true,
+  isLogin: Auth.isLogin,
   dropDownPos: Ui.Dropdown.pos,
   offline: Ui.Status.offline
   // isLogin: Auth.userInfo.active

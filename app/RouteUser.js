@@ -29,25 +29,25 @@ class RouteUser extends Component {
               <RoleSelect/>
               <Switch>
 
-                <Route exact path="/classroom-manage/:action/:roomId" component={RoomPage} />
-                <Route exact path="/classroom-manage/:action" component={RoomPage} />
+                <Route exact path="/user/classroom-manage/:action/:roomId" component={RoomPage} />
+                <Route exact path="/user/classroom-manage/:action" component={RoomPage} />
 
-                <Route exact path="/classroom-time" component={RoomTime} />
+                <Route exact path="/user/classroom-time" component={RoomTime} />
 
-                <Route exact path="/role-select/:level" component={RolePage} />
+                <Route exact path="/user/role-select/:level" component={RolePage} />
 
-                <Route exact path="/job/list" component={JobPage} />
+                <Route exact path="/user/job/list" component={JobPage} />
 
-                <Route exact path="/ongoing-course/create/:courseType" component={CoursePage} />
-                <Route exact path="/ongoing-course/:action/:courseId" component={CoursePage} />
-                <Route exact path="/ongoing-course/:action" component={CoursePage} />
+                <Route exact path="/user/ongoing-course/create/:courseType" component={CoursePage} />
+                <Route exact path="/user/ongoing-course/:action/:courseId" component={CoursePage} />
+                <Route exact path="/user/ongoing-course/:action" component={CoursePage} />
 
-                <Route exact path="/classroom-group/:action" component={RoomGroup} />
+                <Route exact path="/user/classroom-group/:action" component={RoomGroup} />
 
-                <Route exact path="/profile/:action/:courseId" component={ProfilePage} />
-                <Route exact path="/profile/:action" component={ProfilePage} />
+                <Route exact path="/user/profile/:action/:courseId" component={ProfilePage} />
+                <Route exact path="/user/profile/:action" component={ProfilePage} />
 
-                <Route exact path="/password-setting" component={PasswordPage} />
+                <Route exact path="/user/password-setting" component={PasswordPage} />
 
                 <Route exact path="*" component={StaticPage} />
               </Switch>
@@ -58,11 +58,6 @@ class RouteUser extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth }) => ({
-  isLogin: Auth.isLogin,
-});
-
 export default compose(
-  connect(mapStateToProps),
   withRouter
 )(RouteUser);
