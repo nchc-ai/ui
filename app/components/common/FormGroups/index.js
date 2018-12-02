@@ -40,13 +40,60 @@ const FormGroups = ({
               {d.viceLabel}
             </label>
 
+            {/* [input] 一般文字 */}
+            {
+              d.inputType === 'text'
+              ?
+                <div className="form-input">
+                  <Control
+                    type={d.inputType}
+                    className={`input-${d.name} text-input`}
+                    model={`.${d.name}`}
+                    validators={d.validators}
+                    placeholder={d.placeholder}
+                    style={d.suffix ? { width: '90%' } : null}
+                    disabled={d.isDisable}
+                  />
+
+                  {/* Material Design */}
+                  <i className="bar" />
+                  {d.suffix ? <span className="suffix-word">{d.suffix}</span> : null}
+                </div>
+              :
+                null
+            }
+
+            {/* [input] 密碼 */}
+            {
+              d.inputType === 'password'
+              ?
+                <div className="form-input">
+                  <Control
+                    type={d.inputType}
+                    className={`input-${d.name} text-input`}
+                    model={`.${d.name}`}
+                    validators={d.validators}
+                    placeholder={d.placeholder}
+                    style={d.suffix ? { width: '90%' } : null}
+                    disabled={d.isDisable}
+                  />
+
+                  {/* Material Design */}
+                  <i className="bar" />
+                  {d.suffix ? <span className="suffix-word">{d.suffix}</span> : null}
+                </div>
+              :
+                null
+            }
+
+
             {/* [input] 單選radio */}
             {
               d.inputType === 'radio'
               ?
                 <div className="form-input-radio">
                   {
-                    d.radioArr.map(opt => (
+                    d.options.map(opt => (
                       <div key={opt.key} className={`radio-input-con ${d.className}`}>
                         <label
                           htmlFor={`radio-input-${opt.key}`}
@@ -85,28 +132,6 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] 一般文字 */}
-            {
-              d.inputType === 'text' || d.inputType === 'password'
-              ?
-                <div className="form-input">
-                  <Control
-                    type={d.inputType}
-                    className={`input-${d.name} text-input`}
-                    model={`.${d.name}`}
-                    validators={d.validators}
-                    placeholder={d.placeholder}
-                    style={d.suffix ? { width: '90%' } : null}
-                    disabled={d.isDisable}
-                  />
-
-                  {/* Material Design */}
-                  <i className="bar" />
-                  {d.suffix ? <span className="suffix-word">{d.suffix}</span> : null}
-                </div>
-              :
-                null
-            }
 
             {/* [input] 大型寫字框 */}
             {
@@ -182,7 +207,6 @@ const FormGroups = ({
             }
 
             {/* [input] cron 輸入 */}
-
             {
               d.inputType === 'cron-input'
               ?
@@ -193,13 +217,7 @@ const FormGroups = ({
                 />
               :
                 null
-            
             }
-
-
-
-
-
 
             {/* [副input] 下拉式input*/}
             {

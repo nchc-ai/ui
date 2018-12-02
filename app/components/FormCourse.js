@@ -1,14 +1,14 @@
 import React from 'react';
 import { Form } from 'react-redux-form';
-import FormGroups from '../common/FormGroups/index';
-import FormButtons from '../common/FormButtons/index';
+import FormGroups from './common/FormGroups/index';
+import FormButtons from './common/FormButtons/index';
 
-const CourseEdit = ({ handleSubmit, handleSubmitFailed, state, formData, targetForm, changeVal, loadOptsMethod, loadTagsOptsMethod, onRadioChange, onMdChange, backMethod }) => (
+const FormCourseEdit = ({ className, formName, handleSubmit, handleSubmitFailed, state, formData, targetForm, changeVal, loadOptsMethod, loadTagsOptsMethod, onRadioChange, onMdChange, backMethod }) => (
   <div className="user-course-edit-bg">
 
     <Form
-      model="forms.addCourse"
-      className="add-course-comp"
+      model={`forms.${formName}`}
+      className={`course-edit-comp ${className}`}
       onSubmit={submitData => handleSubmit(submitData)}
       onSubmitFailed={submitData => handleSubmitFailed(submitData)}
     >
@@ -36,4 +36,4 @@ const CourseEdit = ({ handleSubmit, handleSubmitFailed, state, formData, targetF
   </div>
 );
 
-export default CourseEdit;
+export default FormCourseEdit;

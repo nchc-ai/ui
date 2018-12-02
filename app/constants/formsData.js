@@ -68,8 +68,6 @@ export const addRoomForm = [
   }
 ];
 
-
-
 export const courseConForm = [
   {
     key: 1,
@@ -87,7 +85,7 @@ export const courseConForm = [
     key: 2,
     size: 8,
     name: 'intro',
-    target: 'addCourse',
+    target: 'courseCon',
     inputType: 'markdown',
     mainLabel: '課程介紹',
     validators: { required },
@@ -99,11 +97,11 @@ export const courseConForm = [
     key: 3,
     size: 8,
     name: 'level',
-    target: 'addCourse',
+    target: 'courseCon',
     inputType: 'radio',
     mainLabel: '課程程度',
     className: 'fl',
-    radioArr: [
+    options: [
       {
         key: 1,
         value: 'basic',
@@ -123,7 +121,7 @@ export const courseConForm = [
     key: 4,
     size: 4,
     name: 'image',
-    target: 'addCourse',
+    target: 'courseCon',
     placeholder: '請選擇映像檔',
     inputType: 'async-select',
     mainLabel: '映像檔',
@@ -136,7 +134,7 @@ export const courseConForm = [
     key: 5,
     size: 4,
     name: 'gpu',
-    target: 'addCourse',
+    target: 'courseCon',
     inputType: 'select',
     mainLabel: 'GPU核心數',
     options: [
@@ -159,7 +157,7 @@ export const courseConForm = [
     key: 6,
     size: 8,
     name: 'datasets',
-    target: 'addCourse',
+    target: 'courseCon',
     inputType: 'tags-input',
     mainLabel: '資料集',
     options: [
@@ -177,7 +175,6 @@ export const courseConForm = [
   }
 ];
 
-
 export const courseVMForm = [
   {
     key: 1,
@@ -194,9 +191,9 @@ export const courseVMForm = [
   }, {
     key: 2,
     size: 8,
-    name: 'intro',
-    target: 'addCourse',
-    inputType: 'markdown',
+    name: 'introduction',
+    target: 'courseVM',
+    inputType: 'textarea',
     mainLabel: '課程介紹',
     validators: { required },
     errorMessage: {
@@ -207,11 +204,11 @@ export const courseVMForm = [
     key: 3,
     size: 8,
     name: 'level',
-    target: 'addCourse',
+    target: 'courseVM',
     inputType: 'radio',
     mainLabel: '課程程度',
     className: 'fl',
-    radioArr: [
+    options: [
       {
         key: 1,
         value: 'basic',
@@ -231,7 +228,7 @@ export const courseVMForm = [
     key: 4,
     size: 4,
     name: 'image',
-    target: 'addCourse',
+    target: 'courseVM',
     placeholder: '請選擇映像檔',
     inputType: 'async-select',
     mainLabel: '映像檔',
@@ -244,7 +241,7 @@ export const courseVMForm = [
     key: 5,
     size: 4,
     name: 'gpu',
-    target: 'addCourse',
+    target: 'volume',
     inputType: 'select',
     mainLabel: '資源規模',
     options: [
@@ -260,46 +257,35 @@ export const courseVMForm = [
   }, {
     key: 6,
     size: 8,
-    name: 'datasets',
-    target: 'addCourse',
-    inputType: 'tags-input',
+    name: 'mount',
+    target: 'courseVM',
+    inputType: 'radio',
     mainLabel: 'Associate Flooting IP',
     options: [
       {
         key: 1,
         value: 1,
-        label: 'asc'
+        label: '是'
       }, {
         key: 2,
         value: 2,
-        label: '進階'
+        label: '否'
       }
     ],
     isRequired: false
   }, {
     key: 7,
     size: 8,
-    name: 'datasets',
-    target: 'addCourse',
+    name: 'extraPorts',
+    target: 'courseVM',
     inputType: 'tags-input',
     mainLabel: 'Extra Ports',
-    options: [
-      {
-        key: 1,
-        value: 1,
-        label: 'asc'
-      }, {
-        key: 2,
-        value: 2,
-        label: '進階'
-      }
-    ],
     isRequired: false
   }, {
     key: 8,
     size: 8,
     name: 'datasets',
-    target: 'addCourse',
+    target: 'courseVM',
     inputType: 'text',
     mainLabel: 'SSH Key',
     isRequired: false
@@ -307,7 +293,7 @@ export const courseVMForm = [
     key: 9,
     size: 8,
     name: 'level',
-    target: 'addCourse',
+    target: 'courseVM',
     inputType: 'select',
     mainLabel: 'Mount Volume',
     options: [
@@ -322,102 +308,6 @@ export const courseVMForm = [
     isRequired: true
   }
 ];
-
-
-export const signupForm = [
-  {
-    key: 1,
-    size: 12,
-    name: 'username',
-    inputType: 'text',
-    mainLabel: '帳號',
-    placeholder: '請輸入您的信箱',
-    validators: { required, mailIsValid },
-    errorMessage: {
-      required: '您尚未輸入字元',
-      mailIsValid: '帳號應為信箱格式'
-    },
-    isRequired: true
-  }, {
-    key: 2,
-    size: 12,
-    name: 'password',
-    inputType: 'password',
-    mainLabel: '密碼',
-    placeholder: '請輸入您的密碼',
-    validators: { atLeastSix },
-    errorMessage: {
-      atLeastSix: '密碼至少需為 6 個字元'
-    },
-    isRequired: true
-  }, {
-    key: 3,
-    size: 12,
-    name: 'cName',
-    inputType: 'text',
-    mainLabel: '中文姓名',
-    placeholder: '請輸入中文姓名',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
-  }, {
-    key: 4,
-    size: 12,
-    name: 'company',
-    inputType: 'text',
-    mainLabel: '公司名稱',
-    placeholder: '請輸入公司名稱',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
-  }, {
-    key: 5,
-    size: 12,
-    name: 'phone',
-    inputType: 'text',
-    mainLabel: '手機',
-    placeholder: '請輸入號碼',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
-  }, {
-    key: 6,
-    size: 12,
-    name: 'email',
-    inputType: 'text',
-    mainLabel: '信箱',
-    placeholder: '請輸入主要信箱',
-    validators: { required, mailIsValid },
-    errorMessage: {
-      required: '您尚未輸入字元',
-      mailIsValid: '此欄位應為信箱格式'
-    },
-    isRequired: true
-  }, {
-    key: 7,
-    size: 12,
-    name: 'secondaryEmail',
-    inputType: 'text',
-    mainLabel: '備用信箱',
-    placeholder: '請輸入備用信箱',
-    isRequired: false
-  }, {
-    key: 8,
-    size: 12,
-    name: 'text',
-    inputType: 'textarea',
-    mainLabel: '申請原因',
-    placeholder: '請輸入申請用途',
-    isRequired: false
-  }
-];
-
 
 export const profileForm = [
   {
@@ -472,7 +362,7 @@ export const profileForm = [
   }, {
     key: 5,
     size: 8,
-    name: 'email-1',
+    name: 'email',
     inputType: 'text',
     mainLabel: '信箱',
     placeholder: '請輸入主要信箱',
@@ -485,7 +375,7 @@ export const profileForm = [
   }, {
     key: 6,
     size: 8,
-    name: 'email-2',
+    name: 'backupEmail',
     inputType: 'text',
     mainLabel: '備用信箱',
     placeholder: '請輸入備用信箱',
@@ -493,14 +383,13 @@ export const profileForm = [
   }, {
     key: 7,
     size: 8,
-    name: 'text',
+    name: 'applyReason',
     inputType: 'textarea',
     mainLabel: '申請原因',
     placeholder: '請輸入申請用途',
     isRequired: false
   }
 ];
-
 
 export const passwordForm = [
   {

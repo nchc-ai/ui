@@ -12,40 +12,13 @@ import { courseConForm, courseVMForm } from '../constants/formsData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CourseDetail from '../components/Course/CourseDetail';
 import TableList from '../components/common/TableList';
-import CourseEdit from '../components/User/CourseEdit';
-import SectionTitle from '../components/common/SectionTitle';
-import TitleIcon from '../assets/images/user/title-icon.png';
+import FormCourseEdit from '../components/FormCourse';
 import CommonPageContent from '../components/CommonPageContent';
 
-const quillObj = Value.fromJSON({
-  document: {
-    nodes: [
-      {
-        kind: 'block',
-        type: 'paragraph',
-        nodes: [
-          {
-            kind: 'text',
-            ranges: [
-              {
-                text: 'A line of text in a paragraph.'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-});
+
 class CoursePage extends Component {
 
-  state = {
-    quillObj
-  }
-
   componentWillMount() {
-
-    // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);
   }
@@ -54,122 +27,124 @@ class CoursePage extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
-      if(nextProps.match.params.type !== 'search') {
-        nextProps.resetForm('globalSearch');
-      }
     }
   }
-
-  componentWillUnmount() {
-    this.props.resetForm('globalSearch');
-  }
-
+  
   fetchData = (nextProps) => {
     const {
       courseAction,
       userInfo,
-      token,
-      match
+      token
     } = nextProps;
-
-    const type = _.get(match, 'params.type');
 
     courseAction.getCourseVMList(userInfo.username, token);
     courseAction.getCourseConList(userInfo.username, token);
 
-
-    // console.log('type', match, type);
-    // if (type === 'basic' || type === 'advance') {
-    //   courseAction.getCourseListByLevel(type);
-    // } else if (type === 'detail') {
-    //   courseAction.getCourseDetail(match.params.courseId, token);
-    // } else if (type === 'search') {
-    //   courseAction.searchCourse(match.params.courseId);
-    // }
   }
 
-  startCourse = () => {
-    const {
-      userAction,
-      token,
-      userInfo,
-      match
-    } = this.props;
+  // startCourse = () => {
+  //   const {
+  //     userAction,
+  //     token,
+  //     userInfo,
+  //     match
+  //   } = this.props;
 
-    Progress.show();
-    userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
-  }
+  //   Progress.show();
+  //   userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
+  // }
 
-  onStartClassSuccess = () => {
+  // onStartClassSuccess = () => {
 
-    // console.log('create job success');
-    Progress.hide();
-    notify.show('新增工作成功', 'success', 1800);
-    this.props.history.push('/user/job');
-  }
+  //   // console.log('create job success');
+  //   Progress.hide();
+  //   notify.show('新增工作成功', 'success', 1800);
+  //   this.props.history.push('/user/job');
+  // }
 
-
-  backFromCourseDetail = (e) => {
-    e.preventDefault();
-    this.props.history.goBack();
-  }
-
-
-  // 共用
-  handleSubmitFailed = (formData) => {
+  // 共用 cb
+  handleSubmitFailedCommon = (formData) => {
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
-
-  // 新建容器課程
-
-  handleCreateCourse = (formData) => {
-    // console.log('[handleSubmit] submit', formData);
-
-    const {
-      userAction,
-      token,
-      userInfo
-    } = this.props;
-    userAction.createCourse(token, userInfo, formData, this.onCreateCourseSuccess);
-
-    Progress.show();
-  }
-
-  loadImagesOpts = () => {
-    const {
-      userAction,
-      token
-    } = this.props;
-    return userAction.getImagesOpts(token);
-  };
-
-  loadTagsOpts = () => {
-    const {
-      userAction,
-      token
-    } = this.props;
-    return userAction.getDatasetsOpts(token);
-  };
-
-  changeCourseLevel = (e) => {
-    console.log('[changeCourseLevel] val', e.target.value);
-  }
-
-
-  changeCourseIntro = ({ value }) => {
-    this.setState({ value });
-  }
-
-
-  backFromCourseAdd = () => {
+  backMethodCommon = () => {
     this.props.history.goBack();
   }
+ 
+  // 新建 container 課程 cb
+
+  handleSubmitCreateCon = (formData) => {
+    // const {
+    //   userAction,
+    //   token,
+    //   userInfo
+    // } = this.props;
+    // userAction.createCourse(token, userInfo, formData, this.onCreateCourseSuccess);
+
+    // Progress.show();
+  } 
+
+  loadOptsMethodCreateCon = () => {
+
+    // 載入 image options
+    // const {
+    //   userAction,
+    //   token
+    // } = this.props;
+    // return userAction.getImagesOpts(token);
+  };
+ 
+  loadTagsOptsMethodCreateCon = () => {
+    // const {
+    //   userAction,
+    //   token
+    // } = this.props;
+    // return userAction.getDatasetsOpts(token); 
+  }
+
+  onRadioChangeCreateCon = (e) => {
+    console.log('[onRadioChangeCreateCon] val', e.target.value);
+  }
 
 
-  // 新建 vm 課程
+  // 新建 VM 課程 cb
+
+  handleSubmitCreateVM = (formData) => {
+    // const {
+    //   userAction,
+    //   token,
+    //   userInfo
+    // } = this.props;
+    // userAction.createCourse(token, userInfo, formData, this.onCreateCourseSuccess);
+
+    // Progress.show();
+  } 
+
+  loadOptsMethodCreateVM = () => {
+
+    // 載入 image options
+    console.log('load images');
+    // const {
+    //   userAction,
+    //   token
+    // } = this.props;
+    // return userAction.getImagesOpts(token);
+  };
+ 
+  loadTagsOptsMethodCreateVM = () => {
+    // const {
+    //   userAction,
+    //   token
+    // } = this.props;
+    // return userAction.getDatasetsOpts(token); 
+  }
+
+  onRadioChangeCreateVM = (e) => {
+    console.log('[onRadioChangeCreateCon] val', e.target.value);
+  }
 
 
+  // --------------------------------------------------------
 
   render() {
     const {
@@ -249,29 +224,24 @@ class CoursePage extends Component {
             />
           </Route>
 
-          {/* [User] 課程編輯 */}
-          <Route exact path="/user/ongoing-course/edit/:courseId">
-          </Route>
-
-
-          {/* [User] 新建容器課程 */}
+          {/* [User] 新建 container 課程 */}
           <Route exact path="/user/ongoing-course/create/container">
             <CommonPageContent
               className="profile-page-bg"
               pageTitle="新建容器課程"
             >
-              <CourseEdit
-                handleSubmit={this.handleCreateCourse}
-                handleSubmitFailed={this.handleSubmitFailed}
-                state={this.state}
-                formData={courseConForm}
+              <FormCourseEdit
+                formName="courseCon"
                 targetForm={forms.courseCon}
+                formData={courseConForm}
                 changeVal={changeValue}
-                loadOptsMethod={this.loadImagesOpts}
-                loadTagsOptsMethod={this.loadTagsOpts}
-                onRadioChange={this.changeCourseLevel}
-                onMdChange={this.changeCourseIntro}
-                backMethod={this.backFromCourseAdd}
+                handleSubmit={this.handleSubmitCreateCon}
+                handleSubmitFailed={this.handleSubmitFailedCommon}
+                loadOptsMethod={this.loadOptsMethodCreateCon}
+                loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
+                onRadioChange={this.onRadioChangeCreateCon}
+                onMdChange={this.onMdChangeCreateCon}
+                backMethod={this.backMethodCommon}
               />
             </CommonPageContent>
           </Route>
@@ -282,21 +252,26 @@ class CoursePage extends Component {
               className="ongoing-course-bg"
               pageTitle="新建 VM 課程"
             >
-              <CourseEdit
-                handleSubmit={this.handleCreateCourse}
-                handleSubmitFailed={this.handleSubmitFailed}
-                state={this.state}
-                formData={courseVMForm}
+              <FormCourseEdit
+                formName="courseVM"
                 targetForm={forms.courseVM}
+                formData={courseVMForm}
                 changeVal={changeValue}
-                loadOptsMethod={this.loadImagesOpts}
-                loadTagsOptsMethod={this.loadTagsOpts}
-                onRadioChange={this.changeCourseLevel}
-                onMdChange={this.changeCourseIntro}
-                backMethod={this.backFromCourseAdd}
+                handleSubmit={this.handleSubmitCreateVM}
+                handleSubmitFailed={this.handleSubmitFailedCommon}
+                loadOptsMethod={this.loadOptsMethodCreateVM}
+                loadTagsOptsMethod={this.loadTagsOptsMethodCreateVM}
+                onRadioChange={this.onRadioChangeCreateVM}
+                onMdChange={this.onMdChangeCreateVM}
+                backMethod={this.backMethodCommon}
               />
             </CommonPageContent>
           </Route>
+
+          {/* [User] 課程編輯 */}
+          <Route exact path="/user/ongoing-course/edit/:courseId">
+          </Route>
+
 
         </Switch>
       </div>
@@ -306,13 +281,15 @@ class CoursePage extends Component {
 
 
 const mapDispatchToProps = dispatch => ({
-  resetForm: () => dispatch(formActions.reset('forms.addCourse')),
-  changeValue: (value, key, target) => dispatch(formActions.change(
-    `forms.${target}.${key}`,
+  resetForm: (formName) => dispatch(formActions.reset(
+    `forms.${formName}`
+  )),
+  changeValue: (value, key, formName) => dispatch(formActions.change(
+    `forms.${formName}.${key}`,
     value
   )),
-  changeForm: (formObj, target) => dispatch(formActions.change(
-    `forms.${target}`,
+  changeForm: (formObj, formName) => dispatch(formActions.change(
+    `forms.${formName}`,
     formObj
   ))
 });

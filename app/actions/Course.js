@@ -6,7 +6,10 @@ import * as types from './actionTypes';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL } from '../config/api';
 
 
+// 新建 container 課程
 
+
+// 新建 vm 課程
 
 
 export const getCourseVMList = (user, token) => async (dispatch) => {

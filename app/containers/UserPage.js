@@ -17,7 +17,7 @@ import Password from '../components/User/Password';
 import SideMenu from '../components/SideMenu/index';
 import CourseList from '../components/User/CourseList';
 import JobList from '../components/User/JobList';
-import CourseEdit from '../components/User/CourseEdit';
+import FormCourseEdit from '../components/FormCourseEdit';
 
 import DialogHOC from '../HOC/DialogHOC';
 import { cloneFragment } from '../../node_modules/slate-react';
@@ -397,7 +397,7 @@ class UserPage extends Component {
 
             {/* 新增課程 */}
             <Route exact path="/user/course/add">
-              <CourseEdit
+              <FormCourseEdit
                 title={'新增課程'}
                 handleSubmit={this.handleCreateCourse}
                 handleSubmitFailed={this.handleSubmitFailed}
@@ -415,7 +415,7 @@ class UserPage extends Component {
 
             {/* 編輯課程 */}
             <Route exact path="/user/course/edit/:courseId">
-              <CourseEdit
+              <FormCourseEdit
                 title={'編輯課程'}
                 handleSubmit={this.handleUpdateCourse}
                 handleSubmitFailed={this.handleSubmitFailed}

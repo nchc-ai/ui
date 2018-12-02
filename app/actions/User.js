@@ -253,28 +253,4 @@ export const getDatasetsOpts = token => async (dispatch) => {
 };
 
 
-// Image > List
-export const getImagesOpts = token => async (dispatch) => {
 
-  // console.log('token', token);
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/v1/images/`,
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      types: types.GET_IMAGES_OPTS
-    }
-  });
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('getImagesOpts 失敗');
-  }
-
-  return {
-    options: response.payload.images,
-    complete: response.payload.images
-  };
-};

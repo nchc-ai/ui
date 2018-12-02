@@ -13,20 +13,16 @@ import {
   initialAddClassroomState,
   initialCourseConState,
   initialCourseVMState,
-  initialUserState,
   initialProfileState,
-  initialPasswordState
 } from '../constants/initialState';
 
 const rootReducer = combineReducers({
   forms: combineForms({
     globalSearch: modelReducer('globalSearch', initialGlobalSearchState),
-    addClassroom: modelReducer('addClassroom', initialAddClassroomState),
+    classroom: modelReducer('classroom', initialAddClassroomState),
     courseCon: modelReducer('courseCon', initialCourseConState),
     courseVM: modelReducer('courseVM', initialCourseVMState),
-    signup: modelReducer('signup', initialUserState),
-    profile: modelReducer('profile', initialProfileState),
-    password: modelReducer('password', initialPasswordState)
+    profile: modelReducer('profile', initialProfileState)
   }, 'forms'),
   Auth,
   Classroom,
