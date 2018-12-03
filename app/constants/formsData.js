@@ -193,7 +193,7 @@ export const courseVMForm = [
     size: 8,
     name: 'introduction',
     target: 'courseVM',
-    inputType: 'textarea',
+    inputType: 'markdown',
     mainLabel: '課程介紹',
     validators: { required },
     errorMessage: {
@@ -240,8 +240,8 @@ export const courseVMForm = [
   }, {
     key: 5,
     size: 4,
-    name: 'gpu',
-    target: 'volume',
+    name: 'flavor',
+    target: 'courseVM',
     inputType: 'select',
     mainLabel: '資源規模',
     options: [
@@ -251,7 +251,7 @@ export const courseVMForm = [
     ],
     validators: { required },
     errorMessage: {
-      required: '請輸入GPU核心數'
+      required: '請輸入資源規模'
     },
     isRequired: true
   }, {
@@ -261,14 +261,15 @@ export const courseVMForm = [
     target: 'courseVM',
     inputType: 'radio',
     mainLabel: 'Associate Flooting IP',
+    className: 'fl',
     options: [
       {
         key: 1,
-        value: 1,
+        value: true,
         label: '是'
       }, {
         key: 2,
-        value: 2,
+        value: false,
         label: '否'
       }
     ],
@@ -278,13 +279,14 @@ export const courseVMForm = [
     size: 8,
     name: 'extraPorts',
     target: 'courseVM',
-    inputType: 'tags-input',
+    inputType: 'text',
     mainLabel: 'Extra Ports',
+    placeholder: 'ex: 8080#80#443',
     isRequired: false
   }, {
     key: 8,
     size: 8,
-    name: 'datasets',
+    name: 'sshKey',
     target: 'courseVM',
     inputType: 'text',
     mainLabel: 'SSH Key',
@@ -292,7 +294,7 @@ export const courseVMForm = [
   }, {
     key: 9,
     size: 8,
-    name: 'level',
+    name: 'volume',
     target: 'courseVM',
     inputType: 'select',
     mainLabel: 'Mount Volume',
@@ -303,9 +305,8 @@ export const courseVMForm = [
     ],
     validators: { required },
     errorMessage: {
-      required: '請輸入GPU核心數'
+      required: '請輸入所需容量'
     },
-    isRequired: true
   }
 ];
 

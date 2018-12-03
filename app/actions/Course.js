@@ -6,10 +6,67 @@ import * as types from './actionTypes';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL } from '../config/api';
 
 
-// 新建 container 課程
+// load 映像檔  > con
 
+export const getConImagesOpts = token => async (dispatch) => {
+
+  // console.log('token', token);
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/beta/images`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_CON_IMAGES_OPTS
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getConImagesOpts 失敗');
+  }
+
+  return {
+    options: response.payload.images,
+    complete: response.payload.images
+  };
+};
+
+
+export const getVMImagesOpts = token => async (dispatch) => {
+
+  // console.log('token', token);
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/v1/images`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_VM_IMAGES_OPTS
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getVMImagesOpts 失敗');
+  }
+
+  return {
+    options: response.payload.images,
+    complete: response.payload.images
+  };
+};
 
 // 新建 vm 課程
+
+
+
+
+
+
+
 
 
 export const getCourseVMList = (user, token) => async (dispatch) => {

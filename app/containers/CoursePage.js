@@ -15,8 +15,32 @@ import TableList from '../components/common/TableList';
 import FormCourseEdit from '../components/FormCourse';
 import CommonPageContent from '../components/CommonPageContent';
 
+const initialMdValue = Value.fromJSON({
+  document: {
+    nodes: [
+      {
+        kind: 'block',
+        type: 'paragraph',
+        nodes: [
+          {
+            kind: 'text',
+            ranges: [
+              {
+                text: 'A line of text in a paragraph.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+});
 
 class CoursePage extends Component {
+
+  state = {
+    value: initialMdValue
+  }
 
   componentWillMount() {
     window.scrollTo(0, 0);
@@ -87,11 +111,11 @@ class CoursePage extends Component {
   loadOptsMethodCreateCon = () => {
 
     // 載入 image options
-    // const {
-    //   userAction,
-    //   token
-    // } = this.props;
-    // return userAction.getImagesOpts(token);
+    const {
+      courseAction,
+      token
+    } = this.props;
+    return courseAction.getConImagesOpts(token);
   };
  
   loadTagsOptsMethodCreateCon = () => {
@@ -123,12 +147,11 @@ class CoursePage extends Component {
   loadOptsMethodCreateVM = () => {
 
     // 載入 image options
-    console.log('load images');
-    // const {
-    //   userAction,
-    //   token
-    // } = this.props;
-    // return userAction.getImagesOpts(token);
+    const {
+      courseAction,
+      token
+    } = this.props;
+    return courseAction.getVMImagesOpts(token);
   };
  
   loadTagsOptsMethodCreateVM = () => {
