@@ -154,6 +154,7 @@ const FormGroups = ({
             {
               d.inputType === 'select'
               ?
+              <div>
                 <div className="form-input">
                   <Select
                     name="form-field-name"
@@ -164,6 +165,8 @@ const FormGroups = ({
                     clearable={false}
                   />
                 </div>
+                <span className="fl">{d.unit || ''}</span>
+              </div>
               :
                 null
             }

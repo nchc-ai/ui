@@ -13,7 +13,7 @@ export const getConImagesOpts = token => async (dispatch) => {
   // console.log('token', token);
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/beta/images`,
+      endpoint: `${API_URL}/beta/images/`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ export const getVMImagesOpts = token => async (dispatch) => {
   // console.log('token', token);
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_VM_URL}/v1/images`,
+      endpoint: `${API_VM_URL}/v1/image/list`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

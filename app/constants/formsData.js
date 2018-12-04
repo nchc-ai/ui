@@ -291,13 +291,37 @@ export const courseVMForm = [
     inputType: 'text',
     mainLabel: 'SSH Key',
     isRequired: false
-  }, {
+  },  {
     key: 9,
     size: 8,
+    name: 'mount',
+    target: 'courseVM',
+    inputType: 'radio',
+    mainLabel: '是否 Mount',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        value: true,
+        label: '是'
+      }, {
+        key: 2,
+        value: false,
+        label: '否'
+      }
+    ],
+    validators: { required },
+    errorMessage: {
+      required: '請輸入所需容量'
+    },
+  }, {
+    key: 10,
+    size: 3,
     name: 'volume',
     target: 'courseVM',
     inputType: 'select',
-    mainLabel: 'Mount Volume',
+    mainLabel: 'Volume',
+    unit: 'GB',
     options: [
       { label: '0', value: 0 },
       { label: '10', value: 1 },
