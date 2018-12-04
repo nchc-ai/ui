@@ -1,5 +1,5 @@
 import * as actionTypes from '../actions/actionTypes';
-import { LOADING, SUCCESS } from '../constants/apiActions';
+import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
 
 const InitialState = {
   loading: false,
@@ -51,6 +51,12 @@ export default function Auth(state = InitialState, action) {
       isLogin: true,
       loading: false,
       userInfo: action.payload
+    };
+  case actionTypes.GET_USER_INFO[FAIL]:
+    return {
+      ...state,
+      isLogin: false,
+      loading: false
     };
   case actionTypes.SET_LOGIN_STATE:
     return {
