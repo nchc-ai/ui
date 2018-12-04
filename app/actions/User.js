@@ -30,37 +30,6 @@ export const getCourseList = (userInfo, token) => async (dispatch) => {
   }
 };
 
-// Course > Create
-export const createCourse = (token, userInfo, formData, next) => async (dispatch) => {
-  // console.log('[createCourse] formData', formData, _.escape(formData.intro));
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/v1/course/create`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        user: userInfo.username,
-        name: formData.name,
-        intro: _.escape(formData.intro),
-        image: formData.image.value,
-        level: formData.level.value,
-        GPU: parseInt(formData.gpu.value, 10),
-        datasets: formData.datasets.map(d => d.value)
-      }
-    ),
-      types: types.CREATE_USER_COURSE
-    }
-  });
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('createCourse 失敗');
-  }
-
-  next();
-};
 
 
 
@@ -222,34 +191,6 @@ export const deleteJob = (jobId, token, next) => async (dispatch) => {
   }
 
   next();
-};
-
-// DataSet > List
-export const getDatasetsOpts = token => async (dispatch) => {
-
-  // console.log('token', token);
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/v1/datasets/`,
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      types: types.GET_DATASETS_OPTS
-    }
-  });
-
-  // console.log('[getDatasetsOpts] response', response, response.payload.datasets);
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('getDatasetsOpts 失敗');
-  }
-
-  return {
-    options: response.payload.datasets,
-    complete: response.payload.datasets
-  };
 };
 
 

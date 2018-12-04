@@ -55,6 +55,7 @@ class CoursePage extends Component {
   }
   
   fetchData = (nextProps) => {
+
     const {
       courseAction,
       userInfo,
@@ -63,6 +64,8 @@ class CoursePage extends Component {
 
     courseAction.getCourseVMList(userInfo.username, token);
     courseAction.getCourseConList(userInfo.username, token);
+    // TODO: 要 merge 成一起的 list
+
 
   }
 
@@ -98,15 +101,25 @@ class CoursePage extends Component {
   // 新建 container 課程 cb
 
   handleSubmitCreateCon = (formData) => {
-    // const {
-    //   userAction,
-    //   token,
-    //   userInfo
-    // } = this.props;
-    // userAction.createCourse(token, userInfo, formData, this.onCreateCourseSuccess);
 
-    // Progress.show();
+    console.log('formData', formData);
+    const {
+      courseAction,
+      token,
+      userInfo
+    } = this.props;
+    courseAction.submitCourseContainer(token, userInfo, formData, this.onSubmitCourseContainerSuccess);
+
+    Progress.show();
   } 
+
+
+  onSubmitCourseContainerSuccess = () => {
+
+    Progress.hide();
+    this.fetchData(this.props);
+    this.props.history.push('/user/ongoing-course/list');
+  }
 
   loadOptsMethodCreateCon = () => {
 
@@ -119,11 +132,12 @@ class CoursePage extends Component {
   };
  
   loadTagsOptsMethodCreateCon = () => {
-    // const {
-    //   userAction,
-    //   token
-    // } = this.props;
-    // return userAction.getDatasetsOpts(token); 
+    // 載入資料集
+    const {
+      courseAction,
+      token
+    } = this.props;
+    return courseAction.getConDatasetsOpts(token); 
   }
 
   onRadioChangeCreateCon = (e) => {

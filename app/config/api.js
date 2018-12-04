@@ -7,6 +7,8 @@ export const API_VM_URL = 'http://140.110.16.191:8085'
 
 export const API_VERSION = 'beta';
 
+export const API_VM_VERSION = 'v1';
+
 export const AUTH_PROVIDER_URL = 'http://140.110.16.191:30080';
 
 export const jobInterval = 10000;
