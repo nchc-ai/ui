@@ -20,7 +20,6 @@ const FormGroups = ({
   changeVal,
   loadOptsMethod,
   loadTagsOptsMethod,
-  onRadioChange,
   onDateChange,
   onMdChange
 }) => {

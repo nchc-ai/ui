@@ -175,7 +175,7 @@ export const courseConForm = [
   }
 ];
 
-export const courseVMForm = [
+export const courseVMFormOne = [
   {
     key: 1,
     size: 8,
@@ -237,18 +237,15 @@ export const courseVMForm = [
       required: '您尚未選擇映像檔'
     },
     isRequired: true
-  }, {
+  }]
+  
+  export const courseVMFormTwo = [{
     key: 5,
     size: 4,
     name: 'flavor',
     target: 'courseVM',
-    inputType: 'select',
+    inputType: 'async-select',
     mainLabel: '資源規模',
-    options: [
-      { label: 'small', value: 0 },
-      { label: 'medium', value: 1 },
-      { label: 'large', value: 2 },
-    ],
     validators: { required },
     errorMessage: {
       required: '請輸入資源規模'
@@ -274,7 +271,9 @@ export const courseVMForm = [
       }
     ],
     isRequired: false
-  }, {
+  }];
+
+  export const courseVMFormThree = [{
     key: 7,
     size: 8,
     name: 'extraPorts',
@@ -285,12 +284,16 @@ export const courseVMForm = [
     isRequired: false
   }, {
     key: 8,
-    size: 8,
+    size: 4,
     name: 'sshKey',
     target: 'courseVM',
-    inputType: 'text',
+    placeholder: '請選擇SSH Key',
+    inputType: 'async-select',
     mainLabel: 'SSH Key',
-    isRequired: false
+    isRequired: false,
+    errorMessage: {
+      required: '您尚未選擇SSH KEY'
+    },
   },  {
     key: 9,
     size: 8,
@@ -323,9 +326,9 @@ export const courseVMForm = [
     mainLabel: 'Volume',
     unit: 'GB',
     options: [
-      { label: '0', value: 0 },
-      { label: '10', value: 1 },
-      { label: '30', value: 2 },
+      { label: '10', value: '10' },
+      { label: '20', value: '20' },
+      { label: '30', value: '30' },
     ],
     validators: { required },
     errorMessage: {

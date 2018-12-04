@@ -31,7 +31,7 @@ const InitialState = {
 
 export default function Course(state = InitialState, action) {
   switch (action.type) {
-  case actionTypes.GET_COURSE_VM_LIST[LOADING]:
+  case actionTypes.GET_COURSE_LIST_VM[LOADING]:
     return {
       ...state,
       coursesVM: {
@@ -39,7 +39,7 @@ export default function Course(state = InitialState, action) {
         isLoading: true
       }
     };
-  case actionTypes.GET_COURSE_VM_LIST[SUCCESS]:
+  case actionTypes.GET_COURSE_LIST_VM[SUCCESS]:
     return {
       ...state,
       coursesVM: {
@@ -47,7 +47,7 @@ export default function Course(state = InitialState, action) {
         data: action.payload.courses
       }
     };
-  case actionTypes.GET_COURSE_CON_LIST[LOADING]:
+  case actionTypes.GET_COURSE_LIST_CON[LOADING]:
     return {
       ...state,
       courseCon: {
@@ -55,7 +55,7 @@ export default function Course(state = InitialState, action) {
         isLoading: true
       }
     };
-  case actionTypes.GET_COURSE_CON_LIST[SUCCESS]:
+  case actionTypes.GET_COURSE_LIST_CON[SUCCESS]:
     return {
       ...state,
       courseCon: {

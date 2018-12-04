@@ -26,13 +26,14 @@ export const initialCourseConState = {
 export const initialCourseVMState = {
   name: '',
   introduction: '',
-  image: '',
   level: { label: '基礎', value: 'basic' },
-  scale: { label: 'small', value: 'small' },
-  floatIP: { label: '是', value: true },
+  image: '',
+  flavor: { label: 'small', value: 'small' },
+  associate: { label: '否', value: false },
   extraPorts: '',
   sshKey: '',
-  mountVolume: { label: '0', value: 0 },
+  mount: { label: '否', value: false },
+  volume: { label: '0', value: 0 },
   startAt: '',
   endAt: '',
 };

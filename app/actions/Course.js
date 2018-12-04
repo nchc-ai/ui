@@ -6,8 +6,32 @@ import * as types from './actionTypes';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
 
 
-// load 映像檔  > con
+// Container 課程 ---------------------------------------------------
 
+// list
+export const getCourseListCon = (user, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/course/list`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        user
+      }),
+      types: types.GET_COURSE_LIST_CON
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getCourseListCon 失敗');
+  }
+};
+
+// load images
 export const getConImagesOpts = token => async (dispatch) => {
 
   // console.log('token', token);
@@ -19,7 +43,7 @@ export const getConImagesOpts = token => async (dispatch) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      types: types.GET_CON_IMAGES_OPTS
+      types: types.GET_IMAGES_OPTS_CON
     }
   });
 
@@ -34,37 +58,10 @@ export const getConImagesOpts = token => async (dispatch) => {
 };
 
 
-export const getVMImagesOpts = token => async (dispatch) => {
-
-  // console.log('token', token);
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_VM_URL}/${API_VM_VERSION}/image/list`,
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      types: types.GET_VM_IMAGES_OPTS
-    }
-  });
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('getVMImagesOpts 失敗');
-  }
-
-  return {
-    options: response.payload.images,
-    complete: response.payload.images
-  };
-};
-
-
-
-// DataSet > List
+// load datasets
 export const getConDatasetsOpts = token => async (dispatch) => {
 
-  console.log('token', token);
+  // console.log('token', token);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/datasets/`,
@@ -90,9 +87,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
 
 
 
-// submit container 課程
-
-// Course > Create
+// submit
 export const submitCourseContainer = (token, userInfo, formData, next) => async (dispatch) => {
   // console.log('[createCourse] formData', formData, _.escape(formData.intro));
   const response = await dispatch({
@@ -129,53 +124,10 @@ export const submitCourseContainer = (token, userInfo, formData, next) => async 
 
 
 
+// VM 課程 ---------------------------------------------------
 
-// 新建 vm 課程
-
-
-// Course > Create
-// export const submitCourseVM = (token, userInfo, formData, next) => async (dispatch) => {
-//   // console.log('[createCourse] formData', formData, _.escape(formData.intro));
-//   const response = await dispatch({
-//     [RSAA]: {
-//       endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/create`,
-//       method: 'POST',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         'Authorization': `Bearer ${token}`
-//       },
-//       body: JSON.stringify({
-//         user: userInfo.username,
-//         name: formData.name,
-//         introduction: _.escape(formData.introduction),
-//         level: formData.level,
-//         image: formData.image.value,
-//         flavor: formData.level.value,
-//         associate: parseInt(formData.gpu.value, 10),
-//         extraports: '',
-//         sshkey: '',
-//         mount: '',
-//         volume: '',
-//       }
-//     ),
-//       types: types.SUBMIT_COURSE_VM
-//     }
-//   });
-
-//   if (_.isUndefined(response) || response.payload.error) {
-//     console.error('createCourse 失敗');
-//   }
-
-//   next();
-// };
-
-
-
-
-
-
-
-export const getCourseVMList = (user, token) => async (dispatch) => {
+// list
+export const getCourseListVM = (user, token) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -188,45 +140,136 @@ export const getCourseVMList = (user, token) => async (dispatch) => {
       body: JSON.stringify({
         user
       }),
-      types: types.GET_COURSE_VM_LIST
+      types: types.GET_COURSE_LIST_VM
     }
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseVMList 失敗');
+    console.error('getCourseListVM 失敗');
   }
+};
+
+// [select] load images 
+export const getImagesOptsVM = token => async (dispatch) => {
+
+  // console.log('token', token);
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/image/list`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_IMAGES_OPTS_VM
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getImagesOptsVM 失敗');
+  }
+
+  return {
+    options: response.payload.images,
+    complete: response.payload.images
+  };
+};
+
+// [select] load flavors 
+export const getFlavorsOptsVM = token => async (dispatch) => {
+
+  // console.log('token', token);
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/flavor/list`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_FLAVORS_OPTS_VM
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getFlavorOptsVM 失敗');
+  }
+
+  return {
+    options: response.payload.flavors,
+    complete: response.payload.flavors
+  };
+};
+
+// [select] load SSHKEYS 
+export const getSshKeysOptsVM = token => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/key/list`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_SSH_KEYS_OPTS_VM
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    console.error('getSshKeysOptsVM 失敗');
+  }
+
+  return {
+    options: response.payload.keys,
+    complete: response.payload.keys
+  };
 };
 
 
 
 
-export const getCourseConList = (user, token) => async (dispatch) => {
 
+// submit
+export const submitCourseVM = (token, userInfo, formData, next) => async (dispatch) => {
+  // console.log('[createCourse] formData', formData, _.escape(formData.intro));
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/course/list`,
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/create`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        user
-      }),
-      types: types.GET_COURSE_CON_LIST
+        user: userInfo.username,
+        name: formData.name,
+        introduction: _.escape(formData.introduction),
+        level: formData.level.value,
+        image: formData.image.value,
+        flavor: formData.level.value,
+        associate: formData.associate.value.toString(),
+        extraports: formData.extraPorts,
+        sshkey: formData.sshKey.value,
+        mount: formData.mount.value.toString(),
+        volume: formData.volume.value,
+      }
+    ),
+      types: types.SUBMIT_COURSE_VM
     }
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseConList 失敗');
+    console.error('createCourse 失敗');
   }
+
+  next();
 };
 
 
 
 
-
-
+//-------------------------------------------------------------------------
 
 // Course > List all courses
 export const getCourseListAll = () => async (dispatch) => {

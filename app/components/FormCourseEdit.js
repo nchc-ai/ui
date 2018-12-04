@@ -32,7 +32,6 @@ const FormCourseEdit = ({ className, formName, handleSubmit, handleSubmitFailed,
       />
 
     </Form>
-
   </div>
 );
 
