@@ -28,7 +28,7 @@ class MyoauthButton extends Component {
       client_id: 'test_client_1',
       scope: 'read_write',
       login_redirect_uri: '/web/authorize',
-      redirect_uri: `${WEBSITE_URL}/user/course`,
+      redirect_uri: `${WEBSITE_URL}/user/job/list`,
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
