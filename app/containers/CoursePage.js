@@ -243,8 +243,8 @@ class CoursePage extends Component {
                   {/* name | intro | level | image */}
                   <FormGroups
                     state={this.state.mdValueVM}
-                    formData={courseVMFormOne}
                     targetForm={forms.courseVM}
+                    formData={courseVMFormOne}
                     changeVal={changeValue}
                     loadOptsMethod={this.loadImagesOptsCreateVM}
                   />
@@ -252,16 +252,16 @@ class CoursePage extends Component {
                   {/* flavor | associate */}
 
                   <FormGroups
-                    formData={courseVMFormTwo}
                     targetForm={forms.courseVM}
+                    formData={courseVMFormTwo}
                     changeVal={changeValue}
                     loadOptsMethod={this.loadFlavorsOptsCreateVM}
                   />
 
                   {/* extra port | ssh key | mount | volume */}
                   <FormGroups
-                    formData={courseVMFormThree}
                     targetForm={forms.courseVM}
+                    formData={courseVMFormThree}
                     changeVal={changeValue}
                     loadOptsMethod={this.loadSshKeysOptsCreateVM}
                   />

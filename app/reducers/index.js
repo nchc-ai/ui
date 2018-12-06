@@ -10,7 +10,7 @@ import Classroom from './Classroom';
 
 import {
   initialGlobalSearchState,
-  initialAddClassroomState,
+  initialClassroomState,
   initialCourseConState,
   initialCourseVMState,
   initialProfileState,
@@ -19,7 +19,7 @@ import {
 const rootReducer = combineReducers({
   forms: combineForms({
     globalSearch: modelReducer('globalSearch', initialGlobalSearchState),
-    classroom: modelReducer('classroom', initialAddClassroomState),
+    classroom: modelReducer('classroom', initialClassroomState),
     courseCon: modelReducer('courseCon', initialCourseConState),
     courseVM: modelReducer('courseVM', initialCourseVMState),
     profile: modelReducer('profile', initialProfileState)

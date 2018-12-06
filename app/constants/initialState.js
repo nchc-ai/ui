@@ -2,12 +2,13 @@ export const initialGlobalSearchState = {
   searchText: ''
 };
 
-export const initialAddClassroomState = {
-  intro: '',
+export const initialClassroomState = {
+  name: '',
+  introduction: '',
   period: '',
-  class: { label: '基礎', value: 'basic' },
-  teacher: '',
-  student: ''
+  courses: '',
+  teachers: '',
+  students: ''
 };
 
 export const initialCourseConState = {

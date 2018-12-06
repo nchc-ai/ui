@@ -247,7 +247,7 @@ export const submitCourseVM = (token, userInfo, formData, next) => async (dispat
         introduction: _.escape(formData.introduction),
         level: formData.level.value,
         image: formData.image.value,
-        flavor: formData.level.value,
+        flavor: formData.flavor.value,
         associate: formData.associate.value.toString(),
         extraports: formData.extraPorts,
         sshkey: formData.sshKey.value,

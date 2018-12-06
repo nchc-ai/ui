@@ -3,8 +3,9 @@ import {
   required, mailIsValid, atLeastSix, samePassword 
 } from '../libraries/validation';
 
+// course container ----------------------------------------
 
-export const addRoomForm = [
+export const classroomFormOne = [
   {
     key: 1,
     size: 8,
@@ -20,7 +21,19 @@ export const addRoomForm = [
   }, {
     key: 2,
     size: 8,
-    name: 'name',
+    name: 'description',
+    target: 'classroom',
+    inputType: 'markdown',
+    mainLabel: '教室描述',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: true
+  }, {
+    key: 3,
+    size: 8,
+    name: 'schedules',
     inputType: 'cron-input',
     mainLabel: '時間選擇',
     placeholder: '可建立多個 cron 格式',
@@ -30,43 +43,53 @@ export const addRoomForm = [
     },
     isRequired: true
   }, {
-    key: 3,
+    key: 4,
     size: 8,
-    name: 'name',
-    inputType: 'text',
-    mainLabel: '課程選擇',
+    name: 'courses',
+    inputType: 'tags-input',
+    mainLabel: '教室課程',
     placeholder: '',
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: false
-  }, {
-    key: 4,
-    size: 8,
-    name: 'name',
-    inputType: 'text',
-    mainLabel: '老師',
-    placeholder: '請輸入老師名稱',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: false
-  }, {
-    key: 5,
-    size: 8,
-    name: 'name',
-    inputType: 'text',
-    mainLabel: '學生',
-    placeholder: '請輸入欲上課學生',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
+      required: '您尚未輸入課程'
     },
     isRequired: false
   }
 ];
+
+export const classroomFormTwo = [
+  {
+    key: 5,
+    size: 8,
+    name: 'teachers',
+    inputType: 'tags-input',
+    mainLabel: '老師',
+    placeholder: '請輸入老師名稱',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未加入任何老師'
+    },
+    isRequired: false
+  }
+];
+
+export const classroomFormThree = [
+  {
+    key: 6,
+    size: 8,
+    name: 'students',
+    inputType: 'tags-input',
+    mainLabel: '學生',
+    placeholder: '請輸入欲上課學生',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未加入任何學生'
+    },
+    isRequired: false
+  }
+];
+
+// course container ----------------------------------------
 
 export const courseConForm = [
   {
@@ -160,20 +183,11 @@ export const courseConForm = [
     target: 'courseCon',
     inputType: 'tags-input',
     mainLabel: '資料集',
-    options: [
-      {
-        key: 1,
-        value: 1,
-        label: 'asc'
-      }, {
-        key: 2,
-        value: 2,
-        label: '進階'
-      }
-    ],
     isRequired: false
   }
 ];
+
+// courseVM ----------------------------------------
 
 export const courseVMFormOne = [
   {

@@ -6,10 +6,9 @@ import _ from 'lodash';
 import { Button } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
+import { Value } from 'slate';
 import { Form, actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
-import CourseList from '../components/Course/CourseList';
-import CourseIntro from '../components/Course/CourseIntro';
 import { roomData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
@@ -17,18 +16,34 @@ import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 
 import TableList from '../components/common/TableList';
-import { addRoomForm } from '../constants/formsData';
-import courseSearchBn from '../../public/images/course/course-search-bn.png';
-import courseBasicBn from '../../public/images/course/course-basic-bn.png';
-import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
+import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
 
-import SectionList from '../components/common/SectionList/index';
-import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
-
-import SectionTitle from '../components/common/SectionTitle';
-import TitleIcon from '../assets/images/user/title-icon.png';
+const initialMdValue = Value.fromJSON({
+  document: {
+    nodes: [
+      {
+        kind: 'block',
+        type: 'paragraph',
+        nodes: [
+          {
+            kind: 'text',
+            ranges: [
+              {
+                text: 'A line of text in a paragraph.'
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+});
 
 class RoomPage extends Component {
+
+  state = {
+    mdValue: initialMdValue
+  }
 
   componentWillMount() {
     window.scrollTo(0, 0);
@@ -71,55 +86,61 @@ class RoomPage extends Component {
     // }
   }
 
-  startCourse = () => {
-    const {
-      userAction,
-      token,
-      userInfo,
-      match
-    } = this.props;
+  // startCourse = () => {
+  //   const {
+  //     userAction,
+  //     token,
+  //     userInfo,
+  //     match
+  //   } = this.props;
 
-    Progress.show();
-    userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
+  //   Progress.show();
+  //   userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
+  // }
+
+  // onStartClassSuccess = () => {
+
+  //   // console.log('create job success');
+  //   Progress.hide();
+  //   notify.show('新增工作成功', 'success', 1800);
+  //   this.props.history.push('/user/job');
+  // }
+
+
+  // 新建 classroom 課程 cb
+
+  handleSubmitCreateClassroom () {
+
   }
 
-  onStartClassSuccess = () => {
+  handleSubmitFailed () {
 
-    // console.log('create job success');
-    Progress.hide();
-    notify.show('新增工作成功', 'success', 1800);
-    this.props.history.push('/user/job');
   }
 
 
+  loadCourseTagsRoomCreate = () => this.props.roomAction.loadCourseTagsRoomCreate(this.props.token)
+
+  loadTeacherTagsRoomCreate = () => this.props.roomAction.loadTeacherTagsRoomCreate(this.props.token)
+
+  loadStudentTagsRoomCreate = () => this.props.roomAction.loadStudentTagsRoomCreate(this.props.token)
+
+  cancelRoomCreate () {
+
+  }
+
+
+  // -----------------
   backFromCourseDetail = (e) => {
     e.preventDefault();
     this.props.history.goBack();
   }
 
-  changeRoomValue() {
-
-  }
-
-  startRoom() {
-    console.log('start');
-  }
-
-  editRoom() {
-    console.log('start');
-  }
-
-  deleteRoom() {
-    console.log('start');
-  }
-  cancelRoomEdit() {
-    console.log('cancel');
-  }
 
 
   render() {
     const {
       match,
+      forms,
       roomList,
       courseDetail,
       searchResult,
@@ -139,7 +160,7 @@ class RoomPage extends Component {
               className="room-page-bg"
               pageTitle="教室管理"
             >
-              <Link to="/classroom-manage/create" className="fl add-btn-con">
+              <Link to="/user/classroom-manage/create" className="fl add-btn-con">
                 <button className="add-btn btn-pair" color="success">新增教室</button>
               </Link>
 
@@ -179,22 +200,40 @@ class RoomPage extends Component {
             >
 
               <Form
-                model="forms.profile"
-                className="signup-form-comp"
-                onSubmit={formData => onSubmit(formData)}
+                model="forms.classroom"
+                className="create-classroom-comp"
+                onSubmit={submitData => this.handleSubmitCreateClassroom(submitData)}
+                onSubmitFailed={submitData => this.handleSubmitFailed(submitData)}
               >
-                <div className="row-01">
-                  <FormGroups
-                    formData={addRoomForm}
-                    targetForm={addClassroom}
-                    changeVal={this.changeRoomValue}
-                  />
-                </div>
+                {/* name | description | schedules | courses */} 
+                <FormGroups
+                  state={this.state.mdValue}
+                  targetForm={forms.classroom}
+                  formData={classroomFormOne}
+                  changeVal={this.changeValue}
+                  loadTagsOptsMethod={this.loadCourseTagsRoomCreate}
+                />
 
+                {/* teachers */}
+                <FormGroups
+                  targetForm={forms.classroom}
+                  formData={classroomFormTwo}
+                  changeVal={this.changeValue}
+                  loadTagsOptsMethod={this.loadTeacherTagsRoomCreate}
+                />
+
+                {/* students */}
+                <FormGroups
+                  targetForm={forms.classroom}
+                  formData={classroomFormThree}
+                  changeVal={this.changeValue}
+                  loadTagsOptsMethod={this.loadStudentTagsRoomCreate}
+                />
+                
                 <FormButtons
                   cancelName="回課程列表"
                   submitName="修改"
-                  backMethod={this.cancelRoomEdit}
+                  backMethod={this.cancelRoomCreate}
                   isForm
                 />
               </Form>
@@ -212,7 +251,24 @@ class RoomPage extends Component {
   }
 }
 
+
+const mapDispatchToProps = dispatch => ({
+  resetForm: (formName) => dispatch(formActions.reset(
+    `forms.${formName}`
+  )),
+  changeValue: (value, key, formName) => dispatch(formActions.change(
+    `forms.${formName}.${key}`,
+    value
+  )),
+  changeForm: (formObj, formName) => dispatch(formActions.change(
+    `forms.${formName}`,
+    formObj
+  ))
+});
+
+
 const mapStateToProps = ({ Auth, Course, forms, Classroom }) => ({
+  forms,
   loading: Classroom.list.loading,
   roomList: Classroom.list.data,
   addClassroom: forms.addClassroom,
@@ -221,10 +277,6 @@ const mapStateToProps = ({ Auth, Course, forms, Classroom }) => ({
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data
-});
-
-const mapDispatchToProps = dispatch => ({
-  resetForm: targetForm => dispatch(formActions.reset(`forms.${targetForm}`))
 });
 
 export default compose(
