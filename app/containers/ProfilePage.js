@@ -15,7 +15,6 @@ class ProfilePage extends Component {
     notify.show('個人資料更新成功', 'success', 1800);
   }
 
-
   onProfileUpdate = (formData) => {
     const {
       authAction,

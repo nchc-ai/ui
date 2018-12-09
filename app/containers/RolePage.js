@@ -14,7 +14,13 @@ const options = [
 
 class RolePage extends Component {
   componentWillMount() {
+    const {
+      match,
+      roleAction,
+    } = this.props;
 
+    console.log('match', match);
+    roleAction.getUserListByRole('teacher');
   }
 
   render() {

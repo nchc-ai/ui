@@ -18,7 +18,8 @@ import RoleSelect from './components/common/RoleSelect';
 class RouteUser extends Component {
   render = () => {
     const {
-      match
+      match,
+      role
     } = this.props;
 
     return (
@@ -26,7 +27,7 @@ class RouteUser extends Component {
         <Global>
           <SideMenu match={match} />
             <div className="user-node">
-              <RoleSelect/>
+              { role === "superuser" ? <RoleSelect/> : null }
               <Switch>
 
                 <Route exact path="/user/classroom-manage/:action/:roomId" component={RoomPage} />
@@ -58,6 +59,12 @@ class RouteUser extends Component {
   }
 }
 
+const mapStateToProps = ({ Auth }) => ({
+  role: Auth.userInfo.role,
+
+});
+
 export default compose(
-  withRouter
+  withRouter,
+  connect(mapStateToProps),
 )(RouteUser);

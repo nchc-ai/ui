@@ -19,7 +19,8 @@ class Index extends Component {
 
     const {
       match,
-      userInfo
+      userInfo,
+      isSubstituating
     } = this.props;
 
     const roleObj = {
@@ -34,7 +35,8 @@ class Index extends Component {
         className="side-menu-comp"
         width={200}
       >
-        <DogTag data={userInfo} />
+        <DogTag data={userInfo} isSubstituating={isSubstituating} />
+        {/* 各自版本 */}
         {
           roleObj[userInfo.role || 'default'].map(d => (
             <li
@@ -51,6 +53,7 @@ class Index extends Component {
             </li>
           ))
         }
+        {/* 共用版本 */}
         {
           sideNavCommon.map(d => (
             <li
@@ -74,6 +77,7 @@ class Index extends Component {
 
 const mapStateToProps = ({ Ui, Auth }) => ({
   userInfo: Auth.userInfo,
+  isSubstituating: Auth.substituation.isSubstituating,
   isOpen: Ui.SideNav.isOpen,
   currentMenu: Ui.SideNav.currentMenu,
   isHidden: Ui.SideNav.isWrapHidden,

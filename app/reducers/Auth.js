@@ -6,6 +6,11 @@ const InitialState = {
   isLogin: false,
   data: [],
   token: '',
+  substituation: {
+    isSubstituating: true,
+    role: '',
+    username: '',
+  },
   userInfo: {
     active: false,
     client_id: '',
