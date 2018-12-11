@@ -19,7 +19,8 @@ class RouteUser extends Component {
   render = () => {
     const {
       match,
-      role
+      role,
+      isSubstituating
     } = this.props;
 
     return (
@@ -27,7 +28,7 @@ class RouteUser extends Component {
         <Global>
           <SideMenu match={match} />
             <div className="user-node">
-              { role === "superuser" ? <RoleSelect/> : null }
+              { role === "superuser" ? <RoleSelect /> : null }
               <Switch>
 
                 <Route exact path="/user/classroom-manage/:action/:roomId" component={RoomPage} />
@@ -61,7 +62,7 @@ class RouteUser extends Component {
 
 const mapStateToProps = ({ Auth }) => ({
   role: Auth.userInfo.role,
-
+  isSubstituating: Auth.substituation.isSubstituating,
 });
 
 export default compose(

@@ -49,13 +49,13 @@ export default {
             const today = moment(now);
 
             return {
-                 start: today.date(data.start).format(dataFormat),
-                 end: today.add(data.length-1, 'days').format(dataFormat),
-                 eventClasses: 'custom-event-class',
-                 title: data.length + ' 交大教室 ' + (data.title || ''),
-                 description: description
+                start: today.date(data.start).format(dataFormat),
+                end: today.add(data.length-1, 'days').format(dataFormat),
+                eventClasses: 'custom-event-class',
+                title: data.length + ' 交大教室 ' + (data.title || ''),
+                description: description
             }
-        }) 
+        });
 
         return events;
     }

@@ -21,9 +21,11 @@ class RolePage extends Component {
   loadUserOptsMethodRole = () => {
     const {
       roleAction,
-      match
+      match,
+      token
     } = this.props;
-    roleAction.getUserListByRole(match.params.level || 'admin')
+
+    return roleAction.getUserListByRole(match.params.level || 'admin', token);
   }
 
   render() {

@@ -20,4 +20,9 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     console.error('getUserListByRole 失敗');
   }
+
+  return {
+    options: response.payload.users,
+    complete: response.payload.users
+  };
 };

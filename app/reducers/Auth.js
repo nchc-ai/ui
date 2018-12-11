@@ -93,6 +93,14 @@ export default function Auth(state = InitialState, action) {
       isLogin: false,
       userInfo: InitialState.userInfo
     };
+  case actionTypes.TOGGLE_SUBSTITUATING:
+    return {
+      ...state,
+      substituation: {
+        ...state.substituation,
+        isSubstituating: action.status
+      }
+    };
   default:
     return state;
   }

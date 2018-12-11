@@ -19,109 +19,129 @@ import SectionTitle from '../components/common/SectionTitle';
 import TitleIcon from '../assets/images/user/title-icon.png';
 import CommonPageContent from '../components/CommonPageContent'
 
-
 const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
 class RoomTime extends Component {
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            moment: moment(),
-            showPopover: false,
-            showModal: false,
-            overlayTitle: null,
-            overlayContent: null,
-            popoverTarget: null,
-        };
+    this.state = {
+      moment: moment(),
+      showPopover: false,
+      showModal: false,
+      overlayTitle: null,
+      overlayContent: null,
+      popoverTarget: null,
+    };
 
-        this.handleNextMonth = this.handleNextMonth.bind(this);
-        this.handlePreviousMonth = this.handlePreviousMonth.bind(this);
-        this.handleToday = this.handleToday.bind(this);
-        this.handleEventClick = this.handleEventClick.bind(this);
-        this.handleEventMouseOver = this.handleEventMouseOver.bind(this);
-        this.handleEventMouseOut = this.handleEventMouseOut.bind(this);
-        this.handleDayClick = this.handleDayClick.bind(this);
-        this.handleModalClose = this.handleModalClose.bind(this);
+    this.handleNextMonth = this.handleNextMonth.bind(this);
+    this.handlePreviousMonth = this.handlePreviousMonth.bind(this);
+    this.handleToday = this.handleToday.bind(this);
+    this.handleEventClick = this.handleEventClick.bind(this);
+    this.handleEventMouseOver = this.handleEventMouseOver.bind(this);
+    this.handleEventMouseOut = this.handleEventMouseOut.bind(this);
+    this.handleDayClick = this.handleDayClick.bind(this);
+    this.handleModalClose = this.handleModalClose.bind(this);
+  }
+
+  componentWillMount() {
+    window.scrollTo(0, 0);
+    this.fetchData(this.props);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.url !== this.props.match.url) {
+      window.scrollTo(0, 0);
+      this.fetchData(nextProps);
     }
+  }
 
-    handleNextMonth() {
-        this.setState({
-            moment: this.state.moment.add(1, 'M'),
-        });
-    }
+  fetchData = (nextProps) => {
+    const {
+      roomAction,
+      userInfo,
+      token
+    } = nextProps;
 
-    handlePreviousMonth() {
-        this.setState({
-            moment: this.state.moment.subtract(1, 'M'),
-        });
-    }
+    roomAction.getClassroomList(userInfo.username, token);
+  }
 
-    handleToday() {
-        this.setState({
-            moment: moment(),
-        });
-    }
+  handleNextMonth() {
+    this.setState({
+        moment: this.state.moment.add(1, 'M'),
+    });
+  }
 
-    handleEventMouseOver(target, eventData, day) {
-        this.setState({
-            showPopover: true,
-            popoverTarget: () => ReactDOM.findDOMNode(target),
-                overlayTitle: eventData.title,
-                overlayContent: eventData.description,
-        });
-    }
+  handlePreviousMonth() {
+    this.setState({
+        moment: this.state.moment.subtract(1, 'M'),
+    });
+  }
 
-    handleEventMouseOut(target, eventData, day) {
-        this.setState({
-            showPopover: false,
-        });
-    }
+  handleToday() {
+    this.setState({
+        moment: moment(),
+    });
+  }
 
-    handleEventClick(target, eventData, day) {
-        console.log('show');
-        this.setState({
-            showPopover: false,
-            showModal: true,
-            overlayTitle: eventData.title,
-            overlayContent: eventData.description,
-        });
-    }
+  handleEventMouseOver(target, eventData, day) {
+    this.setState({
+      showPopover: true,
+      popoverTarget: () => ReactDOM.findDOMNode(target),
+          overlayTitle: eventData.title,
+          overlayContent: eventData.description,
+    });
+  }
 
-    handleDayClick(target, day) {
-        this.setState({
-            showPopover: false,
-            showModal: true,
-            overlayTitle: this.getMomentFromDay(day).format('Do of MMMM YYYY'),
-            overlayContent: 'User clicked day (but not event node).',
-        });
-    }
+  handleEventMouseOut(target, eventData, day) {
+    this.setState({
+        showPopover: false,
+    });
+  }
 
-    getMomentFromDay(day) {
-        return moment().set({
-            'year': day.year,
-            'month': (day.month + 0) % 12,
-            'date': day.day
-        });
-    }
+  handleEventClick(target, eventData, day) {
+    console.log('show');
+    this.setState({
+      showPopover: false,
+      showModal: true,
+      overlayTitle: eventData.title,
+      overlayContent: eventData.description,
+    });
+  }
 
-    handleModalClose() {
-        this.setState({
-            showModal: false,
-        })
-    }
+  handleDayClick(target, day) {
+    this.setState({
+      showPopover: false,
+      showModal: true,
+      overlayTitle: this.getMomentFromDay(day).format('Do of MMMM YYYY'),
+      overlayContent: 'User clicked day (but not event node).',
+    });
+  }
 
-    getHumanDate() {
-        return [moment.months('MM', this.state.moment.month()), this.state.moment.year(), ].join(' ');
-    }
+  getMomentFromDay(day) {
+    return moment().set({
+      'year': day.year,
+      'month': (day.month + 0) % 12,
+      'date': day.day
+    });
+  }
+
+  handleModalClose() {
+    this.setState({
+      showModal: false,
+    })
+  }
+
+  getHumanDate() {
+    return [moment.months('MM', this.state.moment.month()), this.state.moment.year(), ].join(' ');
+  }
 
   render() {
-
     return (
       <CommonPageContent
-        className="room-time-bg"
-        pageTitle="教室時間"
+          className="room-time-bg"
+          pageTitle="教室時間"
       >
         <Overlay
             show={this.state.showPopover}

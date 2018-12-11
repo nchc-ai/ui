@@ -9,7 +9,7 @@ export const getClassroomList = (user, token) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/beta/classroom/list`,
+      endpoint: `${API_URL}/${API_VERSION}/classroom/list`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

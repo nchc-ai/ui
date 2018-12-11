@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { actions as formActions, Form } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
+import { passwordForm } from '../constants/formsData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import Password from '../components/User/Password';
-import CommonPageContent from '../components/CommonPageContent'
-
-
+import CommonPageContent from '../components/CommonPageContent';
+import FormGroups from '../components/common/FormGroups/index';
+import FormButtons from '../components/common/FormButtons/index';
 class PasswordPage extends Component {
   componentWillMount() {
 
@@ -59,13 +60,27 @@ class PasswordPage extends Component {
         className="password-page-bg"
         pageTitle="密碼變更"
       >
-        <Password
-            targetForm={forms.password}
-            changeValue={changeValue}
-            onSubmit={this.onPasswordUpdate}
-            onSubmitFailed={this.handleSubmitPasswordFailed}
-            cancelEdit={this.handleCancel}
-        />
+        <Form
+          model="forms.password"
+          className="signup-form-comp"
+          onSubmitFailed={this.handleSubmitPasswordFailed}
+          onSubmit={this.onPasswordUpdate}
+        >
+          <div className="row-01">
+            <FormGroups
+              formData={passwordForm}
+              targetForm={forms.password}
+              changeVal={changeValue}
+            />
+          </div>
+
+          <FormButtons
+            cancelName="回課程列表"
+            submitName="修改"
+            backMethod={this.handleCancel}
+            isForm
+          />
+        </Form>
       </CommonPageContent>
     );
   }
