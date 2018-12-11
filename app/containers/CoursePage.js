@@ -55,7 +55,7 @@ class CoursePage extends Component {
       this.fetchData(nextProps);
     }
   }
-  
+
   fetchData = (nextProps) => {
 
     const {
@@ -69,26 +69,27 @@ class CoursePage extends Component {
     // TODO: 要 merge 成一起的 list
 
   }
+  // 啟動課程
+  launchCourseJob = (e, data) => {
+    const {
+      jobAction,
+      token,
+      userInfo
+    } = this.props;
+    Progress.show();
+    jobAction.launchCourseJob({
+      user: userInfo.username,
+      courseId: data.id,
+      token,
+      next: () => this.onLaunchCourseJobSuccess()
+    });
+  }
 
-  // startCourse = () => {
-  //   const {
-  //     userAction,
-  //     token,
-  //     userInfo,
-  //     match
-  //   } = this.props;
-
-  //   Progress.show();
-  //   userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
-  // }
-
-  // onStartClassSuccess = () => {
-
-  //   // console.log('create job success');
-  //   Progress.hide();
-  //   notify.show('新增工作成功', 'success', 1800);
-  //   this.props.history.push('/user/job');
-  // }
+  onLaunchCourseJobSuccess = () => {
+    Progress.hide();
+    notify.show('課程啟動成功', 'success', 1800);
+    this.props.history.push('/user/job/list');
+  }
 
   // 共用 cb
   handleSubmitFailedCommon = (formData) => {
@@ -98,7 +99,7 @@ class CoursePage extends Component {
   backMethodCommon = () => {
     this.props.history.goBack();
   }
-  
+
   onSubmitCourseSuccessCommon = () => {
     Progress.hide();
     this.fetchData(this.props);
@@ -113,7 +114,7 @@ class CoursePage extends Component {
       token,
       userInfo
     } = this.props;
-    
+
     courseAction.submitCourseContainer(
       token,
       userInfo,
@@ -122,13 +123,12 @@ class CoursePage extends Component {
     );
 
     Progress.show();
-
     // TODO: 須送出 loading 時 disable submit button
-  } 
+  }
 
   loadOptsMethodCreateCon = () => this.props.courseAction.getConImagesOpts(this.props.token)
   loadTagsOptsMethodCreateCon = () => this.props.courseAction.getConDatasetsOpts(this.props.token)
-  
+
   // 新建 VM 課程 cb
   handleSubmitCreateVM = (formData) => {
     const {
@@ -136,7 +136,7 @@ class CoursePage extends Component {
       token,
       userInfo
     } = this.props;
-    
+
     courseAction.submitCourseVM(
       token,
       userInfo,
@@ -147,7 +147,7 @@ class CoursePage extends Component {
     Progress.show();
 
     // TODO: 須送出 loading 時 disable submit button
-  } 
+  }
 
   loadImagesOptsCreateVM = () => this.props.courseAction.getImagesOptsVM(this.props.token)
   loadFlavorsOptsCreateVM = () => this.props.courseAction.getFlavorsOptsVM(this.props.token)
@@ -188,7 +188,7 @@ class CoursePage extends Component {
                 data={courseList}
                 tableData={ongoingCourseData}
                 isDialogOpen={true}
-                startMethod={this.startCourse}
+                startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
               />

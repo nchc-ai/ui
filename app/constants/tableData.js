@@ -191,8 +191,8 @@ export const userCourseData = {
       value: 'createAt'
     }, {
       key: 4,
-      type: 'more',
-      value: ''
+      type: 'start',
+      text: '開始課程'
     }
   ]
 };

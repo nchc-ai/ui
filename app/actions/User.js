@@ -121,77 +121,7 @@ export const deleteCourse = (courseId, token, next) => async (dispatch) => {
 };
 
 
-// Job > List
-export const getJobList = (user, token, next) => async (dispatch) => {
 
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/v1/job/list`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ user }),
-      types: types.GET_JOB_LIST
-    }
-  });
-
-  // console.log('[getJobList] response', response);
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('getJobList 失敗');
-  }
-};
-
-// Job > Launch
-export const launchJob = (user, courseId, token, next) => async (dispatch) => {
-  // console.log('user, courseId, token', user, courseId, token);
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/v1/job/launch`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ user, course_id: courseId }),
-      types: types.LAUNCH_JOB
-    }
-  });
-
-  // console.log('[launchJob] response', response);
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('launchJob 失敗');
-  }
-
-  next();
-};
-
-// Job > Delete
-export const deleteJob = (jobId, token, next) => async (dispatch) => {
-
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/v1/job/delete/${jobId}`,
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      types: types.DELETE_JOB
-    }
-  });
-
-  // console.log('[deleteJob] response', response);
-
-  if (_.isUndefined(response) || response.payload.error) {
-    console.error('deleteJob 失敗');
-  }
-
-  next();
-};
 
 
 

@@ -252,7 +252,7 @@ export const courseVMFormOne = [
     },
     isRequired: true
   }]
-  
+
   export const courseVMFormTwo = [{
     key: 5,
     size: 4,
@@ -432,6 +432,23 @@ export const profileForm = [
     isRequired: false
   }
 ];
+
+export const roleForm = [
+  {
+    key: 1,
+    size: 4,
+    name: 'role',
+    target: 'role',
+    inputType: 'async-select',
+    mainLabel: '角色選擇',
+    validators: { required },
+    errorMessage: {
+      required: '請選擇欲切換的目標使用者'
+    },
+    isRequired: true
+  }
+];
+
 
 export const passwordForm = [
   {

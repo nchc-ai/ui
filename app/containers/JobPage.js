@@ -9,6 +9,13 @@ import CommonPageContent from '../components/CommonPageContent';
 
 class JobPage extends Component {
   componentWillMount() {
+    const {
+      token,
+      userInfo,
+      jobAction
+    } = this.props;
+
+    jobAction.getJobList({ user: userInfo.username, token })
 
   }
 
@@ -25,7 +32,7 @@ class JobPage extends Component {
     // // console.log('userInfo.username, courseId, token', userInfo.username, courseId, token);
     // userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
   }
-  
+
   onAddJobSuccess = () => {
     // this.fetchData();
     // Progress.hide();
@@ -131,12 +138,12 @@ class JobPage extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, User, Course }) => ({
+const mapStateToProps = ({ Auth, User, Job }) => ({
   token: Auth.token,
   userInfo: Auth.userInfo,
   Job: {
-    loading: User.job.loading,
-    list: User.job.data
+    loading: Job.List.loading,
+    list: Job.List.data
   },
 });
 

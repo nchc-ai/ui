@@ -32,22 +32,7 @@ export default function User(state = InitialState, action) {
         data: _.map(action.payload.courses, d => courses(d))
       }
     };
-  case actionTypes.GET_JOB_LIST[LOADING]:
-    return {
-      ...state,
-      job: {
-        ...state.job,
-        loading: true
-      }
-    };
-  case actionTypes.GET_JOB_LIST[SUCCESS]:
-    return {
-      ...state,
-      job: {
-        loading: false,
-        data: _.map(action.payload.jobs, d => jobs(d))
-      }
-    };
+
   default:
     return state;
   }

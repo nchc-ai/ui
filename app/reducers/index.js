@@ -5,6 +5,7 @@ import { routerReducer } from 'react-router-redux';
 import Auth from './Auth';
 import Ui from './Ui';
 import Course from './Course';
+import Job from './Job';
 import User from './User';
 import Classroom from './Classroom';
 
@@ -14,6 +15,7 @@ import {
   initialCourseConState,
   initialCourseVMState,
   initialProfileState,
+  initialRoleState
 } from '../constants/initialState';
 
 const rootReducer = combineReducers({
@@ -22,11 +24,13 @@ const rootReducer = combineReducers({
     classroom: modelReducer('classroom', initialClassroomState),
     courseCon: modelReducer('courseCon', initialCourseConState),
     courseVM: modelReducer('courseVM', initialCourseVMState),
-    profile: modelReducer('profile', initialProfileState)
+    profile: modelReducer('profile', initialProfileState),
+    role: modelReducer('role', initialRoleState)
   }, 'forms'),
   Auth,
   Classroom,
   Course,
+  Job,
   User,
   Ui
 });

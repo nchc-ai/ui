@@ -60,6 +60,10 @@ export const initialProfileState = {
   text: ''
 };
 
+export const initialRoleState = {
+  role: { label: '', value: '' },
+};
+
 export const initialPasswordState = {
   password: '',
   confirmPassword: ''

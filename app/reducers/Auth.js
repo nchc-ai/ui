@@ -10,6 +10,10 @@ const InitialState = {
     isSubstituating: true,
     role: '',
     username: '',
+    label: {
+      value: '',
+      label: ''
+    }
   },
   userInfo: {
     active: false,

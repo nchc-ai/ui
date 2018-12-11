@@ -26,7 +26,9 @@
             + RoleSelection
                 - 下拉式選單
             + CoursePage
-                - CourseList
+                - CommonPageContent
+                    - Link x 2
+                    - TableList
                 - CourseDetail
                     - CustomJumbotron
                     - ListView
