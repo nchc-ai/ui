@@ -2,7 +2,7 @@ import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import axios from 'axios';
 import * as types from './actionTypes';
-import { API_URL } from '../config/api';
+import { API_URL, API_VERSION } from '../config/api';
 
 // [List] classrooms
 export const getClassroomList = (user, token) => async (dispatch) => {

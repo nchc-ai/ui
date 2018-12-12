@@ -37,7 +37,7 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ user, course_id: courseId, classroom_id: 'default' }),
+      body: JSON.stringify({ user, course_id: courseId, classroom_id: '' }),
       types: types.LAUNCH_COURSE_JOB
     }
   });
