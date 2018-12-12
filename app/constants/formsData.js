@@ -258,6 +258,7 @@ export const courseVMFormOne = [
     size: 4,
     name: 'flavor',
     target: 'courseVM',
+    placeholder: '請選擇資源規模',
     inputType: 'async-select',
     mainLabel: '資源規模',
     validators: { required },
@@ -268,7 +269,7 @@ export const courseVMFormOne = [
   }, {
     key: 6,
     size: 8,
-    name: 'mount',
+    name: 'associate',
     target: 'courseVM',
     inputType: 'radio',
     mainLabel: 'Associate Flooting IP',

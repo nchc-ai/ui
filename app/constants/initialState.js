@@ -29,7 +29,7 @@ export const initialCourseVMState = {
   introduction: '',
   level: { label: '基礎', value: 'basic' },
   image: '',
-  flavor: { label: 'small', value: 'small' },
+  flavor: '',
   associate: { label: '否', value: false },
   extraPorts: '',
   sshKey: '',
