@@ -1,6 +1,8 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import axios from 'axios';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
@@ -23,7 +25,7 @@ export const getClassroomList = (user, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getClassroomList 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -44,7 +46,7 @@ export const loadCourseTagsRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('loadCourseTagsRoomCreate 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -69,7 +71,7 @@ export const loadTeacherTagsRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('loadTeacherTagsRoomCreate 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -94,7 +96,7 @@ export const loadStudentTagsRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('loadStudentTagsRoomCreate 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {

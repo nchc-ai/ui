@@ -3,8 +3,10 @@ import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import axios from 'axios';
 import * as types from './actionTypes';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
-
+import { showToast } from '../libraries/utils';
 
 // Container 課程 ---------------------------------------------------
 
@@ -27,7 +29,7 @@ export const getCourseListCon = (user, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseListCon 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -48,7 +50,7 @@ export const getConImagesOpts = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getConImagesOpts 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -75,7 +77,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getConDatasetsOpts 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -114,7 +116,7 @@ export const submitCourseContainer = (token, userInfo, formData, next) => async 
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('submitCourseContainer 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();
@@ -145,7 +147,7 @@ export const getCourseListVM = (user, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseListVM 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -166,7 +168,7 @@ export const getImagesOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getImagesOptsVM 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -192,7 +194,7 @@ export const getFlavorsOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getFlavorOptsVM 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -217,7 +219,7 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getSshKeysOptsVM 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
@@ -260,7 +262,7 @@ export const submitCourseVM = (token, userInfo, formData, next) => async (dispat
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('createCourse 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();
@@ -283,7 +285,7 @@ export const getCourseListAll = () => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseListAll 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -300,7 +302,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseListByLevel 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -349,7 +351,7 @@ export const searchCourse = query => async (dispatch) => {
   // console.log('[searchCourse] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('searchCourse 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 

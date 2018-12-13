@@ -1,5 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 
 export const getResultList = () => async (dispatch) => {
@@ -14,7 +16,7 @@ export const getResultList = () => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || !response.payload.success) {
-    console.error('getResultList 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
   // next(response.payload.result[0]);
 };

@@ -2,6 +2,8 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import * as types from './actionTypes';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import { API_URL, API_VERSION, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData } from '../libraries/utils';
 
@@ -42,9 +44,8 @@ export const retrieveToken = (codeObj, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('retrieveToken 失敗', response);
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
-  console.log('response.payload.token', codeObj, response.payload);
   next(response.payload.token);
 };
 
@@ -63,8 +64,8 @@ export const getUserInfo = (token, history, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
     next(response.error);
-    console.error('getUserInfo 失敗', response);
   }
 
   next(response.payload);
@@ -90,7 +91,7 @@ export const logout = (token, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('logout 失敗', response);
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   if (next) {
@@ -116,7 +117,7 @@ export const signup = (formData, next) => async (dispatch) => {
   console.log('[signup] payload', response)
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('signup 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next(response);
@@ -143,7 +144,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('updateProfile 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();
@@ -172,7 +173,7 @@ export const updatePassword = (username, formData, token, next) => async (dispat
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('updatePassword 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
   next();
 };
@@ -193,7 +194,7 @@ export const getProfile = (token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getProfile 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -212,7 +213,7 @@ export const healthCheck = () => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('healthCheck 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -230,7 +231,7 @@ export const checkDatabase = () => async (dispatch) => {
 
   // console.log("response", response);
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('checkDatabase 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -250,7 +251,7 @@ export const manualLogin = (formData, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || !response.payload.success) {
-    console.error('manual Login 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
   // next(response.payload.result[0]);
 };
@@ -271,7 +272,7 @@ export const manualSignup = (formData, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || !response.payload.success) {
-    console.error('manual Signup 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   // next(response.payload.result[0]);

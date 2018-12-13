@@ -3,6 +3,7 @@ import moment from 'moment';
 import { push } from 'react-router-redux';
 import _ from 'lodash';
 import Moment from 'react-moment';
+import { notify } from 'react-notify-toast';
 
 export function bindFunctions(functions) {
 	functions.forEach(f => {
@@ -27,12 +28,23 @@ export function formatStatus(str) {
 
 /*---------------------------
 //	未登入  Redirect
+//  success, error
 ----------------------------*/
 
 export function enterWithoutAuth() {
 
   store.dispatch(push('/login'));
 }
+
+
+/*---------------------------
+//	未登入  Redirect
+----------------------------*/
+
+export function showToast(text, status) {
+  notify.show(text, status, 1800);
+}
+
 
 
 /*---------------------------

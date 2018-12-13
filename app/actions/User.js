@@ -2,6 +2,8 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import axios from 'axios';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem } from '../libraries/utils';
@@ -26,7 +28,7 @@ export const getCourseList = (userInfo, token) => async (dispatch) => {
   // console.log('[getCourseList] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getCourseList 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -60,7 +62,7 @@ export const updateCourse = (token, userInfo, formData, next) => async (dispatch
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('updateCourse 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();
@@ -114,7 +116,7 @@ export const deleteCourse = (courseId, token, next) => async (dispatch) => {
   });
   // console.log('[deleteCourse] response', response);
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('deleteCourse 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();

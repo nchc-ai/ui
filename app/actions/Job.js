@@ -1,5 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
 
@@ -23,7 +25,7 @@ export const getJobList = ({ user, token }) => async (dispatch) => {
   // console.log('[getJobList] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getJobList 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
 
@@ -45,7 +47,7 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
   // console.log('[launchJob] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('launchCourseJob 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();
@@ -69,7 +71,7 @@ export const deleteJob = (jobId, token, next) => async (dispatch) => {
   // console.log('[deleteJob] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('deleteJob 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   next();

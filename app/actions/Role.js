@@ -1,5 +1,7 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
@@ -18,7 +20,7 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.payload.error) {
-    console.error('getUserListByRole 失敗');
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
   return {
