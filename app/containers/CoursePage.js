@@ -9,9 +9,12 @@ import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseVMFormOne, courseVMFormTwo, courseVMFormThree } from '../constants/formsData';
+import { courseDetailList } from '../constants/listData'
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import CustomJumbotron from '../components/common/CustomJumbotron/index';
 import CourseDetail from '../components/Course/CourseDetail';
 import TableList from '../components/common/TableList';
+import ListView from '../components/common/ListView/index';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import FormCourseEdit from '../components/FormCourseEdit';
@@ -87,8 +90,8 @@ class CoursePage extends Component {
 
   onLaunchCourseJobSuccess = () => {
     Progress.hide();
-    notify.show('課程啟動成功', 'success', 1800);
     this.props.history.push('/user/job/list');
+    notify.show('課程啟動成功', 'success', 1800);
   }
 
   // 共用 cb
@@ -198,11 +201,33 @@ class CoursePage extends Component {
 
           {/* [User] 課程細項 */}
           <Route exact path="/user/ongoing-course/detail/:courseId">
-            <CourseDetail
-              detail={courseDetail}
-              submitMethod={this.startCourse}
-              cancelEdit={this.backFromCourseDetail}
-            />
+            <CommonPageContent
+              className="profile-page-bg"
+              pageTitle="課程細項"
+            >
+              <CustomJumbotron
+                tag={_.get(courseDetail, 'level')}
+                title={_.get(courseDetail, 'name')}
+                sideTitle={`開課講師：${_.get(courseDetail, 'user')}`}
+                info={_.get(courseDetail, 'introduction')}
+              />
+
+              <ListView
+                data={courseDetailList(courseDetail)}
+              />
+
+
+              <hr className="my-2" />
+
+              {/* 下方按鈕 */}
+              {/* TODO: 需在這判斷是否有開過課程決定submitName */}
+              <FormButtons
+                cancelName="上一頁"
+                submitName="開始課程"
+                backMethod={this.backFromCourseDetail}
+                nextMethod={this.startCourse}
+              />
+            </CommonPageContent>
           </Route>
 
           {/* [User] 新建 container 課程 */}

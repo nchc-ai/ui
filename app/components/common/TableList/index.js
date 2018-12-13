@@ -28,7 +28,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     {
                       datum.type === 'link' ?
                         <div>
-                          <Link to={`${prefixUrl ? prefixUrl : `/course/detail/`}${_.get(d, 'id')}`}>
+                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/detail/`}${_.get(d, 'id')}`}>
                             {_.get(d, datum.value)}
                           </Link>
                         </div>

@@ -201,7 +201,7 @@ export const getFlavorsOptsVM = token => async (dispatch) => {
   };
 };
 
-// [select] load SSHKEYS 
+// [select] load SSHKEYS
 export const getSshKeysOptsVM = token => async (dispatch) => {
 
   const response = await dispatch({
