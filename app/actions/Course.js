@@ -123,6 +123,26 @@ export const submitCourseContainer = (token, userInfo, formData, next) => async 
 };
 
 
+// Course > Delete
+export const deleteCourseContainer = ({ courseId, token, next }) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/course/delete/${courseId}`,
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.DELETE_COURSE_CONTAINER
+    }
+  });
+  // console.log('[deleteCourse] response', response);
+  if (_.isUndefined(response) || response.payload.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  }
+
+  next();
+};
 
 
 

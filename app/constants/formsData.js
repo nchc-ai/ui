@@ -159,6 +159,7 @@ export const courseConForm = [
     name: 'gpu',
     target: 'courseCon',
     inputType: 'select',
+    placeholder: '請選擇 GPU 核心數',
     mainLabel: 'GPU核心數',
     options: [
       { label: 'x0', value: 0 },
@@ -182,6 +183,7 @@ export const courseConForm = [
     name: 'datasets',
     target: 'courseCon',
     inputType: 'tags-input',
+    placeholder: '請選擇資料集',
     mainLabel: '資料集',
     isRequired: false
   }

@@ -91,13 +91,13 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                               </button>
                             </li>
                             <li>
-                              <button className="action-btn" onClick={() => editMethod(d)}>
+                              <button className="action-btn" onClick={e => editMethod(e, d)}>
                                 <span className="action-word">編輯</span>
                                 <MdEdit />
                               </button>
                             </li>
                             <li>
-                              <button className="action-btn" onClick={() => deleteMethod(d)}>
+                              <button className="action-btn" onClick={e => deleteMethod(e, d)}>
                                 <span className="action-word">刪除</span>
                                 <MdDelete />
                               </button>

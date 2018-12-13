@@ -94,6 +94,25 @@ class CoursePage extends Component {
     notify.show('課程啟動成功', 'success', 1800);
   }
 
+  deleteCourse = (e, data) => {
+    const {
+      courseAction,
+      token,
+      userInfo
+    } = this.props;
+    courseAction.deleteCourseContainer({
+      courseId: data.id,
+      token,
+      next: () => this.onDeleteCourseSuccess()
+    });
+  }
+
+  onDeleteCourseSuccess = () => {
+    Progress.hide();
+    this.fetchData(this.props);
+    notify.show('課程刪除成功', 'success', 1800);
+  }
+
   // 共用 cb
   handleSubmitFailedCommon = (formData) => {
     notify.show('請確認是否填妥表單資料', 'error', 1800);
