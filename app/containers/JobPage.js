@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Row, Col } from 'reactstrap';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import DataFrame from '../components/common/DataFrame/index';
 import { groupArray, formatStatus } from '../libraries/utils';

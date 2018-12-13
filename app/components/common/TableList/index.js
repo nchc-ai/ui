@@ -73,7 +73,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                         null
                     }
                     {
-                      datum.type === 'more' ?
+                      datum.type === 'actions' ?
                         <div>
                           {
                             isAdmin ?

@@ -14,7 +14,7 @@ export default function Job(state = InitialState, action) {
   case actionTypes.GET_JOB_LIST[LOADING]:
     return {
       ...state,
-      job: {
+      List: {
         ...state.job,
         loading: true
       }
@@ -22,9 +22,9 @@ export default function Job(state = InitialState, action) {
   case actionTypes.GET_JOB_LIST[SUCCESS]:
     return {
       ...state,
-      job: {
+      List: {
         loading: false,
-        data: _.map(action.payload.jobs, d => jobs(d))
+        data: _.map(action.payload.jobs, d => d)
       }
     };
   default:

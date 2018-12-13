@@ -73,7 +73,7 @@ export const ongoingCourseData = {
       value: 'createAt'
     }, {
       key: 4,
-      type: 'more',
+      type: 'actions',
       value: ''
     }
   ]
@@ -111,7 +111,7 @@ export const classroomGroupData = {
       value: 'createAt'
     }, {
       key: 4,
-      type: 'more',
+      type: 'actions',
       value: ''
     }
   ]
@@ -191,7 +191,7 @@ export const userCourseData = {
       value: 'createAt'
     }, {
       key: 4,
-      type: 'start',
+      type: 'actions',
       text: '開始課程'
     }
   ]
