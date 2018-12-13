@@ -135,12 +135,13 @@ class RoomPage extends Component {
 
               <TableList
                 data={roomList}
-                prefixUrl="/classroom-manage/detail/"
+                prefixUrl="/user/classroom-manage/detail/"
                 tableData={roomData}
                 isDialogOpen={true}
                 startMethod={this.startRoom}
                 editMethod={this.editRoom}
                 deleteMethod={this.deleteRoom}
+                isAdmin
               />
             </CommonPageContent>
           </Route>

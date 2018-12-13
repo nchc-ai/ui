@@ -35,7 +35,7 @@ export const roomData = {
       value: 'teachers'
     }, {
       key: 5,
-      type: 'more',
+      type: 'actions',
       value: ''
     }
   ]

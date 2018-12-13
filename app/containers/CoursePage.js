@@ -194,6 +194,7 @@ class CoursePage extends Component {
                 startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
+                isAdmin
               />
 
             </CommonPageContent>
