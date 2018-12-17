@@ -24,7 +24,10 @@ class App extends Component {
   render = () => {
     const {
       offline,
+      history
     } = this.props;
+
+    // console.log('history', Cookies.get('is_login'));
 
     return (
       <div id="outer-container" style={{ height: '100%' }}>

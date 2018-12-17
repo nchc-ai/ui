@@ -26,7 +26,7 @@
             + RoleSelection
                 - 下拉式選單
             + CoursePage
-                - CommonPageContent
+                - `CommonPageContent`
                     - Link x 2
                     - TableList
                 - CourseDetail
@@ -39,7 +39,9 @@
             + RoomPage
                 - TableList
             + JobPage
-                - JobList
+                - `CommonPageContent`
+                    - `DataFrame`
+                        - 依照 group 分群組
             + UserPage
                 - Profile
             + StaticPage
@@ -70,6 +72,16 @@
         + OfflinePage  # 當 offline 時才會啟動
         (route 跟 offline 三選一)
 
+
+## 共用元件
+* CommonPageContent: 左上角標題
+* DataFrame: 共用列表空狀態 & loading
+* 
+
+
+
 ## 待做項目
 * 用 saga 實作 api 介接
 * 
+
+

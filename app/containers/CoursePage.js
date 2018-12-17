@@ -181,6 +181,7 @@ class CoursePage extends Component {
     const {
       match,
       forms,
+      isLoading,
       courseDetail,
       courseList,
       changeValue,
@@ -209,6 +210,7 @@ class CoursePage extends Component {
               <TableList
                 data={courseList}
                 tableData={ongoingCourseData}
+                isLoading={isLoading}
                 isDialogOpen={true}
                 startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
@@ -355,6 +357,7 @@ const mapStateToProps = ({ forms, Auth, Course }) => ({
   forms,
   token: Auth.token,
   userInfo: Auth.userInfo,
+  isLoading: Course.courseCon.isLoading,
   courseList: Course.courseCon.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data

@@ -23,6 +23,7 @@ const ClassroomGroup = ({ classrooms, startCourse, editCourse, deleteCourse }) =
             <TableList
               data={classroom.courseInfo}
               tableData={classroomGroupData}
+              isLoading={false}
               isDialogOpen={true}
               startMethod={startCourse}
               editMethod={editCourse}

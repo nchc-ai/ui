@@ -11,7 +11,7 @@ const InitialState = {
 
 export default function Job(state = InitialState, action) {
   switch (action.type) {
-  case actionTypes.GET_JOB_LIST[LOADING]:
+  case actionTypes.GET_CON_JOB_LIST[LOADING]:
     return {
       ...state,
       List: {
@@ -19,7 +19,7 @@ export default function Job(state = InitialState, action) {
         loading: true
       }
     };
-  case actionTypes.GET_JOB_LIST[SUCCESS]:
+  case actionTypes.GET_CON_JOB_LIST[SUCCESS]:
     return {
       ...state,
       List: {

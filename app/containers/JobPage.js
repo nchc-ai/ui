@@ -16,7 +16,8 @@ class JobPage extends Component {
       jobAction
     } = this.props;
 
-    jobAction.getJobList({ user: userInfo.username, token })
+    jobAction.getConJobList({ user: userInfo.username, token })
+    jobAction.getVMJobList({ user: userInfo.username, token })
 
   }
 

@@ -6,9 +6,18 @@
 		.no-data-container{
 	
 			@include rect-center(200px,initial);
+			display: flex;
+			align-content: center;
+			justify-content: center;
+			flex-direction:column;
 			text-align: center;
 			color:#9C9C9C;
-	
+			border: 4px dashed #ddd;
+			
+			.icon-container {
+				font-size: 45px;
+			}
+
 			.no-data-icon{	
 	
 				@include rect-center(40px,40px);
@@ -16,7 +25,7 @@
 			}
 
 			.no-data-word {
-				vertical-align: middle;
+				line-height: 40px;
 			}
 			a{
 				line-height: 70px;

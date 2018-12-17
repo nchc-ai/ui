@@ -8,7 +8,7 @@ import { MdMoreVert, MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';
 
-const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob }) => (
+const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob, isLoading }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -16,6 +16,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
       </tr>
     </thead>
     <DataFrameTable
+      isLoading={isLoading}
       data={data}
       cols={8}
     >

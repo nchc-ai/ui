@@ -18,6 +18,7 @@ import Global from './containers/Global';
 import Footer from './components/Footer/Index';
 
 class RouteGuest extends Component {
+
   setDropdownPos = (pos) => {
     this.props.uiAction.setDropdownPos(pos);
   }

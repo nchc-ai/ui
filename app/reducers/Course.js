@@ -4,27 +4,27 @@ import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
 
 const InitialState = {
   coursesVM: {
-    loading: false,
+    isLoading: false,
     data: []
   },
   courseCon: {
-    loading: false,
+    isLoading: false,
     data: []
   },
   courseAll: {
-    loading: false,
+    isLoading: false,
     data: []
   },
   courseList: {
-    loading: false,
+    isLoading: false,
     data: []
   },
   courseDetail: {
-    loading: false,
+    isLoading: false,
     data: {}
   },
   searchResult: {
-    loading: false,
+    isLoading: false,
     data: []
   }
 };

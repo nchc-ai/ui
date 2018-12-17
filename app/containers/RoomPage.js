@@ -110,6 +110,7 @@ class RoomPage extends Component {
     const {
       forms,
       match,
+      loading,
       roomList,
       courseDetail,
       searchResult,
@@ -117,7 +118,7 @@ class RoomPage extends Component {
       list
     } = this.props;
     const courseType = _.get(match, 'params.type');
-
+    console.log('loading', loading);
     // console.log('match', match);
     return (
       <div className="classroom-bg">
@@ -137,6 +138,7 @@ class RoomPage extends Component {
                 data={roomList}
                 prefixUrl="/user/classroom-manage/detail/"
                 tableData={roomData}
+                isLoading={loading}
                 isDialogOpen={true}
                 startMethod={this.startRoom}
                 editMethod={this.editRoom}
@@ -234,7 +236,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = ({ forms, Auth, Course, Classroom }) => ({
   forms,
-  loading: Classroom.list.loading,
+  loading: Classroom.list.isLoading,
   roomList: Classroom.list.data,
   addClassroom: forms.addClassroom,
   token: Auth.token,

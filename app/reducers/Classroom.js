@@ -3,7 +3,7 @@ import { LOADING, SUCCESS } from '../constants/apiActions';
 
 const InitialState = {
   list: {
-    loading: false,
+    isLoading: false,
     data: []
   },
 };
