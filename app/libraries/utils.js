@@ -38,14 +38,35 @@ export function enterWithoutAuth() {
 
 
 /*---------------------------
-//	未登入  Redirect
+// format JOB
+// 統一前端 job 規格
+// common container vm
 ----------------------------*/
 
-export function showToast(text, status) {
-  notify.show(text, status, 1800);
+export function formatJob(datum) {
+  return {
+    courseId: _.get(datum, 'course_id'),
+    id: _.get(datum, 'id'),
+    name: _.get(datum, 'name'),
+    introduction: _.get(datum, 'introduction'),
+    level: _.get(datum, 'level'),
+    image: _.get(datum, 'image'),
+    service: _.get(datum, 'service'),
+    startAt: _.get(datum, 'startAt'),
+    status: _.get(datum, 'status'),
+
+    dataset: _.get(datum, 'dataset'),
+    gpu: _.get(datum, 'gpu'),
+    
+    extraports: _.get(datum, 'extraports'),
+    flavor: _.get(datum, 'flavor'),
+    floatingip: _.get(datum, 'floatingip'),
+    privateip: _.get(datum, 'privateip'),
+    sshkey: _.get(datum, 'sshkey'),
+    vmname: _.get(datum, 'vmname'),
+    volume: _.get(datum, 'volume')
+  }
 }
-
-
 
 /*---------------------------
 //	判斷是否為空的

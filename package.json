@@ -9,7 +9,8 @@
     "dev": "webpack-dev-server --config webpack.config.dev.js",
     "proxy": "webpack-dev-server --config webpack.config.proxy.js",
     "prod": "NODE_ENV=PROD node server",
-    "forever": "NODE_ENV=PROD forever start --minUptime 1000 --spinSleepTime 1000 server.js"
+    "forever": "NODE_ENV=PROD forever start --minUptime 1000 --spinSleepTime 1000 server.js",
+    "mock-server": "puer -a ./app/mock/db.json"
   },
   "author": "FreeFolk TM Studio",
   "license": "ISC",

@@ -6,7 +6,6 @@ import * as types from './actionTypes';
 import { notify } from 'react-notify-toast';
 import { TOAST_TIMING } from '../constants';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
-import { showToast } from '../libraries/utils';
 
 // Container 課程 ---------------------------------------------------
 
