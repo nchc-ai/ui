@@ -7,7 +7,7 @@ const InitialState = {
   data: [],
   token: '',
   substituation: {
-    isSubstituating: true,
+    isSubstituating: false,
     role: '',
     username: '',
     label: {

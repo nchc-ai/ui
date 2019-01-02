@@ -17,4 +17,4 @@ export const RETURN_ROUTE = '/user/classroom-manage/list';
 
 export const jobInterval = 10000;
 
-export const pdfLink = 'https://drive.google.com/file/d/1MvfNxfLkBr4yvbxsJhh-D6PeaFsovNPl/view';
+export const pdfLink = 'https://drive.google.com/file/d/1MvfNxfLkBr4yvbxsJhh-D6PeaFsovNPl/view'

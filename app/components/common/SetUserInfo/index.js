@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-// import ga from 'react-google-analytics';
-import { notify } from 'react-notify-toast';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Cookies from 'js-cookie';

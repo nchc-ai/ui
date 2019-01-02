@@ -93,7 +93,7 @@ class RoomPage extends Component {
   cancelRoomEdit() {
     console.log('cancel');
   }
-
+  // TODO: 
   loadCourseTagsCreateRoom = () => {
 
   }

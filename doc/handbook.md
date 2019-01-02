@@ -1,87 +1,130 @@
-* main.js       # entry point
-    * App.js    # 用 router switch 來決定頁面
+* main.js       [entry_point]
+    * App       [用router_switch來決定頁面]
         - SetUserInfo
         - Header
             + GlobalSearch
             + NavBar
             + TopBar
-        - Progress.Component  # 上方 progress bar
-        - Notifications
-        * routeUser       # 登入可使用
-            + SideNav     # 側邊欄 (只有登入才出現)
-                - DogTag
-                - LinkFormat
-            + RoomPage (CRUD)
-                - TableList     [list]
-                    - Table
-                        - DataFrameTable
-                - [detail]
-                - []
-                - Form          [create]
-                    - FormGroups
-                - [edit]
-                
-            + RoomTime
-                - 甘特圖
-            + RoleSelection
-                - 下拉式選單
-            + CoursePage
-                - `CommonPageContent`
-                    - Link x 2
-                    - TableList
-                - CourseDetail
-                    - CustomJumbotron
-                    - ListView
-                    - FormButtons
-                - CourseIntro
-                - SectionList
-                    - TableList
-            + RoomPage
-                - TableList
-            + JobPage
-                - `CommonPageContent`
-                    - `DataFrame`
-                        - 依照 group 分群組
-            + UserPage
-                - Profile
-            + StaticPage
-
-        * routeGuest
-            + IndexPage
-                - SectionTitle
-                - Thumbnails
-            + IntroPage
-                - 
-            + ContactPage
-            + AuthPage
-                - Login
-                    - SectionTitle
-                    - MyoauthButton
-                - Signup
-                    - Form
-                        - FormGroups
-                        - FormButtons
-                - Password   << 應該改成 PasswordForgot
-            + StaticPage
         - Footer
-            - FooterTop
-            - FooterMid
-            - FooterBottom
-        - Dialog
+            + FooterTop
+            + FooterMid
+            + FooterBottom
+    * RouteUser             [登入可使用]
+        + SideNav           [側邊欄(只有登入才出現)]
+            - DogTag
+            - LinkFormat
+        + RoomPage          [CRUD]
+            1. TableList     
+                - Table
+                    - DataFrameTable
+            2. 
+            3. Form         
+                - FormGroups
+            4. 
+            
+        + RoomTime          [教室時間]
+            - CommonPageContent
+                - Overlay
+                    - Popover
+                - Modal
+                - ButtonToolbar
+                - EventCalendar
+        + RolePage          [下拉式選單選角色]
+            - Form
+                - FormGroups
+                - FormButtons
+        + CoursePage        [CRUD]
+            1. CommonPageContent
+                - Link x 2  
+                - TableList
+            2. CourseDetail
+                - CustomJumbotron
+                - ListView
+                - FormButtons
+            3. CourseIntro
+            4. SectionList
+                - TableList
+        + RoomPage          [CRUD]
+            1. CommonPageContent
+                - TableList
+            2. 
+            3. 
+            4. 
+        + JobPage
+            - CommonPageContent
+                - DataFrame
+                    - obj.data.map...
+                        - thumb.service.map...
+        + UserPage [x]
+            - Profile
+        + StaticPage        [404]
 
-        + OfflinePage  # 當 offline 時才會啟動
-        (route 跟 offline 三選一)
+    * RouteGuest
+        + AuthPage          [登入註冊ㄜ]
+            - Login
+                - SectionTitle
+                - MyoauthButton
+                    - PopWindow
+            - Signup
+                - Form
+                    - FormGroups
+                    - FormButtons
+            - Password      [!_應該改成PasswordForgot]
+        + ContactPage
+            - models.contactPage.info01.map...
+            - models.contactPage.info02.map...
+        + IndexPage
+            - SectionTitle
+            - Thumbnails
+        + IntroPage
+        + StaticPage
 
 
-## 共用元件
-* CommonPageContent: 左上角標題
-* DataFrame: 共用列表空狀態 & loading
-* 
 
+    + OfflinePage       [當offline時才會啟動]
+
+
+
+## 共用系列
+
+* 元件
+    - CommonPageContent: 左上角標題
+    - DataFrame: 共用列表空狀態 & loading
+    - Progress.Component: 上方progress_bar
+    - Notifications: 
+    - Dialog
+
+* Forms
+    - globalSearch  [搜尋課程]
+    - classroom     [教室]
+    - courseCon     []
+    - courseVM
+    - profile
+    - role
+* 登入驗證
+    - SetUserInfo 
+    > retrieveUser  []
+    > 
+* 登入流程
+    - MyoauthButton > 跳轉回課程列表
+    - 只要到 RouteUser 改 isLogin 就可以進入測試狀態
+    - 
 
 
 ## 待做項目
 * 用 saga 實作 api 介接
 * 
+
+## 進行中
+* 切換視角
+    - 由 Auth 底下的 substituation 決定
+* cron job 格式轉換
+* 教室時間對應
+    - 要先得知 cron job 的週期
+    - 然後再各自加一天計算
+* 要分來源獲取課程
+    - 有點忘記是否藥
+
+
 
 
