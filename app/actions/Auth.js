@@ -277,9 +277,3 @@ export const manualSignup = (formData, next) => async (dispatch) => {
 
   // next(response.payload.result[0]);
 };
-
-
-export const toggleSubstituating = (status) => ({
-  type: types.TOGGLE_SUBSTITUATING,
-  status
-});

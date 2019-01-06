@@ -13,29 +13,28 @@
         + SideNav           [側邊欄(只有登入才出現)]
             - DogTag
             - LinkFormat
-        + RoomPage          [CRUD]
-            1. TableList     
+        + RoomPage          [CRUD] [/user/classroom-manage]
+            1. TableList
                 - Table
                     - DataFrameTable
             2. 
-            3. Form         
+            3. Form
                 - FormGroups
             4. 
-            
-        + RoomTime          [教室時間]
+        + RoomTime          [教室時間] [/user/classroom-time]
             - CommonPageContent
                 - Overlay
                     - Popover
                 - Modal
                 - ButtonToolbar
                 - EventCalendar
-        + RolePage          [下拉式選單選角色]
+        + RolePage          [下拉式選單選角色] [/user/role-select]
             - Form
                 - FormGroups
                 - FormButtons
-        + CoursePage        [CRUD]
+        + CoursePage        [CRUD] [/user/ongoing-course]
             1. CommonPageContent
-                - Link x 2  
+                - Link x 2
                 - TableList
             2. CourseDetail
                 - CustomJumbotron
@@ -114,6 +113,11 @@
 ## 待做項目
 * 用 saga 實作 api 介接
 * 
+
+
+## 角色切換
+* 在 reducer/Auth.js 的 substituation
+
 
 ## 進行中
 * 切換視角

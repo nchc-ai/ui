@@ -17,6 +17,7 @@ const FormGroups = ({
   formData,
   targetForm,
   state,
+  asyncSelectKey,
   changeVal,
   loadOptsMethod,
   loadTagsOptsMethod,
@@ -177,6 +178,7 @@ const FormGroups = ({
                 <div className="form-input">
                   <Select.Async
                     name="form-field-name"
+                    key={asyncSelectKey || ''}
                     value={_.get(targetForm, d.name)}
                     placeholder={d.placeholder}
                     onChange={val => changeVal(val, d.name, d.target)}
@@ -212,7 +214,7 @@ const FormGroups = ({
             {
               d.inputType === 'cron-input'
               ?
-                <CronBuilder 
+                <CronBuilder
                   cronExpression="*/4 2,12,22 * * 1-5"
                   onChange={(e) => {console.log('change', e)}}
                   showResult
@@ -240,7 +242,7 @@ const FormGroups = ({
               :
               null
             }
-            
+
             {/* [input] Markdown */}
             {
               d.inputType === 'markdown'

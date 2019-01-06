@@ -36,6 +36,7 @@ class Index extends Component {
         width={200}
       >
         <DogTag data={userInfo} isSubstituating={isSubstituating} />
+
         {/* 各自版本 */}
         {
           roleObj[userInfo.role || 'default'].map(d => (
@@ -54,7 +55,7 @@ class Index extends Component {
           ))
         }
         {/* 共用版本 */}
-        {
+        { !isSubstituating ?
           sideNavCommon.map(d => (
             <li
               key={d.key}
@@ -69,15 +70,16 @@ class Index extends Component {
               />
             </li>
           ))
+          : null
         }
       </div>
     );
   }
 }
 
-const mapStateToProps = ({ Ui, Auth }) => ({
-  userInfo: Auth.userInfo,
-  isSubstituating: Auth.substituation.isSubstituating,
+const mapStateToProps = ({ Ui, Auth, Role }) => ({
+  userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
+  isSubstituating: Role.isSubstituating,
   isOpen: Ui.SideNav.isOpen,
   currentMenu: Ui.SideNav.currentMenu,
   isHidden: Ui.SideNav.isWrapHidden,

@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Switch, Route, Link } from 'react-router-dom';
 import { actions as formActions, Form } from 'react-redux-form';
-import { roleForm } from '../constants/formsData';
+import { roleTeacherForm, roleStudentForm } from '../constants/formsData';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -16,6 +17,17 @@ const options = [
 
 class RolePage extends Component {
   componentWillMount() {
+
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const {
+      match,
+      resetForm
+    } = nextProps;
+    if (nextProps.match.params !== this.props.match.params) {
+      resetForm('role');
+    }
   }
 
   loadUserOptsMethodRole = () => {
@@ -27,11 +39,31 @@ class RolePage extends Component {
 
     return roleAction.getUserListByRole(match.params.level || 'admin', token);
   }
+  loadStudentOpts = () => {
+    const {
+      roleAction,
+      match,
+      token
+    } = this.props;
+
+    return roleAction.getUserListByRole('student', token);
+  }
+
+  changeRole = (submitData) => {
+    const {
+      roleAction,
+      history
+    } = this.props;
+
+    roleAction.startSubstituating(submitData.role)
+    history.push('/user/classroom-manage/list');
+  }
 
   render() {
     const {
       forms,
       changeValue,
+      match,
     } = this.props;
 
     return (
@@ -39,15 +71,16 @@ class RolePage extends Component {
         className="role-page-bg"
         pageTitle="視角切換"
       >
-         <Form
+        <Form
           model={`forms.role`}
           className={`role-select`}
-          onSubmit={submitData => this.handleSubmitCreateVM(submitData)}
+          onSubmit={submitData => this.changeRole(submitData)}
           onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
         >
           <FormGroups
             targetForm={forms.role}
-            formData={roleForm}
+            formData={match.params.level === "teacher" ? roleTeacherForm : roleStudentForm}
+            asyncSelectKey={match.params.level}
             changeVal={changeValue}
             loadOptsMethod={this.loadUserOptsMethodRole}
           />
@@ -58,8 +91,8 @@ class RolePage extends Component {
             submitName="確定"
             backMethod={this.backMethodCommon}
             isForm
+            isSubmitOnly
           />
-
         </Form>
       </CommonPageContent>
     );

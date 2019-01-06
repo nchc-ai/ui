@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
 
-const FormButtons = ({ size, isForm, cancelName, submitName, backMethod, nextMethod, resetMethod, isReset }) => (
+const FormButtons = ({ size, isForm, isSubmitOnly, cancelName, submitName, backMethod, nextMethod, resetMethod, isReset }) => (
   <div className="submit-bg">
     <Row className="form-buttons-container">
       <Col md={{ size: size || 2 }}>
@@ -23,7 +23,7 @@ const FormButtons = ({ size, isForm, cancelName, submitName, backMethod, nextMet
             </button>
         }
       </Col>
-      <Col md={{ size: size || 2 }}>
+      <Col md={{ size: size || 2 }} style={{ display: isSubmitOnly ? 'none' : "block" }}>
         <button
           className="back-btn btn-pair"
           onClick={backMethod}
@@ -31,7 +31,7 @@ const FormButtons = ({ size, isForm, cancelName, submitName, backMethod, nextMet
           {cancelName || '回上一步'}
         </button>
       </Col>
-      <Col md={{ size: size || 2, offset: 6 }}>
+      <Col md={{ size: size || 2, offset: 6 }} style={{ display: isSubmitOnly ? "none" : 'block' }}>
         {
           isReset ?
             <button

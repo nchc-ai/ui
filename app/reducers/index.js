@@ -7,6 +7,7 @@ import Ui from './Ui';
 import Course from './Course';
 import Job from './Job';
 import User from './User';
+import Role from './Role';
 import Classroom from './Classroom';
 
 import {
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   Course,
   Job,
   User,
+  Role,
   Ui
 });
 

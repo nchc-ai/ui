@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  required, mailIsValid, atLeastSix, samePassword 
+  required, mailIsValid, atLeastSix, samePassword
 } from '../libraries/validation';
 
 // course container ----------------------------------------
@@ -436,15 +436,16 @@ export const profileForm = [
   }
 ];
 
-export const roleForm = [
+export const roleTeacherForm = [
   {
     key: 1,
     size: 4,
     name: 'role',
     target: 'role',
     inputType: 'async-select',
-    mainLabel: '角色選擇',
+    mainLabel: '選擇老師',
     validators: { required },
+    placeholder: '請選擇要切換的老師帳號',
     errorMessage: {
       required: '請選擇欲切換的目標使用者'
     },
@@ -452,6 +453,22 @@ export const roleForm = [
   }
 ];
 
+export const roleStudentForm = [
+  {
+    key: 1,
+    size: 4,
+    name: 'role',
+    target: 'role',
+    inputType: 'async-select',
+    mainLabel: '選擇學生',
+    validators: { required },
+    placeholder: '請選擇要切換的學生帳號',
+    errorMessage: {
+      required: '請選擇欲切換的目標使用者'
+    },
+    isRequired: true
+  }
+];
 
 export const passwordForm = [
   {

@@ -199,7 +199,7 @@ class RoomGroup extends Component {
 const mapStateToProps = ({ Auth, Course, forms }) => ({
   addClassroom: forms.addClassroom,
   token: Auth.token,
-  userInfo: Auth.userInfo,
+  userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data

@@ -232,6 +232,13 @@ export const sideNavAdmin = [
     text: '教室時間',
     isMain: true,
     isLink: true
+  }, {
+    key: 2,
+    url: '/user/role-select/teacher',
+    urlPrefix: '/user/role-select',
+    text: '視角切換',
+    isMain: true,
+    isLink: true
   }
 ];
 

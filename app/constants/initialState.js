@@ -60,7 +60,11 @@ export const initialProfileState = {
   text: ''
 };
 
-export const initialRoleState = {
+export const initialRoleTeacherState = {
+  role: { label: '', value: '' },
+};
+
+export const initialRoleStudentState = {
   role: { label: '', value: '' },
 };
 

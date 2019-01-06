@@ -23,8 +23,22 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
+  // 在陣列先進行分類 teacher or student
+  const options = _.map(response.payload.users, o => _.extend({ role }, o));
+
   return {
-    options: response.payload.users,
-    complete: response.payload.users
+    options,
+    complete: options
   };
 };
+
+export const startSubstituating = (role) => ({
+  type: types.START_SUBSTITUATING,
+  role
+});
+
+
+export const toggleSubstituating = (status) => ({
+  type: types.TOGGLE_SUBSTITUATING,
+  status
+});

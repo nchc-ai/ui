@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FaKey, FaChalkboardTeacher, FaUserGraduate }  from 'react-icons/fa';
+import { userInfo } from 'os';
 class RoleSelect extends Component {
   state = {
     dropdownOpen: false
@@ -19,22 +20,23 @@ class RoleSelect extends Component {
 
   closeSubstituating = () => {
     const {
-      authAction
+      roleAction
     } = this.props;
 
-    authAction.toggleSubstituating(false);
+    roleAction.toggleSubstituating(false);
   }
 
   render() {
     const {
-      isSubstituating
+      isSubstituating,
+      userInfo
     } = this.props;
     return (
       <div className="role-select-comp">
         {
           isSubstituating ?
           <Link to="/user/classroom-manage/list">
-            <button onClick={this.closeSubstituating}>取消切換</button>
+            <button onClick={this.closeSubstituating}>切換回 {userInfo.username}</button>
           </Link>
           :
           <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -64,8 +66,9 @@ class RoleSelect extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth }) => ({
-  isSubstituating: Auth.substituation.isSubstituating,
+const mapStateToProps = ({ Auth, Role }) => ({
+  userInfo: Auth.userInfo,
+  isSubstituating: Role.isSubstituating,
 });
 
 export default compose(

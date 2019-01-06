@@ -57,7 +57,7 @@ export function formatJob(datum) {
 
     dataset: _.get(datum, 'dataset'),
     gpu: _.get(datum, 'gpu'),
-    
+
     extraports: _.get(datum, 'extraports'),
     flavor: _.get(datum, 'flavor'),
     floatingip: _.get(datum, 'floatingip'),
@@ -300,10 +300,10 @@ export function deleteItemInArray(arr,item) {
 }
 
 export function isItemArrDuplicates(arr) {
-	
+
 	var valueArr = arr.map(function(item){ return item.item_id });
-	var isDuplicate = valueArr.some(function(item, idx){ 
-		return valueArr.indexOf(item) != idx 
+	var isDuplicate = valueArr.some(function(item, idx){
+		return valueArr.indexOf(item) != idx
 	});
 
 	return isDuplicate;

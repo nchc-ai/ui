@@ -24,7 +24,7 @@ class RoomPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.match.url !== this.props.match.url) {
+    if (nextProps.match.url !== this.props.match.url || nextProps.isSubstituating !== this.props.isSubstituating) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
       if(nextProps.match.params.type !== 'search') {
@@ -45,8 +45,8 @@ class RoomPage extends Component {
       match
     } = nextProps;
 
-    const type = _.get(match, 'params.type');
     roomAction.getClassroomList(userInfo.username, token);
+
   }
 
   startCourse = () => {
@@ -112,13 +112,13 @@ class RoomPage extends Component {
       match,
       loading,
       roomList,
+      isSubstituating,
       courseDetail,
       searchResult,
       addClassroom,
       list
     } = this.props;
     const courseType = _.get(match, 'params.type');
-    console.log('loading', loading);
     // console.log('match', match);
     return (
       <div className="classroom-bg">
@@ -130,9 +130,13 @@ class RoomPage extends Component {
               className="room-page-bg"
               pageTitle="教室管理"
             >
-              <Link to="/user/classroom-manage/create" className="fl add-btn-con">
-                <button className="add-btn btn-pair" color="success">新增教室</button>
-              </Link>
+              {
+                isSubstituating ?
+                null :
+                <Link to="/user/classroom-manage/create" className="fl add-btn-con">
+                  <button className="add-btn btn-pair" color="success">新增教室</button>
+                </Link>
+              }
 
               <TableList
                 data={roomList}
@@ -234,13 +238,14 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ forms, Auth, Course, Classroom }) => ({
+const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   forms,
   loading: Classroom.list.isLoading,
   roomList: Classroom.list.data,
   addClassroom: forms.addClassroom,
   token: Auth.token,
-  userInfo: Auth.userInfo,
+  userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
+  isSubstituating: Role.isSubstituating,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data

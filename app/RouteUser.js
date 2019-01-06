@@ -32,7 +32,6 @@ class RouteUser extends Component {
     const {
       match,
       role,
-      isSubstituating
     } = this.props;
 
     return (
@@ -74,8 +73,7 @@ class RouteUser extends Component {
 
 const mapStateToProps = ({ Auth }) => ({
   role: Auth.userInfo.role,
-  isLogin: Auth.isLogin,
-  isSubstituating: Auth.substituation.isSubstituating,
+  isLogin: Auth.isLogin
 });
 
 export default compose(

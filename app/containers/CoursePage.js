@@ -353,10 +353,10 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ forms, Auth, Course }) => ({
+const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
   forms,
   token: Auth.token,
-  userInfo: Auth.userInfo,
+  userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   isLoading: Course.courseCon.isLoading,
   courseList: Course.courseCon.data,
   courseDetail: Course.courseDetail.data,

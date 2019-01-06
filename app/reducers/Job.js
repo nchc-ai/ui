@@ -43,7 +43,7 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: false,
-        data: map(assign(mapKeys(state.ListCon,  k => k.courseId), mapKeys(state.ListVM, k => k.courseId)))
+        data: _.unionBy(state.ListCon, state.ListVM, 'id')
       }
     };
   case actionTypes.GET_VM_JOB_LIST[LOADING]:
@@ -68,7 +68,7 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: false,
-        data: map(assign(mapKeys(state.ListCon,  k => k.courseId), mapKeys(state.ListVM, k => k.courseId)))
+        data: _.unionBy(state.ListCon, state.ListVM, 'id')
       }
     };
   default:
