@@ -6,6 +6,10 @@ const InitialState = {
     isLoading: false,
     data: []
   },
+  detail: {
+    isLoading: false,
+    data: {}
+  },
 };
 
 
@@ -26,6 +30,22 @@ export default function Classroom(state = InitialState, action) {
       list: {
         isLoading: false,
         data: action.payload.classrooms
+      }
+    };
+  case actionTypes.GET_CLASSROOM_DETAIL[LOADING]:
+    return {
+      ...state,
+      detail: {
+        ...state.detail,
+        isLoading: true
+      }
+    };
+  case actionTypes.GET_CLASSROOM_DETAIL[SUCCESS]:
+    return {
+      ...state,
+      detail: {
+        isLoading: false,
+        data: action.payload.classroom
       }
     };
   default:

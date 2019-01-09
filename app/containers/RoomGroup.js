@@ -196,7 +196,7 @@ class RoomGroup extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, Course, forms }) => ({
+const mapStateToProps = ({ Auth, Role, Course, forms }) => ({
   addClassroom: forms.addClassroom,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,

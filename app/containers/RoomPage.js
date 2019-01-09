@@ -12,18 +12,20 @@ import { roomData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
+import DetailGroups from '../components/common/DetailGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import TableList from '../components/common/TableList';
+import { classroomFrame } from '../constants/detailFrame';
 import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
 
 class RoomPage extends Component {
 
-  componentWillMount() {
+  componentWillMount () {
     window.scrollTo(0, 0);
     this.fetchData(this.props);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps (nextProps) {
     if (nextProps.match.url !== this.props.match.url || nextProps.isSubstituating !== this.props.isSubstituating) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
@@ -44,9 +46,11 @@ class RoomPage extends Component {
       token,
       match
     } = nextProps;
-
-    roomAction.getClassroomList(userInfo.username, token);
-
+    if (match.params.action === 'detail') {
+      roomAction.getClassroomDetail(match.params.roomId, token);
+    } else if (match.params.action === 'list') {
+      roomAction.getClassroomList(userInfo.username, token);
+    }
   }
 
   startCourse = () => {
@@ -93,16 +97,39 @@ class RoomPage extends Component {
   cancelRoomEdit() {
     console.log('cancel');
   }
-  // TODO: 
-  loadCourseTagsCreateRoom = () => {
+  // 教室課程
+  loadCourseTagsCreateRoom = () => this.props.roomAction.loadCourseTagsForRoomCreate(this.props.token);
+  // 上課老師
+  loadTeacherTagsCreateRoom = () => this.props.roomAction.loadTeacherTagsForRoomCreate(this.props.token);
+  // 學生
+  loadStudentTagsCreateRoom = () => this.props.roomAction.loadStudentTagsForRoomCreate(this.props.token);
+
+  handleSubmitClassroomCreate = (formData) => {
+    const {
+      roomAction,
+      token,
+      userInfo
+    } = this.props;
+
+    roomAction.createClassroom(
+      token,
+      userInfo,
+      formData,
+      this.onCreateClassroomSuccess
+    );
+
+    Progress.show();
+  }
+
+  onCreateClassroomSuccess = () => {
+    console.log('success create');
+  }
+
+  cancelClassroomDetail = () => {
 
   }
 
-  loadTeacherTagsCreateRoom = () => {
-
-  }
-
-  loadStudentTagsCreateRoom = () => {
+  submitClassroomDetail = () => {
 
   }
 
@@ -112,11 +139,9 @@ class RoomPage extends Component {
       match,
       loading,
       roomList,
+      roomDetail,
       isSubstituating,
-      courseDetail,
-      searchResult,
-      addClassroom,
-      list
+      changeValue
     } = this.props;
     const courseType = _.get(match, 'params.type');
     // console.log('match', match);
@@ -158,13 +183,22 @@ class RoomPage extends Component {
               className="room-page-bg"
               pageTitle="教室細項"
             >
+              <div className="classroom-detail-bg">
 
-              <CourseDetail
-                detail={courseDetail}
-                submitMethod={this.startCourse}
-                cancelEdit={this.backFromCourseDetail}
-                isBanner={false}
-              />
+                <DetailGroups
+                  frameData={classroomFrame}
+                  detailData={{ roomDetail }}
+                />
+
+                <hr className="my-2" />
+
+                <FormButtons
+                  cancelName="上一頁"
+                  submitName="開始上課"
+                  backMethod={this.cancelClassroomDetail}
+                  nextMethod={this.submitClassroomDetail}
+                />
+              </div>
             </CommonPageContent>
           </Route>
 
@@ -176,29 +210,29 @@ class RoomPage extends Component {
             >
 
               <Form
-                model="forms.profile"
-                className="signup-form-comp"
-                onSubmit={formData => onSubmit(formData)}
+                model="forms.classroom"
+                className="room-create-form-comp"
+                onSubmit={formData => this.handleSubmitClassroomCreate(formData)}
               >
 
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
-                  changeVal={this.changeRoomValue}
+                  changeVal={changeValue}
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
                 />
 
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormTwo}
-                  changeVal={this.changeRoomValue}
+                  changeVal={changeValue}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
                 />
 
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormThree}
-                  changeVal={this.changeRoomValue}
+                  changeVal={changeValue}
                   loadTagsOptsMethod={this.loadStudentTagsCreateRoom}
                 />
 
@@ -242,6 +276,7 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   forms,
   loading: Classroom.list.isLoading,
   roomList: Classroom.list.data,
+  roomDetail: Classroom.detail.data,
   addClassroom: forms.addClassroom,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,

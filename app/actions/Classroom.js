@@ -6,6 +6,40 @@ import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
+// [Create] classrooms
+export const createClassroom = (token, userInfo, formData, next) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/course/create`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        user: userInfo.username,
+        courses: formData.courses,
+        description: formData.description,
+        name: formData.name,
+        public: true,
+        schedules: [
+          "* * * * * *"
+        ],
+        students: formData.students,
+        teachers: formData.teachers
+      }
+    ),
+      types: types.CREATE_CLASSROOM
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  }
+
+  next();
+};
+
 // [List] classrooms
 export const getClassroomList = (user, token) => async (dispatch) => {
 
@@ -29,13 +63,32 @@ export const getClassroomList = (user, token) => async (dispatch) => {
   }
 };
 
-
-// [Tags] courses
-export const loadCourseTagsRoomCreate = token => async (dispatch) => {
+// [Detail] classrooms
+export const getClassroomDetail = (id, token) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}//beta/course/namelist`,
+      endpoint: `${API_URL}/${API_VERSION}/classroom/get/${id}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_CLASSROOM_DETAIL
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  }
+};
+
+// [Tags] courses
+export const loadCourseTagsForRoomCreate = token => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/course/namelist`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -56,11 +109,11 @@ export const loadCourseTagsRoomCreate = token => async (dispatch) => {
 };
 
 // [Tags] teacher
-export const loadTeacherTagsRoomCreate = token => async (dispatch) => {
+export const loadTeacherTagsForRoomCreate = token => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/beta/proxy/role/teacher`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/role/teacher`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -81,11 +134,11 @@ export const loadTeacherTagsRoomCreate = token => async (dispatch) => {
 };
 
 // [Tags] student
-export const loadStudentTagsRoomCreate = token => async (dispatch) => {
+export const loadStudentTagsForRoomCreate = token => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/beta/proxy/role/student`,
+      endpoint: `${API_URL}/${API_VERSION}/proxy/role/student`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -10,9 +10,10 @@ export const classroomFormOne = [
     key: 1,
     size: 8,
     name: 'name',
+    target: 'classroom',
     inputType: 'text',
-    mainLabel: '教室描述',
-    placeholder: '請輸入課程名稱',
+    mainLabel: '教室名稱',
+    placeholder: '請輸入教室名稱',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入字元'
@@ -46,9 +47,10 @@ export const classroomFormOne = [
     key: 4,
     size: 8,
     name: 'courses',
+    target: 'classroom',
     inputType: 'tags-input',
     mainLabel: '教室課程',
-    placeholder: '',
+    placeholder: '請輸入教室課程',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入課程'
@@ -62,6 +64,7 @@ export const classroomFormTwo = [
     key: 5,
     size: 8,
     name: 'teachers',
+    target: 'classroom',
     inputType: 'tags-input',
     mainLabel: '老師',
     placeholder: '請輸入老師名稱',
@@ -78,6 +81,7 @@ export const classroomFormThree = [
     key: 6,
     size: 8,
     name: 'students',
+    target: 'classroom',
     inputType: 'tags-input',
     mainLabel: '學生',
     placeholder: '請輸入欲上課學生',
