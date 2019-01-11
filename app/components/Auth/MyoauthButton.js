@@ -32,7 +32,7 @@ class MyoauthButton extends Component {
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
-      `${AUTH_PROVIDER_URL}/web/login?response_type=code&${queryString}`,
+      `${AUTH_PROVIDER_URL}/web/authorize?response_type=code&${queryString}`,
       { height: 1000, width: 600 }
     );
 
@@ -48,6 +48,7 @@ class MyoauthButton extends Component {
   }
 
   onSuccess = (data) => {
+    console.log('data', data);
     if (!data.code) {
       return this.onFailure(new Error('\'code\' not found'));
     }

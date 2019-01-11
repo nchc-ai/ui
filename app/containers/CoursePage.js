@@ -79,7 +79,7 @@ class CoursePage extends Component {
       token,
       userInfo
     } = this.props;
-    Progress.show();
+    // Progress.show();
     jobAction.launchCourseJob({
       user: userInfo.username,
       courseId: data.id,
@@ -89,7 +89,7 @@ class CoursePage extends Component {
   }
 
   onLaunchCourseJobSuccess = () => {
-    Progress.hide();
+    // Progress.hide();
     this.props.history.push('/user/job/list');
     notify.show('課程啟動成功', 'success', 1800);
   }
@@ -108,7 +108,7 @@ class CoursePage extends Component {
   }
 
   onDeleteCourseSuccess = () => {
-    Progress.hide();
+    // Progress.hide();
     this.fetchData(this.props);
     notify.show('課程刪除成功', 'success', 1800);
   }
@@ -123,7 +123,7 @@ class CoursePage extends Component {
   }
 
   onSubmitCourseSuccessCommon = () => {
-    Progress.hide();
+    // Progress.hide();
     this.fetchData(this.props);
     this.props.history.push('/user/ongoing-course/list');
   }
@@ -144,7 +144,7 @@ class CoursePage extends Component {
       this.onSubmitCourseSuccessCommon
     );
 
-    Progress.show();
+    // Progress.show();
     // TODO: 須送出 loading 時 disable submit button
   }
 
@@ -166,7 +166,7 @@ class CoursePage extends Component {
       this.onSubmitCourseSuccessCommon
     );
 
-    Progress.show();
+    // Progress.show();
 
     // TODO: 須送出 loading 時 disable submit button
   }

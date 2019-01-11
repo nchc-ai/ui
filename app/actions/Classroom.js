@@ -10,14 +10,13 @@ import { API_URL, API_VERSION } from '../config/api';
 export const createClassroom = (token, userInfo, formData, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/course/create`,
+      endpoint: `${API_URL}/${API_VERSION}/classroom/create`,
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        user: userInfo.username,
         courses: formData.courses,
         description: formData.description,
         name: formData.name,
@@ -25,8 +24,13 @@ export const createClassroom = (token, userInfo, formData, next) => async (dispa
         schedules: [
           "* * * * * *"
         ],
-        students: formData.students,
-        teachers: formData.teachers
+        students: [
+          'abc@stu.com'
+        ],
+        teachers: [
+          'abc@tea.com',
+          'toby@super.com'
+        ]
       }
     ),
       types: types.CREATE_CLASSROOM
