@@ -24,11 +24,11 @@ class MyoauthButton extends Component {
   }
 
   onBtnClick = () => {
-    const RETURN_URI = `${WEBSITE_URL}${RETURN_ROUTE}`
+    const REDIRECT_URI = `${WEBSITE_URL}${RETURN_ROUTE}`
     const queryString = toQuery({
       client_id: 'test_client_1',
       scope: 'read_write',
-      redirect_uri: RETURN_URI,
+      redirect_uri: encodeURI(REDIRECT_URI),
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
