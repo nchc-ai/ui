@@ -32,7 +32,13 @@ class AuthPage extends Component {
   }
 
   onLoginSuccess = (codeObj) => {
-    this.props.authAction.retrieveToken(codeObj, this.setUserInfo);
+    const {
+      authAction,
+      history
+    } = this.props;
+    authAction.setLoginState(true);
+    history.push('/user/classroom-manage/list');
+    authAction.retrieveToken(codeObj, this.setUserInfo);
   }
 
   setUserInfo = (token) => {
