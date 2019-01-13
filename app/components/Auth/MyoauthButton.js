@@ -24,11 +24,11 @@ class MyoauthButton extends Component {
   }
 
   onBtnClick = () => {
+    const RETURN_URI = `${WEBSITE_URL}${RETURN_ROUTE}`
     const queryString = toQuery({
       client_id: 'test_client_1',
       scope: 'read_write',
-      login_redirect_uri: '/web/authorize',
-      redirect_uri: `${WEBSITE_URL}${RETURN_ROUTE}`,
+      redirect_uri: RETURN_URI,
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
@@ -48,7 +48,6 @@ class MyoauthButton extends Component {
   }
 
   onSuccess = (data) => {
-    console.log('data', data);
     if (!data.code) {
       return this.onFailure(new Error('\'code\' not found'));
     }
