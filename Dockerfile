@@ -10,4 +10,4 @@ RUN yarn install
 
 COPY . .
 
-CMD ["sh", "-c","yarn dev"]
+CMD ["sh", "-c","yarn docker"]
