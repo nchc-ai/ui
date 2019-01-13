@@ -25,20 +25,20 @@ class MyoauthButton extends Component {
 
   onBtnClick = () => {
     const REDIRECT_URI = `${WEBSITE_URL}${RETURN_ROUTE}`
-    const queryString = toQuery({
+    const search = toQuery({
       client_id: 'test_client_1',
       scope: 'read_write',
       redirect_uri: encodeURI(REDIRECT_URI),
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
-      `${AUTH_PROVIDER_URL}/web/authorize?response_type=code&${queryString}`,
+      `${AUTH_PROVIDER_URL}/web/authorize?response_type=code&${search}`,
       { height: 1000, width: 600 }
     );
 
     this.onRequest();
     popup.then(
-      data => this.onSuccess(data),
+      data => this.onAuthSuccess(data),
       error => this.onFailure(error)
     );
   }
@@ -47,7 +47,9 @@ class MyoauthButton extends Component {
     this.props.onRequest();
   }
 
-  onSuccess = (data) => {
+  onAuthSuccess = (data) => {
+    console.log('data.code', data.code);
+
     if (!data.code) {
       return this.onFailure(new Error('\'code\' not found'));
     }

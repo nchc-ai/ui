@@ -4,7 +4,8 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
-import { setToken } from '../libraries/utils';
+import Cookies from 'js-cookie';
+import { setToken, dayToSecond } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
@@ -37,26 +38,30 @@ class AuthPage extends Component {
       history
     } = this.props;
     authAction.setLoginState(true);
-    history.push('/user/classroom-manage/list');
+    Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
+    console.log('codeObj', codeObj);
     authAction.retrieveToken(codeObj, this.setUserInfo);
   }
 
   setUserInfo = (token) => {
-    const { history } = this.props;
+    const {
+      history,
+      authAction
+    } = this.props;
     setToken(token);
-    this.props.authAction.setUserToken(token);
+    authAction.setUserToken(token);
     console.log('authpage');
-    this.props.authAction.getUserInfo(token, history, this.redirect);
+    authAction.getUserInfo(token, history, this.redirect);
   }
 
   redirect = (error) => {
-    if(!error) {
-      this.props.history.push('/user/course');
-    }
+    console.log('redirect', error);
+    this.props.history.push('/user/classroom-manage/list');
   }
 
   onLoginFail = (err) => {
     console.log('fail', err);
+    notify.show('Error: code not found', 'error', 1800);
   }
 
 

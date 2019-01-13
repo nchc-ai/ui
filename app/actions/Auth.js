@@ -46,7 +46,9 @@ export const retrieveToken = (codeObj, next) => async (dispatch) => {
   if (_.isUndefined(response) || response.payload.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
-  next(response.payload.token);
+  if (next) {
+    next(response.payload.token);
+  }
 };
 
 // Proxy > Introspection

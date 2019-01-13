@@ -26,16 +26,6 @@ export function formatStatus(str) {
   }
 }
 
-/*---------------------------
-//	未登入  Redirect
-//  success, error
-----------------------------*/
-
-export function enterWithoutAuth() {
-
-  store.dispatch(push('/login'));
-}
-
 
 /*---------------------------
 // format JOB
