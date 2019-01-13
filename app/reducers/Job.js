@@ -5,15 +5,15 @@ import { formatJob } from '../libraries/utils';
 
 const InitialState = {
   ListCon: {
-    loading: false,
+    loading: true,
     data: []
   },
   ListVM: {
-    loading: false,
+    loading: true,
     data: []
   },
   List: {
-    loading: false,
+    loading: true,
     data: []
   }
 };
@@ -34,16 +34,19 @@ export default function Job(state = InitialState, action) {
       }
     };
   case actionTypes.GET_CON_JOB_LIST[SUCCESS]:
+    const recievedConData = _.map(action.payload.jobs, d => formatJob(d));
+    const loadingCon = false;
+
     return {
       ...state,
       ListCon: {
         loading: false,
-        data: _.map(action.payload.jobs, d => formatJob(d))
+        data: recievedConData
       },
       List: {
         ...state.List,
-        loading: false,
-        data: _.unionBy(state.ListCon, state.ListVM, 'id')
+        loading: state.ListVM.loading,
+        data: _.unionBy(state.ListVM, recievedConData, 'id')
       }
     };
   case actionTypes.GET_VM_JOB_LIST[LOADING]:
@@ -59,16 +62,19 @@ export default function Job(state = InitialState, action) {
       }
     };
   case actionTypes.GET_VM_JOB_LIST[SUCCESS]:
+    const recievedVMData = _.map(action.payload.jobs, d => formatJob(d));
+    const loadingVM = false;
+
     return {
       ...state,
       ListVM: {
         loading: false,
-        data: _.map(action.payload.jobs, d => formatJob(d))
+        data: recievedVMData
       },
       List: {
         ...state.List,
-        loading: false,
-        data: _.unionBy(state.ListCon, state.ListVM, 'id')
+        loading: state.ListCon.loading,
+        data: _.unionBy(state.ListCon, recievedVMData, 'id')
       }
     };
   default:

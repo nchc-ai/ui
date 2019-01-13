@@ -15,7 +15,7 @@ class JobPage extends Component {
       userInfo,
       jobAction
     } = this.props;
-
+    console.log('loading', this.props.Job.loading);
     jobAction.getConJobList({ user: userInfo.username, token })
     jobAction.getVMJobList({ user: userInfo.username, token })
 
@@ -42,20 +42,26 @@ class JobPage extends Component {
     // this.props.history.push('/user/job');
   }
 
-  deleteJob() {
-    console.log('delete');
-    // const {
-    //   token,
-    //   userAction
-    // } = this.props;
+  deleteJob(e, thumb) {
+    console.log('delete', e, thumb);
+    const {
+      token,
+      jobAction
+    } = this.props;
     // Progress.show();
-    // userAction.deleteJob(thumb.id, token, this.onDeleteJobSuccess);
+
+    // jobAction.deleteJob({
+    //   jobId: thumb.id,
+    //   token,
+    //   originType: 'container',
+    //   next: this.onDeleteJobSuccess
+    // });
   }
 
   onDeleteJobSuccess = () => {
     // this.fetchData();
     // Progress.hide();
-    // notify.show('工作刪除成功', 'success', 1800);
+    notify.show('工作刪除成功', 'success', 1800);
   }
 
   render() {
@@ -71,6 +77,7 @@ class JobPage extends Component {
         pageTitle="工作清單"
       >
         <DataFrame
+          isLoading={Job.loading}
           data={groupArray(data, 'name')}
           cols={8}
         >
@@ -81,7 +88,7 @@ class JobPage extends Component {
                   <Row className="title-row">
                     <Col>
                       <h4 className="fl">{obj.group}</h4>
-                      <button className="fl btn-add" onClick={e => this.addJob(e, obj.data[0].courseId)}>+ 新增</button>
+                      {/* <button className="fl btn-add" onClick={e => this.addJob(e, obj.data[0].courseId)}>+ 新增</button> */}
                     </Col>
                   </Row>
                   <div>

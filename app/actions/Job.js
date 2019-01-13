@@ -73,11 +73,13 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
 };
 
 // Delete
-export const deleteJob = (jobId, token, next) => async (dispatch) => {
+export const deleteJob = ({ jobId, token, originType, next }) => async (dispatch) => {
+
+  const apiUrl = originType === 'container' ? `${API_URL}/${API_VERSION}` : `${API_VM_URL}/${API_VM_VERSION}`;
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/job/delete/${jobId}`,
+      endpoint: `${apiUrl}/job/delete/${jobId}`,
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
@@ -86,8 +88,6 @@ export const deleteJob = (jobId, token, next) => async (dispatch) => {
       types: types.DELETE_JOB
     }
   });
-
-  // console.log('[deleteJob] response', response);
 
   if (_.isUndefined(response) || response.payload.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);

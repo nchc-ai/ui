@@ -16,18 +16,6 @@ import Global from './containers/Global';
 import RoleSelect from './components/common/RoleSelect';
 
 class RouteUser extends Component {
-
-  // componentWillMount () {
-  //   const {
-  //     isLogin,
-  //     history
-  //   } = this.props;
-  //   console.log('isLogin', history, isLogin);
-  //   if (!isLogin) {
-  //     history.push('/login');
-  //   }
-  // }
-
   render = () => {
     const {
       match,

@@ -5,7 +5,7 @@ const NoData = ({ emptyWord }) => (
   <div className="no-data-comp">
     <div className="no-data-container">
       <div className="icon-container">
-        <FaGhost /> 
+        <FaGhost />
       </div>
       <h5 className="no-data-word">{emptyWord}</h5>
     </div>
