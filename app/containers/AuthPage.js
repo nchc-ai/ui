@@ -39,7 +39,6 @@ class AuthPage extends Component {
     } = this.props;
     authAction.setLoginState(true);
     Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
-    console.log('codeObj', codeObj);
     authAction.retrieveToken(codeObj, this.setUserInfo);
   }
 
@@ -50,12 +49,10 @@ class AuthPage extends Component {
     } = this.props;
     setToken(token);
     authAction.setUserToken(token);
-    console.log('authpage');
     authAction.getUserInfo(token, history, this.redirect);
   }
 
   redirect = (error) => {
-    console.log('redirect', error);
     this.props.history.push('/user/classroom-manage/list');
   }
 
