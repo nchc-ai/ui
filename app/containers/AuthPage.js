@@ -52,8 +52,19 @@ class AuthPage extends Component {
     authAction.getUserInfo(token, history, this.redirect);
   }
 
-  redirect = (error) => {
-    this.props.history.push('/user/classroom-manage/list');
+  redirect = (payload) => {
+    const {
+      history,
+      authAction
+    } = this.props;
+
+    if (payload.role === 'superuser') {
+      history.push('/user/classroom-manage/list');
+    } else if (payload.role === 'teacher') {
+      history.push('/user/ongoing-course/list');
+    } else {
+      history.push('/user/classroom-group/list');
+    }
   }
 
   onLoginFail = (err) => {

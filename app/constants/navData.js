@@ -239,6 +239,13 @@ export const sideNavAdmin = [
     text: '視角切換',
     isMain: true,
     isLink: true
+  }, {
+    key: 3,
+    url: '/user/job/list',
+    urlPrefix: '/user/job',
+    text: '工作清單',
+    isMain: false,
+    isLink: true
   }
 ];
 
@@ -288,13 +295,6 @@ export const sideNavStudent = [
 
 export const sideNavCommon = [
   {
-    key: 0,
-    url: '/user/job/list',
-    urlPrefix: '/user/job',
-    text: '工作清單',
-    isMain: false,
-    isLink: true
-  }, {
     key: 1,
     url: '/user/profile/list',
     urlPrefix: '/user/profile',
