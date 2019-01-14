@@ -244,13 +244,6 @@ export const sideNavAdmin = [
 
 export const sideNavTeacher = [
   {
-    key: 0,
-    url: '/user/classroom-manage/list',
-    urlPrefix: '/user/classroom-manage',
-    text: '教室管理',
-    isMain: true,
-    isLink: true
-  }, {
     key: 1,
     url: '/user/ongoing-course/list',
     urlPrefix: '/user/ongoing-course',
@@ -269,13 +262,6 @@ export const sideNavTeacher = [
 
 export const sideNavStudent = [
   {
-    key: 0,
-    url: '/user/classroom-manage/list',
-    urlPrefix: '/user/classroom-manage',
-    text: '教室管理',
-    isMain: true,
-    isLink: true
-  }, {
     key: 1,
     url: '/user/classroom-group/list',
     urlPrefix: '/user/classroom-group',
