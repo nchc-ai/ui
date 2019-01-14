@@ -111,18 +111,28 @@ class RoomPage extends Component {
       userInfo
     } = this.props;
 
-    roomAction.createClassroom(
+    const modifiedData = {
+      ...formData,
+      courses: formData.courses.map(d => d.value),
+      students: formData.students.map(d => d.value),
+      teachers: formData.teachers.map(d => d.value)
+    }
+
+    console.log('modifiedData', modifiedData);
+
+    roomAction.createClassroom({
       token,
       userInfo,
-      formData,
-      this.onCreateClassroomSuccess
-    );
+      formData: modifiedData,
+      next: this.onCreateClassroomSuccess
+    });
 
     Progress.show();
   }
 
   onCreateClassroomSuccess = () => {
-    console.log('success create');
+    this.props.history.push('/user/classroom-manage/list');
+    notify.show('新建教室成功', 'success', 1800);
   }
 
   cancelClassroomDetail = () => {

@@ -215,8 +215,8 @@ const FormGroups = ({
               d.inputType === 'cron-input'
               ?
                 <CronBuilder
-                  cronExpression="*/4 2,12,22 * * 1-5"
-                  onChange={(e) => {console.log('change', e)}}
+                  cronExpression="* * * * * *"
+                  onChange={val => changeVal(val, d.name, d.target)}
                   showResult
                 />
               :

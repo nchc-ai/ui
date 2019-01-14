@@ -35,6 +35,7 @@ export const classroomFormOne = [
     key: 3,
     size: 8,
     name: 'schedules',
+    target: 'classroom',
     inputType: 'cron-input',
     mainLabel: '時間選擇',
     placeholder: '可建立多個 cron 格式',

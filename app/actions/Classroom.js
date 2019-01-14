@@ -7,7 +7,7 @@ import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
 // [Create] classrooms
-export const createClassroom = (token, userInfo, formData, next) => async (dispatch) => {
+export const createClassroom = ({ token, userInfo, formData, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/classroom/create`,
@@ -22,15 +22,10 @@ export const createClassroom = (token, userInfo, formData, next) => async (dispa
         name: formData.name,
         public: true,
         schedules: [
-          "* * * * * *"
+          formData.schedules
         ],
-        students: [
-          'abc@stu.com'
-        ],
-        teachers: [
-          'abc@tea.com',
-          'toby@super.com'
-        ]
+        students: formData.students,
+        teachers: formData.teachers,
       }
     ),
       types: types.CREATE_CLASSROOM

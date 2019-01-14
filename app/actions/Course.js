@@ -170,7 +170,7 @@ export const getCourseListVM = (user, token) => async (dispatch) => {
   }
 };
 
-// [select] load images 
+// [select] load images
 export const getImagesOptsVM = token => async (dispatch) => {
 
   // console.log('token', token);
