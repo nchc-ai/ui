@@ -8,8 +8,10 @@ import Progress from 'react-progress-2';
 import { Form, actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import TableList from '../components/common/TableList';
+import DataFrame from '../components/common/DataFrame/index';
 import CommonPageContent from '../components/CommonPageContent'
 import ClassroomGroup from '../components/ClassroomGroup';
+import Classroom from '../reducers/Classroom';
 
 class RoomGroup extends Component {
 
@@ -36,22 +38,11 @@ class RoomGroup extends Component {
   fetchData = (nextProps) => {
     const {
       roomAction,
-      token,
-      match
+      userInfo,
+      token
     } = nextProps;
 
-    const type = _.get(match, 'params.type');
-
-    roomAction.getClassroomList();
-
-    // console.log('type', match, type);
-    // if (type === 'basic' || type === 'advance') {
-    //   courseAction.getCourseListByLevel(type);
-    // } else if (type === 'detail') {
-    //   courseAction.getCourseDetail(match.params.courseId, token);
-    // } else if (type === 'search') {
-    //   courseAction.searchCourse(match.params.courseId);
-    // }
+    roomAction.getClassroomGroups(userInfo.username, token);
   }
 
   startCourse = () => {
@@ -118,10 +109,12 @@ class RoomGroup extends Component {
       courseList,
       courseDetail,
       searchResult,
-      addClassroom
+      addClassroom,
+      groups
     } = this.props;
     const courseType = _.get(match, 'params.type');
 
+    console.log('groups', groups.data);
     // console.log('match', match);
 
     const classRooms = [
@@ -185,24 +178,34 @@ class RoomGroup extends Component {
         className="role-page-bg"
         pageTitle="教室列表"
       >
-        <ClassroomGroup
-          classrooms={classRooms}
-          startCourse={this.startCourse}
-          seditCourse={this.editCourse}
-          deleteCourse={this.deleteCourse}
-        />
+        <DataFrame
+          isLoading={groups.isLoading}
+          data={groups.data}
+          cols={8}
+        >
+          <ClassroomGroup
+            classrooms={groups.data}
+            startCourse={this.startCourse}
+            seditCourse={this.editCourse}
+            deleteCourse={this.deleteCourse}
+          />
+        </DataFrame>
       </CommonPageContent>
     );
   }
 }
 
-const mapStateToProps = ({ Auth, Role, Course, forms }) => ({
+const mapStateToProps = ({ Auth, Role, Course, forms, Classroom }) => ({
   addClassroom: forms.addClassroom,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  groups: {
+    isLoading: Classroom.groups.isLoading,
+    data: Classroom.groups.data
+  }
 });
 
 const mapDispatchToProps = dispatch => ({

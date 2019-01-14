@@ -67,6 +67,27 @@ export const getClassroomList = (user, token) => async (dispatch) => {
   }
 };
 
+// [Classroom Group]
+export const getClassroomGroups = (user, token) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/classroom/list`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_CLASSROOM_GROUPS
+    }
+  });
+
+  if (_.isUndefined(response) || response.payload.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  }
+};
+
+
 // [Detail] classrooms
 export const getClassroomDetail = (id, token) => async (dispatch) => {
 
