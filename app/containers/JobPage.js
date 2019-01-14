@@ -3,6 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Row, Col } from 'reactstrap';
+import { notify } from 'react-notify-toast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import DataFrame from '../components/common/DataFrame/index';
 import { groupArray, formatStatus } from '../libraries/utils';
@@ -10,14 +11,20 @@ import CommonPageContent from '../components/CommonPageContent';
 
 class JobPage extends Component {
   componentWillMount() {
+    this.fetchData(this.props);
+  }
+
+  fetchData = (nextProps) => {
+
     const {
       token,
       userInfo,
       jobAction
-    } = this.props;
-    console.log('loading', this.props.Job.loading);
+    } = nextProps;
+
     jobAction.getConJobList({ user: userInfo.username, token })
     jobAction.getVMJobList({ user: userInfo.username, token })
+    // TODO: 要 merge 成一起的 list
 
   }
 
@@ -43,25 +50,25 @@ class JobPage extends Component {
   }
 
   deleteJob(e, thumb) {
-    console.log('delete', e, thumb);
+
     const {
       token,
       jobAction
     } = this.props;
     // Progress.show();
 
-    // jobAction.deleteJob({
-    //   jobId: thumb.id,
-    //   token,
-    //   originType: 'container',
-    //   next: this.onDeleteJobSuccess
-    // });
+    jobAction.deleteJob({
+      jobId: thumb.id,
+      token,
+      next: this.onDeleteJobSuccess
+    });
   }
 
   onDeleteJobSuccess = () => {
     // this.fetchData();
     // Progress.hide();
     notify.show('工作刪除成功', 'success', 1800);
+    this.fetchData(this.props);
   }
 
   render() {

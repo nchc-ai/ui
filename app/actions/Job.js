@@ -73,13 +73,10 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
 };
 
 // Delete
-export const deleteJob = ({ jobId, token, originType, next }) => async (dispatch) => {
-
-  const apiUrl = originType === 'container' ? `${API_URL}/${API_VERSION}` : `${API_VM_URL}/${API_VM_VERSION}`;
-
+export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${apiUrl}/job/delete/${jobId}`,
+      endpoint: `${API_URL}/${API_VERSION}/job/delete/${jobId}`,
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
