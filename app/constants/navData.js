@@ -257,6 +257,13 @@ export const sideNavTeacher = [
     text: '教室列表',
     isMain: false,
     isLink: true
+  }, {
+    key: 3,
+    url: '/user/job/list',
+    urlPrefix: '/user/job',
+    text: '工作清單',
+    isMain: false,
+    isLink: true
   }
 ];
 
@@ -266,6 +273,13 @@ export const sideNavStudent = [
     url: '/user/classroom-group/list',
     urlPrefix: '/user/classroom-group',
     text: '教室列表',
+    isMain: false,
+    isLink: true
+  }, {
+    key: 2,
+    url: '/user/job/list',
+    urlPrefix: '/user/job',
+    text: '工作清單',
     isMain: false,
     isLink: true
   }
