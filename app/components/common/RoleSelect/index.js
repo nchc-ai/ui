@@ -36,7 +36,7 @@ class RoleSelect extends Component {
         {
           isSubstituating ?
           <Link to="/user/classroom-manage/list">
-            <button onClick={this.closeSubstituating}>切換回 {userInfo.username}</button>
+            <button className="btn-common" onClick={this.closeSubstituating}>切換回 {userInfo.username}</button>
           </Link>
           :
           <Dropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>

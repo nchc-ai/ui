@@ -13,7 +13,7 @@ export function bindFunctions(functions) {
 
 /**
  * Redirect route with different role.
- * @param {Object} payload - The employee who is responsible for the project.
+ * @param {Object} payload - The payload from changing role method.
  * @param {Array} payload.history - The history from react route.
  * @param {String} payload.role - The role which determine destination.
  */
@@ -21,7 +21,7 @@ export function redirectByRole (payload) {
 
   const conditionObj = {
     superuser: '/classroom-manage/list',
-    teacher: '/classroom-manage/list',
+    teacher: '/ongoing-course/list',
     student: '/classroom-group/list',
     default: '/classroom-group/list'
   }
@@ -35,15 +35,16 @@ export function redirectByRole (payload) {
  * @param {String} str
  */
 
-export function formatStatus(str) {
-  switch (str) {
-  case 'Pending':
-    return '已發出開啟訊號';
-  case 'Ready':
-    return '已開啟';
-  default:
-    return '已關閉';
+
+export function formatStatus (str) {
+
+  const conditionObj = {
+    Pending: '已發出開啟訊號',
+    Ready: '已開啟',
+    default: '已關閉'
   }
+
+  return conditionObj[str || 'default'];
 }
 
 

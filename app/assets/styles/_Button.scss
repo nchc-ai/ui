@@ -6,6 +6,17 @@ $button-border-radius: 5px;
 // General
 // btn-pair next-btn
 
+.btn-common{
+  padding: 8px 15px;
+  font-size:16px;
+  color:#fff;
+  outline: none;
+  font-weight: 300;
+  background-color: #6C757D;
+  border-radius: $button-border-radius;
+  letter-spacing: 2px;
+}
+
 .btn-pair{
   @include rect(100%,40px);
   font-size:16px;
@@ -16,7 +27,7 @@ $button-border-radius: 5px;
 
 .back-btn{
   @include opacity-button;
-  // background-color: $button-cancel-color;
+  background-color: $button-cancel-color;
   opacity: 0.7;
   border: 1px solid grey;
   color: grey;
