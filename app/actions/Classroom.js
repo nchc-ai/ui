@@ -22,7 +22,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
         name: formData.name,
         public: true,
         schedules: [
-          formData.schedules
+          `*${formData.schedules}`
         ],
         students: formData.students,
         teachers: formData.teachers,
