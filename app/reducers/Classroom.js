@@ -10,7 +10,7 @@ const InitialState = {
     isLoading: false,
     data: {}
   },
-  groups: {
+  publicList: {
     isLoading: false,
     data: []
   }
@@ -52,18 +52,18 @@ export default function Classroom(state = InitialState, action) {
         data: action.payload.classroom
       }
     };
-  case actionTypes.GET_CLASSROOM_GROUPS[LOADING]:
+  case actionTypes.GET_PUBLIC_CLASSROOMS[LOADING]:
     return {
       ...state,
-      groups: {
-        ...state.groups,
+      publicList: {
+        ...state.publicList,
         isLoading: true
       }
     };
-  case actionTypes.GET_CLASSROOM_GROUPS[SUCCESS]:
+  case actionTypes.GET_PUBLIC_CLASSROOMS[SUCCESS]:
     return {
       ...state,
-      groups: {
+      publicList: {
         isLoading: false,
         data: action.payload.classrooms
       }

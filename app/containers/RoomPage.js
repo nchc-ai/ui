@@ -49,7 +49,7 @@ class RoomPage extends Component {
     if (match.params.action === 'detail') {
       roomAction.getClassroomDetail(match.params.roomId, token);
     } else if (match.params.action === 'list') {
-      roomAction.getClassroomList(userInfo.username, token);
+      roomAction.getPublicClassrooms({ token });
     }
   }
 
@@ -153,8 +153,9 @@ class RoomPage extends Component {
       isSubstituating,
       changeValue
     } = this.props;
+
     const courseType = _.get(match, 'params.type');
-    // console.log('match', match);
+
     return (
       <div className="classroom-bg">
         <Switch>
@@ -284,8 +285,8 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   forms,
-  loading: Classroom.list.isLoading,
-  roomList: Classroom.list.data,
+  loading: Classroom.publicList.isLoading,
+  roomList: Classroom.publicList.data,
   roomDetail: Classroom.detail.data,
   addClassroom: forms.addClassroom,
   token: Auth.token,

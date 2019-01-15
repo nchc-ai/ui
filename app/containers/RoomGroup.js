@@ -7,11 +7,9 @@ import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
 import { Form, actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import TableList from '../components/common/TableList';
 import DataFrame from '../components/common/DataFrame/index';
 import CommonPageContent from '../components/CommonPageContent'
 import ClassroomGroup from '../components/ClassroomGroup';
-import Classroom from '../reducers/Classroom';
 
 class RoomGroup extends Component {
 
@@ -38,11 +36,10 @@ class RoomGroup extends Component {
   fetchData = (nextProps) => {
     const {
       roomAction,
-      userInfo,
       token
     } = nextProps;
 
-    roomAction.getClassroomGroups(userInfo.username, token);
+    roomAction.getPublicClassrooms(token);
   }
 
   startCourse = () => {
@@ -110,68 +107,9 @@ class RoomGroup extends Component {
       courseDetail,
       searchResult,
       addClassroom,
-      groups
+      roomList
     } = this.props;
     const courseType = _.get(match, 'params.type');
-
-    console.log('groups', groups.data);
-    // console.log('match', match);
-
-    const classRooms = [
-      {
-        "key": 1,
-        "courseInfo": [
-          {
-            "createAt": "2018-06-25T09:24:38Z",
-            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
-            "level": "basic",
-            "name": "jimmy的課"
-          }, {
-            "createAt": "2018-06-25T09:24:38Z",
-            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
-            "level": "basic",
-            "name": "jimmy的課2"
-          }
-        ],
-        "id": "default",
-        "name": "Public Course",
-        "public": true,
-        "schedules": [
-          "* * * * * *"
-        ],
-        "studentCount": 18,
-        "teachers": [
-          "teacher1@gmail.com",
-          "teacher2@nchc.org.tw"
-        ]
-      }, {
-        "key": 2,
-        "courseInfo": [
-          {
-            "createAt": "2018-06-25T09:24:38Z",
-            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
-            "level": "basic",
-            "name": "jimmy的課"
-          }, {
-            "createAt": "2018-06-25T09:24:38Z",
-            "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
-            "level": "basic",
-            "name": "jimmy的課2"
-          }
-        ],
-        "id": "default",
-        "name": "Public Course",
-        "public": true,
-        "schedules": [
-          "* * * * * *"
-        ],
-        "studentCount": 18,
-        "teachers": [
-          "teacher1@gmail.com",
-          "teacher2@nchc.org.tw"
-        ]
-      }
-    ];
 
     return (
       <CommonPageContent
@@ -179,12 +117,12 @@ class RoomGroup extends Component {
         pageTitle="教室列表"
       >
         <DataFrame
-          isLoading={groups.isLoading}
-          data={groups.data}
+          isLoading={roomList.isLoading}
+          data={roomList.data}
           cols={8}
         >
           <ClassroomGroup
-            classrooms={groups.data}
+            classrooms={roomList.data}
             startCourse={this.startCourse}
             seditCourse={this.editCourse}
             deleteCourse={this.deleteCourse}
@@ -202,9 +140,9 @@ const mapStateToProps = ({ Auth, Role, Course, forms, Classroom }) => ({
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data,
-  groups: {
-    isLoading: Classroom.groups.isLoading,
-    data: Classroom.groups.data
+  roomList: {
+    isLoading: Classroom.list.isLoading,
+    data: Classroom.list.data
   }
 });
 

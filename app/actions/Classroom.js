@@ -62,8 +62,12 @@ export const getClassroomList = (user, token) => async (dispatch) => {
   }
 };
 
-// [Classroom Group]
-export const getClassroomGroups = (user, token) => async (dispatch) => {
+/**
+ * Get public classroom for classroom management.
+ * @param {String} token - The required token for calling API.
+ */
+
+export const getPublicClassrooms = ({ token }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -73,7 +77,7 @@ export const getClassroomGroups = (user, token) => async (dispatch) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      types: types.GET_CLASSROOM_GROUPS
+      types: types.GET_PUBLIC_CLASSROOMS
     }
   });
 
