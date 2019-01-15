@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import Cookies from 'js-cookie';
-import { setToken, dayToSecond } from '../libraries/utils';
+import { setToken, dayToSecond, redirectByRole } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
@@ -58,13 +58,7 @@ class AuthPage extends Component {
       authAction
     } = this.props;
 
-    if (payload.role === 'superuser') {
-      history.push('/user/classroom-manage/list');
-    } else if (payload.role === 'teacher') {
-      history.push('/user/ongoing-course/list');
-    } else {
-      history.push('/user/classroom-group/list');
-    }
+    redirectByRole({ history, role: payload.role });
   }
 
   onLoginFail = (err) => {

@@ -11,9 +11,29 @@ export function bindFunctions(functions) {
 	});
 }
 
-/*---------------------------
-//  Status變換
-----------------------------*/
+/**
+ * Redirect route with different role.
+ * @param {Object} payload - The employee who is responsible for the project.
+ * @param {Array} payload.history - The history from react route.
+ * @param {String} payload.role - The role which determine destination.
+ */
+export function redirectByRole (payload) {
+
+  const conditionObj = {
+    superuser: '/classroom-manage/list',
+    teacher: '/classroom-manage/list',
+    student: '/classroom-group/list',
+    default: '/classroom-group/list'
+  }
+
+  payload.history.push(`/user${conditionObj[payload.role || 'default']}`)
+}
+
+
+/**
+ * Format status to wording in layout
+ * @param {String} str
+ */
 
 export function formatStatus(str) {
   switch (str) {
@@ -25,6 +45,7 @@ export function formatStatus(str) {
     return '已關閉';
   }
 }
+
 
 
 /*---------------------------
