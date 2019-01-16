@@ -8,12 +8,12 @@
     th {
       font-weight: 300;
     }
-    
+
   }
 
   tbody {
     tr{
-    
+
       border-left: 1px solid #eaeaea;
       border-right: 1px solid #eaeaea;
       cursor: default;
@@ -23,6 +23,7 @@
       }
 
       td {
+        vertical-align: middle;
 
         .action-open-btn {
           cursor: pointer;
@@ -65,7 +66,7 @@
                 transform: translateY(-1px);
               }
             }
-            
+
             &:focus {
               outline: none;
             }

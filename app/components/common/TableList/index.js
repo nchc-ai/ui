@@ -54,7 +54,14 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                       :
                         null
                     }
-
+                    {
+                      datum.type === 'array' ?
+                        <div>
+                          {_.get(d, datum.value, []).map(arrItem => <p>{arrItem}</p>)}
+                        </div>
+                      :
+                        null
+                    }
                     {
                       datum.type === 'date' ?
                         <div>

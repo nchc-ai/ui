@@ -32,6 +32,7 @@ export const roomData = {
       value: 'public'
     }, {
       key: 4,
+      type: 'array',
       value: 'teachers'
     }, {
       key: 5,
@@ -42,6 +43,7 @@ export const roomData = {
 };
 
 
+// 開課列表
 export const ongoingCourseData = {
   headers: [
     {
