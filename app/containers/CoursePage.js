@@ -8,7 +8,7 @@ import Progress from 'react-progress-2';
 import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
 import { ongoingCourseData } from '../constants/tableData';
-import { courseConForm, courseVMFormOne, courseVMFormTwo, courseVMFormThree } from '../constants/formsData';
+import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree } from '../constants/formsData';
 import { courseDetailList } from '../constants/listData'
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CustomJumbotron from '../components/common/CustomJumbotron/index';
@@ -17,7 +17,6 @@ import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
-import FormCourseEdit from '../components/FormCourseEdit';
 import CommonPageContent from '../components/CommonPageContent';
 
 const initialMdValue = Value.fromJSON({
@@ -137,7 +136,7 @@ class CoursePage extends Component {
       userInfo
     } = this.props;
 
-    courseAction.submitCourseContainer(
+    courseAction.createContainerCourse(
       token,
       userInfo,
       formData,
@@ -258,17 +257,42 @@ class CoursePage extends Component {
               className="profile-page-bg"
               pageTitle="新建容器課程"
             >
-              <FormCourseEdit
-                formName="courseCon"
-                targetForm={forms.courseCon}
-                formData={courseConForm}
-                changeVal={changeValue}
-                handleSubmit={this.handleSubmitCreateCon}
-                handleSubmitFailed={this.handleSubmitFailedCommon}
-                loadOptsMethod={this.loadOptsMethodCreateCon}
-                loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
-                backMethod={this.backMethodCommon}
-              />
+              <div className="user-course-edit-bg">
+
+                <Form
+                  model={`forms.courseCon`}
+                  className={`course-edit-comp`}
+                  onSubmit={submitData => this.handleSubmitCreateCon(submitData)}
+                  onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
+                >
+                  {/* name | introduction | level | image | GPU | datasets */}
+                  <FormGroups
+                    formData={courseConForm}
+                    targetForm={forms.courseCon}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadOptsMethodCreateCon}
+                    loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
+                  />
+
+                  {/* accessType | port | writablePath */}
+                  <FormGroups
+                    formData={courseConFormTwo}
+                    targetForm={forms.courseCon}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadOptsMethodCreateCon}
+                    loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
+                  />
+
+                  {/* 下方按鈕 */}
+                  <FormButtons
+                    cancelName="上一頁"
+                    submitName="儲存"
+                    backMethod={this.backMethodCommon}
+                    isForm
+                  />
+
+                </Form>
+              </div>
             </CommonPageContent>
           </Route>
 

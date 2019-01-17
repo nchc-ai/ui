@@ -6,6 +6,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
+import { KeyValue } from 'react-key-value';
 import MarkdownShortcuts from '../MarkdownShortcuts/index';
 import CronBuilder from  '../../../vendor/CronBuilder';
 // import * as options from '../../constants/options';
@@ -13,6 +14,36 @@ import CronBuilder from  '../../../vendor/CronBuilder';
 // 不要包Form進來比較有彈性，拿來組合用
 // 請不要重複同個type兩次以上，如遇此狀況請分兩個FormGroups用
 // 另外也不要寫changeVal函式，保持pure
+
+/**
+ * @param {Array} formData Template array for multi type.
+ * @param {Array} targetForm Template array for multi type.
+ * @param {Array} state For slate input.
+ * @param {Array} asyncSelectKey
+ * @param {Array} changeVal
+ * @param {Array} loadOptsMethod
+ * @param {Array} loadTagsOptsMethod
+ * @param {Array} onDateChange
+ * @param {Array} onMdChange
+ *
+ * 1. text 一般文字
+ * 2. 密碼
+ * 3. 單選radio
+ * 4. 日期格式
+ * 5. 大型寫字框
+ * 6. 下拉式選單
+ * 7. Async下拉式選單
+ * 8. Async 多選
+ * 9. cron 輸入
+ * 10. sub 下拉式input
+ * 11. Markdown
+ * 12. Quill格式
+ * 13. keyValue
+ * - Hint
+ */
+
+
+
 const FormGroups = ({
   formData,
   targetForm,
@@ -40,7 +71,7 @@ const FormGroups = ({
               {d.viceLabel}
             </label>
 
-            {/* [input] 一般文字 */}
+            {/* 一般文字 */}
             {
               d.inputType === 'text'
               ?
@@ -63,7 +94,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] 密碼 */}
+            {/* 密碼 */}
             {
               d.inputType === 'password'
               ?
@@ -87,7 +118,7 @@ const FormGroups = ({
             }
 
 
-            {/* [input] 單選radio */}
+            {/* 單選radio */}
             {
               d.inputType === 'radio'
               ?
@@ -117,7 +148,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] 日期格式 */}
+            {/* 日期格式 */}
             {
               d.inputType === 'date'
               ?
@@ -133,7 +164,7 @@ const FormGroups = ({
             }
 
 
-            {/* [input] 大型寫字框 */}
+            {/* 大型寫字框 */}
             {
               d.inputType === 'textarea'
               ?
@@ -150,7 +181,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] 下拉式選單 */}
+            {/* 下拉式選單 */}
             {
               d.inputType === 'select'
               ?
@@ -171,7 +202,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] Async下拉式選單 */}
+            {/* Async下拉式選單 */}
             {
               d.inputType === 'async-select'
               ?
@@ -192,7 +223,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] Async 多選 */}
+            {/* Async 多選 */}
             {
               d.inputType === 'tags-input'
               ?
@@ -210,7 +241,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] cron 輸入 */}
+            {/* cron 輸入 */}
             {
               d.inputType === 'cron-input'
               ?
@@ -243,7 +274,7 @@ const FormGroups = ({
               null
             }
 
-            {/* [input] Markdown */}
+            {/* Markdown */}
             {
               d.inputType === 'markdown'
               ?
@@ -257,7 +288,7 @@ const FormGroups = ({
                 null
             }
 
-            {/* [input] Quill格式 */}
+            {/* Quill格式 */}
             {
               d.inputType === 'html'
               ?
@@ -267,6 +298,24 @@ const FormGroups = ({
                     onChange={content => changeVal(content, d.name)}
                   />
                 </div>
+              :
+                null
+            }
+
+            {/* KeyValue */}
+            {
+              d.inputType === 'keyValue'
+              ?
+              <KeyValue
+                customAddButtonRenderer={ (handleAddNew) => (
+                  <div>
+                    <div onClick={ handleAddNew } >
+                      <span>+</span> 新增資料
+                    </div>
+                  </div>
+                ) }
+                onChange={content => changeVal(content, d.name)}
+              />
               :
                 null
             }

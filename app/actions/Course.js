@@ -89,7 +89,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
 
 
 // submit
-export const submitCourseContainer = (token, userInfo, formData, next) => async (dispatch) => {
+export const createContainerCourse = (token, userInfo, formData, next) => async (dispatch) => {
   // console.log('[createCourse] formData', formData, _.escape(formData.intro));
   const response = await dispatch({
     [RSAA]: {
@@ -102,15 +102,16 @@ export const submitCourseContainer = (token, userInfo, formData, next) => async 
       body: JSON.stringify({
         user: userInfo.username,
         name: formData.name,
+        accessType: formData.accessType || 'NodePort',
         introduction: _.escape(formData.introduction),
         image: formData.image.value,
         level: formData.level.value,
         GPU: parseInt(formData.gpu.value, 10),
-        datasets: formData.datasets.map(d => d.value),
-        writablePath: "/tmp/work"
+        datasets: formData.datasets.map(d => d.value) || [],
+        writablePath: formData.writablePath || ''
       }
     ),
-      types: types.SUBMIT_COURSE_CONTAINER
+      types: types.CREATE_CONTAINER_COURSE
     }
   });
 

@@ -194,6 +194,70 @@ export const courseConForm = [
   }
 ];
 
+
+export const courseConFormTwo = [
+  {
+    key: 1,
+    size: 8,
+    name: 'accessType',
+    target: 'courseCon',
+    inputType: 'radio',
+    mainLabel: '存取方式',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        value: 'Ingress',
+        label: 'Ingress'
+      }, {
+        key: 2,
+        value: 'NodePort',
+        label: 'NodePort'
+      }
+    ],
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入存取方式'
+    }
+  }, {
+    key: 2,
+    size: 8,
+    name: 'ports',
+    target: 'courseCon',
+    inputType: 'keyValue',
+    mainLabel: '存取端口',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        value: 'basic',
+        label: '基礎'
+      }, {
+        key: 2,
+        value: 'advance',
+        label: '進階'
+      }
+    ],
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入課程程度'
+    },
+    isRequired: true
+  }, {
+    key: 3,
+    size: 8,
+    name: 'writablePath',
+    inputType: 'text',
+    mainLabel: '工作目錄',
+    placeholder: '請輸入工作目錄',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入字元'
+    },
+    isRequired: true
+  }
+];
+
 // courseVM ----------------------------------------
 
 export const courseVMFormOne = [
