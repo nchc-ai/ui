@@ -18,7 +18,27 @@
           }
         }
 
+        .job-card__mask {
+          position: absolute;
+          width: 300px;
+          height: 200px;
+          background-color: #6ec7cf;
+          z-index: 10;
+          transition: all .2s ease-in-out;
+          opacity: 0.9;
 
+          button {
+            display: flex;
+            border-radius: 99em;
+            width: 65px;
+            height: 65px;
+            font-size: 27px;
+            align-content: center;
+            justify-content: center;
+            color: #6ec7cf;
+            opacity: 1;
+          }
+        }
 
         .job-card {
           @include rect(300px, 200px);
@@ -38,7 +58,6 @@
             right: 5px;
             cursor: pointer;
           }
-          
 
           .job-card-status {
             margin-top: 32px;
@@ -82,8 +101,9 @@
             font-stretch: normal;
             line-height: normal;
             letter-spacing: 1px;
+            cursor: default;
           }
-          
+
           .job-card-link-li {
             max-width: 220px;
             position: relative;
