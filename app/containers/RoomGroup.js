@@ -38,8 +38,12 @@ class RoomGroup extends Component {
       roomAction,
       token
     } = nextProps;
-
-    roomAction.getPublicClassrooms(token);
+    if (token) {
+      roomAction.getPublicClassrooms(token);
+    } else {
+      notify.show('您 token 有誤，請重新登入', 'error', 1800);
+      nextProps.history.push('/login');
+    }
   }
 
   startCourse = () => {

@@ -1,7 +1,5 @@
 
 import React, { Component } from 'react';
-import createReactClass from 'create-react-class';
-import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 // import { translate } from 'react-i18next';
