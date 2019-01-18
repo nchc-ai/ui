@@ -18,13 +18,14 @@ class SetUserInfo extends Component {
     // ga('create', 'UA-112418828-2', 'auto');
     // ga('send', 'pageview');
 
-
     // 2. DB health check
     // authAction.healthCheck();
     authAction.checkDatabase();
 
-    // 3. 同步 local session
-    this.syncUserInfo();
+    // 3. 至 cookie 抓取 auth
+    const userInfo = Cookies.getJSON('user_info');
+    const isLogin = Cookies.get('is_login');
+    this.props.authAction.setUserInfo({ userInfo, isLogin });
 
     // 3. 檢查 userInfo
     this.retrieveUser();
@@ -43,13 +44,6 @@ class SetUserInfo extends Component {
     }
   }
 
-
-  syncUserInfo () {
-    // 匯出 userInfo
-    const userObj = Cookies.getJSON('user_info');
-    this.props.authAction.setUserInfo(userObj, Cookies.get('is_login'));
-  }
-
   retrieveUser = () => {
     const {
       history,
@@ -63,7 +57,6 @@ class SetUserInfo extends Component {
     } else {
       // 設定 isLogin > 設定 userToken > 抓取 userInfo
       // 先同步 cookie
-
       authAction.setUserToken(token);
       authAction.getUserInfo(token, history, this.onGetUserInfoSuccess);
     }
@@ -93,5 +86,5 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc
+  bindActionCreatorHoc,
 )(SetUserInfo);

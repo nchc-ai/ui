@@ -67,7 +67,7 @@ export const getUserInfo = (token, history, next) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
-    next(response.error);
+    history.push('/login');
   }
 
   next(response.payload);

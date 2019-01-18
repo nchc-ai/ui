@@ -7,12 +7,9 @@ import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Hover } from 'react-powerplug';
 import Cookies from 'js-cookie';
-// import TopBar from './TopBar.js';
-
-
+import SetUserInfo from '../components/common/SetUserInfo/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import NavBar from '../components/Header/NavBar';
-import IconList from '../components/Header/IconList';
 import { mainNav } from '../constants/navData';
 import logoImg from '../../public/images/header/header-logo.png';
 import GlobalSearch from '../components/Header/GlobalSearch';
@@ -66,6 +63,7 @@ class Header extends Component {
         </Link>
 
         <div className="header-container">
+          <SetUserInfo history={history} />
           {/* <TopBar userInfo={userInfo} isLogin={isLogin} offline={offline} /> */}
           <Row>
             <Col md={{ size: 7 }} >
@@ -133,5 +131,6 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc
-)(withRouter(Header));
+  bindActionCreatorHoc,
+  withRouter
+)(Header);

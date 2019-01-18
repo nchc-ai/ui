@@ -7,10 +7,10 @@ import Cookies from 'js-cookie';
 
 import RouteUser from './RouteUser';
 import RouteGuest from './RouteGuest';
+import Global from './containers/Global';
 import StaticPage from './containers/StaticPage';
 import Dialog from './components/common/Dialog';
 import { metaObj } from './constants/models';
-import SetUserInfo from './components/common/SetUserInfo/index';
 import bindActionCreatorHoc from './libraries/bindActionCreatorHoc';
 
 
@@ -23,36 +23,33 @@ const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
 class App extends Component {
   render = () => {
     const {
-      offline,
-      history
+      offline
     } = this.props;
-
-    // console.log('history', Cookies.get('is_login'));
-
     return (
       <div id="outer-container" style={{ height: '100%' }}>
         <DocumentMeta {...metaObj} />
-        <SetUserInfo />
         <Router>
           <Switch>
-            { offline ? <Route path="*" component={StaticPage} /> : null }
+            <Global>
+              { offline ? <Route path="*" component={StaticPage} /> : null }
 
-            <PrivateRoute path="/user/classroom-manage/:action/:roomId" component={RouteUser} />
-            <PrivateRoute path="/user/classroom-manage/:action" component={RouteUser} />
-            <PrivateRoute path="/user/classroom-time" component={RouteUser} />
-            <PrivateRoute path="/user/role-select/:level" component={RouteUser} />
-            <PrivateRoute path="/user/job/list" component={RouteUser} />
-            <PrivateRoute path="/user/ongoing-course/create/:courseType" component={RouteUser} />
-            <PrivateRoute path="/user/ongoing-course/:action/:courseId" component={RouteUser} />
-            <PrivateRoute path="/user/ongoing-course/:action" component={RouteUser} />
-            <PrivateRoute path="/user/classroom-group/:action" component={RouteUser} />
-            <PrivateRoute path="/user/profile/:action/:courseId" component={RouteUser} />
-            <PrivateRoute path="/user/profile/:action" component={RouteUser} />
-            <PrivateRoute path="/user/password-setting" component={RouteUser} />
+              <PrivateRoute path="/user/classroom-manage/:action/:roomId" component={RouteUser} />
+              <PrivateRoute path="/user/classroom-manage/:action" component={RouteUser} />
+              <PrivateRoute path="/user/classroom-time" component={RouteUser} />
+              <PrivateRoute path="/user/role-select/:level" component={RouteUser} />
+              <PrivateRoute path="/user/job/list" component={RouteUser} />
+              <PrivateRoute path="/user/ongoing-course/create/:courseType" component={RouteUser} />
+              <PrivateRoute path="/user/ongoing-course/:action/:courseId" component={RouteUser} />
+              <PrivateRoute path="/user/ongoing-course/:action" component={RouteUser} />
+              <PrivateRoute path="/user/classroom-group/:action" component={RouteUser} />
+              <PrivateRoute path="/user/profile/:action/:courseId" component={RouteUser} />
+              <PrivateRoute path="/user/profile/:action" component={RouteUser} />
+              <PrivateRoute path="/user/password-setting" component={RouteUser} />
 
-            <Route path="/" component={RouteGuest} />
+              <Route path="/" component={RouteGuest} />
 
-            <Route exact path="*" component={StaticPage} />
+              <Route exact path="*" component={StaticPage} />
+              </Global>
           </Switch>
         </Router>
       </div>
