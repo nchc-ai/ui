@@ -13,7 +13,7 @@ export const API_VM_VERSION = 'v1';
 
 export const AUTH_PROVIDER_URL = 'http://140.110.16.191:30080';
 
-export const RETURN_ROUTE = '/user/classroom-manage/list';
+export const RETURN_ROUTE = '/user/classroom-manage';
 
 export const jobInterval = 10000;
 
