@@ -23,7 +23,7 @@ class RouteUser extends Component {
     } = this.props;
 
     return (
-      <div>
+      <Global>
         <SideMenu match={match} />
         <div className="user-node">
           { role === "superuser" ? <RoleSelect /> : null }
@@ -52,7 +52,7 @@ class RouteUser extends Component {
             <Route exact path="*" component={StaticPage} />
           </Switch>
         </div>
-      </div>
+      </Global>
     );
   }
 }

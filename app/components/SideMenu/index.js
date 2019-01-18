@@ -16,7 +16,6 @@ class Index extends Component {
   }
 
   render() {
-
     const {
       match,
       userInfo,
@@ -35,41 +34,46 @@ class Index extends Component {
         className="side-menu-comp"
         width={200}
       >
-        <DogTag data={userInfo} isSubstituating={isSubstituating} />
-
-        {/* 各自版本 */}
         {
-          roleObj[userInfo.role || 'default'].map(d => (
-            <li
-              key={d.key}
-              className={match.url.includes(d.urlPrefix) ? 'side-menu-li active' : 'side-menu-li'}
-            >
-              <LinkFormat
-                textObj={d}
-                isMain={d.isMain}
-                offline={false}
-                offlineWarning={this.offlineWarning}
-                onClick={this.closeMenu}
-              />
-            </li>
-          ))
-        }
-        {/* 共用版本 */}
-        { !isSubstituating ?
-          sideNavCommon.map(d => (
-            <li
-              key={d.key}
-              className={match.url.includes(d.urlPrefix) ? 'side-menu-li active' : 'side-menu-li'}
-            >
-              <LinkFormat
-                textObj={d}
-                isMain={d.isMain}
-                offline={false}
-                offlineWarning={this.offlineWarning}
-                onClick={this.closeMenu}
-              />
-            </li>
-          ))
+          userInfo.active ?
+            <div>
+              <DogTag data={userInfo} isSubstituating={isSubstituating} />
+              {/* 各自版本 */}
+              {
+                roleObj[userInfo.role || 'default'].map(d => (
+                  <li
+                    key={d.key}
+                    className={match.url.includes(d.urlPrefix) ? 'side-menu-li active' : 'side-menu-li'}
+                  >
+                    <LinkFormat
+                      textObj={d}
+                      isMain={d.isMain}
+                      offline={false}
+                      offlineWarning={this.offlineWarning}
+                      onClick={this.closeMenu}
+                    />
+                  </li>
+                ))
+              }
+              {/* 共用版本 */}
+              { !isSubstituating ?
+                sideNavCommon.map(d => (
+                  <li
+                    key={d.key}
+                    className={match.url.includes(d.urlPrefix) ? 'side-menu-li active' : 'side-menu-li'}
+                  >
+                    <LinkFormat
+                      textObj={d}
+                      isMain={d.isMain}
+                      offline={false}
+                      offlineWarning={this.offlineWarning}
+                      onClick={this.closeMenu}
+                    />
+                  </li>
+                ))
+                : null
+              }
+            </div>
           : null
         }
       </div>

@@ -30,26 +30,24 @@ class App extends Component {
         <DocumentMeta {...metaObj} />
         <Router>
           <Switch>
-            <Global>
-              { offline ? <Route path="*" component={StaticPage} /> : null }
+            { offline ? <Route path="*" component={StaticPage} /> : null }
 
-              <PrivateRoute path="/user/classroom-manage/:action/:roomId" component={RouteUser} />
-              <PrivateRoute path="/user/classroom-manage/:action" component={RouteUser} />
-              <PrivateRoute path="/user/classroom-time" component={RouteUser} />
-              <PrivateRoute path="/user/role-select/:level" component={RouteUser} />
-              <PrivateRoute path="/user/job/list" component={RouteUser} />
-              <PrivateRoute path="/user/ongoing-course/create/:courseType" component={RouteUser} />
-              <PrivateRoute path="/user/ongoing-course/:action/:courseId" component={RouteUser} />
-              <PrivateRoute path="/user/ongoing-course/:action" component={RouteUser} />
-              <PrivateRoute path="/user/classroom-group/:action" component={RouteUser} />
-              <PrivateRoute path="/user/profile/:action/:courseId" component={RouteUser} />
-              <PrivateRoute path="/user/profile/:action" component={RouteUser} />
-              <PrivateRoute path="/user/password-setting" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-manage/:action/:roomId" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-manage/:action" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-time" component={RouteUser} />
+            <PrivateRoute path="/user/role-select/:level" component={RouteUser} />
+            <PrivateRoute path="/user/job/list" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/create/:courseType" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/:action/:courseId" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/:action" component={RouteUser} />
+            <PrivateRoute path="/user/classroom-group/:action" component={RouteUser} />
+            <PrivateRoute path="/user/profile/:action/:courseId" component={RouteUser} />
+            <PrivateRoute path="/user/profile/:action" component={RouteUser} />
+            <PrivateRoute path="/user/password-setting" component={RouteUser} />
 
-              <Route path="/" component={RouteGuest} />
+            <Route path="/" component={RouteGuest} />
 
-              <Route exact path="*" component={StaticPage} />
-              </Global>
+            <Route exact path="*" component={StaticPage} />
           </Switch>
         </Router>
       </div>

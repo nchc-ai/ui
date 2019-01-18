@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import Cookies from 'js-cookie';
-import { setToken, dayToSecond, redirectByRole } from '../libraries/utils';
+import { setToken, dayToSecond, redirectUrlWithRole } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Login from '../components/Auth/Login';
 import Signup from '../components/Auth/Signup';
@@ -58,7 +58,8 @@ class AuthPage extends Component {
       authAction
     } = this.props;
 
-    redirectByRole({ history, role: payload.role });
+    const redirectUrl = redirectUrlWithRole({ role: payload.role });
+    history.push(redirectUrl);
   }
 
   onLoginFail = (err) => {

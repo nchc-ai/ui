@@ -50,7 +50,6 @@ class Global extends Component {
         <Progress.Component/>
         <Notifications />
         <div className="global-body">
-
           {children}
         </div>
         <Dialog />

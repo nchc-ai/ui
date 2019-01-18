@@ -13,20 +13,20 @@ export function bindFunctions(functions) {
 
 /**
  * Redirect route with different role.
- * @param {Object} payload - The payload from changing role method.
+ * @param {Object} payload - this.props.
  * @param {Array} payload.history - The history from react route.
  * @param {String} payload.role - The role which determine destination.
  */
-export function redirectByRole (payload) {
+export function redirectUrlWithRole ({ role }) {
 
   const conditionObj = {
-    superuser: '/classroom-manage/list',
-    teacher: '/ongoing-course/list',
-    student: '/classroom-group/list',
-    default: '/classroom-group/list'
+    superuser: 'classroom-manage/list',
+    teacher: 'ongoing-course/list',
+    student: 'classroom-group/list',
+    default: 'classroom-group/list'
   }
 
-  payload.history.push(`/user${conditionObj[payload.role || 'default']}`)
+  return `/user/${conditionObj[ role || 'default']}`;
 }
 
 

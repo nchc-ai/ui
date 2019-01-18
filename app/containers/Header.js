@@ -14,7 +14,7 @@ import { mainNav } from '../constants/navData';
 import logoImg from '../../public/images/header/header-logo.png';
 import GlobalSearch from '../components/Header/GlobalSearch';
 
-import { removeToken } from '../libraries/utils';
+import { removeToken, redirectUrlWithRole } from '../libraries/utils';
 
 import iconMemberBefore from '../../public/images/common/ic-nav-member-default.png';
 import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png';
@@ -51,7 +51,7 @@ class Header extends Component {
 
   render() {
     const {
-      t, loading, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning
+      t, loading, isLogin, offline, dropDownPos, setDropdownPos, offlineWarning, role
     } = this.props;
 
     return (
@@ -87,7 +87,7 @@ class Header extends Component {
                   <span className="login-container">
                     <Hover>
                       {({ hovered, bind }) => (
-                        <Link to="/user/classroom-manage/list" className="fl" {...bind}>
+                        <Link to={redirectUrlWithRole({ role })} className="fl" {...bind}>
                           <img alt="" src={hovered ? iconMemberAfter : iconMemberBefore} />
                         </Link>
                       )}
@@ -124,7 +124,8 @@ class Header extends Component {
 const mapStateToProps = ({ Auth }) => ({
   token: Auth.token,
   isLogin: Auth.isLogin,
-  loading: Auth.loading
+  loading: Auth.loading,
+  role: Auth.userInfo.role
 });
 
 export default compose(

@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { Switch, Route, Link } from 'react-router-dom';
 import { actions as formActions, Form } from 'react-redux-form';
 import { roleTeacherForm, roleStudentForm } from '../constants/formsData';
-import { redirectByRole } from '../libraries/utils';
+import { redirectUrlWithRole } from '../libraries/utils';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -56,7 +56,9 @@ class RolePage extends Component {
       history
     } = this.props;
     roleAction.startSubstituating(submitData.role)
-    redirectByRole({ history, role: submitData.role.role });
+
+    const redirectUrl = redirectUrlWithRole({ role: submitData.role.role });
+    history.push(redirectUrl);
   }
 
   render() {

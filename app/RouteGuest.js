@@ -3,7 +3,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Switch, Route } from 'react-router-dom';
 
-
+import Global from './containers/Global';
 import IntroPage from './containers/IntroPage';
 import ContactPage from './containers/ContactPage';
 import AuthPage from './containers/AuthPage';
@@ -33,7 +33,7 @@ class RouteGuest extends Component {
     } = this.props;
 
     return (
-      <div>
+      <Global>
         <Switch>
           <Route exact path="/intro/:page/:type" component={IntroPage} />
           <Route exact path="/intro/:page" component={IntroPage} />
@@ -48,7 +48,7 @@ class RouteGuest extends Component {
           offline={offline}
           offlineWarning={this.offlineWarning}
         />
-      </div>
+      </Global>
     )
   }
 };
