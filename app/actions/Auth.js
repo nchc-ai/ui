@@ -26,7 +26,10 @@ export const setUserInfo = ({ userInfo }) => ({
 });
 
 export const resetAuth = () => ({
-  type: types.RESET_AUTH
+  type: types.RESET_AUTH,
+  isLogin: false,
+  token: '',
+  userInfo: {}
 });
 
 
@@ -92,8 +95,7 @@ export const getUserInfo = ({ token, next }) => async (dispatch) => {
 
 
 // Proxy > Logout
-export const logout = (token, next) => async (dispatch) => {
-  // console.log('token', token);
+export const logout = ({ token, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/logout`,
@@ -109,11 +111,9 @@ export const logout = (token, next) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
-  }
-
-  if (next) {
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, "payload.response.message", "logout fail"), 'error', TOAST_TIMING);
+  } else if (next) {
     next();
   }
 };

@@ -78,7 +78,7 @@ class Header extends Component {
       authAction,
       token
     } = this.props;
-    authAction.logout(token, this.onLogoutSuccess);
+    authAction.logout({token, next: this.onLogoutSuccess});
   }
 
   onLogoutSuccess = () => {
@@ -87,11 +87,13 @@ class Header extends Component {
       history,
     } = this.props;
     // 重置 state > 重置 cookie > 重置 token
-
+    // 重置 state
     authAction.resetAuth();
+
     Cookies.set('is_login', false);
     Cookies.set('user_info', {});
-    removeToken();
+    Cookies.set('token', '');
+
     history.push('/');
   }
 

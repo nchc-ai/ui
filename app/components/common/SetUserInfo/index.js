@@ -29,7 +29,7 @@ class SetUserInfo extends Component {
     authAction.checkDatabase()
 
     // 3. 同步 cookie 到登入 state
-    authAction.setLoginState({ isLogin });
+    authAction.setLoginState(isLogin);
 
     // 4. 若已登入則線上更新 userInfo
     if (isLogin) {
