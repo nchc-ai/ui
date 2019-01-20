@@ -5,11 +5,12 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
+import TableList from '../components/common/TableList';
 import { Form, actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import DataFrame from '../components/common/DataFrame/index';
 import CommonPageContent from '../components/CommonPageContent'
-import ClassroomGroup from '../components/ClassroomGroup';
+import { classroomGroupData } from '../constants/tableData';
 
 class RoomGroup extends Component {
 
@@ -36,13 +37,16 @@ class RoomGroup extends Component {
   fetchData = (nextProps) => {
     const {
       roomAction,
-      token
+      token,
+      userInfo
     } = nextProps;
     if (token) {
-      roomAction.getPublicClassrooms(token);
+      roomAction.getClassroomList({
+        user: userInfo.username,
+        token
+      });
     } else {
       notify.show('您 token 有誤，請重新登入', 'error', 1800);
-      nextProps.history.push('/login');
     }
   }
 
@@ -125,12 +129,43 @@ class RoomGroup extends Component {
           data={roomList.data}
           cols={8}
         >
-          <ClassroomGroup
-            classrooms={roomList.data}
-            startCourse={this.startCourse}
-            seditCourse={this.editCourse}
-            deleteCourse={this.deleteCourse}
-          />
+        <div className="classroom-group-comp">
+          {
+            roomList.data.map((classroom, index) => (
+              <div key={index} className="classroom-card">
+                <div className="classroom-info">
+                  <h3 className="classroom-name">{classroom.name}</h3>
+                  <h5 className="classroom-teachers">
+                    <span>老師：</span>
+                    {
+                      classroom.teachers ?
+                        classroom.teachers.map((teacher, index) => (
+                          <span key={index}>{index !== 0 ? " , " : ""} {teacher}</span>
+                        ))
+                        : null
+                    }
+                  </h5>
+                  {/* <h5>學生人數：{classroom.studentCount}</h5> */}
+                </div>
+                <div className="course-list">
+                  {
+                    classroom.courseInfo ?
+                      <TableList
+                        data={classroom.courseInfo}
+                        tableData={classroomGroupData}
+                        isLoading={false}
+                        isDialogOpen={true}
+                        startMethod={this.startCourse}
+                        editMethod={this.editCourse}
+                        deleteMethod={this.deleteCourse}
+                      />
+                    : null
+                  }
+                </div>
+              </div>
+            ))
+          }
+        </div>
         </DataFrame>
       </CommonPageContent>
     );

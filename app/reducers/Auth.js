@@ -75,7 +75,6 @@ export default function Auth(state = InitialState, action) {
   case actionTypes.SET_USER_INFO:
     return {
       ...state,
-      isLogin: action.isLogin,
       userInfo: {
         ...state.userInfo,
         ...action.userInfo
@@ -84,7 +83,6 @@ export default function Auth(state = InitialState, action) {
   case actionTypes.SET_USER_TOKEN:
     return {
       ...state,
-      isLogin: action.isLogin,
       token: action.token
     };
   case actionTypes.RESET_AUTH:

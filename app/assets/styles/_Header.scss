@@ -28,7 +28,7 @@ $nav-li-underline-color: #f5d600;
   }
 
   .header-container{
-    
+
     overflow: hidden;
 
     .logo-svg{
@@ -68,8 +68,6 @@ $nav-li-underline-color: #f5d600;
       // padding:10px 20px;
       position:relative;
 
-     
-  
       .main-link{
         padding: 0px 20px;
         color: $primary-color;
@@ -100,7 +98,7 @@ $nav-li-underline-color: #f5d600;
       a{
         img{
           @include square(24px);
-          @include margin(5px); 
+          @include margin(5px);
         }
       }
     }
@@ -151,7 +149,7 @@ $nav-li-underline-color: #f5d600;
 // LoginButton -------------------------------------------------
 
 .header-container {
-  .login-btn {
+  button {
     @include rect(150px, 40px);
     margin-left: 20px;
     border-radius: 20px;

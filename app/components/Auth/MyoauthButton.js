@@ -16,7 +16,7 @@ class MyoauthButton extends Component {
   }
 
   static defaultProps = {
-    buttonText: 'Sign in with GitHub',
+    buttonText: '登入 / 註冊',
     scope: 'user:email',
     onRequest: () => {},
     onSuccess: () => {},

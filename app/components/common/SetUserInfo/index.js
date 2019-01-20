@@ -14,63 +14,62 @@ class SetUserInfo extends Component {
     const {
       authAction,
     } = this.props;
+
+    const userInfo = Cookies.getJSON('user_info');
+    const token = Cookies.get('token');
+    const isLogin = Cookies.get('is_login') === 'true';
+
+    console.log('[cookie] userInfo', userInfo);
+
     // 1. 置入 GA
     // ga('create', 'UA-112418828-2', 'auto');
     // ga('send', 'pageview');
 
     // 2. DB health check
-    // authAction.healthCheck();
-    authAction.checkDatabase();
+    authAction.checkDatabase()
 
-    // 3. 至 cookie 抓取 auth
-    const userInfo = Cookies.getJSON('user_info');
-    const isLogin = Cookies.get('is_login');
-    this.props.authAction.setUserInfo({ userInfo, isLogin });
+    // 3. 同步 cookie 到登入 state
+    authAction.setLoginState({ isLogin });
 
-    // 3. 檢查 userInfo
-    this.retrieveUser();
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const {
-      orderAction,
-      userInfo,
-      isLogin,
-    } = nextProps;
-    if (this.props.isLogin !== isLogin && isLogin) {
-      // do something
-    } else if (this.props.isLogin !== isLogin && !isLogin) {
-      // logout
+    // 4. 若已登入則線上更新 userInfo
+    if (isLogin) {
+      this.syncCookieToState({ token, userInfo });
     }
   }
 
-  retrieveUser = () => {
+  /**
+   * Sync userinfo and token from cookie to state
+   */
+  syncCookieToState = ({ token, userInfo }) => {
     const {
       history,
       authAction
     } = this.props;
 
-    const token = getToken();
-
     if (token === null || token === '' || token === 'null') {
-      authAction.resetAuth();
+      // 可能 token 過期，renew
     } else {
-      // 設定 isLogin > 設定 userToken > 抓取 userInfo
-      // 先同步 cookie
-      authAction.setUserToken(token);
-      authAction.getUserInfo(token, history, this.onGetUserInfoSuccess);
+      // 更新到 state
+      authAction.setLoginState(true);
+      authAction.setUserToken({ token });
+      authAction.setUserInfo({ userInfo });
     }
   }
 
-  onGetUserInfoSuccess = (payload) => {
-    const maxAge = dayToSecond(1);
-    Cookies.set('is_login', true, { path: '/', maxAge});
-    // 匯入 cookie
-    Cookies.set('user_info', {
-      username: payload.username,
-      role: payload.role
-    });
-  }
+  // onGetUserTokenSuccess = (payload) => {
+  //   const maxAge = dayToSecond(1);
+  //   // Cookies.set('token', , { path: '/', maxAge});
+  // }
+
+  // onGetUserInfoSuccess = (payload) => {
+  //   const maxAge = dayToSecond(1);
+  //   Cookies.set('is_login', true, { path: '/', maxAge});
+  //   // 匯入 cookie
+  //   Cookies.set('user_info', {
+  //     username: payload.username,
+  //     role: payload.role
+  //   });
+  // }
 
   render = () => (<span className="dn" />);
 }

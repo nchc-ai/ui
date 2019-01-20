@@ -85,6 +85,7 @@ export const footer = {
       nameCh: '登入',
       url: '/login',
       // url: '/intro/class',
+      isLink: false,
       isCate: true,
       isOuter: false
     },

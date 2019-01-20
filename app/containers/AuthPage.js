@@ -37,9 +37,9 @@ class AuthPage extends Component {
       authAction,
       history
     } = this.props;
-    authAction.setLoginState(true);
+
     Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
-    authAction.retrieveToken(codeObj, this.setUserInfo);
+    authAction.getToken(codeObj, this.setUserInfo);
   }
 
   setUserInfo = (token) => {

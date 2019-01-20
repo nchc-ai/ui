@@ -16,7 +16,7 @@ import bindActionCreatorHoc from './libraries/bindActionCreatorHoc';
 
 const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
   <Route exarct {...rest} render={(props) => (
-    Cookies.get('is_login') || false ? <Component {...props} /> : <Redirect to='/login' />
+    Cookies.get('is_login') === 'true' ? <Component {...props} /> : <Redirect to='/' />
   )} />
 );
 

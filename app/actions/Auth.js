@@ -15,15 +15,14 @@ export const setLoginState = (isLogin) => ({
   isLogin
 });
 
-export const setUserInfo = (userInfo, isLogin) => ({
-  type: types.SET_USER_INFO,
-  userInfo,
-  isLogin
-});
-
-export const setUserToken = token => ({
+export const setUserToken = ({ token }) => ({
   type: types.SET_USER_TOKEN,
   token
+});
+
+export const setUserInfo = ({ userInfo }) => ({
+  type: types.SET_USER_INFO,
+  userInfo
 });
 
 export const resetAuth = () => ({
@@ -31,28 +30,47 @@ export const resetAuth = () => ({
 });
 
 
+// Health Check > check-database
+export const checkDatabase = () => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/health/database`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message: 'test' }),
+      types: types.CHECK_DATABASE
+    }
+  });
+
+  // console.log("response", response);
+  if (_.isUndefined(response) || response.payload.error) {
+    notify.show(_.get(response, "payload.response.message", "check database fail"), 'error', TOAST_TIMING);
+  }
+};
+
 // Proxy > Token
-export const retrieveToken = (codeObj, next) => async (dispatch) => {
+export const getToken = (codeObj, next) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/token`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(codeObj),
-      types: types.RETRIEVE_TOKEN
+      types: types.GET_TOKEN
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
-  }
-  if (next) {
+  console.log('[auth] getToken', response);
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, "payload.response.message", "get token fail"), 'error', TOAST_TIMING);
+  } else if (next) {
     next(response.payload.token);
   }
 };
 
 // Proxy > Introspection
-export const getUserInfo = (token, history, next) => async (dispatch) => {
+export const getUserInfo = ({ token, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/introspection`,
@@ -66,11 +84,10 @@ export const getUserInfo = (token, history, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
-    history.push('/login');
+    notify.show(_.get(response, "payload.response.message", "get user info fail"), 'error', TOAST_TIMING);
+  } else if (next) {
+    next(response.payload);
   }
-
-  next(response.payload);
 };
 
 
@@ -219,23 +236,7 @@ export const healthCheck = () => async (dispatch) => {
   }
 };
 
-// Health Check > check-database
-export const checkDatabase = () => async (dispatch) => {
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/health/database`,
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: 'test' }),
-      types: types.CHECK_DATABASE
-    }
-  });
 
-  // console.log("response", response);
-  if (_.isUndefined(response) || response.payload.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
-  }
-};
 
 // 登入
 export const manualLogin = (formData, next) => async (dispatch) => {

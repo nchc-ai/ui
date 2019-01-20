@@ -3,9 +3,11 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 
+import MyoauthButton from '../components/Auth/MyoauthButton';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Hover } from 'react-powerplug';
+import { notify } from 'react-notify-toast';
 import Cookies from 'js-cookie';
 import SetUserInfo from '../components/common/SetUserInfo/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -14,7 +16,7 @@ import { mainNav } from '../constants/navData';
 import logoImg from '../../public/images/header/header-logo.png';
 import GlobalSearch from '../components/Header/GlobalSearch';
 
-import { removeToken, redirectUrlWithRole } from '../libraries/utils';
+import { removeToken, dayToSecond, redirectUrlWithRole } from '../libraries/utils';
 
 import iconMemberBefore from '../../public/images/common/ic-nav-member-default.png';
 import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png';
@@ -25,6 +27,50 @@ import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png'
 class Header extends Component {
 
   componentWillMount() {
+  }
+
+  onGetCodeSuccess = (codeObj) => {
+    const {
+      authAction,
+      history
+    } = this.props;
+
+    console.log('onGetCodeSuccess', codeObj);
+    authAction.getToken(codeObj, this.onGetTokenSuccess);
+  }
+
+  onGetCodeFail = (err) => {
+    notify.show('Error: code not found', 'error', 1800);
+  }
+
+  onGetTokenSuccess = (token) => {
+    console.log('onGetTokenSuccess', token);
+    const {
+      history,
+      authAction
+    } = this.props;
+    // 寫入 token 到 cookie 跟 state ， 打 api 獲取 userInfo
+    Cookies.set('token', token, { path: '/', maxAge: dayToSecond(1) });
+    authAction.setUserToken({ token });
+
+    authAction.getUserInfo({ token, next: this.onGetUserInfoSuccess });
+  }
+
+  onGetUserInfoSuccess = (userInfo) => {
+    const {
+      history,
+      authAction
+    } = this.props;
+    // 寫入 userInfo & isLogin 到 cookie 跟 state
+    console.log('[userInfo] userInfo', userInfo);
+    Cookies.set('user_info', userInfo, { path: '/', maxAge: dayToSecond(1) });
+    Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
+
+    authAction.setUserInfo({ userInfo });
+    authAction.setLoginState(true);
+
+    const redirectUrl = redirectUrlWithRole({ role: userInfo.role });
+    history.push(redirectUrl);
   }
 
   logout = () => {
@@ -106,10 +152,11 @@ class Header extends Component {
               }
 
               {
-                !isLogin && !loading ?
-                  <Link to="/login">
-                    <button className="login-btn">登入</button>
-                  </Link>
+                !isLogin?
+                  <MyoauthButton
+                    onSuccess={this.onGetCodeSuccess}
+                    onFailure={this.onGetCodeFail}
+                  ></MyoauthButton>
                 :
                   null
               }

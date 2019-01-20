@@ -64,7 +64,10 @@ class RoomTime extends Component {
       token
     } = nextProps;
 
-    roomAction.getClassroomList(userInfo.username, token);
+    roomAction.getClassroomList({
+      user: userInfo.username,
+      token
+    });
   }
 
   handleNextMonth() {
