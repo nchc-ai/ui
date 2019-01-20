@@ -93,4 +93,33 @@ export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
   next();
 };
 
+/**
+ * Snapshot image of vm job (vm only).
+ * @param {String} token - The required token for calling API.
+ * @param {String} job - The job object for retrieving id and name.
+ * @param {String} next - Callback.
+ */
+export const snapshotJob = ({ token, job, next }) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/vm/snapshot`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify({ id: job.course_id, name: job.name }),
+      types: types.SNAPSHOT_JOB
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  } else if (next) {
+    next();
+  }
+
+};
+
+
 

@@ -6,7 +6,7 @@
 
         .title-row {
           margin-bottom: 20px;
-      
+
           .btn-add {
             width: 120px;
             height: 35px;
@@ -24,20 +24,63 @@
           height: 200px;
           background-color: #6ec7cf;
           z-index: 10;
-          transition: all .2s ease-in-out;
-          opacity: 0.9;
+          transition: all .4s ease-in-out;
+          opacity: 0;
+          pointer-events: none;
+          z-index: 10;
+          display: flex;
+          align-items: center;
+          justify-items: center;
 
-          button {
+          .job-card__mask-options {
+            width: 180px;
             display: flex;
-            border-radius: 99em;
-            width: 65px;
-            height: 65px;
-            font-size: 27px;
-            align-content: center;
-            justify-content: center;
-            color: #6ec7cf;
-            opacity: 1;
+            flex-direction: row;
+            margin-left: auto;
+            margin-right: auto;
+
+            li {
+              width: 70px;
+              margin: auto 10px;
+              text-align: center;
+
+              button {
+                margin-left: auto;
+                margin-right: auto;
+                display: flex;
+                border-radius: 99em;
+                margin-bottom: 2px;
+                width: 45px;
+                height: 45px;
+                font-size: 27px;
+                align-content: center;
+                justify-content: center;
+                color: #6ec7cf;
+                opacity: 1;
+                transition: all .2s ease-in-out;
+                cursor: pointer;
+
+                &:focus {
+                  outline:none;
+                }
+
+                &:hover {
+                  transform: scale(1.1);
+                }
+              }
+
+              p {
+                color: #fff;
+                line-height: 20px;
+                padding-top: 5px;
+              }
+            }
           }
+        }
+
+        .job-card__mask--open {
+          opacity: 1;
+          pointer-events: initial;
         }
 
         .job-card {
@@ -101,7 +144,16 @@
             font-stretch: normal;
             line-height: normal;
             letter-spacing: 1px;
-            cursor: default;
+            cursor: pointer;
+
+            &:hover {
+              text-decoration: underline;
+              color: #6EC7CF;
+            }
+          }
+
+          .job-card-id--disable {
+            pointer-events: none;
           }
 
           .job-card-link-li {
@@ -134,8 +186,6 @@
                 }
               }
             }
-
-            
           }
 
           .corner-triangle {
