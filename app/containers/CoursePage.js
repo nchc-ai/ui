@@ -93,14 +93,18 @@ class CoursePage extends Component {
     notify.show('課程啟動成功', 'success', 1800);
   }
 
-  deleteCourse = (e, data) => {
+  editCourse = (e, datum) => {
+    this.props.history.push(`/user/ongoing-course/detail/${datum.id}`)
+  }
+
+  deleteCourse = (e, datum) => {
     const {
       courseAction,
       token,
       userInfo
     } = this.props;
     courseAction.deleteCourseContainer({
-      courseId: data.id,
+      courseId: datum.id,
       token,
       next: () => this.onDeleteCourseSuccess()
     });
@@ -214,6 +218,7 @@ class CoursePage extends Component {
                 startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
+                actionMode="edit_delete"
               />
 
             </CommonPageContent>

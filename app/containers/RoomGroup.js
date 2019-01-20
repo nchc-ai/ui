@@ -135,11 +135,11 @@ class RoomGroup extends Component {
                   <h5 className="classroom-teachers">
                     <span>老師：</span>
                     {
-                      classroom.teachers ?
+                      _.get(classroom,'teachers', []).length > 0 ?
                         classroom.teachers.map((teacher, index) => (
                           <span key={index}>{index !== 0 ? " , " : ""} {teacher}</span>
                         ))
-                        : null
+                        : '暫無安排'
                     }
                   </h5>
                   {/* <h5>學生人數：{classroom.studentCount}</h5> */}
@@ -155,6 +155,7 @@ class RoomGroup extends Component {
                         startMethod={this.startCourse}
                         editMethod={this.editCourse}
                         deleteMethod={this.deleteCourse}
+                        actionMode="start_only"
                       />
                     : null
                   }
