@@ -12,13 +12,16 @@ export const initialClassroomState = {
 };
 
 export const initialCourseConState = {
+  user: '',
   name: '',
   introduction: '',
   image: '',
   level: { label: '基礎', value: 'basic' },
-  server: '',
   gpu: '',
+  ports: [],
   datasets: [],
+  accessType: { label: 'NodePort', value: 'NodePort' },
+  writablePath: '',
   startAt: '',
   endAt: ''
 };

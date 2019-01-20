@@ -5,6 +5,7 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import { notify } from 'react-notify-toast';
 import { TOAST_TIMING } from '../constants';
+import { isStringEmpty } from '../libraries/utils';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
 
 // Container 課程 ---------------------------------------------------
@@ -102,13 +103,19 @@ export const createContainerCourse = (token, userInfo, formData, next) => async 
       body: JSON.stringify({
         user: userInfo.username,
         name: formData.name,
-        accessType: formData.accessType || 'NodePort',
-        introduction: _.escape(formData.introduction),
-        image: formData.image.value,
-        level: formData.level.value,
+        accessType: formData.accessType.value || 'NodePort',
+        introduction: _.escape(formData.intro) || '',
+        image: formData.image.value || '',
+        level: formData.level.value || '',
         GPU: parseInt(formData.gpu.value, 10),
         datasets: formData.datasets.map(d => d.value) || [],
-        writablePath: formData.writablePath || ''
+        writablePath: isStringEmpty(formData.writablePath) ? '' : formData.writablePath || '',
+        ports: [
+          {
+            "name": "jupyter",
+            "port": 8080
+          }
+        ]
       }
     ),
       types: types.CREATE_CONTAINER_COURSE
@@ -116,10 +123,11 @@ export const createContainerCourse = (token, userInfo, formData, next) => async 
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    console.log('response', response);
+    notify.show(_.get(response, 'payload.message', 'createContainerCourse 錯誤失敗'), 'error', TOAST_TIMING);
+  } else if (next) {
+    next();
   }
-
-  next();
 };
 
 

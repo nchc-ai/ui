@@ -131,8 +131,10 @@ class CoursePage extends Component {
     this.props.history.push('/user/ongoing-course/list');
   }
 
-  // 新建 container 課程 cb
-
+  /**
+   * Called when clicking submit button to create container course.
+   * @param {Object} formData - The required token for calling API.
+   */
   handleSubmitCreateCon = (formData) => {
     const {
       courseAction,
@@ -140,6 +142,7 @@ class CoursePage extends Component {
       userInfo
     } = this.props;
 
+    console.log('[formData]', formData);
     courseAction.createContainerCourse(
       token,
       userInfo,

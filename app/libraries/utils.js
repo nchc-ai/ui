@@ -88,6 +88,13 @@ export function isNotNull(string) {
   return !(string === "" || string === null);
 }
 
+/**
+ * Determine if string is "" or contain spaces.
+ * @param {String} str
+ */
+export function isStringEmpty (str) {
+  return !str.replace(/\s/g, '').length;
+}
 
 
 /*---------------------------

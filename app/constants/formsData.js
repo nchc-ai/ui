@@ -109,7 +109,7 @@ export const courseConForm = [
   }, {
     key: 2,
     size: 8,
-    name: 'intro',
+    name: 'introduction',
     target: 'courseCon',
     inputType: 'markdown',
     mainLabel: '課程介紹',
@@ -247,11 +247,7 @@ export const courseConFormTwo = [
     inputType: 'text',
     mainLabel: '工作目錄',
     placeholder: '請輸入工作目錄',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+    isRequired: false
   }
 ];
 
