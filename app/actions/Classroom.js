@@ -40,6 +40,26 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
 };
 
 // [List] classrooms
+export const upladStudentsCSV = ({ token, formData }) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/classroom/upload`,
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      },
+      body: formData,
+      types: types.UPLOAD_STUDENTS_CSV
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(response.payload.response.message || '上傳 csv 檔案失敗', 'error', TOAST_TIMING);
+  }
+};
+
+// [List] classrooms
 export const getClassroomList = ({ token, userInfo }) => async (dispatch) => {
 
   const response = await dispatch({

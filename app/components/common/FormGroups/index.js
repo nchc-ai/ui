@@ -9,6 +9,7 @@ import moment from 'moment';
 import { KeyValue } from 'react-key-value';
 import MarkdownShortcuts from '../MarkdownShortcuts/index';
 import CronBuilder from  '../../../vendor/CronBuilder';
+import FileUpload from '../FileUpload/index';
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
@@ -20,11 +21,13 @@ import CronBuilder from  '../../../vendor/CronBuilder';
  * @param {Array} targetForm Template array for multi type.
  * @param {Array} state For slate input.
  * @param {Array} asyncSelectKey
- * @param {Array} changeVal
- * @param {Array} loadOptsMethod
- * @param {Array} loadTagsOptsMethod
- * @param {Array} onDateChange
- * @param {Array} onMdChange
+ * @param {Function} changeVal
+ * @param {Function} loadOptsMethod
+ * @param {Function} loadTagsOptsMethod
+ * @param {Function} onDateChange
+ * @param {Function} onMdChange
+ * @param {Function} onFileChange Select file as a sub object in event target
+ * @param {Function} handleUpload Upload selected file.
  *
  * 1. text 一般文字
  * 2. 密碼
@@ -39,6 +42,7 @@ import CronBuilder from  '../../../vendor/CronBuilder';
  * 11. Markdown
  * 12. Quill格式
  * 13. keyValue
+ * 14. File
  * - Hint
  */
 
@@ -53,7 +57,9 @@ const FormGroups = ({
   loadOptsMethod,
   loadTagsOptsMethod,
   onDateChange,
-  onMdChange
+  onMdChange,
+  onFileChange,
+  handleUpload
 }) => {
 
   return (
@@ -316,6 +322,17 @@ const FormGroups = ({
                 ) }
                 onChange={content => changeVal(content, d.name)}
               />
+              :
+                null
+            }
+
+            {/* File */}
+            {
+              d.inputType === 'file'
+              ?
+              <div>
+                <FileUpload />
+              </div>
               :
                 null
             }

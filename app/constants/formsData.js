@@ -67,24 +67,20 @@ export const classroomFormTwo = [
     name: 'teachers',
     target: 'classroom',
     inputType: 'tags-input',
-    mainLabel: '老師',
+    mainLabel: '選擇加入此教室的老師',
     placeholder: '請輸入老師名稱',
     validators: { required },
     errorMessage: {
       required: '您尚未加入任何老師'
     },
     isRequired: false
-  }
-];
-
-export const classroomFormThree = [
-  {
+  }, {
     key: 6,
     size: 8,
     name: 'students',
     target: 'classroom',
-    inputType: 'tags-input',
-    mainLabel: '學生',
+    inputType: 'file',
+    mainLabel: '選擇加入此教室的學生',
     placeholder: '請輸入欲上課學生',
     validators: { required },
     errorMessage: {
@@ -93,6 +89,7 @@ export const classroomFormThree = [
     isRequired: false
   }
 ];
+
 
 // course container ----------------------------------------
 

@@ -113,6 +113,17 @@ class RoomPage extends Component {
     this.props.history.push(`/user/classroom-manage/list`)
   }
 
+  onFileSelected = (event) => {
+   console.log('onFileSelected', event, event.target);
+  }
+
+  uploadStudentCSV = (file) => {
+    console.log('uploadStudentCSV');
+  }
+
+  /**
+   * Edit - List course tags for the form of classroom.
+   */
   // 教室課程
   loadCourseTagsCreateRoom = () => this.props.roomAction.loadCourseTagsForRoomCreate(this.props.token);
   // 上課老師
@@ -228,7 +239,7 @@ class RoomPage extends Component {
             </CommonPageContent>
           </Route>
 
-          {/* 教室新建 */}
+          {/* 教室新建 && 編輯 */}
           <Route path="/user/classroom-manage/create">
             <CommonPageContent
               className="room-page-bg"
@@ -240,7 +251,7 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.handleSubmitClassroomCreate(formData)}
               >
-
+                {/* name | description | schedules | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
@@ -248,20 +259,15 @@ class RoomPage extends Component {
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
                 />
 
+                {/* teachers | students */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormTwo}
                   changeVal={changeValue}
+                  onFileChange={this.onFileSelected}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
+                  handleUpload={this.uploadStudentCSV}
                 />
-
-                <FormGroups
-                  targetForm={forms.classroom}
-                  formData={classroomFormThree}
-                  changeVal={changeValue}
-                  loadTagsOptsMethod={this.loadStudentTagsCreateRoom}
-                />
-
 
                 <FormButtons
                   cancelName="回課程列表"
@@ -301,14 +307,6 @@ class RoomPage extends Component {
                   changeVal={changeValue}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
                 />
-
-                <FormGroups
-                  targetForm={forms.classroom}
-                  formData={classroomFormThree}
-                  changeVal={changeValue}
-                  loadTagsOptsMethod={this.loadStudentTagsCreateRoom}
-                />
-
 
                 <FormButtons
                   cancelName="回課程列表"

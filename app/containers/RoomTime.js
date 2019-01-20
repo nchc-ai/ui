@@ -65,8 +65,8 @@ class RoomTime extends Component {
     } = nextProps;
 
     roomAction.getClassroomList({
-      user: userInfo.username,
-      token
+      token,
+      userInfo
     });
   }
 

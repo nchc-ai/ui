@@ -13,7 +13,8 @@ const InitialState = {
   publicList: {
     isLoading: false,
     data: []
-  }
+  },
+  csvFile: {}
 };
 
 
@@ -67,6 +68,11 @@ export default function Classroom(state = InitialState, action) {
         isLoading: false,
         data: action.payload.classrooms
       }
+    };
+  case actionTypes.SET_STUDENTS_CSV_FILE:
+    return {
+      ...state,
+      csvFile: action.payload.csvFile
     };
   default:
     return state;
