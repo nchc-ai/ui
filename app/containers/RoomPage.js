@@ -83,20 +83,36 @@ class RoomPage extends Component {
 
   }
 
-  startRoom() {
-    console.log('start');
+  /**
+   * List - Called when clicking edit buttton of table list drawer.
+   * @param {Object} e Event target.
+   * @param {Object} datum One assigned datum in table list.
+   */
+  editClassroom = (e, datum) => {
+    this.props.history.push(`/user/classroom-manage/edit/${datum.id}`)
   }
 
-  editRoom() {
-    console.log('start');
+  /**
+   * List - Called when clicking delete buttton of table list drawer.
+   * @param {Object} e Event target.
+   * @param {Object} datum One assigned datum in table list.
+   */
+  deleteClassroom = (e, datum) => {
+    const {
+      roomAction,
+      token
+    } = this.props;
+
+    roomAction.deleteClassroom({ token, id: datum.id });
   }
 
-  deleteRoom() {
-    console.log('start');
-  }
+  /**
+   * Edit - Called when clicking return buttton in room edit page.
+   */
   cancelRoomEdit() {
-    console.log('cancel');
+    this.props.history.push(`/user/classroom-manage/list`)
   }
+
   // 教室課程
   loadCourseTagsCreateRoom = () => this.props.roomAction.loadCourseTagsForRoomCreate(this.props.token);
   // 上課老師
@@ -180,10 +196,9 @@ class RoomPage extends Component {
                 tableData={roomData}
                 isLoading={loading}
                 isDialogOpen={true}
-                startMethod={this.startRoom}
-                editMethod={this.editRoom}
-                deleteMethod={this.deleteRoom}
-                isAdmin
+                editMethod={this.editClassroom}
+                deleteMethod={this.deleteClassroom}
+                actionMode="edit_delete"
               />
             </CommonPageContent>
           </Route>
@@ -260,8 +275,49 @@ class RoomPage extends Component {
           </Route>
 
           {/* 教室編輯 */}
+          {/* TODO: 這邊需要有預設值 編輯功能 */}
           <Route exact path="/user/classroom-manage/edit/:courseId">
+            <CommonPageContent
+              className="room-page-bg"
+              pageTitle="編輯教室"
+            >
 
+              <Form
+                model="forms.classroom"
+                className="room-create-form-comp"
+                onSubmit={formData => this.handleSubmitClassroomCreate(formData)}
+              >
+
+                <FormGroups
+                  targetForm={forms.classroom}
+                  formData={classroomFormOne}
+                  changeVal={changeValue}
+                  loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
+                />
+
+                <FormGroups
+                  targetForm={forms.classroom}
+                  formData={classroomFormTwo}
+                  changeVal={changeValue}
+                  loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
+                />
+
+                <FormGroups
+                  targetForm={forms.classroom}
+                  formData={classroomFormThree}
+                  changeVal={changeValue}
+                  loadTagsOptsMethod={this.loadStudentTagsCreateRoom}
+                />
+
+
+                <FormButtons
+                  cancelName="回課程列表"
+                  submitName="修改"
+                  backMethod={this.cancelRoomEdit}
+                  isForm
+                />
+              </Form>
+            </CommonPageContent>
           </Route>
         </Switch>
       </div>

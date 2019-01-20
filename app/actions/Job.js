@@ -22,7 +22,7 @@ export const getConJobList = ({ user, token }) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -42,7 +42,7 @@ export const getVMJobList = ({ user, token }) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -65,7 +65,7 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
 
   // console.log('[launchJob] response', response);
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -86,7 +86,7 @@ export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 

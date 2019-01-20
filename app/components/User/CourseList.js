@@ -37,7 +37,6 @@ const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, de
       startMethod={startMethod}
       editMethod={editMethod}
       deleteMethod={deleteMethod}
-      isAdmin={isAdmin}
       addJob={addJob}
     />
   </div>

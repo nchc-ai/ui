@@ -19,7 +19,7 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 

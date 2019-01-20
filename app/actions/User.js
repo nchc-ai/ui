@@ -27,7 +27,7 @@ export const getCourseList = (userInfo, token) => async (dispatch) => {
 
   // console.log('[getCourseList] response', response);
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -61,7 +61,7 @@ export const updateCourse = (token, userInfo, formData, next) => async (dispatch
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -95,7 +95,7 @@ export const updateCourse = (token, userInfo, formData, next) => async (dispatch
 //     }
 //   });
 
-//   if (_.isUndefined(response) || response.payload.error) {
+//   if (_.isUndefined(response) || response.error) {
 //     console.error('createCourse 失敗');
 //   }
 // };
@@ -115,7 +115,7 @@ export const deleteCourse = (courseId, token, next) => async (dispatch) => {
     }
   });
   // console.log('[deleteCourse] response', response);
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 

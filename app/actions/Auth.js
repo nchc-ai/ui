@@ -41,13 +41,13 @@ export const checkDatabase = () => async (dispatch) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ message: 'test' }),
+      options: { timeout: 3000 },
       types: types.CHECK_DATABASE
     }
   });
 
-  // console.log("response", response);
-  if (_.isUndefined(response) || response.payload.error) {
-    notify.show(_.get(response, "payload.response.message", "check database fail"), 'error', TOAST_TIMING);
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, "payload.message", "check database fail"), 'error', TOAST_TIMING);
   }
 };
 
@@ -135,7 +135,7 @@ export const signup = (formData, next) => async (dispatch) => {
 
   console.log('[signup] payload', response)
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -162,7 +162,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -191,7 +191,7 @@ export const updatePassword = (username, formData, token, next) => async (dispat
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
   next();
@@ -212,7 +212,7 @@ export const getProfile = (token) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -231,7 +231,7 @@ export const healthCheck = () => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };

@@ -27,7 +27,7 @@ export const getCourseListCon = (user, token) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -48,7 +48,7 @@ export const getConImagesOpts = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -75,7 +75,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -115,7 +115,7 @@ export const createContainerCourse = (token, userInfo, formData, next) => async 
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -137,7 +137,7 @@ export const deleteCourseContainer = ({ courseId, token, next }) => async (dispa
     }
   });
   // console.log('[deleteCourse] response', response);
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -166,7 +166,7 @@ export const getCourseListVM = (user, token) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -187,7 +187,7 @@ export const getImagesOptsVM = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -213,7 +213,7 @@ export const getFlavorsOptsVM = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -238,7 +238,7 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -281,7 +281,7 @@ export const submitCourseVM = (token, userInfo, formData, next) => async (dispat
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -304,7 +304,7 @@ export const getCourseListAll = () => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -321,7 +321,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -343,7 +343,7 @@ export const getCourseDetail = (courseId, token, next) => async (dispatch) => {
 
   // console.log('[getCourseDetail] response', response);
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     console.error('getCourseDetail 失敗');
   }
 
@@ -370,7 +370,7 @@ export const searchCourse = query => async (dispatch) => {
 
   // console.log('[searchCourse] response', response);
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };

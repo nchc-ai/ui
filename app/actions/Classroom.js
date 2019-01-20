@@ -32,7 +32,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -40,7 +40,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
 };
 
 // [List] classrooms
-export const getClassroomList = (user, token) => async (dispatch) => {
+export const getClassroomList = ({ token, userInfo }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -51,13 +51,13 @@ export const getClassroomList = (user, token) => async (dispatch) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({
-        user
+        user: userInfo.username,
       }),
       types: types.GET_CLASSROOM_LIST
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -81,7 +81,7 @@ export const getPublicClassrooms = ({ token }) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 };
@@ -102,8 +102,35 @@ export const getClassroomDetail = (id, token) => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  }
+};
+
+
+/**
+ * Delete classroom with assigned id.
+ * @param {String} id Classroom id for identfity.
+ * @param {String} token Token for header
+ */
+export const deleteClassroom = ({ id, token }) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/classroom/delete/${id}`,
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.DELETE_CLASSROOM
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  } else {
+    notify.show('刪除教室成功', 'success', TOAST_TIMING);
   }
 };
 
@@ -122,7 +149,7 @@ export const loadCourseTagsForRoomCreate = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -147,7 +174,7 @@ export const loadTeacherTagsForRoomCreate = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 
@@ -172,7 +199,7 @@ export const loadStudentTagsForRoomCreate = token => async (dispatch) => {
     }
   });
 
-  if (_.isUndefined(response) || response.payload.error) {
+  if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
   }
 

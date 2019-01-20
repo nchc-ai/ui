@@ -8,7 +8,7 @@ import { MdMoreVert, MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';
 
-const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, isAdmin, addJob, isLoading }) => (
+const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, addJob, isLoading, actionMode }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -84,32 +84,40 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                       datum.type === 'actions' ?
                         <div>
                           {
-                            isAdmin ?
                               <button className="action-open-btn">
                                 <MdMoreVert />
                               </button>
-                            :
-                              <button className="btn-student" onClick={e => startMethod(e, d)}> 開始課程 </button>
                           }
                           <ul className="action-menu">
-                            <li>
-                              <button className="action-btn" onClick={e => startMethod(e, d)}>
-                                <span className="action-word">開始</span>
-                                <MdAdd />
-                              </button>
-                            </li>
-                            <li>
-                              <button className="action-btn" onClick={e => editMethod(e, d)}>
-                                <span className="action-word">編輯</span>
-                                <MdEdit />
-                              </button>
-                            </li>
-                            <li>
-                              <button className="action-btn" onClick={e => deleteMethod(e, d)}>
-                                <span className="action-word">刪除</span>
-                                <MdDelete />
-                              </button>
-                            </li>
+                            {
+                              actionMode === 'start_only' || actionMode === 'full' ?
+                              <li>
+                                <button className="action-btn" onClick={e => startMethod(e, d)}>
+                                  <span className="action-word">開始</span>
+                                  <MdAdd />
+                                </button>
+                              </li> : null
+                            }
+
+                            {
+                              actionMode === 'edit_only' || actionMode === 'edit_delete' || actionMode === 'full'?
+                              <li>
+                                <button className="action-btn" onClick={e => editMethod(e, d)}>
+                                  <span className="action-word">編輯</span>
+                                  <MdEdit />
+                                </button>
+                              </li> : null
+                            }
+
+                            {
+                              actionMode === 'delete_only' || actionMode === 'edit_delete' || actionMode === 'full'?
+                              <li>
+                                <button className="action-btn" onClick={e => deleteMethod(e, d)}>
+                                  <span className="action-word">刪除</span>
+                                  <MdDelete />
+                                </button>
+                              </li> : null
+                            }
                           </ul>
                         </div>
                       :

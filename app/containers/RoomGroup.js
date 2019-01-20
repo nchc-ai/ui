@@ -41,10 +41,7 @@ class RoomGroup extends Component {
       userInfo
     } = nextProps;
     if (token) {
-      roomAction.getClassroomList({
-        user: userInfo.username,
-        token
-      });
+      roomAction.getClassroomList({ token, userInfo });
     } else {
       notify.show('您 token 有誤，請重新登入', 'error', 1800);
     }
