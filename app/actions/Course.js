@@ -123,8 +123,7 @@ export const createContainerCourse = (token, userInfo, formData, next) => async 
   });
 
   if (_.isUndefined(response) || response.error) {
-    console.log('response', response);
-    notify.show(_.get(response, 'payload.message', 'createContainerCourse 錯誤失敗'), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', '課程建立失敗'), 'error', TOAST_TIMING);
   } else if (next) {
     next();
   }
@@ -205,7 +204,7 @@ export const getImagesOptsVM = token => async (dispatch) => {
   };
 };
 
-// [select] load flavors 
+// [select] load flavors
 export const getFlavorsOptsVM = token => async (dispatch) => {
 
   // console.log('token', token);
@@ -290,7 +289,7 @@ export const submitCourseVM = (token, userInfo, formData, next) => async (dispat
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', 'vm課程建立失敗'), 'error', TOAST_TIMING);
   }
 
   next();

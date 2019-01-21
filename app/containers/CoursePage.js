@@ -129,6 +129,7 @@ class CoursePage extends Component {
     // Progress.hide();
     this.fetchData(this.props);
     this.props.history.push('/user/ongoing-course/list');
+    notify.show('課程建立成功', 'success', 1800);
   }
 
   /**
