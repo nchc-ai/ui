@@ -224,10 +224,6 @@ export const dayToSecond = (day) => 3600 * 24 * day;
 // 存取token至localStorage
 ----------------------------*/
 
-export const setToken = (idToken) => {
-  // Saves user token to localStorage
-  localStorage.setItem('id_token', idToken);
-};
 
 export const getToken = () => localStorage.getItem('id_token');
 

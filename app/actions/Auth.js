@@ -1,11 +1,12 @@
 
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
+import Cookies from 'js-cookie';
 import * as types from './actionTypes';
 import { notify } from 'react-notify-toast';
 import { TOAST_TIMING } from '../constants';
 import { API_URL, API_VERSION, AUTH_PROVIDER_URL } from '../config/api';
-import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData } from '../libraries/utils';
+import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData, dayToSecond } from '../libraries/utils';
 
 
 // 設定userInfo
@@ -32,6 +33,14 @@ export const resetAuth = () => ({
   userInfo: {}
 });
 
+export const retrieveAuthFromSession = ({ tokenObj, userInfo, isLogin }) => ({
+  type: types.RETRIEVE_AUTH_FROM_SESSION,
+  payload: {
+    tokenObj,
+    userInfo,
+    isLogin
+  }
+});
 
 // Health Check > check-database
 export const checkDatabase = () => async (dispatch) => {
@@ -68,7 +77,33 @@ export const getToken = (codeObj, next) => async (dispatch) => {
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "get token fail"), 'error', TOAST_TIMING);
   } else if (next) {
-    next(response.payload.token);
+    next(response.payload);
+  }
+};
+
+/**
+ * Refresh if token is invalid.
+ * @param {String} refreshToken - Token to be refresh.
+ * @param {Function} next - Callback function.
+ */
+export const refreshToken = ({ refresh_token, next }) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/proxy/refresh`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        refresh_token
+      }),
+      types: types.REFRESH_TOKEN
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, "payload.response.message", "refresh token fail"), 'error', TOAST_TIMING);
+  } else if (next) {
+    Cookies.set('token_obj', response.payload, { path: '/', maxAge: dayToSecond(1) });
+    next()
   }
 };
 

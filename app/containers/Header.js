@@ -26,59 +26,70 @@ import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png'
 
 class Header extends Component {
 
-  componentWillMount() {
-  }
-
   onGetCodeSuccess = (codeObj) => {
-    const {
-      authAction,
-      history
-    } = this.props;
-
-    console.log('onGetCodeSuccess', codeObj);
-    authAction.getToken(codeObj, this.onGetTokenSuccess);
+    this.props.authAction.getToken(codeObj, this.onGetTokenSuccess);
   }
 
   onGetCodeFail = (err) => {
     notify.show('Error: code not found', 'error', 1800);
   }
 
-  onGetTokenSuccess = (token) => {
-    console.log('onGetTokenSuccess', token);
-    const {
-      history,
-      authAction
-    } = this.props;
-    // 寫入 token 到 cookie 跟 state ， 打 api 獲取 userInfo
-    Cookies.set('token', token, { path: '/', maxAge: dayToSecond(1) });
-    authAction.setUserToken({ token });
-
-    authAction.getUserInfo({ token, next: this.onGetUserInfoSuccess });
+  /**
+   * Set token to cookie and state then get user info.
+   * @param {String} token Token to retrieve user info.
+   */
+  onGetTokenSuccess = (tokenObj) => {
+    Cookies.set('token_obj', tokenObj, { path: '/', maxAge: dayToSecond(1) });
+    this.props.authAction.getUserInfo({ token: tokenObj.token, next: this.onGetUserInfoSuccess });
   }
 
+  /**
+   * Set user info and isLogin state to both cookie and state then redirect by role.
+   * @param {String} token Token to retrieve user info.
+   */
   onGetUserInfoSuccess = (userInfo) => {
     const {
       history,
       authAction
     } = this.props;
-    // 寫入 userInfo & isLogin 到 cookie 跟 state
-    console.log('[userInfo] userInfo', userInfo);
+
     Cookies.set('user_info', userInfo, { path: '/', maxAge: dayToSecond(1) });
     Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
-
-    authAction.setUserInfo({ userInfo });
-    authAction.setLoginState(true);
 
     const redirectUrl = redirectUrlWithRole({ role: userInfo.role });
     history.push(redirectUrl);
   }
+
+  /**
+   * Sync userinfo and token from cookie to state.
+   */
+  syncCookieToState = () => {
+    const userInfo = Cookies.getJSON('user_info');
+    const tokenObj = Cookies.getJSON('token_obj');
+
+    this.props.authAction.retrieveAuthFromSession({
+      tokenObj,
+      userInfo,
+      isLogin: true,
+    });
+  }
+
+  /**
+   * Refresh token and set in cookie.
+   * Todo: Caculate the expired time of token.
+   */
+  refreshToken = () => {
+    const tokenObj = Cookies.getJSON('token_obj');
+    this.props.authAction.refreshToken({ refresh_token: tokenObj.refresh_token, next: () => this.props.syncCookieToState });
+  }
+
 
   logout = () => {
     const {
       authAction,
       token
     } = this.props;
-    authAction.logout({token, next: this.onLogoutSuccess});
+    authAction.logout({ token, next: this.onLogoutSuccess});
   }
 
   onLogoutSuccess = () => {
@@ -92,7 +103,7 @@ class Header extends Component {
 
     Cookies.set('is_login', false);
     Cookies.set('user_info', {});
-    Cookies.set('token', '');
+    Cookies.set('token_obj', {});
 
     history.push('/');
   }
@@ -111,7 +122,11 @@ class Header extends Component {
         </Link>
 
         <div className="header-container">
-          <SetUserInfo history={history} />
+          <SetUserInfo
+            history={history}
+            syncCookieToState={this.syncCookieToState}
+            refreshToken={this.refreshToken}
+          />
           {/* <TopBar userInfo={userInfo} isLogin={isLogin} offline={offline} /> */}
           <Row>
             <Col md={{ size: 7 }} >

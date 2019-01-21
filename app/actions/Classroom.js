@@ -60,7 +60,7 @@ export const upladStudentsCSV = ({ token, formData }) => async (dispatch) => {
 };
 
 // [List] classrooms
-export const getClassroomList = ({ token, userInfo }) => async (dispatch) => {
+export const getClassroomList = ({ token, userInfo, next }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
