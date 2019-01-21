@@ -33,7 +33,7 @@
           justify-items: center;
 
           .job-card__mask-options {
-            width: 180px;
+            width: 90px;
             display: flex;
             flex-direction: row;
             margin-left: auto;
@@ -102,6 +102,18 @@
             cursor: pointer;
           }
 
+          .btn-camera {
+            display: block;
+            outline: none;
+            border: none;
+            color: rgba(15, 26, 26, 0.5);
+            position: absolute;
+            float: right;
+            right: 30px;
+            top: 7px;
+            cursor: pointer;
+          }
+
           .job-card-status {
             margin-top: 32px;
             margin-bottom: 12px;
@@ -136,7 +148,7 @@
           }
 
           .job-card-id {
-            margin-bottom: 12px;
+            margin-bottom: 30px;
             color: $ailab-primary-dark-text;
             font-size: 16px;
             font-weight: 600;
@@ -144,12 +156,8 @@
             font-stretch: normal;
             line-height: normal;
             letter-spacing: 1px;
-            cursor: pointer;
+            cursor: default;
 
-            &:hover {
-              text-decoration: underline;
-              color: #6EC7CF;
-            }
           }
 
           .job-card-id--disable {
@@ -163,21 +171,23 @@
             word-break: break-all;
 
             .job-card-link {
-              .divide-line {
-                @include margin(7px);
-                cursor: default;
-              }
 
-              a {
+              a, span {
                 font-size: 14px;
                 color: $ailab-primary-dark-text;
                 opacity: 0.8;
                 letter-spacing: 1px;
+                cursor: pointer;
 
                 &:hover {
                   opacity: 1;
                   text-decoration: underline;
                 }
+              }
+
+              .divide-line {
+                @include margin(7px);
+                cursor: default;
               }
 
               &:nth-last-child(1) {

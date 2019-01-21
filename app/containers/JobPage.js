@@ -15,7 +15,8 @@ import CommonPageContent from '../components/CommonPageContent';
 class JobPage extends Component {
 
   state = {
-    isOptionsOpen: false
+    isOptionsOpen: false,
+    copiedValue: ""
   }
 
   componentWillMount() {
@@ -36,24 +37,28 @@ class JobPage extends Component {
 
   }
 
-  openCardMask = () => {
+  openCardMask = (e, service) => {
 
     const {
       userInfo
     } = this.props;
+
+    console.log('service', service);
     // 在這邊要判斷是老師 && type 為 vm 才可以開
-    this.setState({ isOptionsOpen: true });
+    if (service) {
+      this.setState({ isOptionsOpen: true, copiedValue: service.value });
+    }
   }
 
   leaveCardOptions = () => {
     this.setState({ isOptionsOpen: false });
   }
   getCopiedText = () => {
-    return '49a31009-7d1b-4ff2-badd-e8c717e2256c';
+    return this.state.copiedValue;
   }
 
   onCopySuccess = () => {
-    notify.show("已成功複製此工作分享連結", 'success', TOAST_TIMING);
+    notify.show(`已成功複製 ${this.state.copiedValue}`, 'success', TOAST_TIMING);
   }
 
   addJob() {
@@ -133,7 +138,13 @@ class JobPage extends Component {
         "name": "mage process",
         "service": [
           {
-            "label": "jupyter",
+            "label": "SSH",
+            "value": "http://140.110.5.22:30010"
+          }, {
+            "label": "VNC",
+            "value": "http://140.110.5.22:30010"
+          }, {
+            "label": "Share path",
             "value": "http://140.110.5.22:30010"
           }
         ],
@@ -189,17 +200,18 @@ class JobPage extends Component {
                                       </Clipboard>
                                       <p>複製網址</p>
                                     </li>
-                                    <li>
-                                      <button onClick={e => this.snapshotJob(e, thumb)}>
-                                        <FaCamera/>
-                                      </button>
-                                      <p>儲存映像檔</p>
-                                      </li>
                                   </ul>
                                 </div>
                                 {/* card */}
                                 <div className="job-card">
+
+                                  {/* delete button */}
                                   <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
+
+                                  {/* snapshot button */}
+                                  <button className="btn-camera" onClick={e => this.snapshotJob(e, thumb)}>
+                                    <FaCamera/>
+                                  </button>
                                   <p className="job-card-status">
                                     <span className={`light light-${thumb.status}`} />
                                     <span className="status-word">
@@ -207,21 +219,26 @@ class JobPage extends Component {
                                     </span>
                                   </p>
 
-                                  <p className={`job-card-id ${ userInfo.role !== 'teacher' ? "job-card-id--disable" : null}`} onClick={this.openCardMask}>{thumb.id}</p>
+                                  <p className={`job-card-id ${ userInfo.role !== 'teacher' ? "job-card-id--disable" : null}`} >{thumb.id}</p>
 
                                   <div className="job-card-link-li">
                                     {
                                       thumb.service ?
                                       thumb.service.map(
                                         (service, k) => (
-                                          <span key={k} className="job-card-link">
-                                            <a
-                                              href={service.value}
-                                              target="_blank"
-                                              rel="noopener noreferrer"
-                                            >
-                                              {service.label}
-                                            </a>
+                                          <span key={k} className="job-card-link" onClick={this.openCardMask}>
+                                            {
+                                              service.label === 'Share path' ?
+                                                <span onClick={e => this.openCardMask(e, service)} >{service.label}</span>
+                                              :
+                                                <a
+                                                  href={service.value}
+                                                  target="_blank"
+                                                  rel="noopener noreferrer"
+                                                >
+                                                  {service.label}
+                                                </a>
+                                            }
                                             <span className="divide-line">|</span>
                                           </span>
                                         )
