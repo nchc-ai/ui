@@ -65,9 +65,12 @@ class CoursePage extends Component {
       userInfo,
       token
     } = nextProps;
-    if (/(edit|detail)/.test(match.params.action)) {
+
+    const action = _.get(nextProps, 'match.params.action', 'list');
+
+    if (/(edit|detail)/.test(action)) {
       // courseAction.getCourseDetail()
-    } else if (match.params.action === 'list') {
+    } else if (action === 'list') {
       // TODO: 要 merge 成一起的 list
       courseAction.getCourseListVM(userInfo.username, token);
       courseAction.getCourseListCon(userInfo.username, token);

@@ -44,13 +44,16 @@ class RoomPage extends Component {
       token,
       match
     } = nextProps;
-    if (/(edit|detail)/.test(match.params.action)) {
+
+    const action = _.get(nextProps, 'match.params.action', 'list');
+
+    if (/(edit|detail)/.test(action)) {
       roomAction.getClassroomDetail({
         token,
         id: match.params.roomId,
         onSuccess: this.initializeEditForm
       });
-    } else if (match.params.action === 'list') {
+    } else if (action === 'list') {
       roomAction.getPublicClassrooms({ token });
     }
   }
