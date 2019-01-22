@@ -86,7 +86,7 @@ export const getToken = (codeObj, next) => async (dispatch) => {
  * @param {String} refreshToken - Token to be refresh.
  * @param {Function} next - Callback function.
  */
-export const refreshToken = ({ refresh_token, next }) => async (dispatch) => {
+export const refreshToken = ({ refresh_token, next, fail }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/refresh`,
@@ -101,9 +101,10 @@ export const refreshToken = ({ refresh_token, next }) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "refresh token fail"), 'error', TOAST_TIMING);
+    fail();
   } else if (next) {
     Cookies.set('token_obj', response.payload, { path: '/', maxAge: dayToSecond(1) });
-    next()
+    next();
   }
 };
 

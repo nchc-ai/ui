@@ -80,7 +80,11 @@ class Header extends Component {
    */
   refreshToken = () => {
     const tokenObj = Cookies.getJSON('token_obj');
-    this.props.authAction.refreshToken({ refresh_token: tokenObj.refresh_token, next: () => this.props.syncCookieToState });
+    this.props.authAction.refreshToken({
+      refresh_token: _.get(tokenObj, "refresh_token"),
+      next: () => this.props.syncCookieToState,
+      fail: () => this.props.authAction.setLoginState(false)
+    });
   }
 
 
