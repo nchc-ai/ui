@@ -109,7 +109,7 @@ class RoomPage extends Component {
   /**
    * Edit - Called when clicking return buttton in room edit page.
    */
-  cancelRoomEdit = () => {
+  onCommonBackMethod = () => {
     this.props.history.push(`/user/classroom-manage/list`)
   }
 
@@ -131,7 +131,7 @@ class RoomPage extends Component {
   // 學生
   loadStudentTagsCreateRoom = () => this.props.roomAction.loadStudentTagsForRoomCreate(this.props.token);
 
-  handleSubmitClassroomCreate = (formData) => {
+  onCreateClassroomSubmit = (formData) => {
     const {
       roomAction,
       token,
@@ -230,16 +230,16 @@ class RoomPage extends Component {
                 <hr className="my-2" />
 
                 <FormButtons
-                  cancelName="上一頁"
+                  cancelName="回教室管理"
                   submitName="開始上課"
-                  backMethod={this.cancelClassroomDetail}
+                  backMethod={this.onCommonBackMethod}
                   nextMethod={this.submitClassroomDetail}
                 />
               </div>
             </CommonPageContent>
           </Route>
 
-          {/* 教室新建 && 編輯 */}
+          {/* 教室新建 */}
           <Route path="/user/classroom-manage/create">
             <CommonPageContent
               className="room-page-bg"
@@ -249,7 +249,7 @@ class RoomPage extends Component {
               <Form
                 model="forms.classroom"
                 className="room-create-form-comp"
-                onSubmit={formData => this.handleSubmitClassroomCreate(formData)}
+                onSubmit={formData => this.onCreateClassroomSubmit(formData)}
               >
                 {/* name | description | schedules | courses */}
                 <FormGroups
@@ -272,7 +272,7 @@ class RoomPage extends Component {
                 <FormButtons
                   cancelName="回教室管理"
                   submitName="建立教室"
-                  backMethod={this.cancelRoomEdit}
+                  backMethod={this.onCommonBackMethod}
                   isForm
                 />
               </Form>
@@ -309,9 +309,9 @@ class RoomPage extends Component {
                 />
 
                 <FormButtons
-                  cancelName="回課程列表"
-                  submitName="修改"
-                  backMethod={this.cancelRoomEdit}
+                  cancelName="回教室管理"
+                  submitName="修改此教室"
+                  backMethod={this.onCommonBackMethod}
                   isForm
                 />
               </Form>

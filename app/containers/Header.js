@@ -104,16 +104,15 @@ class Header extends Component {
       authAction,
       token
     } = this.props;
-    authAction.logout({ token, next: this.onLogoutSuccess});
+    authAction.logout({ token, next: this.afterLogout });
   }
 
-  onLogoutSuccess = () => {
+  afterLogout = () => {
     const {
       authAction,
       history,
     } = this.props;
-    // 重置 state > 重置 cookie > 重置 token
-    // 重置 state
+
     authAction.resetAuth();
 
     Cookies.set('is_login', false);

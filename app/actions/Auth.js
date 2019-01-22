@@ -150,7 +150,9 @@ export const logout = ({ token, next }) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "logout fail"), 'error', TOAST_TIMING);
-  } else if (next) {
+  }
+
+  if (next) {
     next();
   }
 };

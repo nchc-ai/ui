@@ -225,7 +225,7 @@ class CoursePage extends Component {
                 startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
-                actionMode="edit_delete"
+                actionMode="full"
               />
 
             </CommonPageContent>
