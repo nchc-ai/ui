@@ -147,7 +147,7 @@ class RoomGroup extends Component {
                         : '暫無安排'
                     }
                   </h5>
-                  {/* <h5>學生人數：{classroom.studentCount}</h5> */}
+                  <h5>學生人數：{classroom.studentCount}</h5>
                 </div>
                 <div className="course-list">
                   {
