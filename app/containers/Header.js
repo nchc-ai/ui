@@ -176,10 +176,9 @@ class Header extends Component {
 
               {
                 !isLogin?
-                  <MyoauthButton
-                    onSuccess={this.onGetCodeSuccess}
-                    onFailure={this.onGetCodeFail}
-                  ></MyoauthButton>
+                  <Link to="/login">
+                    <button>登入</button>
+                  </Link>
                 :
                   null
               }

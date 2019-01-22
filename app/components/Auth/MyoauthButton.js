@@ -16,7 +16,7 @@ class MyoauthButton extends Component {
   }
 
   static defaultProps = {
-    buttonText: '登入 / 註冊',
+    buttonText: '登入',
     scope: 'user:email',
     onRequest: () => {},
     onSuccess: () => {},

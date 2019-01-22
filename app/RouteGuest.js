@@ -38,6 +38,8 @@ class RouteGuest extends Component {
           <Route exact path="/intro/:page/:type" component={IntroPage} />
           <Route exact path="/intro/:page" component={IntroPage} />
           <Route exact path="/contact" component={ContactPage} />
+          <Route exact path="/signup" component={AuthPage} />
+          <Route exact path="/login" component={AuthPage} />
           <Route exact path="/logout" component={Logout} />
           <Route exact path="/" component={IndexPage} />
           <Route exact path="*" component={StaticPage} />

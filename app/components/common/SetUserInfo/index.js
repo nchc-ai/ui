@@ -29,7 +29,7 @@ class SetUserInfo extends Component {
     // 4. 若已登入則線上更新 userInfo && 更新 token
     if (isLogin) {
       this.props.syncCookieToState();
-      this.props.refreshToken();
+      // this.props.refreshToken();
     }
   }
   render = () => (<span className="dn" />);
