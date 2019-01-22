@@ -52,10 +52,13 @@ class IntroPage extends Component {
     const type = _.get(match, 'params.type');
 
     // console.log('type', match, type);
-    if (type === 'basic' || type === 'advance') {
+    if (/(basic|advance)/.test(type)) {
       courseAction.getCourseListByLevel(type);
     } else if (type === 'detail') {
-      courseAction.getCourseDetail(match.params.courseId, token);
+      courseAction.getCourseDetail({
+        token,
+        courseId: match.params.courseId
+      });
     } else if (type === 'search') {
       courseAction.searchCourse(match.params.courseId);
     }

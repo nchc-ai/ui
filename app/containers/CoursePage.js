@@ -65,10 +65,13 @@ class CoursePage extends Component {
       userInfo,
       token
     } = nextProps;
-
-    courseAction.getCourseListVM(userInfo.username, token);
-    courseAction.getCourseListCon(userInfo.username, token);
-    // TODO: 要 merge 成一起的 list
+    if (/(edit|detail)/.test(match.params.action)) {
+      // courseAction.getCourseDetail()
+    } else if (match.params.action === 'list') {
+      // TODO: 要 merge 成一起的 list
+      courseAction.getCourseListVM(userInfo.username, token);
+      courseAction.getCourseListCon(userInfo.username, token);
+    }
 
   }
   // 啟動課程

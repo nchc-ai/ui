@@ -122,7 +122,10 @@ class UserPage extends Component {
       resetForm();
     } else if (part === 'course' && action === 'edit') {
       resetForm();
-      courseAction.getCourseDetail(match.params.courseId, token, this.setDefaultForm);
+      courseAction.getCourseDetail({
+        token,
+        courseId: match.params.courseId
+      });
       // TODO: 應在此先change forms 表單
       // 先load 此course資訊(courseDetail)> next > change到formsData裡
       // this.changeForm(formObj, addCourse)

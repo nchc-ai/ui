@@ -333,7 +333,7 @@ const FormGroups = ({
                       </div>
                     </div>
                   ) }
-                  onChange={content => changeVal(content, d.name)}
+                  onChange={content => changeVal(content, d.name, d.target)}
                   hideLabels
                 />
               </div>
@@ -346,7 +346,7 @@ const FormGroups = ({
               d.inputType === 'file'
               ?
               <div className="form-input form-group-csv">
-                <FileUpload />
+                <FileUpload onListChange={content => changeVal(content, d.name, d.target)}/>
               </div>
               :
                 null

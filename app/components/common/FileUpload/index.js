@@ -19,7 +19,11 @@ class FileUpload extends Component {
     const csvFile = e.target.files[0];
   }
 
-  onListChange = (e) => {
+  onListChange = (students) => {
+    const studentsList = students.map(d => d.valueItem)
+
+    console.log('students', studentsList)
+    this.props.onListChange(studentsList);
   }
 
   handleUploadFile = (ev) => {
@@ -68,7 +72,7 @@ class FileUpload extends Component {
                 </div>
               </div>
             ) }
-            onChange={content => this.onListChange(content)}
+            onChange={students => this.onListChange(students)}
             hideLabels
           />
           :
@@ -79,7 +83,6 @@ class FileUpload extends Component {
             <button
               onClick={this.handleUploadFile}
               className="btn btn-success"
-              type="submit"
             >
               上傳 csv 檔案
             </button>

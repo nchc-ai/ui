@@ -28,15 +28,13 @@ class RoomPage extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.match.url !== this.props.match.url || nextProps.isSubstituating !== this.props.isSubstituating) {
       window.scrollTo(0, 0);
+      nextProps.resetForm('classroom');
       this.fetchData(nextProps);
-      if(nextProps.match.params.type !== 'search') {
-        nextProps.resetForm('globalSearch');
-      }
     }
   }
 
   componentWillUnmount() {
-    this.props.resetForm('globalSearch');
+    this.props.resetForm('classroom');
   }
 
   fetchData = (nextProps) => {
@@ -46,11 +44,32 @@ class RoomPage extends Component {
       token,
       match
     } = nextProps;
-    if (match.params.action === 'detail') {
-      roomAction.getClassroomDetail(match.params.roomId, token);
+    if (/(edit|detail)/.test(match.params.action)) {
+      roomAction.getClassroomDetail({
+        token,
+        id: match.params.roomId,
+        onSuccess: this.initializeEditForm
+      });
     } else if (match.params.action === 'list') {
       roomAction.getPublicClassrooms({ token });
     }
+  }
+
+  /**
+   * Initialize edit form for classroom.
+   * @param {Object} classroom Classroom object for initialization.
+   */
+  initializeEditForm = (classroom) => {
+
+    const initialData = {
+      ...classroom,
+      courses: [],
+      teachers: [],
+      students: []
+    }
+
+    console.log('classroom', classroom)
+    this.props.changeForm(initialData, 'classroom');
   }
 
   startCourse = () => {
@@ -138,14 +157,18 @@ class RoomPage extends Component {
       userInfo
     } = this.props;
 
+    console.log('form', formData)
+
+    const courses =_.get(formData, 'courses', []).map(d => d.value);
+    const students = _.get(formData, 'students', []).map(d => d.value);
+    const teachers = _.get(formData, 'teachers', []).map(d => d.value);
+
     const modifiedData = {
       ...formData,
-      courses: formData.courses.map(d => d.value),
-      students: formData.students.map(d => d.value),
-      teachers: formData.teachers.map(d => d.value)
+      courses,
+      students,
+      teachers
     }
-
-    console.log('modifiedData', modifiedData);
 
     roomAction.createClassroom({
       token,
@@ -281,7 +304,6 @@ class RoomPage extends Component {
           </Route>
 
           {/* 教室編輯 */}
-          {/* TODO: 這邊需要有預設值 編輯功能 */}
           <Route exact path="/user/classroom-manage/edit/:courseId">
             <CommonPageContent
               className="room-page-bg"

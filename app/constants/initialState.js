@@ -3,12 +3,14 @@ export const initialGlobalSearchState = {
 };
 
 export const initialClassroomState = {
+  id: '',
   name: '',
-  introduction: '',
-  period: '',
-  courses: '',
-  teachers: '',
-  students: ''
+  description: '',
+  public: false,
+  schedules: [],
+  courses: [],
+  teachers: [],
+  students: []
 };
 
 export const initialCourseConState = {

@@ -112,8 +112,11 @@ export const getPublicClassrooms = ({ token }) => async (dispatch) => {
 };
 
 
-// [Detail] classrooms
-export const getClassroomDetail = (id, token) => async (dispatch) => {
+/**
+ * Get classroom detail for both detail and edit page.
+ * @param {String} token - The required token for calling API.
+ */
+export const getClassroomDetail = ({ id, token, onSuccess }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -129,6 +132,8 @@ export const getClassroomDetail = (id, token) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
+  } else if (onSuccess) {
+    onSuccess(response.payload.classroom)
   }
 };
 
