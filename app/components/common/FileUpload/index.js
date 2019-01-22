@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { KeyValue } from 'react-key-value';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
 
 class FileUpload extends Component {
@@ -8,13 +9,17 @@ class FileUpload extends Component {
   constructor(props) {
     super(props);
       this.state = {
-        uploadStatus: false
+        uploadStatus: false,
+        csvList: []
       }
       this.uploadInput = React.createRef();
   }
 
   onFileChange = (e) => {
     const csvFile = e.target.files[0];
+  }
+
+  onListChange = (e) => {
   }
 
   handleUploadFile = (ev) => {
@@ -35,9 +40,13 @@ class FileUpload extends Component {
   }
 
   render() {
+    const {
+      students
+    } = this.props;
+
     return(
-      <div className="container">
-          <div className="form-group">
+      <div className="container form-group">
+          <div>
             <input
               className="form-control"
               ref={this.uploadInput}
@@ -45,14 +54,39 @@ class FileUpload extends Component {
               type="file" />
           </div>
 
-          <button onClick={this.handleUploadFile} className="btn btn-success" type="submit">上傳</button>
+          {
+            students.length > 0 ?
+            <KeyValue
+              rows={students}
+              customAddButtonRenderer={ (handleAddNew) => (
+                <div>
+                  <div onClick={ handleAddNew } >
+                    <span>+</span> 新增一筆
+                  </div>
+                </div>
+              ) }
+              onChange={content => this.onListChange(content)}
+              hideLabels
+            />
+            :
+            null
+          }
+
+          <button
+            onClick={this.handleUploadFile}
+            className="btn btn-success"
+            type="submit"
+          >
+            上傳 csv 檔案
+          </button>
       </div>
     )
   }
 }
 
-const mapStateToProps = ({ Auth }) => ({
+const mapStateToProps = ({ Auth, Classroom }) => ({
   token: Auth.token,
+  students: Classroom.students.data
 });
 
 export default compose(

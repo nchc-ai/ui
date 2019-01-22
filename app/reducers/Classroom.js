@@ -14,7 +14,10 @@ const InitialState = {
     isLoading: false,
     data: []
   },
-  csvFile: {}
+  students: {
+    isLoading: false,
+    data: []
+  }
 };
 
 
@@ -69,10 +72,23 @@ export default function Classroom(state = InitialState, action) {
         data: action.payload.classrooms
       }
     };
-  case actionTypes.SET_STUDENTS_CSV_FILE:
+  case actionTypes.UPLOAD_STUDENTS_CSV[LOADING]:
     return {
       ...state,
-      csvFile: action.payload.csvFile
+      students: {
+        ...state.students,
+        isLoading: true
+      }
+    };
+  case actionTypes.UPLOAD_STUDENTS_CSV[SUCCESS]:
+
+    const data = action.payload.users.map((d, i) => ({ keyItem: `${i + 1}`, valueItem: d }))
+    return {
+      ...state,
+      students: {
+        isLoading: false,
+        data
+      }
     };
   default:
     return state;

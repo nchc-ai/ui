@@ -33,14 +33,18 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 
   next();
 };
 
-// [List] classrooms
-export const upladStudentsCSV = ({ token, formData }) => async (dispatch) => {
+/**
+ * Upload csv file of students list for classroom.
+ * @param {String} token - The required token for calling API.
+ * @param {Object} formData - Form data with file format.
+ */
+export const upladStudentsCSV = ({ token, formData, next }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -56,6 +60,8 @@ export const upladStudentsCSV = ({ token, formData }) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '上傳 csv 檔案失敗', 'error', TOAST_TIMING);
+  } else {
+    notify.show('上傳 csv 成功', 'success', TOAST_TIMING);
   }
 };
 
@@ -78,7 +84,7 @@ export const getClassroomList = ({ token, userInfo, next }) => async (dispatch) 
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -86,7 +92,6 @@ export const getClassroomList = ({ token, userInfo, next }) => async (dispatch) 
  * Get public classroom for classroom management.
  * @param {String} token - The required token for calling API.
  */
-
 export const getPublicClassrooms = ({ token }) => async (dispatch) => {
 
   const response = await dispatch({
@@ -102,7 +107,7 @@ export const getPublicClassrooms = ({ token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -123,7 +128,7 @@ export const getClassroomDetail = (id, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -148,7 +153,7 @@ export const deleteClassroom = ({ id, token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   } else {
     notify.show('刪除教室成功', 'success', TOAST_TIMING);
   }
@@ -170,7 +175,7 @@ export const loadCourseTagsForRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -195,7 +200,7 @@ export const loadTeacherTagsForRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -220,7 +225,7 @@ export const loadStudentTagsForRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 
   return {

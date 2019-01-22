@@ -109,7 +109,7 @@ class RoomPage extends Component {
   /**
    * Edit - Called when clicking return buttton in room edit page.
    */
-  cancelRoomEdit() {
+  cancelRoomEdit = () => {
     this.props.history.push(`/user/classroom-manage/list`)
   }
 
@@ -270,8 +270,8 @@ class RoomPage extends Component {
                 />
 
                 <FormButtons
-                  cancelName="回課程列表"
-                  submitName="修改"
+                  cancelName="回教室管理"
+                  submitName="建立教室"
                   backMethod={this.cancelRoomEdit}
                   isForm
                 />

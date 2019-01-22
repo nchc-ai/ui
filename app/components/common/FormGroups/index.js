@@ -345,7 +345,7 @@ const FormGroups = ({
             {
               d.inputType === 'file'
               ?
-              <div>
+              <div className="form-input form-group-csv">
                 <FileUpload />
               </div>
               :
