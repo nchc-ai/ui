@@ -68,7 +68,6 @@ class RoomPage extends Component {
       students: []
     }
 
-    console.log('classroom', classroom)
     this.props.changeForm(initialData, 'classroom');
   }
 
@@ -122,8 +121,13 @@ class RoomPage extends Component {
       token
     } = this.props;
 
-    roomAction.deleteClassroom({ token, id: datum.id });
+    roomAction.deleteClassroom({ token, id: datum.id, onSuccess: this.onDeleteClassroomSuccess });
   }
+
+  onDeleteClassroomSuccess = () => {
+    this.fetchData(this.props);
+  }
+
 
   /**
    * Edit - Called when clicking return buttton in room edit page.

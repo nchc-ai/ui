@@ -143,7 +143,7 @@ export const getClassroomDetail = ({ id, token, onSuccess }) => async (dispatch)
  * @param {String} id Classroom id for identfity.
  * @param {String} token Token for header
  */
-export const deleteClassroom = ({ id, token }) => async (dispatch) => {
+export const deleteClassroom = ({ id, token, onSuccess }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -159,8 +159,9 @@ export const deleteClassroom = ({ id, token }) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
-  } else {
+  } else if(onSuccess) {
     notify.show('刪除教室成功', 'success', TOAST_TIMING);
+    onSuccess();
   }
 };
 
