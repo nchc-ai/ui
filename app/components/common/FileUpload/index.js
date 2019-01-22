@@ -46,39 +46,46 @@ class FileUpload extends Component {
 
     return(
       <div className="container form-group">
-          <div>
-            <input
-              className="form-control"
-              ref={this.uploadInput}
-              onChange={this.onFileChange}
-              type="file" />
-          </div>
-
-          {
-            students.length > 0 ?
-            <KeyValue
-              rows={students}
-              customAddButtonRenderer={ (handleAddNew) => (
-                <div>
-                  <div onClick={ handleAddNew } >
-                    <span>+</span> 新增一筆
-                  </div>
+        {
+          students.length === 0 ?
+            <div>
+              <input
+                className="form-control"
+                ref={this.uploadInput}
+                onChange={this.onFileChange}
+                type="file" />
+            </div>
+          : null
+        }
+        {
+          students.length > 0 ?
+          <KeyValue
+            rows={students}
+            customAddButtonRenderer={ (handleAddNew) => (
+              <div>
+                <div onClick={ handleAddNew } >
+                  <span>+</span> 新增一筆
                 </div>
-              ) }
-              onChange={content => this.onListChange(content)}
-              hideLabels
-            />
-            :
+              </div>
+            ) }
+            onChange={content => this.onListChange(content)}
+            hideLabels
+          />
+          :
+          null
+        }
+        {
+          students.length === 0 ?
+            <button
+              onClick={this.handleUploadFile}
+              className="btn btn-success"
+              type="submit"
+            >
+              上傳 csv 檔案
+            </button>
+          :
             null
-          }
-
-          <button
-            onClick={this.handleUploadFile}
-            className="btn btn-success"
-            type="submit"
-          >
-            上傳 csv 檔案
-          </button>
+        }
       </div>
     )
   }

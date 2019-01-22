@@ -123,37 +123,37 @@ class JobPage extends Component {
       userInfo
     } = this.props;
 
-    const mockJobs = [
-      {
-        "course_id": "b86b2893-b876-45c2-a3f6-5e099c15d638",
-        "dataset": [
-          "cifar-10",
-          "mnist"
-        ],
-        "gpu": 1,
-        "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
-        "image": "nvidia/caffe:latest",
-        "introduction": "markdown text with escape",
-        "level": "basic",
-        "name": "mage process",
-        "service": [
-          {
-            "label": "SSH",
-            "value": "http://140.110.5.22:30010"
-          }, {
-            "label": "VNC",
-            "value": "http://140.110.5.22:30010"
-          }, {
-            "label": "Share path",
-            "value": "http://140.110.5.22:30010"
-          }
-        ],
-        "startAt": "2018-06-25T09:24:38Z",
-        "status": "Ready"
-      }
-    ];
-    const data = mockJobs;
-    // const data = Job.list;
+    // const mockJobs = [
+    //   {
+    //     "course_id": "b86b2893-b876-45c2-a3f6-5e099c15d638",
+    //     "dataset": [
+    //       "cifar-10",
+    //       "mnist"
+    //     ],
+    //     "gpu": 1,
+    //     "id": "49a31009-7d1b-4ff2-badd-e8c717e2256c",
+    //     "image": "nvidia/caffe:latest",
+    //     "introduction": "markdown text with escape",
+    //     "level": "basic",
+    //     "name": "mage process",
+    //     "service": [
+    //       {
+    //         "label": "SSH",
+    //         "value": "http://140.110.5.22:30010"
+    //       }, {
+    //         "label": "VNC",
+    //         "value": "http://140.110.5.22:30010"
+    //       }, {
+    //         "label": "Share path",
+    //         "value": "http://140.110.5.22:30010"
+    //       }
+    //     ],
+    //     "startAt": "2018-06-25T09:24:38Z",
+    //     "status": "Ready"
+    //   }
+    // ];
+    // const data = mockJobs;
+    const data = Job.list;
 
     return (
       <div className="job-bg">
