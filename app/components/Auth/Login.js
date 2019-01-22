@@ -9,7 +9,7 @@ import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
 import githubBtnImg from '../../../public/images/auth/login-btn-github.png';
 
 
-const Login = ({ match, onClickLogin, onSuccess, onFailure }) => (
+const Login = ({ match, onSuccess, onFailure }) => (
   <div className="login-comp">
     <SectionTitle
       isTitleImg

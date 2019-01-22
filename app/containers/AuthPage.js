@@ -27,27 +27,48 @@ class AuthPage extends Component {
     }
   }
 
-  onClickLogin = () => {
-    // console.log('click');
-    this.props.authAction.login();
+  /**
+   * Get token with code argument after popup closed.
+   * @param {Object} codeObj Code passed from popup.
+   */
+  onGetCodeSuccess = (codeObj) => {
+    this.props.authAction.getToken(codeObj, this.onGetTokenSuccess);
   }
 
-  onLoginSuccess = (codeObj) => {
-    const {
-      authAction,
-      history
-    } = this.props;
-
-    Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
-    authAction.getToken(codeObj, this.setUserInfo);
+  /**
+   * Prevent from showing wrong error message.
+   * @param {String} err Error message from popup.
+   */
+  onGetCodeFail = (err) => {
+    if (err.toString() !== 'Error: The popup was closed') {
+      notify.show('Error: code not found', 'error', 1800);
+    }
   }
 
-  setUserInfo = (token) => {
+  /**
+   * Set token to cookie and state then get user info.
+   * @param {String} token Token to retrieve user info.
+   */
+  onGetTokenSuccess = (tokenObj) => {
+    Cookies.set('token_obj', tokenObj, { path: '/', maxAge: dayToSecond(1) });
+    this.props.authAction.getUserInfo({ token: tokenObj.token, next: this.onGetUserInfoSuccess });
+  }
+
+  /**
+   * Set user info and isLogin state to both cookie and state then redirect by role.
+   * @param {String} token Token to retrieve user info.
+   */
+  onGetUserInfoSuccess = (userInfo) => {
     const {
       history,
       authAction
     } = this.props;
-    authAction.getUserInfo(token, history, this.redirect);
+
+    Cookies.set('user_info', userInfo, { path: '/', maxAge: dayToSecond(1) });
+    Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
+
+    const redirectUrl = redirectUrlWithRole({ role: userInfo.role });
+    history.push(redirectUrl);
   }
 
   redirect = (payload) => {
@@ -59,11 +80,6 @@ class AuthPage extends Component {
     const redirectUrl = redirectUrlWithRole({ role: payload.role });
     history.push(redirectUrl);
   }
-
-  onLoginFail = (err) => {
-    notify.show('Error: code not found', 'error', 1800);
-  }
-
 
   // Signup
   onSignupSubmit = (formData) => {
@@ -100,9 +116,8 @@ class AuthPage extends Component {
         <Switch>
           <Route exact path="/login">
             <Login
-              onClickLogin={this.onClickLogin}
-              onSuccess={this.onLoginSuccess}
-              onFailure={this.onLoginFail}
+              onSuccess={this.onGetCodeSuccess}
+              onFailure={this.onGetCodeFail}
             />
           </Route>
           <Route exact path="/signup">

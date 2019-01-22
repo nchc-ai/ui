@@ -121,6 +121,9 @@ class CoursePage extends Component {
     notify.show('請確認是否填妥表單資料', 'error', 1800);
   }
 
+  /**
+   * Back to previous page when clicking cancel button.
+   */
   backMethodCommon = () => {
     this.props.history.goBack();
   }
@@ -294,7 +297,7 @@ class CoursePage extends Component {
                   {/* 下方按鈕 */}
                   <FormButtons
                     cancelName="上一頁"
-                    submitName="儲存"
+                    submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     isForm
                   />

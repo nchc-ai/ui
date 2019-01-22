@@ -109,7 +109,7 @@ export const refreshToken = ({ refresh_token, next, fail }) => async (dispatch) 
 };
 
 // Proxy > Introspection
-export const getUserInfo = ({ token, next }) => async (dispatch) => {
+export const getUserInfo = ({ token, next, failCb }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/introspection`,
@@ -124,6 +124,7 @@ export const getUserInfo = ({ token, next }) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "get user info fail"), 'error', TOAST_TIMING);
+    failCb();
   } else if (next) {
     next(response.payload);
   }

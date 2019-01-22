@@ -26,10 +26,19 @@ import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png'
 
 class Header extends Component {
 
+
+  /**
+   * Get token with code argument after popup closed.
+   * @param {Object} codeObj Code passed from popup.
+   */
   onGetCodeSuccess = (codeObj) => {
     this.props.authAction.getToken(codeObj, this.onGetTokenSuccess);
   }
 
+  /**
+   * Prevent from showing wrong error message.
+   * @param {String} err Error message from popup.
+   */
   onGetCodeFail = (err) => {
     if (err.toString() !== 'Error: The popup was closed') {
       notify.show('Error: code not found', 'error', 1800);
