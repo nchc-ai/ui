@@ -13,6 +13,7 @@ class SetUserInfo extends Component {
   componentWillMount() {
     const {
       authAction,
+      match
     } = this.props;
 
     const isLogin = Cookies.get('is_login') === 'true';
@@ -28,7 +29,9 @@ class SetUserInfo extends Component {
     authAction.setLoginState(isLogin);
 
     // 4. 試探性的驗證 token
-    this.props.authAction.getUserInfo({ token: tokenObj.token, failCb: this.onTokenFail });
+    if (match.url !== '/') {
+      this.props.authAction.getUserInfo({ token: tokenObj.token, failCb: this.onTokenFail });
+    }
 
     // 4. 若已登入則線上更新 userInfo && 更新 token
     if (isLogin) {
@@ -48,8 +51,9 @@ class SetUserInfo extends Component {
     Cookies.set('is_login', false);
     Cookies.set('user_info', {});
     Cookies.set('token_obj', {});
-
-    history.push('/login');
+    if (match.url !== '/') {
+      history.push('/login');
+    }
   }
 
   render = () => (<span className="dn" />);

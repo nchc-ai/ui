@@ -120,6 +120,7 @@ export const courseConForm = [
     isRequired: true
   }, {
     key: 3,
+    radioKey: 1,
     size: 8,
     name: 'level',
     target: 'courseCon',
@@ -129,10 +130,12 @@ export const courseConForm = [
     options: [
       {
         key: 1,
+        radioKey: '1-1',
         value: 'basic',
         label: '基礎'
       }, {
         key: 2,
+        radioKey: '1-2',
         value: 'advance',
         label: '進階'
       }
@@ -181,7 +184,7 @@ export const courseConForm = [
     isRequired: true
   }, {
     key: 6,
-    size: 8,
+    size: 4,
     name: 'datasets',
     target: 'courseCon',
     inputType: 'tags-input',
@@ -195,6 +198,7 @@ export const courseConForm = [
 export const courseConFormTwo = [
   {
     key: 1,
+    radioKey: 2,
     size: 8,
     name: 'accessType',
     target: 'courseCon',
@@ -204,10 +208,12 @@ export const courseConFormTwo = [
     options: [
       {
         key: 1,
+        radioKey: '2-1',
         value: 'Ingress',
         label: 'Ingress'
       }, {
         key: 2,
+        radioKey: '2-2',
         value: 'NodePort',
         label: 'NodePort'
       }

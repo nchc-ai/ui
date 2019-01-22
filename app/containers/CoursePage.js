@@ -139,7 +139,7 @@ class CoursePage extends Component {
    * Called when clicking submit button to create container course.
    * @param {Object} formData - The required token for calling API.
    */
-  handleSubmitCreateCon = (formData) => {
+  handleCreateContainerCourse = (formData) => {
     const {
       courseAction,
       token,
@@ -147,12 +147,12 @@ class CoursePage extends Component {
     } = this.props;
 
     console.log('[formData]', formData);
-    courseAction.createContainerCourse(
-      token,
-      userInfo,
-      formData,
-      this.onSubmitCourseSuccessCommon
-    );
+    // courseAction.createContainerCourse(
+    //   token,
+    //   userInfo,
+    //   formData,
+    //   this.onSubmitCourseSuccessCommon
+    // );
 
     // Progress.show();
     // TODO: 須送出 loading 時 disable submit button
@@ -273,7 +273,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseCon`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.handleSubmitCreateCon(submitData)}
+                  onSubmit={submitData => this.handleCreateContainerCourse(submitData)}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | introduction | level | image | GPU | datasets */}

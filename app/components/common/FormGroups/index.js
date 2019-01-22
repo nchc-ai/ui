@@ -124,7 +124,11 @@ const FormGroups = ({
             }
 
 
-            {/* 單選radio */}
+            {/**
+              *  Radio input
+              *    - radioKey {String} Each unique key in "same" from, radio only
+              *
+              */}
             {
               d.inputType === 'radio'
               ?
@@ -133,11 +137,11 @@ const FormGroups = ({
                     d.options.map(opt => (
                       <div key={opt.key} className={`radio-input-con ${d.className}`}>
                         <label
-                          htmlFor={`radio-input-${opt.key}`}
+                          htmlFor={`radio-input-${opt.radioKey}`}
                           className="radio-label"
                         >
                           <input
-                            id={`radio-input-${opt.key}`}
+                            id={`radio-input-${opt.radioKey}`}
                             type="radio"
                             className="radio-input"
                             value={opt.value}
@@ -198,6 +202,7 @@ const FormGroups = ({
                     value={_.get(targetForm, d.name)}
                     onChange={val => changeVal(val, d.name, d.target)}
                     options={d.options}
+                    placeholder={d.placeholder}
                     searchable={false}
                     clearable={false}
                   />
@@ -308,20 +313,30 @@ const FormGroups = ({
                 null
             }
 
-            {/* KeyValue */}
+            {/**
+              *  KeyValue input
+              *  - rows {Array} Initial datasets.
+              *  - customAddButtonRenderer {Function} Return template of button.
+              *  - onChange {Function} Triggered when input changed.
+              *  - hideLabels {Boolean} Hide label or not.
+              */}
             {
               d.inputType === 'keyValue'
               ?
-              <KeyValue
-                customAddButtonRenderer={ (handleAddNew) => (
-                  <div>
-                    <div onClick={ handleAddNew } >
-                      <span>+</span> 新增資料
+              <div className="form-input form-group-key-value">
+                <KeyValue
+                  rows={_.get(targetForm, d.name)}
+                  customAddButtonRenderer={ (handleAddNew) => (
+                    <div>
+                      <div onClick={ handleAddNew } >
+                        <span>+</span> 新增資料
+                      </div>
                     </div>
-                  </div>
-                ) }
-                onChange={content => changeVal(content, d.name)}
-              />
+                  ) }
+                  onChange={content => changeVal(content, d.name)}
+                  hideLabels
+                />
+              </div>
               :
                 null
             }

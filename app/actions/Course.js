@@ -104,7 +104,7 @@ export const createContainerCourse = (token, userInfo, formData, next) => async 
         user: userInfo.username,
         name: formData.name,
         accessType: formData.accessType.value || 'NodePort',
-        introduction: _.escape(formData.intro) || '',
+        introduction: _.escape(formData.introduction) || '',
         image: formData.image.value || '',
         level: formData.level.value || '',
         GPU: parseInt(formData.gpu.value, 10),

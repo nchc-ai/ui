@@ -18,7 +18,12 @@ export const initialCourseConState = {
   image: '',
   level: { label: '基礎', value: 'basic' },
   gpu: '',
-  ports: [],
+  ports: [
+    {
+      keyItem: '初始欄位1',
+      valueItem: '初始數值1'
+    }
+  ],
   datasets: [],
   accessType: { label: 'NodePort', value: 'NodePort' },
   writablePath: '',
