@@ -31,7 +31,9 @@ class Header extends Component {
   }
 
   onGetCodeFail = (err) => {
-    notify.show('Error: code not found', 'error', 1800);
+    if (err.toString() !== 'Error: The popup was closed') {
+      notify.show('Error: code not found', 'error', 1800);
+    }
   }
 
   /**

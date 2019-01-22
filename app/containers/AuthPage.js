@@ -61,7 +61,6 @@ class AuthPage extends Component {
   }
 
   onLoginFail = (err) => {
-    console.log('fail', err);
     notify.show('Error: code not found', 'error', 1800);
   }
 

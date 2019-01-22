@@ -26,14 +26,11 @@ class SetUserInfo extends Component {
     // 3. 同步 cookie 到登入 state
     authAction.setLoginState(isLogin);
 
-    // 4. 若已登入則線上更新 userInfo
+    // 4. 若已登入則線上更新 userInfo && 更新 token
     if (isLogin) {
       this.props.syncCookieToState();
+      this.props.refreshToken();
     }
-
-    // 5. 若過期則更新 token
-    this.props.refreshToken();
-
   }
   render = () => (<span className="dn" />);
 }
