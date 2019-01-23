@@ -22,8 +22,8 @@ export const initialCourseConState = {
   gpu: '',
   ports: [
     {
-      keyItem: '初始欄位1',
-      valueItem: '初始數值1'
+      keyItem: '',
+      valueItem: ''
     }
   ],
   datasets: [],

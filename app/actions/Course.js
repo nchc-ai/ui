@@ -5,7 +5,7 @@ import axios from 'axios';
 import * as types from './actionTypes';
 import { notify } from 'react-notify-toast';
 import { TOAST_TIMING } from '../constants';
-import { isStringEmpty } from '../libraries/utils';
+import { isStringEmpty, decodeHtml } from '../libraries/utils';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
 
 // Container 課程 ---------------------------------------------------
@@ -88,10 +88,30 @@ export const getConDatasetsOpts = token => async (dispatch) => {
 
 
 
+/**
+ * Container Course
+ * Called when clicking submit button to create container course.
+ * @param {Object} token - .
+ * @param {Object} userInfo - .
+ * @param {Object} formData - .
+ * @param {Object} next - .
+ */
+export const createContainerCourse = ({ token, userInfo, formData, next }) => async (dispatch) => {
 
-// submit
-export const createContainerCourse = (token, userInfo, formData, next) => async (dispatch) => {
-  // console.log('[createCourse] formData', formData, _.escape(formData.intro));
+  const submitData = {
+    user: userInfo.username,
+    name: formData.name,
+    accessType: formData.accessType.value || 'NodePort',
+    introduction: decodeHtml(formData.introduction) || '',
+    image: formData.image.value || '',
+    level: formData.level.value || '',
+    GPU: parseInt(formData.gpu.value, 10),
+    datasets: formData.datasets.map(d => d.value) || [],
+    writablePath: isStringEmpty(formData.writablePath) ? '' : formData.writablePath || '',
+    ports: formData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
+  };
+  // console.log('submitData', submitData, JSON.stringify(submitData))
+
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/course/create`,
@@ -100,24 +120,7 @@ export const createContainerCourse = (token, userInfo, formData, next) => async 
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        user: userInfo.username,
-        name: formData.name,
-        accessType: formData.accessType.value || 'NodePort',
-        introduction: _.escape(formData.introduction) || '',
-        image: formData.image.value || '',
-        level: formData.level.value || '',
-        GPU: parseInt(formData.gpu.value, 10),
-        datasets: formData.datasets.map(d => d.value) || [],
-        writablePath: isStringEmpty(formData.writablePath) ? '' : formData.writablePath || '',
-        ports: [
-          {
-            "name": "jupyter",
-            "port": 8080
-          }
-        ]
-      }
-    ),
+      body: JSON.stringify(submitData),
       types: types.CREATE_CONTAINER_COURSE
     }
   });

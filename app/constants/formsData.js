@@ -252,7 +252,7 @@ export const courseConFormTwo = [
     name: 'writablePath',
     inputType: 'text',
     mainLabel: '工作目錄',
-    placeholder: '請輸入工作目錄',
+    placeholder: '/tmp/work',
     isRequired: false
   }
 ];

@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
-import Progress from 'react-progress-2';
 import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
 import { ongoingCourseData } from '../constants/tableData';
@@ -142,8 +141,9 @@ class CoursePage extends Component {
   }
 
   /**
+   * Container Course
    * Called when clicking submit button to create container course.
-   * @param {Object} formData - The required token for calling API.
+   * @param {Object} formData - The submit object.
    */
   handleCreateContainerCourse = (formData) => {
     const {
@@ -152,13 +152,12 @@ class CoursePage extends Component {
       userInfo
     } = this.props;
 
-    console.log('[formData]', formData);
-    // courseAction.createContainerCourse(
-    //   token,
-    //   userInfo,
-    //   formData,
-    //   this.onSubmitCourseSuccessCommon
-    // );
+    courseAction.createContainerCourse({
+      token,
+      userInfo,
+      formData,
+      next: this.onSubmitCourseSuccessCommon
+    });
 
     // Progress.show();
     // TODO: 須送出 loading 時 disable submit button
@@ -167,7 +166,11 @@ class CoursePage extends Component {
   loadOptsMethodCreateCon = () => this.props.courseAction.getConImagesOpts(this.props.token)
   loadTagsOptsMethodCreateCon = () => this.props.courseAction.getConDatasetsOpts(this.props.token)
 
-  // 新建 VM 課程 cb
+  /**
+   * vm Course
+   * Called when clicking submit button to create vm course.
+   * @param {Object} formData - The submit object.
+   */
   handleSubmitCreateVM = (formData) => {
     const {
       courseAction,
