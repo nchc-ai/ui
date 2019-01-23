@@ -56,7 +56,7 @@ export const checkDatabase = () => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.message", "check database fail"), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '無法建立 DB 連線'), 'error', TOAST_TIMING);
   }
 };
 

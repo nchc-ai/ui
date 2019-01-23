@@ -97,7 +97,7 @@ export const getClassroomList = ({ token, userInfo, next }) => async (dispatch) 
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 
