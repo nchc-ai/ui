@@ -179,7 +179,7 @@ class RoomPage extends Component {
       next: this.onCreateClassroomSuccess
     });
 
-    Progress.show();
+    // Progress.show();
   }
 
   onCreateClassroomSuccess = () => {

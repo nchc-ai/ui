@@ -54,7 +54,6 @@
                 - DataFrame
                     - obj.data.map...
                         - thumb.service.map...
-        + UserPage [x]
             - Profile
         + StaticPage        [404]
 
