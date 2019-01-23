@@ -20,7 +20,6 @@ const InitialState = {
   }
 };
 
-
 export default function Classroom(state = InitialState, action) {
   switch (action.type) {
 
@@ -88,6 +87,14 @@ export default function Classroom(state = InitialState, action) {
       students: {
         isLoading: false,
         data
+      }
+    };
+  case actionTypes.RESET_STUDENTS_FIELD:
+    return {
+      ...state,
+      students: {
+        isLoading: false,
+        data: []
       }
     };
   default:

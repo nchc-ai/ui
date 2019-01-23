@@ -6,8 +6,32 @@ import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
-// [Create] classrooms
+export const resetStudentsField = () => ({
+  type: types.RESET_STUDENTS_FIELD
+});
+
+/**
+ * Create classroom.
+ * @param {String} token - .
+ * @param {Object} userInfo - .
+ * @param {Object} formData - .
+ * @param {Function} next - .
+ */
 export const createClassroom = ({ token, userInfo, formData, next }) => async (dispatch) => {
+
+  const submitData = {
+    courses: _.get(formData, 'courses', []).map(d => d.value),
+    description: formData.description,
+    name: formData.name,
+    public: true,
+    schedules: [
+      `*${_.get(formData, 'schedules', '****')}`
+    ],
+    students: _.get(formData, 'students', []).map(d => d.value),
+    teachers:  _.get(formData, 'teachers', []).map(d => d.value)
+  };
+
+  // console.log('[classroom] submitData', submitData);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/classroom/create`,
@@ -16,18 +40,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({
-        courses: formData.courses,
-        description: formData.description,
-        name: formData.name,
-        public: true,
-        schedules: [
-          `*${formData.schedules}`
-        ],
-        students: formData.students,
-        teachers: formData.teachers,
-      }
-    ),
+      body: JSON.stringify(submitData),
       types: types.CREATE_CLASSROOM
     }
   });

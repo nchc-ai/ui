@@ -10,6 +10,7 @@ class FileUpload extends Component {
     super(props);
       this.state = {
         uploadStatus: false,
+        isUploadEnable: false,
         csvList: []
       }
       this.uploadInput = React.createRef();
@@ -17,16 +18,19 @@ class FileUpload extends Component {
 
   onFileChange = (e) => {
     const csvFile = e.target.files[0];
+    if (csvFile.name) {
+      this.setState({ isUploadEnable: true })
+    }
   }
 
   onListChange = (students) => {
     const studentsList = students.map(d => d.valueItem)
-
-    console.log('students', studentsList)
     this.props.onListChange(studentsList);
   }
 
-  handleUploadFile = (ev) => {
+  handleUploadFile = (e) => {
+    e.preventDefault();
+
     const {
       roomAction,
       token
@@ -79,7 +83,7 @@ class FileUpload extends Component {
           null
         }
         {
-          students.length === 0 ?
+          students.length === 0 && this.state.isUploadEnable ?
             <button
               onClick={this.handleUploadFile}
               className="btn btn-success"

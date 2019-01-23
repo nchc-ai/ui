@@ -161,26 +161,21 @@ class RoomPage extends Component {
     const {
       roomAction,
       token,
-      userInfo
+      userInfo,
+      students
     } = this.props;
 
-    console.log('form', formData)
-
-    const courses =_.get(formData, 'courses', []).map(d => d.value);
-    const students = _.get(formData, 'students', []).map(d => d.value);
-    const teachers = _.get(formData, 'teachers', []).map(d => d.value);
-
-    const modifiedData = {
+    const formDataWithStudent = {
       ...formData,
-      courses,
-      students,
-      teachers
+      students: students.map(d => d.valueItem)
     }
+
+    // console.log('formDataWithStudent', formDataWithStudent, students)
 
     roomAction.createClassroom({
       token,
       userInfo,
-      formData: modifiedData,
+      formData,
       next: this.onCreateClassroomSuccess
     });
 
@@ -188,8 +183,18 @@ class RoomPage extends Component {
   }
 
   onCreateClassroomSuccess = () => {
-    this.props.history.push('/user/classroom-manage/list');
+    // 清空 form 跟 students
+
+    const {
+      history,
+      roomAction
+    } = this.props;
+
+    history.push('/user/classroom-manage/list');
     notify.show('新建教室成功', 'success', 1800);
+
+    roomAction.resetStudentsField();
+
   }
 
   cancelClassroomDetail = () => {
@@ -372,6 +377,7 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   roomList: Classroom.publicList.data,
   roomDetail: Classroom.detail.data,
   addClassroom: forms.addClassroom,
+  students: Classroom.students.data,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   isSubstituating: Role.isSubstituating,

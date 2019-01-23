@@ -27,6 +27,8 @@ export const LOAD_STUDENT_TAGS_ROOM_CREATE = ['LOAD_TEACHER_TAGS_ROOM_CREATE_LOA
 
 export const UPLOAD_STUDENTS_CSV =  ['UPLOAD_STUDENTS_CSV_LOADING', 'UPLOAD_STUDENTS_CSV_SUCCESS', 'UPLOAD_STUDENTS_CSV_FAIL'];
 
+export const RESET_STUDENTS_FIELD = 'RESET_STUDENTS_FIELD';
+
 // Course [list > opts > submit]----------------------
 
 //    - container

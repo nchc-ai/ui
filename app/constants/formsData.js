@@ -25,12 +25,7 @@ export const classroomFormOne = [
     name: 'description',
     target: 'classroom',
     inputType: 'markdown',
-    mainLabel: '教室描述',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+    mainLabel: '教室描述'
   }, {
     key: 3,
     size: 8,

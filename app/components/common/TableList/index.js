@@ -57,7 +57,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     {
                       datum.type === 'array' ?
                         <div>
-                          {_.get(d, datum.value, []).map(arrItem => <p>{arrItem}</p>)}
+                          {_.get(d, datum.value, []).map((arrItem, arrItemKey) => <p key={arrItemKey}>{arrItem}</p>)}
                         </div>
                       :
                         null
