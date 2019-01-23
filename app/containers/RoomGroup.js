@@ -54,14 +54,14 @@ class RoomGroup extends Component {
 
   startCourse = () => {
     const {
-      userAction,
+      jobAction,
       token,
       userInfo,
       match
     } = this.props;
 
     Progress.show();
-    userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
+    jobAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
   }
 
   onStartClassSuccess = () => {

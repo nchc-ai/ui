@@ -4,11 +4,11 @@ import { LOADING, SUCCESS } from '../constants/apiActions';
 import { formatJob } from '../libraries/utils';
 
 const InitialState = {
-  ListCon: {
+  container: {
     loading: true,
     data: []
   },
-  ListVM: {
+  vm: {
     loading: true,
     data: []
   },
@@ -24,8 +24,8 @@ export default function Job(state = InitialState, action) {
   case actionTypes.GET_CON_JOB_LIST[LOADING]:
     return {
       ...state,
-      ListCon: {
-        ...state.ListCon,
+      container: {
+        ...state.container,
         loading: true
       },
       List: {
@@ -39,21 +39,21 @@ export default function Job(state = InitialState, action) {
 
     return {
       ...state,
-      ListCon: {
+      container: {
         loading: false,
         data: recievedConData
       },
       List: {
         ...state.List,
-        loading: state.ListVM.loading,
-        data: _.unionBy(state.ListVM, recievedConData, 'id')
+        loading: state.vm.loading,
+        data: _.unionBy(state.vm, recievedConData, 'id')
       }
     };
   case actionTypes.GET_VM_JOB_LIST[LOADING]:
     return {
       ...state,
-      ListVM: {
-        ...state.ListVM,
+      vm: {
+        ...state.vm,
         loading: true
       },
       List: {
@@ -67,14 +67,14 @@ export default function Job(state = InitialState, action) {
 
     return {
       ...state,
-      ListVM: {
+      vm: {
         loading: false,
         data: recievedVMData
       },
       List: {
         ...state.List,
-        loading: state.ListCon.loading,
-        data: _.unionBy(state.ListCon, recievedVMData, 'id')
+        loading: state.container.loading,
+        data: _.unionBy(state.container, recievedVMData, 'id')
       }
     };
   default:

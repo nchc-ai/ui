@@ -33,7 +33,6 @@ class JobPage extends Component {
 
     jobAction.getConJobList({ user: userInfo.username, token });
     jobAction.getVMJobList({ user: userInfo.username, token });
-    // TODO: 要 merge 成一起的 list
 
   }
 
@@ -153,7 +152,14 @@ class JobPage extends Component {
     //   }
     // ];
     // const data = mockJobs;
-    const data = Job.list;
+    // const data = Job.list;
+
+    const doubleList = [
+      ...this.props.container,
+      ...this.props.vm
+    ];
+
+
 
     return (
       <div className="job-bg">
@@ -161,104 +167,111 @@ class JobPage extends Component {
           className="job-page-bg"
           pageTitle="工作清單"
         >
-          <DataFrame
-            isLoading={Job.loading}
-            data={groupArray(data, 'name')}
-            cols={8}
-          >
-            {
-              groupArray(data, 'name').map(
-                (obj, i) => (
-                  <div key={i} className="job-group">
-                    <Row className="title-row">
-                      <Col>
-                        <h4 className="fl">{obj.group}</h4>
-                        {/* <button className="fl btn-add" onClick={e => this.addJob(e, obj.data[0].courseId)}>+ 新增</button> */}
-                      </Col>
-                    </Row>
-                    <div>
-                      <DataFrame
-                        data={obj.data}
-                        cols={8}
-                      >
-                        <Row>
-                          {
-                            obj.data.map((thumb, j) => (
-                              <Col key={j} md={4}>
-                                {/* options cover */}
-                                <div
-                                  className={`job-card__mask ${ this.state.isOptionsOpen ? 'job-card__mask--open' : '' }`}
-                                  onMouseLeave={() => this.leaveCardOptions()}
-                                >
-                                  <ul className="job-card__mask-options">
-                                    <li>
-                                      <Clipboard
-                                        option-text={this.getCopiedText}
-                                        onSuccess={this.onCopySuccess}
-                                      >
-                                        <FaCopy/>
-                                      </Clipboard>
-                                      <p>複製網址</p>
-                                    </li>
-                                  </ul>
-                                </div>
-                                {/* card */}
-                                <div className="job-card">
 
-                                  {/* delete button */}
-                                  <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
-
-                                  {/* snapshot button */}
-                                  <button className="btn-camera" onClick={e => this.snapshotJob(e, thumb)}>
-                                    <FaCamera/>
-                                  </button>
-                                  <p className="job-card-status">
-                                    <span className={`light light-${thumb.status}`} />
-                                    <span className="status-word">
-                                      {formatStatus(thumb.status)}
-                                    </span>
-                                  </p>
-
-                                  <p className={`job-card-id ${ userInfo.role !== 'teacher' ? "job-card-id--disable" : null}`} >{thumb.id}</p>
-
-                                  <div className="job-card-link-li">
-                                    {
-                                      thumb.service ?
-                                      thumb.service.map(
-                                        (service, k) => (
-                                          <span key={k} className="job-card-link" onClick={this.openCardMask}>
-                                            {
-                                              service.label === 'Share path' ?
-                                                <span onClick={e => this.openCardMask(e, service)} >{service.label}</span>
-                                              :
-                                                <a
-                                                  href={service.value}
-                                                  target="_blank"
-                                                  rel="noopener noreferrer"
-                                                >
-                                                  {service.label}
-                                                </a>
-                                            }
-                                            <span className="divide-line">|</span>
-                                          </span>
-                                        )
-                                      ) : null
-                                    }
+        {
+          doubleList.map( singleList => (
+            <DataFrame
+              isLoading={singleList.loading}
+              data={groupArray(data, 'name')}
+              cols={8}
+            >
+              {
+                groupArray(singleList.data, 'name').map(
+                  (obj, i) => (
+                    <div key={i} className="job-group">
+                      <Row className="title-row">
+                        <Col>
+                          <h4 className="fl">{obj.group}</h4>
+                          {/* <button className="fl btn-add" onClick={e => this.addJob(e, obj.data[0].courseId)}>+ 新增</button> */}
+                        </Col>
+                      </Row>
+                      <div>
+                        <DataFrame
+                          data={obj.data}
+                          cols={8}
+                        >
+                          <Row>
+                            {
+                              obj.data.map((thumb, j) => (
+                                <Col key={j} md={4}>
+                                  {/* options cover */}
+                                  <div
+                                    className={`job-card__mask ${ this.state.isOptionsOpen ? 'job-card__mask--open' : '' }`}
+                                    onMouseLeave={() => this.leaveCardOptions()}
+                                  >
+                                    <ul className="job-card__mask-options">
+                                      <li>
+                                        <Clipboard
+                                          option-text={this.getCopiedText}
+                                          onSuccess={this.onCopySuccess}
+                                        >
+                                          <FaCopy/>
+                                        </Clipboard>
+                                        <p>複製網址</p>
+                                      </li>
+                                    </ul>
                                   </div>
-                                  <div className="corner-triangle" />
-                                </div>
-                              </Col>
-                            ))
-                          }
-                        </Row>
-                      </DataFrame>
+                                  {/* card */}
+                                  <div className="job-card">
+
+                                    {/* delete button */}
+                                    <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
+
+                                    {/* snapshot button */}
+                                    <button className="btn-camera" onClick={e => this.snapshotJob(e, thumb)}>
+                                      <FaCamera/>
+                                    </button>
+                                    <p className="job-card-status">
+                                      <span className={`light light-${thumb.status}`} />
+                                      <span className="status-word">
+                                        {formatStatus(thumb.status)}
+                                      </span>
+                                    </p>
+
+                                    <p className={`job-card-id ${ userInfo.role !== 'teacher' ? "job-card-id--disable" : null}`} >{thumb.id}</p>
+
+                                    <div className="job-card-link-li">
+                                      {
+                                        thumb.service ?
+                                        thumb.service.map(
+                                          (service, k) => (
+                                            <span key={k} className="job-card-link" onClick={this.openCardMask}>
+                                              {
+                                                service.label === 'Share path' ?
+                                                  <span onClick={e => this.openCardMask(e, service)} >{service.label}</span>
+                                                :
+                                                  <a
+                                                    href={service.value}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                  >
+                                                    {service.label}
+                                                  </a>
+                                              }
+                                              <span className="divide-line">|</span>
+                                            </span>
+                                          )
+                                        ) : null
+                                      }
+                                    </div>
+                                    <div className="corner-triangle" />
+                                  </div>
+                                </Col>
+                              ))
+                            }
+                          </Row>
+                        </DataFrame>
+                      </div>
                     </div>
-                  </div>
+                  )
                 )
-              )
-            }
-          </DataFrame>
-        </CommonPageContent>
+              }
+            </DataFrame>
+          
+
+          ))
+        }
+          </CommonPageContent>
       </div>
     )
   }
@@ -267,9 +280,13 @@ class JobPage extends Component {
 const mapStateToProps = ({ Auth, User, Job }) => ({
   token: Auth.token,
   userInfo: Auth.userInfo,
-  Job: {
-    loading: Job.List.loading,
-    list: Job.List.data
+  container: {
+    loading: Job.container.loading,
+    data: Job.container.data
+  },
+  vm: {
+    loading: Job.vm.loading,
+    data: Job.vm.data
   },
 });
 
