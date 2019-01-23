@@ -82,7 +82,7 @@ class RoomPage extends Component {
       match
     } = this.props;
 
-    Progress.show();
+    // Progress.show();
     userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
   }
 

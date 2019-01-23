@@ -39,6 +39,7 @@ class RouteUser extends Component {
             <Route exact path="/user/job/list" component={JobPage} />
 
             <Route exact path="/user/ongoing-course/create/:courseType" component={CoursePage} />
+            <Route exact path="/user/ongoing-course/:action/:courseId/:courseType" component={CoursePage} />
             <Route exact path="/user/ongoing-course/:action/:courseId" component={CoursePage} />
             <Route exact path="/user/ongoing-course/:action" component={CoursePage} />
 

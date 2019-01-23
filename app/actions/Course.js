@@ -125,8 +125,9 @@ export const createContainerCourse = ({ token, userInfo, formData, next }) => as
     }
   });
 
+  // response.error = true;  // DEBUG
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.message', '課程建立失敗'), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '課程建立失敗'), 'error', TOAST_TIMING);
   } else if (next) {
     next();
   }

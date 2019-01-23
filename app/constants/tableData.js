@@ -1,3 +1,6 @@
+/**
+ * RoomPage 教室管理
+ */
 export const roomData = {
   headers: [
     {
@@ -20,7 +23,7 @@ export const roomData = {
   cols: [
     {
       key: 1,
-      type: 'link',
+      type: 'link-detail',
       value: 'name'
     }, {
       key: 2,
@@ -43,7 +46,9 @@ export const roomData = {
 };
 
 
-// 開課列表
+/**
+ * RoomPage 開課列表
+ */
 export const ongoingCourseData = {
   headers: [
     {
@@ -63,7 +68,7 @@ export const ongoingCourseData = {
   cols: [
     {
       key: 1,
-      type: 'link',
+      type: 'link-detail',
       value: 'name'
     }, {
       key: 2,
@@ -101,7 +106,7 @@ export const classroomGroupData = {
   cols: [
     {
       key: 1,
-      type: 'link',
+      type: 'link-detail',
       value: 'name'
     }, {
       key: 2,
@@ -141,7 +146,7 @@ export const courseData = {
   cols: [
     {
       key: 1,
-      type: 'link',
+      type: 'link-detail',
       value: 'name'
     }, {
       key: 2,
@@ -181,7 +186,7 @@ export const userCourseData = {
   cols: [
     {
       key: 1,
-      type: 'link',
+      type: 'link-detail',
       value: 'name'
     }, {
       key: 2,

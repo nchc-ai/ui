@@ -49,7 +49,7 @@ export const getVMJobList = ({ user, token }) => async (dispatch) => {
 
 
 // Launch
-export const launchCourseJob = ({ user, courseId, token, next }) => async (dispatch) => {
+export const launchCourseJob = ({ token, user, classroomId, courseId, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/job/launch`,
@@ -58,7 +58,11 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ user, course_id: courseId, classroom_id: '' }),
+      body: JSON.stringify({
+        user,
+        course_id: courseId,
+        classroom_id: classroomId
+      }),
       types: types.LAUNCH_COURSE_JOB
     }
   });
@@ -67,9 +71,9 @@ export const launchCourseJob = ({ user, courseId, token, next }) => async (dispa
 
   if (_.isUndefined(response) || response.error) {
     notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+  } else if (next) {
+    next();
   }
-
-  next();
 };
 
 // Delete

@@ -70,13 +70,17 @@ class CoursePage extends Component {
     if (/(edit|detail)/.test(action)) {
       // courseAction.getCourseDetail()
     } else if (action === 'list') {
-      // TODO: 要 merge 成一起的 list
       courseAction.getCourseListVM(userInfo.username, token);
       courseAction.getCourseListCon(userInfo.username, token);
     }
 
   }
-  // 啟動課程
+
+  /**
+   * Launch course job.
+   * @param {Object} e - .
+   * @param {Object} data - .
+   */
   launchCourseJob = (e, data) => {
     const {
       jobAction,
@@ -86,6 +90,7 @@ class CoursePage extends Component {
     // Progress.show();
     jobAction.launchCourseJob({
       user: userInfo.username,
+      classroomId: 'default',
       courseId: data.id,
       token,
       next: () => this.onLaunchCourseJobSuccess()
@@ -99,7 +104,7 @@ class CoursePage extends Component {
   }
 
   editCourse = (e, datum) => {
-    this.props.history.push(`/user/ongoing-course/detail/${datum.id}`)
+    this.props.history.push(`/user/ongoing-course/edit/${datum.id}/container`)
   }
 
   deleteCourse = (e, datum) => {
@@ -265,7 +270,7 @@ class CoursePage extends Component {
               <FormButtons
                 cancelName="上一頁"
                 submitName="開始課程"
-                backMethod={this.backFromCourseDetail}
+                backMethod={this.backMethodCommon}
                 nextMethod={this.startCourse}
               />
             </CommonPageContent>
@@ -360,7 +365,7 @@ class CoursePage extends Component {
                   {/* 下方按鈕 */}
                   <FormButtons
                     cancelName="上一頁"
-                    submitName="儲存"
+                    submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     isForm
                   />
@@ -371,8 +376,106 @@ class CoursePage extends Component {
             </CommonPageContent>
           </Route>
 
-          {/* [User] 課程編輯 */}
-          <Route exact path="/user/ongoing-course/edit/:courseId">
+          {/* [container] 課程編輯 */}
+          <Route exact path="/user/ongoing-course/edit/:courseId/container">
+            <CommonPageContent
+              className="profile-page-bg"
+              pageTitle="編輯課程"
+            >
+              <div className="user-course-edit-bg">
+
+                <Form
+                  model={`forms.courseCon`}
+                  className={`course-edit-comp`}
+                  onSubmit={submitData => this.handleCreateContainerCourse(submitData)}
+                  onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
+                >
+                  {/* name | introduction | level | image | GPU | datasets */}
+                  <FormGroups
+                    formData={courseConForm}
+                    targetForm={forms.courseCon}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadOptsMethodCreateCon}
+                    loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
+                  />
+
+                  {/* accessType | port | writablePath */}
+                  <FormGroups
+                    formData={courseConFormTwo}
+                    targetForm={forms.courseCon}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadOptsMethodCreateCon}
+                    loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
+                  />
+
+                  {/* 下方按鈕 */}
+                  <FormButtons
+                    cancelName="上一頁"
+                    submitName="儲存編輯"
+                    backMethod={this.backMethodCommon}
+                    isForm
+                  />
+
+                </Form>
+              </div>
+            </CommonPageContent>
+          </Route>
+
+
+
+          {/* [vm] 課程編輯 */}
+          <Route exact path="/user/ongoing-course/edit/:courseId/vm">
+            <CommonPageContent
+              className="ongoing-course-bg"
+              pageTitle="編輯課程"
+            >
+
+              <div className="user-course-edit-bg">
+
+                <Form
+                  model={`forms.courseVM`}
+                  className={`course-edit-comp`}
+                  onSubmit={submitData => this.handleSubmitCreateVM(submitData)}
+                  onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
+                >
+                  {/* name | intro | level | image */}
+                  <FormGroups
+                    state={this.state.mdValueVM}
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormOne}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadImagesOptsCreateVM}
+                  />
+
+                  {/* flavor | associate */}
+
+                  <FormGroups
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormTwo}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadFlavorsOptsCreateVM}
+                  />
+
+                  {/* extra port | ssh key | mount | volume */}
+                  <FormGroups
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormThree}
+                    changeVal={changeValue}
+                    loadOptsMethod={this.loadSshKeysOptsCreateVM}
+                  />
+
+                  {/* 下方按鈕 */}
+                  <FormButtons
+                    cancelName="上一頁"
+                    submitName="儲存編輯"
+                    backMethod={this.backMethodCommon}
+                    isForm
+                  />
+
+                </Form>
+
+              </div>
+            </CommonPageContent>
           </Route>
 
 

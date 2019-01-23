@@ -27,9 +27,20 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
               tableData.cols.map((datum) => (
                 <td key={datum.key}>
                     {
-                      datum.type === 'link' ?
+                      datum.type === 'link-detail' ?
                         <div>
                           <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/detail/`}${_.get(d, 'id')}`}>
+                            {_.get(d, datum.value)}
+                          </Link>
+                        </div>
+                      :
+                        null
+                    }
+
+                    {
+                      datum.type === 'link-edit' ?
+                        <div>
+                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/edit/`}${_.get(d, 'id')}/container`}>
                             {_.get(d, datum.value)}
                           </Link>
                         </div>

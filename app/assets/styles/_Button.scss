@@ -27,7 +27,7 @@ $button-border-radius: 5px;
 
 .back-btn{
   @include opacity-button;
-  background-color: $button-cancel-color;
+  // background-color: $button-cancel-color;
   opacity: 0.7;
   border: 1px solid grey;
   color: grey;

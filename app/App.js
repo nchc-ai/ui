@@ -31,13 +31,14 @@ class App extends Component {
         <Router>
           <Switch>
             { offline ? <Route path="*" component={StaticPage} /> : null }
-
+            {/* for 側邊欄 */}
             <PrivateRoute path="/user/classroom-manage/:action/:roomId" component={RouteUser} />
             <PrivateRoute path="/user/classroom-manage/:action" component={RouteUser} />
             <PrivateRoute path="/user/classroom-time" component={RouteUser} />
             <PrivateRoute path="/user/role-select/:level" component={RouteUser} />
             <PrivateRoute path="/user/job/list" component={RouteUser} />
             <PrivateRoute path="/user/ongoing-course/create/:courseType" component={RouteUser} />
+            <PrivateRoute path="/user/ongoing-course/:action/:courseId/:courseType" component={RouteUser} />
             <PrivateRoute path="/user/ongoing-course/:action/:courseId" component={RouteUser} />
             <PrivateRoute path="/user/ongoing-course/:action" component={RouteUser} />
             <PrivateRoute path="/user/classroom-group/:action" component={RouteUser} />

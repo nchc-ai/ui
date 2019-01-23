@@ -15,7 +15,6 @@ import { classroomGroupData } from '../constants/tableData';
 class RoomGroup extends Component {
 
   componentWillMount() {
-    // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);
   }
@@ -24,14 +23,10 @@ class RoomGroup extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
-      if(nextProps.match.params.type !== 'search') {
-        nextProps.resetForm('globalSearch');
-      }
     }
   }
 
   componentWillUnmount() {
-    this.props.resetForm('globalSearch');
   }
 
   fetchData = (nextProps) => {
@@ -52,16 +47,31 @@ class RoomGroup extends Component {
     }
   }
 
-  startCourse = () => {
+  /**
+   * Launch course job.
+   * @param {Object} e - .
+   * @param {Object} data - .
+   */
+  launchCourseJob = (e, data) => {
     const {
       jobAction,
       token,
-      userInfo,
-      match
+      userInfo
     } = this.props;
+    // Progress.show();
+    jobAction.launchCourseJob({
+      user: userInfo.username,
+      classroomId: 'default',
+      courseId: data.id,
+      token,
+      next: () => this.onLaunchCourseJobSuccess()
+    });
+  }
 
-    Progress.show();
-    jobAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
+  onLaunchCourseJobSuccess = () => {
+    // Progress.hide();
+    this.props.history.push('/user/job/list');
+    notify.show('課程啟動成功', 'success', 1800);
   }
 
   onStartClassSuccess = () => {
@@ -157,7 +167,7 @@ class RoomGroup extends Component {
                         tableData={classroomGroupData}
                         isLoading={false}
                         isDialogOpen={true}
-                        startMethod={this.startCourse}
+                        startMethod={this.launchCourseJob}
                         editMethod={this.editCourse}
                         deleteMethod={this.deleteCourse}
                         actionMode="start_only"

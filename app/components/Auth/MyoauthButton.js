@@ -16,7 +16,7 @@ class MyoauthButton extends Component {
   }
 
   static defaultProps = {
-    buttonText: '登入',
+    buttonText: '登入 / 註冊',
     scope: 'user:email',
     onRequest: () => {},
     onSuccess: () => {},
@@ -48,6 +48,8 @@ class MyoauthButton extends Component {
   }
 
   onAuthSuccess = (data) => {
+    console.log('data.code', data.code);
+
     if (!data.code) {
       return this.onFailure(new Error('\'code\' not found'));
     }
