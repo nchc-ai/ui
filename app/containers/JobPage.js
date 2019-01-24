@@ -2,21 +2,26 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { FaCopy, FaCamera } from "react-icons/fa";
 import { compose } from 'redux';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux';;
+import { actions as formActions, Form } from 'react-redux-form';
 import { Row, Col } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import Clipboard from 'react-clipboard.js';
+import { State, Toggle } from 'react-powerplug'
 import { doubleRawList } from '../mock/jobData';
 import { TOAST_TIMING } from '../constants';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import FormGroups from '../components/common/FormGroups/index';
+import FormButtons from '../components/common/FormButtons/index';
 import DataFrame from '../components/common/DataFrame/index';
 import { groupArray, formatStatus } from '../libraries/utils';
 import CommonPageContent from '../components/CommonPageContent';
+import { snapshotForm } from '../constants/formsData';
 
 class JobPage extends Component {
 
   state = {
-    isOptionsOpen: false,
+    optionType: 'snapshot',
     copiedValue: ""
   }
 
@@ -37,16 +42,20 @@ class JobPage extends Component {
 
   }
 
-  openCardMask = (e, service) => {
+  openCardMask = (e, dataObj, optionType) => {
 
     const {
       userInfo
     } = this.props;
 
-    console.log('service', service);
-    // 在這邊要判斷是老師 && type 為 vm 才可以開
-    if (service) {
-      this.setState({ isOptionsOpen: true, copiedValue: service.value });
+    console.log('dataObj', dataObj);
+    this.setState({ optionType });
+    // console.log('service', service);
+    // // 在這邊要判斷是老師 && type 為 vm 才可以開
+    if (optionType === 'copy') {
+      this.setState({ copiedValue: dataObj.value });
+    } else if (optionType === 'snapshot') {
+
     }
   }
 
@@ -82,17 +91,17 @@ class JobPage extends Component {
     // this.props.history.push('/user/job');
   }
 
-  snapshotJob = (e, job) => {
+  leaveMask = (e, job) => {
+    this.props.resetForm('snapshot');
+    // const {
+    //   jobAction,
+    //   token,
+    // } = this.props;
 
-    const {
-      jobAction,
-      token,
-    } = this.props;
-
-    jobAction.snapshotJob({
-      token,
-      job
-    })
+    // jobAction.snapshotJob({
+    //   token,
+    //   job
+    // })
   }
 
   deleteJob(e, thumb) {
@@ -119,6 +128,8 @@ class JobPage extends Component {
 
   render() {
     const {
+      forms,
+      changeValue,
       Job,
       userInfo
     } = this.props;
@@ -148,7 +159,6 @@ class JobPage extends Component {
 
         {
           doubleList.map( (singleList) => (
-
             <div>
               <h2>{singleList.title}</h2>
               <DataFrame
@@ -175,68 +185,108 @@ class JobPage extends Component {
                               {
                                 obj.data.map((thumb, j) => (
                                   <Col key={j} md={4}>
-                                    {/* options cover */}
-                                    <div
-                                      className={`job-card__mask ${ this.state.isOptionsOpen ? 'job-card__mask--open' : '' }`}
-                                      onMouseLeave={() => this.leaveCardOptions()}
-                                    >
-                                      <ul className="job-card__mask-options">
-                                        <li>
-                                          <Clipboard
-                                            option-text={this.getCopiedText}
-                                            onSuccess={this.onCopySuccess}
-                                          >
-                                            <FaCopy/>
-                                          </Clipboard>
-                                          <p>複製網址</p>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    {/* card */}
-                                    <div className="job-card">
 
-                                      {/* delete button */}
-                                      <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
+                                  <Toggle initial={true}>
+                                    {({ on, toggle }) => (
+                                      <div>
+                                        {/* mask */}
+                                        <div
+                                          className={`job-card__mask ${ on ? '' : 'job-card__mask--open' }`}
+                                          onMouseLeave={(event) => { this.leaveMask(); toggle();}}
+                                        >
+                                          {
+                                            this.state.optionType === 'copy'?
+                                            <ul className="job-card__mask-options">
+                                              <li>
+                                                <Clipboard
+                                                  option-text={this.getCopiedText}
+                                                  onSuccess={this.onCopySuccess}
+                                                >
+                                                  <FaCopy/>
+                                                </Clipboard>
+                                                <p>複製網址</p>
+                                              </li>
+                                            </ul>
+                                            :
+                                            null
+                                          }
+                                          {
+                                            this.state.optionType === 'snapshot'?
+                                              <Form
+                                                model={`forms.snapshot`}
+                                                className="snapshot-form"
+                                                onSubmit={submitData => this.submitSnapshot(submitData)}
+                                                onSubmitFailed={submitData => this.handlesubmitSnapshotFail(submitData)}
+                                              >
+                                                <h4>VM snapshot</h4>
 
-                                      {/* snapshot button */}
-                                      <button className="btn-camera" onClick={e => this.snapshotJob(e, thumb)}>
-                                        <FaCamera/>
-                                      </button>
-                                      <p className="job-card-status">
-                                        <span className={`light light-${thumb.status}`} />
-                                        <span className="status-word">
-                                          {formatStatus(thumb.status)}
-                                        </span>
-                                      </p>
+                                                <FormGroups
+                                                  targetForm={forms.snapshot}
+                                                  formData={snapshotForm}
+                                                  changeVal={changeValue}
+                                                />
 
-                                      <p className={`job-card-id ${ userInfo.role !== 'teacher' ? "job-card-id--disable" : null}`} >{thumb.id}</p>
+                                                {/* 下方按鈕 */}
+                                                <FormButtons
+                                                  size={4}
+                                                  submitName="送出"
+                                                  isForm
+                                                  isSubmitOnly
+                                                />
+                                              </Form>
+                                            :
+                                              null
+                                          }
+                                        </div>
 
-                                      <div className="job-card-link-li">
-                                        {
-                                          thumb.service ?
-                                          thumb.service.map(
-                                            (service, k) => (
-                                              <span key={k} className="job-card-link" onClick={this.openCardMask}>
-                                                {
-                                                  service.label === 'Share path' ?
-                                                    <span onClick={e => this.openCardMask(e, service)} >{service.label}</span>
-                                                  :
-                                                    <a
-                                                      href={service.value}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                    >
-                                                      {service.label}
-                                                    </a>
-                                                }
-                                                <span className="divide-line">|</span>
-                                              </span>
-                                            )
-                                          ) : null
-                                        }
+                                        {/* card */}
+                                        <div className="job-card">
+
+                                          {/* delete button */}
+                                          <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
+
+                                          {/* snapshot button */}
+                                          <button className="btn-camera" onClick={(event) => { this.openCardMask(event, thumb, 'snapshot'); toggle();}}>
+                                            <FaCamera/>
+                                          </button>
+                                          <p className="job-card-status">
+                                            <span className={`light light-${thumb.status}`} />
+                                            <span className="status-word">
+                                              {formatStatus(thumb.status)}
+                                            </span>
+                                          </p>
+
+                                          <p className={`job-card-id ${ userInfo.role !== 'teacher' ? "job-card-id--disable" : null}`} >{thumb.id}</p>
+
+                                          <div className="job-card-link-li">
+                                            {
+                                              thumb.service ?
+                                              thumb.service.map(
+                                                (service, k) => (
+                                                  <span key={k} className="job-card-link">
+                                                    {
+                                                      service.label === 'Share path' ?
+                                                        <span onClick={(event) => { this.openCardMask(event, service, 'copy'); toggle();}}>{service.label}</span>
+                                                      :
+                                                        <a
+                                                          href={service.value}
+                                                          target="_blank"
+                                                          rel="noopener noreferrer"
+                                                        >
+                                                          {service.label}
+                                                        </a>
+                                                    }
+                                                    <span className="divide-line">|</span>
+                                                  </span>
+                                                )
+                                              ) : null
+                                            }
+                                          </div>
+                                          <div className="corner-triangle" />
+                                        </div>
                                       </div>
-                                      <div className="corner-triangle" />
-                                    </div>
+                                    )}
+                                  </Toggle>
                                   </Col>
                                 ))
                               }
@@ -257,7 +307,22 @@ class JobPage extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, User, Job }) => ({
+const mapDispatchToProps = dispatch => ({
+  resetForm: (formName) => dispatch(formActions.reset(
+    `forms.${formName}`
+  )),
+  changeValue: (value, key, formName) => dispatch(formActions.change(
+    `forms.${formName}.${key}`,
+    value
+  )),
+  changeForm: (formObj, formName) => dispatch(formActions.change(
+    `forms.${formName}`,
+    formObj
+  ))
+});
+
+const mapStateToProps = ({ forms, Auth, User, Job }) => ({
+  forms,
   token: Auth.token,
   userInfo: Auth.userInfo,
   container: {
@@ -268,10 +333,6 @@ const mapStateToProps = ({ Auth, User, Job }) => ({
     loading: Job.vm.loading,
     data: Job.vm.data
   },
-});
-
-const mapDispatchToProps = dispatch => ({
-
 });
 
 export default compose(

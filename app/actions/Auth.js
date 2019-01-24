@@ -68,6 +68,7 @@ export const getToken = (codeObj, next) => async (dispatch) => {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(codeObj),
+      options: { timeout: 3000 },
       types: types.GET_TOKEN
     }
   });

@@ -2,6 +2,10 @@ export const initialGlobalSearchState = {
   searchText: ''
 };
 
+export const iinitialSnapshotState = {
+  name: ''
+};
+
 export const initialClassroomState = {
   id: '',
   name: '',

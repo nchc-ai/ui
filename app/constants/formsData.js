@@ -559,3 +559,20 @@ export const passwordForm = [
     },
     isRequired: true
 }];
+
+
+export const snapshotForm = [
+  {
+    key: 1,
+    size: 12,
+    name: 'name',
+    inputType: 'text',
+    mainLabel: '快照名稱',
+    placeholder: '填入格式：alphanumerics, space, and [.-_]',
+    validators: { required },
+    errorMessage: {
+      required: '填入格式：alphanumerics, space, and [.-_]'
+    },
+    isRequired: true
+  }
+];

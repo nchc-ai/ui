@@ -16,7 +16,8 @@ import {
   initialCourseConState,
   initialCourseVMState,
   initialProfileState,
-  initialRoleState
+  initialRoleState,
+  initialSnapshotState
 } from '../constants/initialState';
 
 const rootReducer = combineReducers({
@@ -26,7 +27,8 @@ const rootReducer = combineReducers({
     courseCon: modelReducer('courseCon', initialCourseConState),
     courseVM: modelReducer('courseVM', initialCourseVMState),
     profile: modelReducer('profile', initialProfileState),
-    role: modelReducer('role', initialRoleState)
+    role: modelReducer('role', initialRoleState),
+    snapshot: modelReducer('snapshot', initialSnapshotState),
   }, 'forms'),
   Auth,
   Classroom,

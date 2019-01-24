@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { Switch, Route, Link } from 'react-router-dom';
 import { actions as formActions, Form } from 'react-redux-form';
 import { roleTeacherForm, roleStudentForm } from '../constants/formsData';
 import { redirectUrlWithRole } from '../libraries/utils';

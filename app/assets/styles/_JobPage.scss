@@ -76,6 +76,19 @@
               }
             }
           }
+
+          .snapshot-form {
+            color: #fff;
+            width: 280px;
+            padding-left: 30px;
+
+            .next-btn {
+              width: 60px;
+              float: right;
+            }
+
+
+          }
         }
 
         .job-card__mask--open {
