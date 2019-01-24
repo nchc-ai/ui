@@ -25,7 +25,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
     name: formData.name,
     public: true,
     schedules: [
-      `*${_.get(formData, 'schedules', '****')}`
+      `* ${_.get(formData, 'schedules', '* * * *')}`
     ],
     students: _.get(formData, 'students', []).map(d => d.value),
     teachers:  _.get(formData, 'teachers', []).map(d => d.value)
