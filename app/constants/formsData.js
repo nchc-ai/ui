@@ -205,12 +205,12 @@ export const courseConFormTwo = [
         key: 1,
         radioKey: '2-1',
         value: 'Ingress',
-        label: 'Ingress'
+        label: 'Ingress (不同工作透過同一個埠存取，但映象檔需修改)'
       }, {
         key: 2,
         radioKey: '2-2',
         value: 'NodePort',
-        label: 'NodePort'
+        label: 'NodePort (不同工作透過不同埠存取)'
       }
     ],
     validators: { required },

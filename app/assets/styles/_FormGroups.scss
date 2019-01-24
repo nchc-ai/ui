@@ -28,14 +28,14 @@ $form-group-row-margin: 20px;
 	.text-input{
 		@include rect(100%,35px);
 		border: 2px solid $form-group-border-color;
-		border-radius: 4px; 
+		border-radius: 4px;
 		background-color:#fff;
-		padding-left: 5px; 
+		padding-left: 5px;
 		font-size: 16px;
 		outline:none;
 
 		&:focus{
-			border-radius: 4px; 
+			border-radius: 4px;
 			border: solid 2px $form-group-border-focus-color;
 			box-shadow:none;
 		}
@@ -43,8 +43,7 @@ $form-group-row-margin: 20px;
 	}
 
 	.radio-input-con {
-		
-		width: 100px;
+		width: 430px;
 
 		.radio-input {
 			display: inline-block;
@@ -56,17 +55,16 @@ $form-group-row-margin: 20px;
 			display: inline-block;
 			cursor: pointer;
 		}
-		
 	}
 
 	.md-editor-comp {
 		overflow: hidden;
 		min-height: 160px;
 		border: 2px solid $form-group-border-color;
-		border-radius: 4px; 
+		border-radius: 4px;
 		padding-left: 10px;
 		padding-top: 10px;
-		
+
 		// 預設樣式
 		blockquote {
 			border-left: 3px solid #ddd;
