@@ -138,8 +138,15 @@ class CoursePage extends Component {
     this.props.history.goBack();
   }
 
-  onSubmitCourseSuccessCommon = () => {
+  onSubmitCourseSuccessCommon = (formName) => {
     // Progress.hide();
+    const {
+      resetForm,
+      history
+    } = this.props;
+    resetForm('courseCon');
+    resetForm('courseVM');
+
     this.fetchData(this.props);
     this.props.history.push('/user/ongoing-course/list');
     notify.show('課程建立成功', 'success', 1800);
@@ -187,7 +194,7 @@ class CoursePage extends Component {
       token,
       userInfo,
       formData,
-      this.onSubmitCourseSuccessCommon
+      () => this.onSubmitCourseSuccessCommon('courseVM')
     );
 
     // Progress.show();
