@@ -22,7 +22,7 @@ export const getConJobList = ({ user, token }) => async (dispatch) => {
     }
   });
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);copiedValue
+    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
   }
 };
 
@@ -42,7 +42,7 @@ export const getVMJobList = ({ user, token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);copiedValue
+    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
   }
 };
 
@@ -69,7 +69,7 @@ export const launchCourseJob = ({ token, user, classroomId, courseId, next }) =>
   // console.log('[launchJob] response', response);
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);copiedValue
+    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
   } else if (next) {
     next();
   }
@@ -90,7 +90,7 @@ export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);copiedValue
+    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
   }
 
   next();
@@ -117,7 +117,7 @@ export const snapshotJob = ({ token, job, next }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);copiedValue
+    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
   } else if (next) {
     next();
   }

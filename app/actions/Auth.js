@@ -176,7 +176,7 @@ export const signup = (formData, next) => async (dispatch) => {
   console.log('[signup] payload', response)
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   next(response);
@@ -203,7 +203,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   next();
@@ -232,7 +232,7 @@ export const updatePassword = (username, formData, token, next) => async (dispat
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
   next();
 };
@@ -253,7 +253,7 @@ export const getProfile = (token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -272,7 +272,7 @@ export const healthCheck = () => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -294,7 +294,7 @@ export const manualLogin = (formData, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || !response.payload.success) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
   // next(response.payload.result[0]);
 };
@@ -315,7 +315,7 @@ export const manualSignup = (formData, next) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || !response.payload.success) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   // next(response.payload.result[0]);

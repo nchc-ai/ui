@@ -37,7 +37,7 @@ export const getCourseListAll = ({ user, token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -58,7 +58,7 @@ export const getConImagesOpts = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -85,7 +85,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -101,34 +101,37 @@ export const getConDatasetsOpts = token => async (dispatch) => {
  * Called when clicking submit button to create container course.
  * @param {Object} token - .
  * @param {Object} userInfo - .
- * @param {Object} formData - .
- * @param {Object} next - .
+ * @param {Object} submitData - .
+ * @param {Object} onSuccess - .
  */
-export const createContainerCourse = ({ token, userInfo, formData, next }) => async (dispatch) => {
+export const submitContainerCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
 
-  const submitData = {
+  console.log('submitData', submitData)
+
+  const finalSubmitData = {
+    id: submitData.id,
     user: userInfo.username,
-    name: formData.name,
-    accessType: formData.accessType.value || 'NodePort',
-    introduction: decodeHtml(formData.introduction) || '',
-    image: formData.image.value || '',
-    level: formData.level.value || '',
-    GPU: parseInt(formData.gpu.value, 10),
-    datasets: formData.datasets.map(d => d.value) || [],
-    writablePath: isStringEmpty(formData.writablePath) ? '' : formData.writablePath || '',
-    ports: formData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
+    name: submitData.name,
+    accessType: submitData.accessType.value || 'NodePort',
+    introduction: decodeHtml(submitData.introduction) || '',
+    image: submitData.image.value || '',
+    level: submitData.level.value || '',
+    GPU: parseInt(submitData.gpu.value, 10),
+    datasets: submitData.datasets.map(d => d.value) || [],
+    writablePath: isStringEmpty(submitData.writablePath) ? '' : submitData.writablePath || '',
+    ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
-  // console.log('submitData', submitData, JSON.stringify(submitData))
+  console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/course/create`,
-      method: 'POST',
+      endpoint: `${API_URL}/${API_VERSION}/course/${actionType}`,
+      method: actionType === 'create' ? 'POST' : 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify(submitData),
+      body: JSON.stringify(finalSubmitData),
       types: types.CREATE_CONTAINER_COURSE
     }
   });
@@ -136,11 +139,51 @@ export const createContainerCourse = ({ token, userInfo, formData, next }) => as
   // response.error = true;  // DEBUG
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', '容器課程建立失敗'), 'error', TOAST_TIMING);
-  } else if (next) {
-    next();
+    onFail({ actionType, courseType: 'container'  })
+  } else if (onSuccess) {
+    onSuccess({ actionType, courseType: 'container' });
   }
 };
 
+
+
+// submit
+export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
+
+  const finalSubmitData = {
+    user: userInfo.username,
+    name: submitData.name,
+    introduction: _.escape(_.get(submitData, 'introduction', "")),
+    level: _.get(submitData, 'level.value', ""),
+    image: _.get(submitData, 'image.value', ""),
+    flavor: submitData.flavor.value,
+    associate: _.get(submitData, 'associate.value', "").toString(),
+    extraports: submitData.extraPorts,
+    sshkey: _.get(submitData, 'sshKey.value', ""),
+    mount: _.get(submitData, 'mount.value', "").toString(),
+    volume: _.get(submitData, 'volume.value', "")
+  };
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/${actionType}`,
+      method:  actionType === 'create' ? 'POST' : 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(finalSubmitData),
+      types: types.SUBMIT_COURSE_VM
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, 'payload.response.message', 'VM課程建立失敗'), 'error', TOAST_TIMING);
+    onFail({ actionType, courseType: 'vm' });
+  } else if (onSuccess) {
+    onSuccess({ actionType, courseType: 'vm' });
+  }
+};
 
 // Course > Delete
 export const deleteCourseContainer = ({ courseId, token, next }) => async (dispatch) => {
@@ -157,7 +200,7 @@ export const deleteCourseContainer = ({ courseId, token, next }) => async (dispa
   });
   // console.log('[deleteCourse] response', response);
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '課程刪除失敗'), 'error', TOAST_TIMING);
   }
 
   next();
@@ -186,7 +229,7 @@ export const getCourseListVM = (user, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -207,7 +250,7 @@ export const getImagesOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -233,7 +276,7 @@ export const getFlavorsOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -258,7 +301,7 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   return {
@@ -271,41 +314,6 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
 
 
 
-// submit
-export const submitCourseVM = (token, userInfo, formData, next) => async (dispatch) => {
-  // console.log('[createCourse] formData', formData, _.escape(formData.intro));
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/create`,
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({
-        user: userInfo.username,
-        name: formData.name,
-        introduction: _.escape(formData.introduction),
-        level: formData.level.value,
-        image: formData.image.value,
-        flavor: formData.flavor.value,
-        associate: formData.associate.value.toString(),
-        extraports: formData.extraPorts,
-        sshkey: formData.sshKey.value,
-        mount: formData.mount.value.toString(),
-        volume: formData.volume.value,
-      }
-    ),
-      types: types.SUBMIT_COURSE_VM
-    }
-  });
-
-  if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.message', 'VM課程建立失敗'), 'error', TOAST_TIMING);
-  } else if (next) {
-    next();
-  }
-};
 
 
 
@@ -325,7 +333,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 
@@ -407,7 +415,7 @@ export const searchCourse = query => async (dispatch) => {
   // console.log('[searchCourse] response', response);
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 };
 

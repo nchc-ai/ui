@@ -16,7 +16,7 @@ export const getResultList = () => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || !response.payload.success) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
   // next(response.payload.result[0]);
 };

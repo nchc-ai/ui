@@ -13,11 +13,10 @@ export const resetStudentsField = () => ({
 /**
  * Create classroom.
  * @param {String} token - .
- * @param {Object} userInfo - .
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const createClassroom = ({ token, userInfo, students, formData, next }) => async (dispatch) => {
+export const createClassroom = ({ token, students, formData, next }) => async (dispatch) => {
 
   const submitData = {
     courses: _.get(formData, 'courses', []).map(d => d.value),
@@ -49,7 +48,49 @@ export const createClassroom = ({ token, userInfo, students, formData, next }) =
     notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
   }
 
-  next();
+  next('create');
+};
+
+
+/**
+ * Updata classroom.
+ * @param {String} token - .
+ * @param {Object} userInfo - .
+ * @param {Object} formData - .
+ * @param {Function} next - .
+ */
+export const updateClassroom = ({ token, students, formData, next }) => async (dispatch) => {
+
+  const submitData = {
+    courses: _.get(formData, 'courses', []).map(d => d.value),
+    description: formData.description,
+    name: formData.name,
+    public: true,
+    schedules: [
+      `* ${_.get(formData, 'schedules', '* * * *')}`
+    ],
+    students: students.map(d => d.valueItem),
+    teachers:  _.get(formData, 'teachers', []).map(d => d.value)
+  };
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/classroom/update`,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(submitData),
+      types: types.CREATE_CLASSROOM
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, 'payload.message', ''), 'error', TOAST_TIMING);
+  }
+
+  next('update');
 };
 
 /**

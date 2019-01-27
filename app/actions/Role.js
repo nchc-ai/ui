@@ -20,7 +20,7 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
 
   // 在陣列先進行分類 teacher or student

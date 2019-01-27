@@ -103,8 +103,8 @@ class CoursePage extends Component {
     const formData = courseType === COURSE_CONTAINER ? {
       ...initialCourseConState,
       ...course,
-      datasets: course.datasets.map(d => ({ label: d, value: d })),
-      ports: course.ports.map(d => ({ keyItem: d.name, valueItem: d.port })),
+      datasets: _.get(course,'datasets',[]).map(d => ({ label: d, value: d })),
+      ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port })),
       level: { value: course.level },
       accessType: { value: course.accessType },
 
@@ -179,18 +179,31 @@ class CoursePage extends Component {
     this.props.history.goBack();
   }
 
-  onSubmitCourseSuccessCommon = (formName) => {
+  onSubmitCourseFail = ({ actionType, courseType }) => {
+    const {
+      resetForm
+    } = this.props;
+
+    resetForm('courseCon');
+    resetForm('courseVM');
+  }
+
+  onSubmitCourseSuccess = ({ actionType, courseType }) => {
     // Progress.hide();
     const {
       resetForm,
       history
     } = this.props;
+
+    // reset all form
     resetForm('courseCon');
     resetForm('courseVM');
 
     this.fetchData(this.props);
     this.props.history.push('/user/ongoing-course/list');
-    notify.show('課程建立成功', 'success', 1800);
+
+    const actionName = actionType === 'create' ? '建立' : '更新';
+    notify.show(`課程${actionName}成功`, 'success', 1800);
   }
 
   /**
@@ -198,50 +211,36 @@ class CoursePage extends Component {
    * Called when clicking submit button to create container course.
    * @param {Object} formData - The submit object.
    */
-  handleCreateContainerCourse = (formData) => {
+  onCourseSubmit = ({ submitData, actionType, courseType }) => {
     const {
       courseAction,
       token,
       userInfo
     } = this.props;
 
-    courseAction.createContainerCourse({
-      token,
-      userInfo,
-      formData,
-      next: this.onSubmitCourseSuccessCommon
-    });
-
-    // Progress.show();
-    // TODO: 須送出 loading 時 disable submit button
+    if (courseType === 'container') {
+      courseAction.submitContainerCourse({
+        token,
+        userInfo,
+        submitData,
+        actionType,
+        onFail: this.onSubmitCourseFail,
+        onSuccess: this.onSubmitCourseSuccess
+      });
+    } else if (courseType === 'vm') {
+      courseAction.submitVMCourse({
+        token,
+        userInfo,
+        submitData,
+        actionType,
+        onFail: this.onSubmitCourseFail,
+        onSuccess: this.onSubmitCourseSuccess
+      });
+    }
   }
 
   loadOptsMethodCreateCon = () => this.props.courseAction.getConImagesOpts(this.props.token)
   loadTagsOptsMethodCreateCon = () => this.props.courseAction.getConDatasetsOpts(this.props.token)
-
-  /**
-   * vm Course
-   * Called when clicking submit button to create vm course.
-   * @param {Object} formData - The submit object.
-   */
-  handleSubmitCreateVM = (formData) => {
-    const {
-      courseAction,
-      token,
-      userInfo
-    } = this.props;
-
-    courseAction.submitCourseVM(
-      token,
-      userInfo,
-      formData,
-      () => this.onSubmitCourseSuccessCommon('courseVM')
-    );
-
-    // Progress.show();
-
-    // TODO: 須送出 loading 時 disable submit button
-  }
 
   loadImagesOptsCreateVM = () => this.props.courseAction.getImagesOptsVM(this.props.token)
   loadFlavorsOptsCreateVM = () => this.props.courseAction.getFlavorsOptsVM(this.props.token)
@@ -315,6 +314,7 @@ class CoursePage extends Component {
               <FormButtons
                 cancelName="上一頁"
                 submitName="開始課程"
+                nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
               />
@@ -344,6 +344,7 @@ class CoursePage extends Component {
               <FormButtons
                 cancelName="上一頁"
                 submitName="開始課程"
+                nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
               />
@@ -361,7 +362,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseCon`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.handleCreateContainerCourse(submitData)}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'create', courseType: 'container' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | introduction | level | image | GPU | datasets */}
@@ -408,7 +409,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseVM`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.handleSubmitCreateVM(submitData)}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'create', courseType: 'vm' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | intro | level | image */}
@@ -456,14 +457,14 @@ class CoursePage extends Component {
           <Route exact path="/user/ongoing-course/edit/:courseId/container">
             <CommonPageContent
               className="profile-page-bg"
-              pageTitle={`編輯課程 ${_.get(courseDetail, 'data.name', '')}`}
+              pageTitle={`編輯 ${_.get(courseDetail, 'data.name', '')}`}
             >
               <div className="user-course-edit-bg">
 
                 <Form
                   model={`forms.courseCon`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.handleCreateContainerCourse(submitData)}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'update', courseType: 'container' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | introduction | level | image | GPU | datasets */}
@@ -502,7 +503,7 @@ class CoursePage extends Component {
           <Route exact path="/user/ongoing-course/edit/:courseId/vm">
             <CommonPageContent
               className="ongoing-course-bg"
-              pageTitle="編輯課程"
+              pageTitle={`編輯 ${_.get(courseDetail, 'data.name', '')}`}
             >
 
               <div className="user-course-edit-bg">
@@ -510,7 +511,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseVM`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.handleSubmitCreateVM(submitData)}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'update', courseType: 'vm' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | intro | level | image */}

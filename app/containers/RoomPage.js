@@ -71,6 +71,7 @@ class RoomPage extends Component {
     const initialData = {
       ...classroom,
       courses: _.get(classroom, 'courseInfo', []).map(d => ({ label: d.name, value: d.id })),
+      teachers: _.get(classroom, 'teachers', []),
       students: []
     }
 
@@ -160,7 +161,7 @@ class RoomPage extends Component {
   // 學生
   loadStudentTagsCreateRoom = () => this.props.roomAction.loadStudentTagsForRoomCreate(this.props.token);
 
-  onCreateClassroomSubmit = (formData) => {
+  onClassroomSubmit = (formData, formType) => {
     const {
       roomAction,
       token,
@@ -169,54 +170,38 @@ class RoomPage extends Component {
       roomDetail
     } = this.props;
 
-    roomAction.createClassroom({
-      token,
-      userInfo,
-      students,
-      formData,
-      next: this.onCreateClassroomSuccess
-    });
+    if (formType === 'create') {
+      roomAction.createClassroom({
+        token,
+        students,
+        formData,
+        next: this.onClassroomSubmitSuccess
+      });
+    } else {
+      roomAction.updateClassroom({
+        token,
+        students,
+        formData,
+        next: this.onClassroomSubmitSuccess
+      });
+    }
 
     // Progress.show();
   }
 
-  onCreateClassroomSuccess = () => {
-    // 清空 form 跟 students
-
+  onClassroomSubmitSuccess = (formType) => {
     const {
       history,
-      roomAction
+      roomAction,
+      resetForm
     } = this.props;
 
     history.push('/user/classroom-manage/list');
-    notify.show('新建教室成功', 'success', 1800);
+    notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
 
+    // reset form
+    resetForm();
     roomAction.resetStudentsField();
-
-  }
-
-  handleSubmitClassroomUpdate = (formData) => {
-    const {
-      roomAction,
-      token,
-      userInfo,
-      students,
-      roomDetail
-    } = this.props;
-
-    const formDataWithStudent = {
-      ...formData,
-      students: students.map(d => d.valueItem)
-    }
-
-    // console.log('formDataWithStudent', formDataWithStudent, students)
-
-    roomAction.createClassroom({
-      token,
-      userInfo,
-      formData,
-      next: this.onCreateClassroomSuccess
-    });
   }
 
   cancelClassroomDetail = () => {
@@ -312,7 +297,7 @@ class RoomPage extends Component {
               <Form
                 model="forms.classroom"
                 className="room-create-form-comp"
-                onSubmit={formData => this.onCreateClassroomSubmit(formData)}
+                onSubmit={formData => this.onClassroomSubmit(formData, 'create')}
               >
                 {/* name | description | schedules | courses */}
                 <FormGroups
@@ -354,7 +339,7 @@ class RoomPage extends Component {
               <Form
                 model="forms.classroom"
                 className="room-create-form-comp"
-                onSubmit={formData => this.handleSubmitClassroomUpdate(formData)}
+                onSubmit={formData => this.onClassroomSubmit(formData, 'update')}
               >
 
                 <FormGroups
