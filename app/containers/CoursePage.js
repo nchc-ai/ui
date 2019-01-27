@@ -65,16 +65,21 @@ class CoursePage extends Component {
       token
     } = nextProps;
 
-    const action = _.get(nextProps, 'match.params.action', 'list');
+    const params = _.get(nextProps, 'match.params', {
+      action: '',
+      courseType: '',
+      courseId: ''
+    });
 
-    if (/edit/.test(action)) {
+    if (/edit/.test(params.action)) {
       // courseAction.getCourseDetail()
-    } else if (action === 'list') {
+    } else if (params.action === 'list') {
       courseAction.getCourseListVM(userInfo.username, token);
       courseAction.getCourseListCon(userInfo.username, token);
-    } else if (/detail/.test(action)) {
-      const courseId = _.get(nextProps, 'match.params.courseId', 'list');
-      courseAction.getCourseDetail({ token, courseId });
+    } else if (/(detail)/.test(params.action) && /(container)/.test(params.courseType)) {
+      courseAction.getContainerCourseDetail({ token, courseId: params.courseId });
+    } else if (/(detail)/.test(params.action) && /(vm)/.test(params.courseType)) {
+      courseAction.getVMCourseDetail({ token, courseId: params.courseId });
     }
 
   }
@@ -107,7 +112,7 @@ class CoursePage extends Component {
   }
 
   editCourse = (e, datum) => {
-    this.props.history.push(`/user/ongoing-course/edit/${datum.id}/container`)
+    this.props.history.push(`/user/ongoing-course/edit/${datum.id}/${datum.type.toLowerCase()}`)
   }
 
   deleteCourse = (e, datum) => {
@@ -255,7 +260,36 @@ class CoursePage extends Component {
           </Route>
 
           {/* [container] 課程細項 */}
-          <Route exact path="/user/ongoing-course/detail/:courseId">
+          <Route exact path="/user/ongoing-course/detail/:courseId/container">
+            <CommonPageContent
+              className="course-detail-bg"
+              pageTitle={_.get(courseDetail, 'data.name', '')}
+            >
+              <h5 className="course-detail__intro">
+                {_.get(courseDetail, 'data.', 'introduction')}
+              </h5>
+
+              <ListView
+                templateData={courseDetailList}
+                detailData={courseDetail.data}
+                isLoading={courseDetail.isLoading}
+              />
+
+              <hr className="my-2" />
+
+              {/* 下方按鈕 */}
+              {/* TODO: 需在這判斷是否有開過課程決定submitName */}
+              <FormButtons
+                cancelName="上一頁"
+                submitName="開始課程"
+                backMethod={this.backMethodCommon}
+                showMode="submit_back"
+              />
+            </CommonPageContent>
+          </Route>
+
+          {/* [vm] 課程細項 */}
+          <Route exact path="/user/ongoing-course/detail/:courseId/vm">
             <CommonPageContent
               className="course-detail-bg"
               pageTitle={_.get(courseDetail, 'data.name', '')}

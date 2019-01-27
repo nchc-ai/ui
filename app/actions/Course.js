@@ -337,8 +337,14 @@ export const getCourseListByLevel = level => async (dispatch) => {
   }
 };
 
-// Course > Get
-export const getCourseDetail = ({ token, courseId, next }) => async (dispatch) => {
+/**
+ * [Container Course]
+ * Called when accessing container course with courseId.
+ * @param {String} token - .
+ * @param {String} courseId - .
+ * @param {Function} next - .
+ */
+export const getContainerCourseDetail = ({ token, courseId, next }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -361,6 +367,35 @@ export const getCourseDetail = ({ token, courseId, next }) => async (dispatch) =
   }
 };
 
+/**
+ * [Container Course]
+ * Called when accessing container course with courseId.
+ * @param {String} token - .
+ * @param {String} courseId - .
+ * @param {Function} next - .
+ */
+export const getVMCourseDetail = ({ token, courseId, next }) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/get/${courseId}`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_COURSE_DETAIL
+    }
+  });
+
+  // console.log('[getCourseDetail] response', response);
+
+  if (_.isUndefined(response) || response.error) {
+    console.error('getCourseDetail 失敗');
+  } else if (next) {
+    next(response.payload.course);
+  }
+};
 
 // Course > Search
 export const searchCourse = query => async (dispatch) => {

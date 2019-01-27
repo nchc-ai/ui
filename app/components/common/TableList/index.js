@@ -29,7 +29,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     {
                       datum.type === 'link-detail' ?
                         <div>
-                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/detail/`}${_.get(d, 'id')}`}>
+                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/detail/`}${_.get(d, 'id')}/${_.get(d, 'type', "").toLowerCase()}`}>
                             {_.get(d, datum.value)}
                           </Link>
                         </div>
@@ -40,7 +40,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     {
                       datum.type === 'link-edit' ?
                         <div>
-                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/edit/`}${_.get(d, 'id')}/container`}>
+                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/edit/`}${_.get(d, 'id')}/${_.get(d, 'type', "").toLowerCase()}`}>
                             {_.get(d, datum.value)}
                           </Link>
                         </div>
