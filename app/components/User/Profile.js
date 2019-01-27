@@ -26,6 +26,7 @@ const Profile = ({ targetForm, changeValue, onSubmit, cancelEdit }) => {
         cancelName="回課程列表"
         submitName="修改"
         backMethod={cancelEdit}
+        showMode="submit_back"
         isForm
       />
     </Form>

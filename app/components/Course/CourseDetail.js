@@ -41,6 +41,7 @@ const CourseDetail = ({ submitMethod, cancelEdit, detail, isBanner }) => (
         submitName="開始課程"
         backMethod={cancelEdit}
         nextMethod={submitMethod}
+        showMode="submit_back"
       />
 
     </div>

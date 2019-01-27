@@ -78,6 +78,7 @@ class PasswordPage extends Component {
             cancelName="回課程列表"
             submitName="修改"
             backMethod={this.handleCancel}
+            showMode="submit_back"
             isForm
           />
         </Form>

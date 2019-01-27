@@ -37,6 +37,7 @@ const Signup = ({ targetForm, changeValue, onSubmit, onSubmitFailed, backMethod 
               cancelName="取消"
               submitName="註冊"
               backMethod={backMethod}
+              showMode="submit_back"
               size={4}
               isForm
             />

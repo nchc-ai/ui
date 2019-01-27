@@ -4,29 +4,83 @@ import { Row, Col } from 'reactstrap';
 import DataFrame from '../../common/DataFrame/index';
 import { formatValue } from '../../../libraries/utils';
 
-const ListView = ({ data, col }) => {
-  // console.log('data', data);
+/**
+ * @param {Array} templateData Template array for multi type.
+ * @param {Array} detailData Template array for multi type.
+ * @param {Array} size For slate input.
+ * @param {Array} asyncSelectKey
+ */
+
+const ListView = ({ isLoading, templateData, detailData, size }) => {
+  // console.log('templateData', templateData);
   return (
   <div className="list-view-comp">
     <DataFrame
-      data={data}
+      isLoading={isLoading}
+      data={templateData}
       cols={8}
     >
       <Row>
         {
-          data.map(d => (
+          templateData.map(template => (
             <Col
-              key={d.key}
-              md={{ size: col ? 12 / col : 12 }}
-              className={`list-view-li list-view-li-${d.labelVal}`}
+              key={template.key}
+              md={{ size: size ? 12 / size : 12 }}
+              className={`list-view-li list-view-li-${template.name}`}
             >
-              <span className="col-icon col-grp">{d.icon}</span>
-              <span className="col-label col-grp">{d.label}: </span>
+              {/* Bullet */}
               {
-                d.value === '' || _.isUndefined(d.value) ?
-                  <span className="value-empty col-value col-grp">目前尚無資料</span>
+                _.get(template, 'bulletUrl', "") ?
+                  <img alt="" src={template.bulletUrl} />
+                : null
+              }
+
+              {/* Label */}
+              <span className="col-label col-grp">{template.label}: </span>
+
+              {/* Value */}
+              {
+                _.get(detailData, template.name, "") ?
+                  <span>
+                    {/* Define different value here */}
+                    {
+                      template.type === 'text' ?
+                        <span className="value col-value col-grp">{detailData[template.name]}</span>
+                      : null
+                    }
+
+                    {
+                      template.type === 'array' ?
+                        <span>
+                          {
+                            detailData[template.name].map(arrayItem => (
+                              <span className="value col-value col-grp">{arrayItem}</span>
+                            ))
+                          }
+                        </span>
+                      : null
+                    }
+                    {
+                      template.type === 'key_value' ?
+                        <span>
+                          {
+                            detailData[template.name].map(arrayItem => (
+                              <span className="value col-value col-grp">{`${arrayItem.name} : ${arrayItem.port}`}</span>
+                            ))
+                          }
+                        </span>
+                      : null
+                    }
+                    {
+                      template.unit ?
+                        <span>
+                          { template.unit }
+                        </span>
+                      : null
+                    }
+                  </span>
                 :
-                  <span className="value col-value col-grp">{formatValue(d)}</span>
+                  <span className="value-empty col-value col-grp">目前尚無資料</span>
               }
             </Col>
           ))

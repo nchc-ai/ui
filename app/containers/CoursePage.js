@@ -67,11 +67,14 @@ class CoursePage extends Component {
 
     const action = _.get(nextProps, 'match.params.action', 'list');
 
-    if (/(edit|detail)/.test(action)) {
+    if (/edit/.test(action)) {
       // courseAction.getCourseDetail()
     } else if (action === 'list') {
       courseAction.getCourseListVM(userInfo.username, token);
       courseAction.getCourseListCon(userInfo.username, token);
+    } else if (/detail/.test(action)) {
+      const courseId = _.get(nextProps, 'match.params.courseId', 'list');
+      courseAction.getCourseDetail({ token, courseId });
     }
 
   }
@@ -218,11 +221,10 @@ class CoursePage extends Component {
       changeValue,
     } = this.props;
     const courseType = _.get(match, 'params.type');
-
     return (
       <div className="course-bg">
         <Switch>
-          {/* [User] 開課列表 */}
+          {/* [common] 開課列表 */}
           <Route path="/user/ongoing-course/list">
             <CommonPageContent
               className="ongoing-course-bg"
@@ -252,23 +254,21 @@ class CoursePage extends Component {
             </CommonPageContent>
           </Route>
 
-          {/* [User] 課程細項 */}
+          {/* [container] 課程細項 */}
           <Route exact path="/user/ongoing-course/detail/:courseId">
             <CommonPageContent
-              className="profile-page-bg"
-              pageTitle="課程細項"
+              className="course-detail-bg"
+              pageTitle={_.get(courseDetail, 'data.name', '')}
             >
-              <CustomJumbotron
-                tag={_.get(courseDetail, 'level')}
-                title={_.get(courseDetail, 'name')}
-                sideTitle={`開課講師：${_.get(courseDetail, 'user')}`}
-                info={_.get(courseDetail, 'introduction')}
-              />
+              <h5 className="course-detail__intro">
+                {_.get(courseDetail, 'data.', 'introduction')}
+              </h5>
 
               <ListView
-                data={courseDetailList(courseDetail)}
+                templateData={courseDetailList}
+                detailData={courseDetail.data}
+                isLoading={courseDetail.isLoading}
               />
-
 
               <hr className="my-2" />
 
@@ -278,12 +278,12 @@ class CoursePage extends Component {
                 cancelName="上一頁"
                 submitName="開始課程"
                 backMethod={this.backMethodCommon}
-                nextMethod={this.startCourse}
+                showMode="submit_back"
               />
             </CommonPageContent>
           </Route>
 
-          {/* [User] 新建 container 課程 */}
+          {/* [container] 新建 container 課程 */}
           <Route exact path="/user/ongoing-course/create/container">
             <CommonPageContent
               className="profile-page-bg"
@@ -320,6 +320,7 @@ class CoursePage extends Component {
                     cancelName="上一頁"
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
+                    showMode="submit_back"
                     isForm
                   />
 
@@ -328,7 +329,7 @@ class CoursePage extends Component {
             </CommonPageContent>
           </Route>
 
-          {/* [User] 新建 vm 課程 */}
+          {/* [vm] 新建 vm 課程 */}
           <Route exact path="/user/ongoing-course/create/vm">
             <CommonPageContent
               className="ongoing-course-bg"
@@ -374,6 +375,7 @@ class CoursePage extends Component {
                     cancelName="上一頁"
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
+                    showMode="submit_back"
                     isForm
                   />
 
@@ -420,6 +422,7 @@ class CoursePage extends Component {
                     cancelName="上一頁"
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
+                    showMode="submit_back"
                     isForm
                   />
 
@@ -427,8 +430,6 @@ class CoursePage extends Component {
               </div>
             </CommonPageContent>
           </Route>
-
-
 
           {/* [vm] 課程編輯 */}
           <Route exact path="/user/ongoing-course/edit/:courseId/vm">
@@ -476,6 +477,7 @@ class CoursePage extends Component {
                     cancelName="上一頁"
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
+                    showMode="submit_back"
                     isForm
                   />
 
@@ -513,7 +515,10 @@ const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   isLoading: Course.courseCon.isLoading,
   courseList: Course.courseCon.data,
-  courseDetail: Course.courseDetail.data,
+  courseDetail: {
+    data: Course.courseDetail.data,
+    isLoading: Course.courseDetail.isLoading,
+  },
   searchResult: Course.searchResult.data
 });
 

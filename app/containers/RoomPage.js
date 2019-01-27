@@ -269,6 +269,7 @@ class RoomPage extends Component {
                   submitName="開始上課"
                   backMethod={this.onCommonBackMethod}
                   nextMethod={this.submitClassroomDetail}
+                  showMode="submit_back"
                 />
               </div>
             </CommonPageContent>
@@ -308,6 +309,7 @@ class RoomPage extends Component {
                   cancelName="回教室管理"
                   submitName="建立教室"
                   backMethod={this.onCommonBackMethod}
+                  showMode="submit_back"
                   isForm
                 />
               </Form>
@@ -346,6 +348,7 @@ class RoomPage extends Component {
                   cancelName="回教室管理"
                   submitName="修改此教室"
                   backMethod={this.onCommonBackMethod}
+                  showMode="submit_back"
                   isForm
                 />
               </Form>

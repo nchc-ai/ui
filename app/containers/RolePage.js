@@ -91,8 +91,8 @@ class RolePage extends Component {
             cancelName="上一頁"
             submitName="確定"
             backMethod={this.backMethodCommon}
+            showMode="submit_back"
             isForm
-            isSubmitOnly
           />
         </Form>
       </CommonPageContent>

@@ -230,8 +230,8 @@ class JobPage extends Component {
                                                 <FormButtons
                                                   size={4}
                                                   submitName="送出"
+                                                  showMode="submit_only"
                                                   isForm
-                                                  isSubmitOnly
                                                 />
                                               </Form>
                                             :

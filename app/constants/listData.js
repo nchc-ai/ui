@@ -1,9 +1,5 @@
 import React from 'react';
 import _ from 'lodash';
-import IconCalendar from '../../public/images/course/ic-course-detail-date.png';
-import IconImage from '../../public/images/course/ic-course-detail-image.png';
-import IconGpu from '../../public/images/course/ic-course-detail-gpu.png';
-import IconDatasets from '../../public/images/course/ic-course-detail-datasets.png';
 import { pdfLink } from '../config/api';
 
 export const detailListClassroom = obj => ([
@@ -38,36 +34,50 @@ export const detailListClassroom = obj => ([
 ]);
 
 
-export const courseDetailList = obj => ([
+export const courseDetailList = [
   {
-    key: 1,
-    icon: <img alt="" src={IconCalendar} />,
-    labelVal: 'date',
-    label: '建立時間',
-    type: 'date',
-    value: _.get(obj, 'createAt', '')
-  }, {
     key: 2,
-    icon: <img alt="" src={IconImage} />,
-    labelVal: 'image',
+    name: 'image',
+    bulletUrl: '/images/course/ic-course-detail-image.png',
     label: '映像檔',
-    value: _.get(obj, 'image', '')
+    type: 'text'
   }, {
     key: 3,
-    icon: <img alt="" src={IconGpu} />,
-    labelVal: 'gpu',
+    name: 'gpu',
+    bulletUrl: '/images/course/ic-course-detail-gpu.png',
     label: 'GPU核心數',
-    value: _.get(obj, 'gpu', '')
+    type: 'text',
+    unit: '核心'
   }, {
     key: 4,
-    icon: <img alt="" src={IconDatasets} />,
-    labelVal: 'dataset',
+    name: 'datasets',
+    bulletUrl: '/images/course/ic-course-detail-datasets.png',
     label: '資料集',
-    type: 'array',
-    value: _.get(obj, 'datasets', ''),
+    type: 'text',
+    comma: ','
+  }, {
+    key: 5,
+    name: 'accessType',
+    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    label: '存取方式',
+    type: 'text',
+    comma: ','
+  }, {
+    key: 6,
+    name: 'ports',
+    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    label: '存取端口',
+    type: 'key_value',
+    comma: ','
+  }, {
+    key: 7,
+    name: 'writablePath',
+    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    label: '工作目錄',
+    type: 'text',
     comma: ','
   }
-]);
+];
 
 
 

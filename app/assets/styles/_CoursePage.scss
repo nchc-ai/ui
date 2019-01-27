@@ -3,7 +3,7 @@
 
   .section-01 {
 
-    .title { 
+    .title {
       @include center;
       text-align: center;
       font-size: 36px;
@@ -24,6 +24,11 @@
 
 .course-detail-bg {
 
+  .course-detail__intro {
+    margin-bottom: 35px;
+  }
+
+
   .section-bn {
     @include rect-center(100%, 290px);
     background-image: url(../images/course/course-bn.png);
@@ -41,7 +46,6 @@
   }
 
   .section-01 {
-   
     @include rect-center(960px, initial);
     .custom-jumbotron-comp {
       margin-top: 120px;
