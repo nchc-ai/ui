@@ -2,7 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Row, Col } from 'reactstrap';
 import DataFrame from '../../common/DataFrame/index';
-import { formatValue } from '../../../libraries/utils';
+import { formatValue, decodeHtml } from '../../../libraries/utils';
 
 /**
  * @param {Array} templateData Template array for multi type.
@@ -31,12 +31,14 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               {/* Bullet */}
               {
                 _.get(template, 'bulletUrl', "") ?
-                  <img alt="" src={template.bulletUrl} />
+                  <img className="list-view__bullet" alt="list-bullet" src={template.bulletUrl} />
                 : null
               }
 
               {/* Label */}
-              <span className="col-label col-grp">{template.label}: </span>
+              <span
+                className="col-label col-grp"
+              >{template.label}： </span>
 
               {/* Value */}
               {
@@ -50,6 +52,12 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     }
 
                     {
+                      template.type === 'html' ?
+                        <span className="value col-value col-grp">{decodeHtml(detailData[template.name])}</span>
+                      : null
+                    }
+
+                    {
                       template.type === 'array' ?
                         <span>
                           {
@@ -57,6 +65,13 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                               <span className="value col-value col-grp">{arrayItem}</span>
                             ))
                           }
+                        </span>
+                      : null
+                    }
+                    {
+                      template.type === 'boolean' ?
+                        <span className="value col-value col-grp">
+                          { detailData[template.name] ? '是' : '否' }
                         </span>
                       : null
                     }

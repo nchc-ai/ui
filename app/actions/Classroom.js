@@ -17,7 +17,7 @@ export const resetStudentsField = () => ({
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const createClassroom = ({ token, userInfo, formData, next }) => async (dispatch) => {
+export const createClassroom = ({ token, userInfo, students, formData, next }) => async (dispatch) => {
 
   const submitData = {
     courses: _.get(formData, 'courses', []).map(d => d.value),
@@ -27,7 +27,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
     schedules: [
       `* ${_.get(formData, 'schedules', '* * * *')}`
     ],
-    students: _.get(formData, 'students', []).map(d => d.value),
+    students: students.map(d => d.valueItem),
     teachers:  _.get(formData, 'teachers', []).map(d => d.value)
   };
 
@@ -57,7 +57,7 @@ export const createClassroom = ({ token, userInfo, formData, next }) => async (d
  * @param {String} token - The required token for calling API.
  * @param {Object} formData - Form data with file format.
  */
-export const upladStudentsCSV = ({ token, formData, next }) => async (dispatch) => {
+export const uploadStudentsCSV = ({ token, formData, next }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -72,7 +72,7 @@ export const upladStudentsCSV = ({ token, formData, next }) => async (dispatch) 
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '上傳 csv 檔案失敗', 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '上傳 csv 檔案失敗 （可能檔案規格不符）'), 'error', TOAST_TIMING);
   } else {
     notify.show('上傳 csv 成功', 'success', TOAST_TIMING);
   }

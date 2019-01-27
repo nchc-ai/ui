@@ -10,8 +10,16 @@ import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } f
 
 // Container 課程 ---------------------------------------------------
 
-// list
-export const getCourseListCon = (user, token) => async (dispatch) => {
+
+/**
+ * Both container and vm course
+ * Called when clicking submit button to create container course.
+ * @param {Object} token - .
+ * @param {Object} userInfo - .
+ * @param {Object} formData - .
+ * @param {Object} next - .
+ */
+export const getCourseListAll = ({ user, token }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -304,22 +312,6 @@ export const submitCourseVM = (token, userInfo, formData, next) => async (dispat
 
 //-------------------------------------------------------------------------
 
-// Course > List all courses
-export const getCourseListAll = () => async (dispatch) => {
-
-  const response = await dispatch({
-    [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/course/list`,
-      method: 'GET',
-      types: types.GET_COURSE_LIST_ALL
-    }
-  });
-
-  if (_.isUndefined(response) || response.error) {
-    notify.show(response.payload.response.message || '', 'error', TOAST_TIMING);
-  }
-};
-
 
 // Course > List different level course
 export const getCourseListByLevel = level => async (dispatch) => {
@@ -344,7 +336,7 @@ export const getCourseListByLevel = level => async (dispatch) => {
  * @param {String} courseId - .
  * @param {Function} next - .
  */
-export const getContainerCourseDetail = ({ token, courseId, next }) => async (dispatch) => {
+export const getContainerCourseDetail = ({ token, courseId, onSuccess }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -362,8 +354,8 @@ export const getContainerCourseDetail = ({ token, courseId, next }) => async (di
 
   if (_.isUndefined(response) || response.error) {
     console.error('getCourseDetail 失敗');
-  } else if (next) {
-    next(response.payload.course);
+  } else if (onSuccess) {
+    onSuccess(response.payload.course, 'CONTAINER');
   }
 };
 
@@ -374,7 +366,7 @@ export const getContainerCourseDetail = ({ token, courseId, next }) => async (di
  * @param {String} courseId - .
  * @param {Function} next - .
  */
-export const getVMCourseDetail = ({ token, courseId, next }) => async (dispatch) => {
+export const getVMCourseDetail = ({ token, courseId, onSuccess }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -392,8 +384,8 @@ export const getVMCourseDetail = ({ token, courseId, next }) => async (dispatch)
 
   if (_.isUndefined(response) || response.error) {
     console.error('getCourseDetail 失敗');
-  } else if (next) {
-    next(response.payload.course);
+  } else if (onSuccess) {
+    onSuccess(response.payload.course, 'VM');
   }
 };
 

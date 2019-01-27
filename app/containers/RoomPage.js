@@ -15,9 +15,11 @@ import FormGroups from '../components/common/FormGroups/index';
 import DetailGroups from '../components/common/DetailGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import TableList from '../components/common/TableList';
+import ListView from '../components/common/ListView/index';
 import { classroomFrame } from '../constants/detailFrame';
 import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
-
+import { classroomDetailTpl } from '../constants/listData';
+import { decodeHtml } from '../libraries/utils';
 class RoomPage extends Component {
 
   componentWillMount () {
@@ -59,15 +61,16 @@ class RoomPage extends Component {
   }
 
   /**
-   * Initialize edit form for classroom.
+   * Initialize edit data for classroom form.
    * @param {Object} classroom Classroom object for initialization.
    */
   initializeEditForm = (classroom) => {
 
+    console.log('classroom', classroom);
+
     const initialData = {
       ...classroom,
-      courses: [],
-      teachers: [],
+      courses: _.get(classroom, 'courseInfo', []).map(d => ({ label: d.name, value: d.id })),
       students: []
     }
 
@@ -162,19 +165,14 @@ class RoomPage extends Component {
       roomAction,
       token,
       userInfo,
-      students
+      students,
+      roomDetail
     } = this.props;
-
-    const formDataWithStudent = {
-      ...formData,
-      students: students.map(d => d.valueItem)
-    }
-
-    // console.log('formDataWithStudent', formDataWithStudent, students)
 
     roomAction.createClassroom({
       token,
       userInfo,
+      students,
       formData,
       next: this.onCreateClassroomSuccess
     });
@@ -195,6 +193,30 @@ class RoomPage extends Component {
 
     roomAction.resetStudentsField();
 
+  }
+
+  handleSubmitClassroomUpdate = (formData) => {
+    const {
+      roomAction,
+      token,
+      userInfo,
+      students,
+      roomDetail
+    } = this.props;
+
+    const formDataWithStudent = {
+      ...formData,
+      students: students.map(d => d.valueItem)
+    }
+
+    // console.log('formDataWithStudent', formDataWithStudent, students)
+
+    roomAction.createClassroom({
+      token,
+      userInfo,
+      formData,
+      next: this.onCreateClassroomSuccess
+    });
   }
 
   cancelClassroomDetail = () => {
@@ -253,25 +275,30 @@ class RoomPage extends Component {
           <Route exact path="/user/classroom-manage/detail/:courseId">
             <CommonPageContent
               className="room-page-bg"
-              pageTitle="教室細項"
+              pageTitle={_.get(roomDetail, 'data.name', '')}
             >
-              <div className="classroom-detail-bg">
+              <h5 className="course-detail__intro">
+                {decodeHtml(_.get(roomDetail, 'data.description', ''))}
+              </h5>
 
-                <DetailGroups
-                  frameData={classroomFrame}
-                  detailData={{ roomDetail }}
-                />
 
-                <hr className="my-2" />
 
-                <FormButtons
-                  cancelName="回教室管理"
-                  submitName="開始上課"
-                  backMethod={this.onCommonBackMethod}
-                  nextMethod={this.submitClassroomDetail}
-                  showMode="submit_back"
-                />
-              </div>
+              <ListView
+                templateData={classroomDetailTpl}
+                detailData={roomDetail.data}
+                isLoading={roomDetail.isLoading}
+              />
+
+              <hr className="my-2" />
+
+              {/* 下方按鈕 */}
+              {/* TODO: 需在這判斷是否有開過課程決定submitName */}
+              <FormButtons
+                cancelName="回教室管理"
+                submitName="開始課程"
+                backMethod={this.onCommonBackMethod}
+                showMode="submit_back"
+              />
             </CommonPageContent>
           </Route>
 
@@ -327,7 +354,7 @@ class RoomPage extends Component {
               <Form
                 model="forms.classroom"
                 className="room-create-form-comp"
-                onSubmit={formData => this.handleSubmitClassroomCreate(formData)}
+                onSubmit={formData => this.handleSubmitClassroomUpdate(formData)}
               >
 
                 <FormGroups
@@ -378,7 +405,10 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   forms,
   loading: Classroom.publicList.isLoading,
   roomList: Classroom.publicList.data,
-  roomDetail: Classroom.detail.data,
+  roomDetail: {
+    data: Classroom.detail.data,
+    isLoading: Classroom.detail.isLoading
+  },
   addClassroom: forms.addClassroom,
   students: Classroom.students.data,
   token: Auth.token,

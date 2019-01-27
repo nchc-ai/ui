@@ -41,7 +41,7 @@ class FileUpload extends Component {
     formData.append('filename', files[0].name);
 
     // 上傳
-    this.props.roomAction.upladStudentsCSV({
+    this.props.roomAction.uploadStudentsCSV({
       token,
       formData
     })

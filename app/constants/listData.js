@@ -1,84 +1,129 @@
 import React from 'react';
 import _ from 'lodash';
 import { pdfLink } from '../config/api';
+import bulletTriangle from '../assets/images/common/bullet-triangle.png';
 
-export const detailListClassroom = obj => ([
+
+export const classroomDetailTpl = [
   {
     key: 1,
-    icon: <img alt="" src={IconCalendar} />,
-    labelVal: 'date',
-    label: '教室名稱',
+    name: 'name',
+    label: '教室狀態',
+    bulletUrl: bulletTriangle,
     type: 'date',
-    value: _.get(obj, 'createAt', '')
+    type: 'text'
   }, {
     key: 2,
-    icon: <img alt="" src={IconImage} />,
-    labelVal: 'image',
-    label: '教室簡介',
-    value: _.get(obj, 'image', '')
+    name: 'schedules',
+    bulletUrl: bulletTriangle,
+    label: '課程週期',
+    type: 'text'
   }, {
     key: 3,
-    icon: <img alt="" src={IconGpu} />,
-    labelVal: 'gpu',
-    label: 'GPU核心數',
-    value: _.get(obj, 'gpu', '')
+    name: 'studentCount',
+    bulletUrl: bulletTriangle,
+    label: '學生人數',
+    type: 'text',
+    unit: '位'
   }, {
     key: 4,
-    icon: <img alt="" src={IconDatasets} />,
-    labelVal: 'dataset',
-    label: '資料集',
-    type: 'array',
-    value: _.get(obj, 'datasets', ''),
+    name: 'teachers',
+    bulletUrl: bulletTriangle,
+    label: '教課講師',
+    type: 'text',
     comma: ','
   }
-]);
+];
 
-
-export const courseDetailList = [
+export const courseCONTAINERDetailTpl = [
   {
     key: 2,
     name: 'image',
-    bulletUrl: '/images/course/ic-course-detail-image.png',
+    bulletUrl: bulletTriangle,
     label: '映像檔',
     type: 'text'
   }, {
     key: 3,
     name: 'gpu',
-    bulletUrl: '/images/course/ic-course-detail-gpu.png',
+    bulletUrl: bulletTriangle,
     label: 'GPU核心數',
     type: 'text',
     unit: '核心'
   }, {
     key: 4,
     name: 'datasets',
-    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    bulletUrl: bulletTriangle,
     label: '資料集',
     type: 'text',
     comma: ','
   }, {
     key: 5,
     name: 'accessType',
-    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    bulletUrl: bulletTriangle,
     label: '存取方式',
     type: 'text',
     comma: ','
   }, {
     key: 6,
     name: 'ports',
-    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    bulletUrl: bulletTriangle,
     label: '存取端口',
     type: 'key_value',
     comma: ','
   }, {
     key: 7,
     name: 'writablePath',
-    bulletUrl: '/images/course/ic-course-detail-datasets.png',
+    bulletUrl: bulletTriangle,
     label: '工作目錄',
     type: 'text',
     comma: ','
   }
 ];
 
+export const courseVMDetailTpl = [
+  {
+    key: 2,
+    name: 'image',
+    bulletUrl: bulletTriangle,
+    label: '映像檔',
+    type: 'text'
+  }, {
+    key: 3,
+    name: 'flavor',
+    bulletUrl: bulletTriangle,
+    label: '資源規模',
+    type: 'text'
+  }, {
+    key: 4,
+    name: 'associate',
+    bulletUrl: bulletTriangle,
+    label: 'Associate Floating IP',
+    type: 'text',
+    comma: ','
+  }, {
+    key: 5,
+    name: 'sshkey',
+    bulletUrl: bulletTriangle,
+    label: 'SSH Key',
+    type: 'text',
+    comma: ','
+  }, {
+    key: 6,
+    name: 'mount',
+    bulletUrl: bulletTriangle,
+    label: '是否掛載',
+    type: 'boolean',
+    comma: ','
+  }, {
+    key: 7,
+    name: 'volume',
+    bulletUrl: bulletTriangle,
+    label: 'Volume',
+    type: 'text',
+    comma: ',',
+    unit: 'GB'
+  }
+];
 
 
 export const courseListBasic = [

@@ -8,7 +8,7 @@ import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree } from '../constants/formsData';
-import { courseDetailList } from '../constants/listData'
+import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CustomJumbotron from '../components/common/CustomJumbotron/index';
 import CourseDetail from '../components/Course/CourseDetail';
@@ -17,6 +17,9 @@ import ListView from '../components/common/ListView/index';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import CommonPageContent from '../components/CommonPageContent';
+import { COURSE_CONTAINER } from '../constants';
+import { decodeHtml } from '../libraries/utils';
+import { initialCourseConState, initialCourseVMState } from '../constants/initialState';
 
 const initialMdValue = Value.fromJSON({
   document: {
@@ -71,17 +74,47 @@ class CoursePage extends Component {
       courseId: ''
     });
 
-    if (/edit/.test(params.action)) {
-      // courseAction.getCourseDetail()
+    if (/(detail)|(edit)/.test(params.action) && /(container)/.test(params.courseType)) {
+      courseAction.getContainerCourseDetail({
+        token,
+        courseId: params.courseId,
+        onSuccess: this.initializeEditForm
+      });
+    } else if (/(detail)|(edit)/.test(params.action) && /(vm)/.test(params.courseType)) {
+      courseAction.getVMCourseDetail({
+        token,
+        courseId: params.courseId,
+        onSuccess: this.initializeEditForm
+      });
     } else if (params.action === 'list') {
-      courseAction.getCourseListVM(userInfo.username, token);
-      courseAction.getCourseListCon(userInfo.username, token);
-    } else if (/(detail)/.test(params.action) && /(container)/.test(params.courseType)) {
-      courseAction.getContainerCourseDetail({ token, courseId: params.courseId });
-    } else if (/(detail)/.test(params.action) && /(vm)/.test(params.courseType)) {
-      courseAction.getVMCourseDetail({ token, courseId: params.courseId });
+      courseAction.getCourseListAll({
+        token,
+        user: userInfo.username
+      });
     }
+  }
 
+  /**
+   * Initialize edit data for classroom form.
+   * @param {Object} course Classroom object for initialization.
+   */
+  initializeEditForm = (course, courseType) => {
+
+    const formData = courseType === COURSE_CONTAINER ? {
+      ...initialCourseConState,
+      ...course,
+      datasets: course.datasets.map(d => ({ label: d, value: d })),
+      ports: course.ports.map(d => ({ keyItem: d.name, valueItem: d.port })),
+      level: { value: course.level },
+      accessType: { value: course.accessType },
+
+    } : {
+      ...initialCourseVMState,
+      ...course
+    };
+
+    console.log('classroom', course, formData, courseType);
+    this.props.changeForm(formData, courseType === COURSE_CONTAINER ? 'courseCon' : 'courseVM');
   }
 
   /**
@@ -266,11 +299,11 @@ class CoursePage extends Component {
               pageTitle={_.get(courseDetail, 'data.name', '')}
             >
               <h5 className="course-detail__intro">
-                {_.get(courseDetail, 'data.', 'introduction')}
+                {decodeHtml(_.get(courseDetail, 'data.introduction', ''))}
               </h5>
 
               <ListView
-                templateData={courseDetailList}
+                templateData={courseCONTAINERDetailTpl}
                 detailData={courseDetail.data}
                 isLoading={courseDetail.isLoading}
               />
@@ -295,11 +328,11 @@ class CoursePage extends Component {
               pageTitle={_.get(courseDetail, 'data.name', '')}
             >
               <h5 className="course-detail__intro">
-                {_.get(courseDetail, 'data.', 'introduction')}
+                {decodeHtml(_.get(courseDetail, 'data.introduction', ''))}
               </h5>
 
               <ListView
-                templateData={courseDetailList}
+                templateData={courseVMDetailTpl}
                 detailData={courseDetail.data}
                 isLoading={courseDetail.isLoading}
               />
@@ -423,7 +456,7 @@ class CoursePage extends Component {
           <Route exact path="/user/ongoing-course/edit/:courseId/container">
             <CommonPageContent
               className="profile-page-bg"
-              pageTitle="編輯課程"
+              pageTitle={`編輯課程 ${_.get(courseDetail, 'data.name', '')}`}
             >
               <div className="user-course-edit-bg">
 

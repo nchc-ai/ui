@@ -8,6 +8,15 @@ $list-view-li-margin: 30px;
     @include rect(initial, $list-view-li-height);
     margin-bottom: $list-view-li-margin;
 
+    .list-view__bullet {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-top: -5px;
+      margin-right: 10px;
+      line-height: -40px;
+    }
+
     span {
       font-size: $list-view-font-size;
     }
@@ -25,9 +34,6 @@ $list-view-li-margin: 30px;
         display: inline;
         transform: translateY(-2px);
       }
-    }
-    .col-label {
-      @include rect(130px, initial);
     }
     .col-value {
       padding-left: 20px;
