@@ -137,7 +137,7 @@ class CoursePage extends Component {
     // Progress.show();
     jobAction.launchCourseJob({
       user: userInfo.username,
-      classroomId: 'default',
+      classroomId: '',
       courseId: data.id,
       token,
       next: () => this.onLaunchCourseJobSuccess()

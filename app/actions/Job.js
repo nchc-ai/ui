@@ -60,7 +60,7 @@ export const launchCourseJob = ({ token, user, classroomId, courseId, next }) =>
       body: JSON.stringify({
         user,
         course_id: courseId,
-        classroom_id: classroomId
+        classroom_id: classroomId || ''
       }),
       types: types.LAUNCH_COURSE_JOB
     }
