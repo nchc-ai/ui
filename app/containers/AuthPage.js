@@ -51,21 +51,33 @@ class AuthPage extends Component {
    */
   onGetTokenSuccess = (tokenObj) => {
     Cookies.set('token_obj', tokenObj, { path: '/', maxAge: dayToSecond(1) });
-    this.props.authAction.getUserInfo({ token: tokenObj.token, next: this.onGetUserInfoSuccess });
+    this.props.authAction.getMetaInfo({ token: tokenObj.token, onSuccess: this.onGetMetaInfoSuccess });
   }
 
   /**
    * Set user info and isLogin state to both cookie and state then redirect by role.
    * @param {String} token Token to retrieve user info.
    */
-  onGetUserInfoSuccess = (userInfo) => {
+  onGetMetaInfoSuccess = () => {
     const {
-      history,
       authAction
     } = this.props;
 
     Cookies.set('user_info', userInfo, { path: '/', maxAge: dayToSecond(1) });
     Cookies.set('is_login', true, { path: '/', maxAge: dayToSecond(1) });
+
+    authAction.getUserInfo({ token: tokenObj.token, onSuccess: this.onGetUserInfoSuccess });
+  }
+
+  /**
+   * Set token to cookie and state then get user info.
+   * @param {String} token Token to retrieve user info.
+   */
+  onGetUserInfoSuccess = () => {
+    const {
+      userInfo,
+      history
+    } = this.props;
 
     const redirectUrl = redirectUrlWithRole({ role: userInfo.role });
     history.push(redirectUrl);

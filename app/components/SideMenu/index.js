@@ -35,7 +35,10 @@ class Index extends Component {
         width={200}
       >
         <div>
-          <DogTag data={userInfo} isSubstituating={isSubstituating} />
+          <DogTag
+            data={userInfo}
+            isSubstituating={isSubstituating}
+          />
           {/* 各自版本 */}
           {
             roleObj[userInfo.role || 'default'].map(d => (

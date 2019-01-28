@@ -16,9 +16,9 @@ const DogTag = ({ data, name, isSubstituating }) => (
       <Avatar size="36" name={data.username || 'A'} src={data.imgUrl} round />
     </div>
     <div className="content-container con-grp fl">
-      <h5 className={data.username.length > 14 ? 'name-overflow' : 'name'}>{data.username || 'Adam Lin'}</h5>
+      <h5 className={data.username.length > 14 ? 'name-overflow' : 'name'}>{ data.cName || data.username || 'Guest'}</h5>
       {/* <h5 className={name.length > 14 ? 'name' : 'name'}>{name}</h5> */}
-      <p>{roleMapping[data.role]} 
+      <p>{roleMapping[data.role]}
         { isSubstituating ? <span className="substite-badge">切換中</span> : null }
       </p>
     </div>

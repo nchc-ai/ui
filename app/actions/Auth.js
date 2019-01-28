@@ -110,7 +110,7 @@ export const refreshToken = ({ refresh_token, next, fail }) => async (dispatch) 
 };
 
 // Proxy > Introspection
-export const getUserInfo = ({ token, next, failCb }) => async (dispatch) => {
+export const getMetaInfo = ({ token, onSuccess }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/introspection`,
@@ -119,18 +119,38 @@ export const getUserInfo = ({ token, next, failCb }) => async (dispatch) => {
       body: JSON.stringify({
         token
       }),
+      types: types.GET_META_INFO
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, "payload.response.message", "get user info fail"), 'error', TOAST_TIMING);
+  } else if (onSuccess) {
+    onSuccess();
+  }
+};
+
+
+// Proxy > Introspection
+export const getUserInfo = ({ token, onSuccess }) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/proxy/query`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       types: types.GET_USER_INFO
     }
   });
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "get user info fail"), 'error', TOAST_TIMING);
-    failCb();
-  } else if (next) {
-    next(response.payload);
+  } else if (onSuccess) {
+    onSuccess();
   }
 };
-
 
 // Proxy > Logout
 export const logout = ({ token, next }) => async (dispatch) => {

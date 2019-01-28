@@ -56,6 +56,24 @@ export default function Auth(state = InitialState, action) {
       token: action.payload.token,
       refreshToken: action.payload.refresh_token
     };
+  case actionTypes.GET_META_INFO[LOADING]:
+    return {
+      ...state,
+      loading: true
+    };
+  case actionTypes.GET_META_INFO[SUCCESS]:
+    return {
+      ...state,
+      isLogin: true,
+      loading: false,
+      userInfo: action.payload
+    };
+  case actionTypes.GET_META_INFO[FAIL]:
+    return {
+      ...state,
+      isLogin: false,
+      loading: false
+    };
   case actionTypes.GET_USER_INFO[LOADING]:
     return {
       ...state,
@@ -66,13 +84,10 @@ export default function Auth(state = InitialState, action) {
       ...state,
       isLogin: true,
       loading: false,
-      userInfo: action.payload
-    };
-  case actionTypes.GET_USER_INFO[FAIL]:
-    return {
-      ...state,
-      isLogin: false,
-      loading: false
+      userInfo: {
+        ...state.userInfo,
+        ...action.payload
+      }
     };
   case actionTypes.RETRIEVE_AUTH_FROM_SESSION:
     return {

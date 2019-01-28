@@ -3,9 +3,12 @@ import thunkMiddleware from "redux-thunk";
 import { createLogger } from "redux-logger";
 import { apiMiddleware } from "redux-api-middleware";
 import rootReducer from "./reducers";
+import enableBatching from './reducers/Batch';
 
 const store = createStore(
-  rootReducer,
+  enableBatching(
+    rootReducer
+  ),
   compose(
     applyMiddleware(
       thunkMiddleware,

@@ -8,7 +8,7 @@ import { Row, Col } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
-import { doubleRawList } from '../mock/jobData';
+// import { doubleRawList } from '../mock/jobData';
 import { TOAST_TIMING } from '../constants';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import FormGroups from '../components/common/FormGroups/index';
@@ -141,14 +141,14 @@ class JobPage extends Component {
       title: 'vm課程',
     }];
 
-    const doubleList = _.merge(doubleRawList, infoArr);
+    // const doubleList = _.merge(doubleRawList, infoArr);
 
-    // const doubleList = [
-    //   ...this.props.container,
-    //   ...this.props.vm
-    // ];
+    const doubleList = [
+      ...this.props.container,
+      ...this.props.vm
+    ];
 
-    // console.log('singleList', doubleList);
+    console.log('doubleList', doubleList);
 
     return (
       <div className="job-bg">
