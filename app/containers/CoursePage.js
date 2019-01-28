@@ -74,15 +74,19 @@ class CoursePage extends Component {
       courseId: ''
     });
 
+    this.resetBothForm(nextProps);
+
     if (/(detail)|(edit)/.test(params.action) && /(container)/.test(params.courseType)) {
       courseAction.getContainerCourseDetail({
         token,
+        actionType: params.action,
         courseId: params.courseId,
         onSuccess: this.initializeEditForm
       });
     } else if (/(detail)|(edit)/.test(params.action) && /(vm)/.test(params.courseType)) {
       courseAction.getVMCourseDetail({
         token,
+        actionType: params.action,
         courseId: params.courseId,
         onSuccess: this.initializeEditForm
       });
@@ -98,7 +102,7 @@ class CoursePage extends Component {
    * Initialize edit data for classroom form.
    * @param {Object} course Classroom object for initialization.
    */
-  initializeEditForm = (course, courseType) => {
+  initializeEditForm = ({ course, actionType, courseType }) => {
 
     const formData = courseType === COURSE_CONTAINER ? {
       ...initialCourseConState,
@@ -106,15 +110,17 @@ class CoursePage extends Component {
       datasets: _.get(course,'datasets',[]).map(d => ({ label: d, value: d })),
       ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port })),
       level: { value: course.level },
-      accessType: { value: course.accessType },
-
+      accessType: { value: course.accessType }
     } : {
       ...initialCourseVMState,
       ...course
     };
 
-    console.log('classroom', course, formData, courseType);
-    this.props.changeForm(formData, courseType === COURSE_CONTAINER ? 'courseCon' : 'courseVM');
+    if (actionType === 'edit') {
+      this.props.changeForm(formData, courseType === COURSE_CONTAINER ? 'courseCon' : 'courseVM');
+    } else {
+      this.resetBothForm(this.props);
+    }
   }
 
   /**
@@ -179,25 +185,23 @@ class CoursePage extends Component {
     this.props.history.goBack();
   }
 
-  onSubmitCourseFail = ({ actionType, courseType }) => {
-    const {
-      resetForm
-    } = this.props;
+  resetBothForm = (nextProps) => {
+    nextProps.resetForm('courseCon');
+    nextProps.resetForm('courseVM');
+  }
 
-    resetForm('courseCon');
-    resetForm('courseVM');
+  onSubmitCourseFail = ({ actionType, courseType }) => {
+    this.resetBothForm(this.props);
   }
 
   onSubmitCourseSuccess = ({ actionType, courseType }) => {
     // Progress.hide();
     const {
-      resetForm,
       history
     } = this.props;
 
     // reset all form
-    resetForm('courseCon');
-    resetForm('courseVM');
+    this.resetBothForm(this.props);
 
     this.fetchData(this.props);
     this.props.history.push('/user/ongoing-course/list');

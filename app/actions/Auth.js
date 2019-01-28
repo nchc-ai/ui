@@ -126,7 +126,10 @@ export const getMetaInfo = ({ token, onSuccess }) => async (dispatch) => {
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "get user info fail"), 'error', TOAST_TIMING);
   } else if (onSuccess) {
-    onSuccess();
+    onSuccess({
+      token,
+      metaInfo: response.payload
+    });
   }
 };
 
