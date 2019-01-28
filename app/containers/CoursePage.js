@@ -7,7 +7,7 @@ import { notify } from 'react-notify-toast';
 import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
 import { ongoingCourseData } from '../constants/tableData';
-import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree } from '../constants/formsData';
+import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CustomJumbotron from '../components/common/CustomJumbotron/index';
@@ -425,7 +425,7 @@ class CoursePage extends Component {
                     loadOptsMethod={this.loadImagesOptsCreateVM}
                   />
 
-                  {/* flavor | associate */}
+                  {/* flavor */}
 
                   <FormGroups
                     targetForm={forms.courseVM}
@@ -434,12 +434,28 @@ class CoursePage extends Component {
                     loadOptsMethod={this.loadFlavorsOptsCreateVM}
                   />
 
-                  {/* extra port | ssh key | mount | volume */}
+                  {/* ssh key */}
+
                   <FormGroups
                     targetForm={forms.courseVM}
                     formData={courseVMFormThree}
                     changeVal={changeValue}
                     loadOptsMethod={this.loadSshKeysOptsCreateVM}
+                  />
+
+                  {/* associate */}
+
+                  <FormGroups
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormFour}
+                    changeVal={changeValue}
+                  />
+
+                  {/* extra port | mount | volume */}
+                  <FormGroups
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormFive}
+                    changeVal={changeValue}
                   />
 
                   {/* 下方按鈕 */}

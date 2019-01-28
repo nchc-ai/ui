@@ -290,10 +290,12 @@ export const courseVMFormOne = [
     options: [
       {
         key: 1,
+        radioKey: '1-1',
         value: 'basic',
         label: '基礎'
       }, {
         key: 2,
+        radioKey: '1-2',
         value: 'advance',
         label: '進階'
       }
@@ -331,39 +333,10 @@ export const courseVMFormOne = [
       required: '請輸入資源規模'
     },
     isRequired: true
-  }, {
-    key: 6,
-    size: 8,
-    name: 'associate',
-    target: 'courseVM',
-    inputType: 'radio',
-    mainLabel: 'Associate Flooting IP',
-    className: 'fl',
-    options: [
-      {
-        key: 1,
-        value: true,
-        label: '是'
-      }, {
-        key: 2,
-        value: false,
-        label: '否'
-      }
-    ],
-    isRequired: false
   }];
 
   export const courseVMFormThree = [{
-    key: 7,
-    size: 8,
-    name: 'extraPorts',
-    target: 'courseVM',
-    inputType: 'text',
-    mainLabel: 'Extra Ports',
-    placeholder: 'ex: 8080#80#443',
-    isRequired: false
-  }, {
-    key: 8,
+    key: 6,
     size: 4,
     name: 'sshKey',
     target: 'courseVM',
@@ -374,6 +347,41 @@ export const courseVMFormOne = [
     errorMessage: {
       required: '您尚未選擇SSH KEY'
     },
+  }];
+
+  export const courseVMFormFour = [{
+    key: 7,
+    size: 8,
+    name: 'associate',
+    target: 'courseVM',
+    inputType: 'radio',
+    mainLabel: 'Associate Flooting IP',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        radioKey: '4-1',
+        value: true,
+        label: '是 (true)'
+      }, {
+        key: 2,
+        radioKey: '4-2',
+        value: false,
+        label: '否 (false)'
+      }
+    ],
+    isRequired: false
+  }];
+
+  export const courseVMFormFive = [{
+    key: 8,
+    size: 8,
+    name: 'extraPorts',
+    target: 'courseVM',
+    inputType: 'text',
+    mainLabel: 'Extra Ports',
+    placeholder: '',
+    isRequired: false
   },  {
     key: 9,
     size: 8,
@@ -385,12 +393,14 @@ export const courseVMFormOne = [
     options: [
       {
         key: 1,
+        radioKey: '5-1',
         value: true,
-        label: '是'
+        label: '是 (true)'
       }, {
         key: 2,
+        radioKey: '5-2',
         value: false,
-        label: '否'
+        label: '否 (false)'
       }
     ],
     validators: { required },
@@ -404,11 +414,10 @@ export const courseVMFormOne = [
     target: 'courseVM',
     inputType: 'select',
     mainLabel: 'Volume',
-    unit: 'GB',
     options: [
-      { label: '10', value: '10' },
-      { label: '20', value: '20' },
-      { label: '30', value: '30' },
+      { label: '10 GB', value: '10' },
+      { label: '20 GB', value: '20' },
+      { label: '30 GB', value: '30' },
     ],
     validators: { required },
     errorMessage: {

@@ -98,29 +98,31 @@ export const courseVMDetailTpl = [
     name: 'associate',
     bulletUrl: bulletTriangle,
     label: 'Associate Floating IP',
-    type: 'text',
-    comma: ','
+    type: 'text'
   }, {
     key: 5,
     name: 'sshkey',
     bulletUrl: bulletTriangle,
     label: 'SSH Key',
-    type: 'text',
-    comma: ','
+    type: 'text'
   }, {
     key: 6,
+    name: 'extraPorts',
+    bulletUrl: bulletTriangle,
+    label: 'Extra Ports',
+    type: 'text'
+  }, {
+    key: 7,
     name: 'mount',
     bulletUrl: bulletTriangle,
     label: '是否掛載',
-    type: 'boolean',
-    comma: ','
+    type: 'boolean'
   }, {
-    key: 7,
+    key: 8,
     name: 'volume',
     bulletUrl: bulletTriangle,
     label: 'Volume',
     type: 'text',
-    comma: ',',
     unit: 'GB'
   }
 ];
