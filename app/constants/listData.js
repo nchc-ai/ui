@@ -95,15 +95,15 @@ export const courseVMDetailTpl = [
     type: 'text'
   }, {
     key: 4,
-    name: 'associate',
-    bulletUrl: bulletTriangle,
-    label: 'Associate Floating IP',
-    type: 'text'
-  }, {
-    key: 5,
     name: 'sshkey',
     bulletUrl: bulletTriangle,
     label: 'SSH Key',
+    type: 'text'
+  },{
+    key: 5,
+    name: 'associate',
+    bulletUrl: bulletTriangle,
+    label: 'Associate Floating IP',
     type: 'text'
   }, {
     key: 6,
