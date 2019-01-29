@@ -73,8 +73,6 @@ export const getToken = (codeObj, next) => async (dispatch) => {
     }
   });
 
-  console.log('[auth] getToken', response);
-
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "get token fail"), 'error', TOAST_TIMING);
   } else if (next) {

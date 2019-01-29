@@ -131,24 +131,22 @@ class JobPage extends Component {
       forms,
       changeValue,
       Job,
-      userInfo
+      userInfo,
+      container,
+      vm
     } = this.props;
 
-
-    const infoArr = [{
-      title: '容器課程',
-    }, {
-      title: 'vm課程',
-    }];
-
-    // const doubleList = _.merge(doubleRawList, infoArr);
-
     const doubleList = [
-      ...this.props.container,
-      ...this.props.vm
+      {
+        title: '容器課程',
+        loading: container.loading,
+        data: container.data
+      }, {
+        title: 'VM課程',
+        loading: vm.loading,
+        data: vm.data
+      }
     ];
-
-    console.log('doubleList', doubleList);
 
     return (
       <div className="job-bg">
@@ -158,8 +156,8 @@ class JobPage extends Component {
         >
 
         {
-          doubleList.map( (singleList) => (
-            <div>
+          doubleList.map( (singleList, index) => (
+            <div key={index}>
               <h2>{singleList.title}</h2>
               <DataFrame
                 isLoading={singleList.loading}
