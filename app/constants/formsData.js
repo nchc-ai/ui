@@ -82,6 +82,27 @@ export const classroomFormTwo = [
       required: '您尚未加入任何學生'
     },
     isRequired: false
+  }, {
+    key: 7,
+    size: 8,
+    name: 'public',
+    target: 'classroom',
+    inputType: 'radio',
+    mainLabel: '對外公開',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        radioKey: '2-1',
+        value: true,
+        label: '是 (true)'
+      }, {
+        key: 2,
+        radioKey: '2-2',
+        value: false,
+        label: '否 (false)'
+      }
+    ]
   }
 ];
 

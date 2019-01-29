@@ -23,14 +23,14 @@ export const classroomDetailTpl = [
     name: 'studentCount',
     bulletUrl: bulletTriangle,
     label: '學生人數',
-    type: 'text',
+    type: 'number',
     unit: '位'
   }, {
     key: 4,
     name: 'teachers',
     bulletUrl: bulletTriangle,
     label: '教課講師',
-    type: 'text',
+    type: 'array',
     comma: ','
   }
 ];

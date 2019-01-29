@@ -10,11 +10,11 @@ export const initialClassroomState = {
   id: '',
   name: '',
   description: '',
-  public: false,
   schedules: [],
   courses: [],
   teachers: [],
-  students: []
+  students: [],
+  public:  { label: '是(true)', value: true }
 };
 
 export const initialCourseConState = {

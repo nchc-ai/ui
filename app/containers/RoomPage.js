@@ -66,12 +66,13 @@ class RoomPage extends Component {
    */
   initializeEditForm = (classroom) => {
 
-    console.log('classroom', classroom);
+    console.log('[initializeEditForm] classroom', classroom);
 
     const initialData = {
       ...classroom,
       courses: _.get(classroom, 'courseInfo', []).map(d => ({ label: d.name, value: d.id })),
-      teachers: _.get(classroom, 'teachers', []),
+      teachers: _.get(classroom, 'teachers', []).map(d => ({ label: d, value: d })),
+      public: classroom.public ? { label: '是', value: true } : { label: '否', value: false },
       students: []
     }
 

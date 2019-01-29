@@ -46,7 +46,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                   <span>
                     {/* Define different value here */}
                     {
-                      template.type === 'text' ?
+                      template.type === 'text' || template.type === 'number' ?
                         <span className="value col-value col-grp">{detailData[template.name]}</span>
                       : null
                     }
@@ -61,8 +61,8 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                       template.type === 'array' ?
                         <span>
                           {
-                            detailData[template.name].map(arrayItem => (
-                              <span className="value col-value col-grp">{arrayItem}</span>
+                            detailData[template.name].map((arrayItem, index) => (
+                              <span className="value col-value col-grp">{`${index === 0 ? '' : ' , '} ${arrayItem}`}</span>
                             ))
                           }
                         </span>
@@ -86,16 +86,12 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                         </span>
                       : null
                     }
-                    {
-                      template.unit ?
-                        <span>
-                          { template.unit }
-                        </span>
-                      : null
-                    }
                   </span>
                 :
-                  <span className="value-empty col-value col-grp">目前尚無資料</span>
+                  <span className="value-empty col-value col-grp">{ template.type === 'number' ? '0' : '目前尚無資料'}</span>
+              }
+              {
+                template.unit ? <span>{ template.unit }</span> : null
               }
             </Col>
           ))

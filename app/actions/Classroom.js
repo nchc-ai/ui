@@ -18,17 +18,19 @@ export const resetStudentsField = () => ({
  */
 export const createClassroom = ({ token, students, formData, next }) => async (dispatch) => {
 
+  console.log('[create] formData', formData);
   const submitData = {
     courses: _.get(formData, 'courses', []).map(d => d.value),
     description: formData.description,
     name: formData.name,
-    public: true,
+    public: formData.public.value,
     schedules: [
-      `* ${_.get(formData, 'schedules', '* * * *')}`
+      `${_.get(formData, 'schedules.0', '* * * * *')}`
     ],
-    students: students.map(d => d.valueItem),
+    students: students.map(d => d.valueItem) || [],
     teachers:  _.get(formData, 'teachers', []).map(d => d.value)
   };
+  console.log('[create] submitData', submitData);
 
   const response = await dispatch({
     [RSAA]: {
@@ -60,18 +62,20 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
  */
 export const updateClassroom = ({ token, students, formData, next }) => async (dispatch) => {
 
+  console.log('[update] formData', formData);
   const submitData = {
     id: _.get(formData, 'id', ''),
     courses: _.get(formData, 'courses', []).map(d => d.value),
     description: formData.description,
     name: formData.name,
-    public: true,
+    public: formData.public.value,
     schedules: [
-      `* ${_.get(formData, 'schedules', '* * * *')}`
+      `${_.get(formData, 'schedules.0', '* * * * *')}`
     ],
-    students: students.map(d => d.valueItem),
+    students: students.map(d => d.valueItem) || [],
     teachers:  _.get(formData, 'teachers', []).map(d => d.value)
   };
+  console.log('[update] submitData', submitData);
 
   const response = await dispatch({
     [RSAA]: {
