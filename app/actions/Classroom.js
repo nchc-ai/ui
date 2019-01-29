@@ -30,7 +30,6 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
     teachers:  _.get(formData, 'teachers', []).map(d => d.value)
   };
 
-  // console.log('[classroom] submitData', submitData);
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/classroom/create`,

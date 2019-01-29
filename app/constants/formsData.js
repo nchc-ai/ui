@@ -247,7 +247,7 @@ export const courseConFormTwo = [
     name: 'writablePath',
     inputType: 'text',
     mainLabel: '工作目錄',
-    placeholder: '/tmp/work',
+    placeholder: '/tmp/work (絕對路徑)',
     isRequired: false
   }
 ];
@@ -380,7 +380,7 @@ export const courseVMFormOne = [
     target: 'courseVM',
     inputType: 'text',
     mainLabel: 'Extra Ports',
-    placeholder: '',
+    placeholder: 'ex: 8080#80#443',
     isRequired: false
   },  {
     key: 9,

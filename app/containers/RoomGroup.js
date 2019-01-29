@@ -61,7 +61,7 @@ class RoomGroup extends Component {
     // Progress.show();
     jobAction.launchCourseJob({
       user: userInfo.username,
-      classroomId: '',
+      classroomId: data.roomId,
       courseId: data.id,
       token,
       next: () => this.onLaunchCourseJobSuccess()
