@@ -71,7 +71,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     {
                       template.type === 'boolean' ?
                         <span className="value col-value col-grp">
-                          { detailData[template.name] ? '是' : '否' }
+                          { detailData[template.name] || detailData[template.name] === 'true' ? '是' : '否' }
                         </span>
                       : null
                     }
