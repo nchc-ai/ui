@@ -263,7 +263,7 @@ class JobPage extends Component {
                                                 (service, k) => (
                                                   <span key={k} className="job-card-link">
                                                     {
-                                                      service.label === 'Share path' ?
+                                                      service.label.toLowerCase() === 'share path' ?
                                                         <span onClick={(event) => { this.openCardMask(event, service, 'copy'); toggle();}}>{service.label}</span>
                                                       :
                                                         <a
