@@ -106,7 +106,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
  */
 export const submitContainerCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
 
-  console.log('submitData', submitData)
+  // console.log('submitData', submitData)
 
   const finalSubmitData = {
     id: _.get(submitData, 'id'),
@@ -116,13 +116,13 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
     introduction: decodeHtml(submitData.introduction) || '',
     image: submitData.image.value || '',
     level: submitData.level.value || '',
-    GPU: parseInt(submitData.gpu.value, 10),
-    datasets: submitData.datasets.map(d => d.value) || [],
+    GPU: parseInt(_.get(submitData, 'gpu.value', 0), 10),
+    datasets: _.get(submitData, 'datasets', []).map(d => d.value),
     writablePath: isStringEmpty(submitData.writablePath) ? '' : submitData.writablePath || '',
     ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
 
-  console.log('finalSubmitData', finalSubmitData)
+  // console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
     [RSAA]: {
@@ -151,7 +151,7 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
 // submit
 export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
 
-  console.log('submitData', submitData)
+  // console.log('submitData', submitData)
 
   const finalSubmitData = {
     id: _.get(submitData, 'id'),
@@ -172,7 +172,7 @@ export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail
     finalSubmitData.id = submitData.id
   };
 
-  console.log('finalSubmitData', finalSubmitData)
+  // console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
     [RSAA]: {

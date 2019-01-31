@@ -43,7 +43,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
 
               {/* Value */}
               {
-                _.get(detailData, template.name, "") ?
+                _.get(detailData, template.name, "") && _.get(detailData, template.name, []).length > 0 ?
                   <span>
                     {/* Define different value here */}
                     {
@@ -84,7 +84,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     {
                       template.type === 'boolean' ?
                         <span className="value col-value col-grp">
-                          { detailData[template.name] || detailData[template.name] === 'true' ? '是' : '否' }
+                          { detailData[template.name] === true || detailData[template.name] === 'true' ? '是' : '否' }
                         </span>
                       : null
                     }
@@ -92,8 +92,8 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                       template.type === 'key_value' ?
                         <span>
                           {
-                            detailData[template.name].map((arrayItem, keyvalueIndex) => (
-                              <span key={keyvalueIndex} className="value col-value col-grp">{`${arrayItem.name} : ${arrayItem.port}`}</span>
+                            _.get(detailData, template.name, []).map((arrayItem, index) => (
+                              <span key={index} className="value col-value col-grp">{`${index === 0 ? "" : " , "} ${_.get(arrayItem, "name")} : ${_.get(arrayItem, "port")}`}</span>
                             ))
                           }
                         </span>
