@@ -103,21 +103,36 @@ class CoursePage extends Component {
    * @param {Object} course Classroom object for initialization.
    */
   initializeEditForm = ({ course, actionType, courseType }) => {
-
-    const formData = courseType === COURSE_CONTAINER ? {
-      ...initialCourseConState,
-      ...course,
-      datasets: _.get(course,'datasets',[]).map(d => ({ label: d, value: d })),
-      ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port })),
-      level: { value: course.level },
-      accessType: { value: course.accessType }
-    } : {
-      ...initialCourseVMState,
-      ...course
-    };
+    // TODO: image and flavor
+    // console.log('[initializeEditForm]', course, courseType);
+    const confObj = {
+      CONTAINER: {
+        formName: 'courseCon',
+        formData: {
+          ...initialCourseConState,
+          ...course,
+          datasets: _.get(course,'datasets',[]).map(d => ({ label: d, value: d })),
+          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port })),
+          level: { value: course.level },
+          accessType: { value: course.accessType }
+        }
+      },
+      VM: {
+        formName: 'courseVM',
+        formData: {
+          ...initialCourseVMState,
+          ...course,
+          level: { value: course.level },
+          image: { value: course.image },
+          flavor: { value: course.flavor },
+          sshKey: { label: course.sshkey, value: course.sshkey },
+        }
+      }
+    }
 
     if (actionType === 'edit') {
-      this.props.changeForm(formData, courseType === COURSE_CONTAINER ? 'courseCon' : 'courseVM');
+      // console.log('a,b', confObj[courseType].formData, courseType === confObj[courseType].formName);
+      this.props.changeForm(confObj[courseType].formData, confObj[courseType].formName);
     } else {
       this.resetBothForm(this.props);
     }

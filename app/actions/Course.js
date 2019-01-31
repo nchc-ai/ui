@@ -252,7 +252,6 @@ export const getImagesOptsVM = token => async (dispatch) => {
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
-
   return {
     options: response.payload.images,
     complete: response.payload.images
@@ -278,7 +277,6 @@ export const getFlavorsOptsVM = token => async (dispatch) => {
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
-
   return {
     options: response.payload.flavors,
     complete: response.payload.flavors
