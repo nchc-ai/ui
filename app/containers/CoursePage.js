@@ -123,8 +123,8 @@ class CoursePage extends Component {
           ...initialCourseVMState,
           ...course,
           level: { value: course.level },
-          image: { value: course.image },
-          flavor: { value: course.flavor },
+          image: { label: course.image.label, value: course.image.value },
+          flavor: { label: course.flavor.label, value: course.flavor.value },
           sshKey: { label: course.sshkey, value: course.sshkey },
         }
       }

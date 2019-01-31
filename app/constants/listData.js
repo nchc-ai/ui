@@ -84,15 +84,17 @@ export const courseVMDetailTpl = [
   {
     key: 2,
     name: 'image',
+    radioLabel: 'image.label',
     bulletUrl: bulletTriangle,
     label: '映像檔',
-    type: 'text'
+    type: 'radio'
   }, {
     key: 3,
     name: 'flavor',
+    radioLabel: 'flavor.label',
     bulletUrl: bulletTriangle,
     label: '資源規模',
-    type: 'text'
+    type: 'radio'
   }, {
     key: 4,
     name: 'sshkey',
@@ -122,8 +124,8 @@ export const courseVMDetailTpl = [
     name: 'volume',
     bulletUrl: bulletTriangle,
     label: 'Volume',
-    type: 'text',
-    unit: 'GB'
+    unit: 'GB',
+    type: 'text'
   }
 ];
 

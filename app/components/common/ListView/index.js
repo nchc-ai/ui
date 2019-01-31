@@ -47,7 +47,13 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     {/* Define different value here */}
                     {
                       template.type === 'text' || template.type === 'number' ?
-                        <span className="value col-value col-grp">{detailData[template.name]}</span>
+                        <span className="value col-value col-grp">{_.get(detailData, template.name, '')}</span>
+                      : null
+                    }
+
+                    {
+                      template.type === 'radio' ?
+                        <span className="value col-value col-grp">{_.get(detailData, template.radioLabel, '')}</span>
                       : null
                     }
 
