@@ -244,9 +244,15 @@ class JobPage extends Component {
                                           <button className="btn-cancel" onClick={e => this.deleteJob(e, thumb)}>X</button>
 
                                           {/* snapshot button */}
-                                          <button className="btn-camera" onClick={(event) => { this.openCardMask(event, thumb, 'snapshot'); toggle();}}>
-                                            <FaCamera/>
-                                          </button>
+                                          {
+                                            _.get(thumb,'canSnapshot', false) ?
+                                              <button className="btn-camera" onClick={(event) => { this.openCardMask(event, thumb, 'snapshot'); toggle();}}>
+                                                <FaCamera/>
+                                              </button>
+                                            : null
+                                          }
+
+                                          {/* card - status */}
                                           <p className="job-card-status">
                                             <span className={`light light-${thumb.status}`} />
                                             <span className="status-word">

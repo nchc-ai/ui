@@ -5,6 +5,7 @@ import { Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
+import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { KeyValue } from 'react-key-value';
 import MarkdownShortcuts from '../MarkdownShortcuts/index';
@@ -290,6 +291,10 @@ const FormGroups = ({
               d.inputType === 'markdown'
               ?
                 <div className="form-input">
+                  {/* <ReactMarkdown
+                    source={_.get(targetForm, d.name)}
+                    renderers={{code: CodeBlock}}
+                  /> */}
                   <MarkdownShortcuts
                     value={_.get(targetForm, d.name)}
                     onMdChange={val => changeVal(val, d.name, d.target)}
