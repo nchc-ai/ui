@@ -105,13 +105,14 @@ class CoursePage extends Component {
    */
   initializeEditForm = ({ course, actionType, courseType }) => {
     // TODO: image and flavor
-    // console.log('[initializeEditForm]', course, courseType);
+    console.log('[initializeEditForm]', course, courseType);
     const confObj = {
       CONTAINER: {
         formName: 'courseCon',
         formData: {
           ...initialCourseConState,
           ...course,
+          gpu: actionType === 'edit' ? { label : `x${_.get(course,'gpu',"")}`, value : _.get(course,'gpu',"")} : _.get(course,'gpu',""),
           datasets: _.get(course,'datasets',[]).map(d => ({ label: d, value: d })),
           ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port })),
           level: { value: course.level },
