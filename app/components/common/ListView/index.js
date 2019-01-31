@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Row, Col } from 'reactstrap';
+import ReactMarkdown from 'react-markdown';
 import DataFrame from '../../common/DataFrame/index';
 import { formatValue, decodeHtml } from '../../../libraries/utils';
 
@@ -64,11 +65,17 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     }
 
                     {
+                      template.type === 'markdown' ?
+                      <ReactMarkdown source={_.get(targetForm, template.name)} />
+                      : null
+                    }
+
+                    {
                       template.type === 'array' ?
                         <span>
                           {
                             detailData[template.name].map((arrayItem, index) => (
-                              <span className="value col-value col-grp">{`${index === 0 ? '' : ' , '} ${arrayItem}`}</span>
+                              <span key={index} className="value col-value col-grp">{`${index === 0 ? '' : ' , '} ${arrayItem}`}</span>
                             ))
                           }
                         </span>
@@ -85,8 +92,8 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                       template.type === 'key_value' ?
                         <span>
                           {
-                            detailData[template.name].map(arrayItem => (
-                              <span className="value col-value col-grp">{`${arrayItem.name} : ${arrayItem.port}`}</span>
+                            detailData[template.name].map((arrayItem, keyvalueIndex) => (
+                              <span key={keyvalueIndex} className="value col-value col-grp">{`${arrayItem.name} : ${arrayItem.port}`}</span>
                             ))
                           }
                         </span>
@@ -97,7 +104,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                   <span className="value-empty col-value col-grp">{ template.type === 'number' ? '0' : '目前尚無資料'}</span>
               }
               {
-                template.unit ? <span>{ template.unit }</span> : null
+                template.unit && _.get(detailData, template.name, "") ? <span>{ template.unit }</span> : null
               }
             </Col>
           ))

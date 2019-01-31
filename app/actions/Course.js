@@ -109,7 +109,7 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
   console.log('submitData', submitData)
 
   const finalSubmitData = {
-    id: submitData.id,
+    id: _.get(submitData, 'id'),
     user: userInfo.username,
     name: submitData.name,
     accessType: submitData.accessType.value || 'NodePort',
@@ -121,6 +121,7 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
     writablePath: isStringEmpty(submitData.writablePath) ? '' : submitData.writablePath || '',
     ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
+
   console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
@@ -150,7 +151,10 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
 // submit
 export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
 
+  console.log('submitData', submitData)
+
   const finalSubmitData = {
+    id: _.get(submitData, 'id'),
     user: userInfo.username,
     name: submitData.name,
     introduction: _.escape(_.get(submitData, 'introduction', "")),
@@ -163,6 +167,12 @@ export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail
     mount: _.get(submitData, 'mount.value', "").toString(),
     volume: _.get(submitData, 'volume.value', "")
   };
+
+  if (actionType === 'edit') {
+    finalSubmitData.id = submitData.id
+  };
+
+  console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
     [RSAA]: {

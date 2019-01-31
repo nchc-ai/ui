@@ -5,12 +5,12 @@ import { Row, Col } from 'reactstrap';
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
-import ReactMarkdown from 'react-markdown';
 import moment from 'moment';
 import { KeyValue } from 'react-key-value';
-import MarkdownShortcuts from '../MarkdownShortcuts/index';
 import CronBuilder from  '../../../vendor/CronBuilder';
 import FileUpload from '../FileUpload/index';
+import MarkdownEditor from '../MarkdownEditor/index';
+
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
@@ -47,7 +47,12 @@ import FileUpload from '../FileUpload/index';
  * - Hint
  */
 
-
+const styles = {
+  editor: {
+    border: '1px solid gray',
+    minHeight: '6em'
+  }
+};
 
 const FormGroups = ({
   formData,
@@ -291,14 +296,22 @@ const FormGroups = ({
               d.inputType === 'markdown'
               ?
                 <div className="form-input">
-                  {/* <ReactMarkdown
-                    source={_.get(targetForm, d.name)}
-                    renderers={{code: CodeBlock}}
+                  <MarkdownEditor
+                    value={_.get(targetForm, d.name)}
+                    onChange={val => changeVal(val, d.name, d.target)}
+                  />
+                  {/* <MarkdownEditor /> */}
+
+                  {/* <ReactQuill
+                    value={_.get(targetForm, d.name)}
+                    onChange={val => changeVal(val, d.name, d.target)}
                   /> */}
-                  <MarkdownShortcuts
+                  {/* <ReactMarkdown source={_.get(targetForm, d.name)} /> */}
+                  {/* <MarkdownBlock /> */}
+                  {/* <MarkdownShortcuts
                     value={_.get(targetForm, d.name)}
                     onMdChange={val => changeVal(val, d.name, d.target)}
-                  />
+                  /> */}
                 </div>
               :
                 null

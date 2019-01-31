@@ -6,6 +6,7 @@ import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
+import ReactMarkdown from 'react-markdown';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
@@ -123,9 +124,9 @@ class CoursePage extends Component {
           ...initialCourseVMState,
           ...course,
           level: { value: course.level },
-          image: { label: course.image.label, value: course.image.value },
-          flavor: { label: course.flavor.label, value: course.flavor.value },
-          sshKey: { label: course.sshkey, value: course.sshkey },
+          image: { label: _.get(course, 'image.label', ''), value: _.get(course, 'image.value', '') },
+          flavor: { label: _.get(course, 'flavor.label', ''),value: _.get(course, 'flavor.value', '') },
+          sshKey: { label: _.get(course, 'sshkey', ''), value: _.get(course, 'sshkey', '') },
         }
       }
     }
@@ -317,9 +318,13 @@ class CoursePage extends Component {
               className="course-detail-bg"
               pageTitle={_.get(courseDetail, 'data.name', '')}
             >
-              <h5 className="course-detail__intro">
-                {decodeHtml(_.get(courseDetail, 'data.introduction', ''))}
-              </h5>
+
+              <ReactMarkdown
+                className="result"
+                source={_.get(courseDetail, 'data.introduction', '')}
+                skipHtml={true}
+                escapeHtml={true}
+              />
 
               <ListView
                 templateData={courseCONTAINERDetailTpl}
@@ -347,9 +352,12 @@ class CoursePage extends Component {
               className="course-detail-bg"
               pageTitle={_.get(courseDetail, 'data.name', '')}
             >
-              <h5 className="course-detail__intro">
-                {decodeHtml(_.get(courseDetail, 'data.introduction', ''))}
-              </h5>
+              <ReactMarkdown
+                className="result"
+                source={_.get(courseDetail, 'data.introduction', '')}
+                skipHtml={true}
+                escapeHtml={true}
+              />
 
               <ListView
                 templateData={courseVMDetailTpl}
