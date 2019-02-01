@@ -98,9 +98,10 @@ export const courseVMDetailTpl = [
   }, {
     key: 4,
     name: 'sshkey',
+    selectLabel: 'sshkey.label',
     bulletUrl: bulletTriangle,
     label: 'SSH Key',
-    type: 'text'
+    type: 'select'
   },{
     key: 5,
     name: 'associate',

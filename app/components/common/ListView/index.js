@@ -59,6 +59,12 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     }
 
                     {
+                      template.type === 'select' ?
+                        <span className="value col-value col-grp">{_.get(detailData, template.selectLabel, '')}</span>
+                      : null
+                    }
+
+                    {
                       template.type === 'html' ?
                         <span className="value col-value col-grp">{decodeHtml(detailData[template.name])}</span>
                       : null
