@@ -151,7 +151,7 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
 // submit
 export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
 
-  // console.log('submitData', submitData)
+  console.log('submitData', submitData)
 
   const finalSubmitData = {
     id: _.get(submitData, 'id'),
@@ -162,7 +162,7 @@ export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail
     image: _.get(submitData, 'image.value', ""),
     flavor: submitData.flavor.value,
     associate: _.get(submitData, 'associate.value', "").toString(),
-    extraports: submitData.extraPorts,
+    extraports: _.get(submitData, 'extraPorts', ""),
     sshkey: _.get(submitData, 'sshKey.value', ""),
     mount: _.get(submitData, 'mount.value', "").toString(),
     volume: _.get(submitData, 'volume.value', "")
@@ -172,7 +172,7 @@ export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail
     finalSubmitData.id = submitData.id
   };
 
-  // console.log('finalSubmitData', finalSubmitData)
+  console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
     [RSAA]: {

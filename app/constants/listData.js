@@ -106,7 +106,7 @@ export const courseVMDetailTpl = [
     name: 'associate',
     bulletUrl: bulletTriangle,
     label: 'Associate Floating IP',
-    type: 'text'
+    type: 'boolean'
   }, {
     key: 6,
     name: 'extraPorts',
