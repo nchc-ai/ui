@@ -6,6 +6,11 @@ import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
+export const setStudentsField = ({ students }) => ({
+  type: types.SET_STUDENTS_FIELD,
+  students
+});
+
 export const resetStudentsField = () => ({
   type: types.RESET_STUDENTS_FIELD
 });

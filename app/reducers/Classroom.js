@@ -97,6 +97,14 @@ export default function Classroom(state = InitialState, action) {
         data: []
       }
     };
+  case actionTypes.SET_STUDENTS_FIELD:
+    return {
+      ...state,
+      students: {
+        isLoading: false,
+        data: action.students
+      }
+    };
   default:
     return state;
   }

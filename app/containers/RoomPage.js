@@ -20,6 +20,7 @@ import { classroomFrame } from '../constants/detailFrame';
 import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
 import { classroomDetailTpl } from '../constants/listData';
 import { decodeHtml } from '../libraries/utils';
+import { setStudentsField } from '../actions/Classroom';
 class RoomPage extends Component {
 
   componentWillMount () {
@@ -37,6 +38,7 @@ class RoomPage extends Component {
 
   componentWillUnmount() {
     this.props.resetForm('classroom');
+
   }
 
   fetchData = (nextProps) => {
@@ -48,6 +50,10 @@ class RoomPage extends Component {
     } = nextProps;
 
     const action = _.get(nextProps, 'match.params.action', 'list');
+
+    // reset student
+    roomAction.resetStudentsField();
+
 
     if (/(edit|detail)/.test(action)) {
       roomAction.getClassroomDetail({
@@ -66,17 +72,23 @@ class RoomPage extends Component {
    */
   initializeEditForm = (classroom) => {
 
-    console.log('[initializeEditForm] classroom', classroom);
+    const {
+      roomAction,
+      changeForm
+    } = this.props;
 
     const initialData = {
       ...classroom,
       courses: _.get(classroom, 'courseInfo', []).map(d => ({ label: d.name, value: d.id })),
       teachers: _.get(classroom, 'teachers', []).map(d => ({ label: d, value: d })),
+      students: [],
       public: classroom.public ? { label: '是', value: true } : { label: '否', value: false },
-      students: []
     }
 
-    this.props.changeForm(initialData, 'classroom');
+    const students = _.get(classroom, 'students', []).map(d => ({ keyItem: d, keyValue: d })) || [];
+    roomAction.setStudentsField({ students })
+
+    changeForm(initialData, 'classroom');
   }
 
   startCourse = () => {
@@ -170,23 +182,25 @@ class RoomPage extends Component {
       students,
       roomDetail
     } = this.props;
-
-    if (formType === 'create') {
-      roomAction.createClassroom({
-        token,
-        students,
-        formData,
-        next: this.onClassroomSubmitSuccess
-      });
+    if (!students.isLoading) {
+      if (formType === 'create') {
+        roomAction.createClassroom({
+          token,
+          students: students.data,
+          formData,
+          next: this.onClassroomSubmitSuccess
+        });
+      } else {
+        roomAction.updateClassroom({
+          token,
+          students: students.data,
+          formData,
+          next: this.onClassroomSubmitSuccess
+        });
+      }
     } else {
-      roomAction.updateClassroom({
-        token,
-        students,
-        formData,
-        next: this.onClassroomSubmitSuccess
-      });
+      notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', 1800);
     }
-
     // Progress.show();
   }
 
@@ -395,8 +409,11 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
     data: Classroom.detail.data,
     isLoading: Classroom.detail.isLoading
   },
+  students: {
+    data: Classroom.students.data,
+    isLoading: Classroom.students.isLoading
+  },
   addClassroom: forms.addClassroom,
-  students: Classroom.students.data,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   isSubstituating: Role.isSubstituating,
