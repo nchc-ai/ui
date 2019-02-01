@@ -568,7 +568,7 @@ class CoursePage extends Component {
                     loadOptsMethod={this.loadImagesOptsCreateVM}
                   />
 
-                  {/* flavor | associate */}
+                  {/* flavor */}
 
                   <FormGroups
                     targetForm={forms.courseVM}
@@ -577,12 +577,28 @@ class CoursePage extends Component {
                     loadOptsMethod={this.loadFlavorsOptsCreateVM}
                   />
 
-                  {/* extra port | ssh key | mount | volume */}
+                  {/* ssh key */}
+
                   <FormGroups
                     targetForm={forms.courseVM}
                     formData={courseVMFormThree}
                     changeVal={changeValue}
                     loadOptsMethod={this.loadSshKeysOptsCreateVM}
+                  />
+
+                 {/* associate */}
+
+                 <FormGroups
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormFour}
+                    changeVal={changeValue}
+                  />
+
+                  {/* extra port | mount | volume */}
+                  <FormGroups
+                    targetForm={forms.courseVM}
+                    formData={courseVMFormFive}
+                    changeVal={changeValue}
                   />
 
                   {/* 下方按鈕 */}
