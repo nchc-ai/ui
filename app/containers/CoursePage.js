@@ -127,11 +127,16 @@ class CoursePage extends Component {
           level: { value: course.level },
           image: { label: _.get(course, 'image.label', ''), value: _.get(course, 'image.value', '') },
           flavor: { label: _.get(course, 'flavor.label', ''),value: _.get(course, 'flavor.value', '') },
-          sshKey: { label: _.get(course, 'sshkey', ''), value: _.get(course, 'sshkey', '') },
+          sshKey: { label: _.get(course, 'sshkey.label', ''), value: _.get(course, 'sshkey.value', '') },
+          associate: { value: course.associate === 'true' },
+          extraPorts: _.get(course, 'extraports', ""),
+          mount: { value: course.mount === 'true' },
+          volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}GB`},
         }
       }
     }
 
+    console.log('[initializeEditForm]confObj', confObj);
     if (actionType === 'edit') {
       // console.log('a,b', confObj[courseType].formData, courseType === confObj[courseType].formName);
       this.props.changeForm(confObj[courseType].formData, confObj[courseType].formName);
