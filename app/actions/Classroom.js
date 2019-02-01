@@ -70,7 +70,7 @@ export const updateClassroom = ({ token, students, formData, next }) => async (d
     name: formData.name,
     public: formData.public.value,
     schedules: [
-      `${_.get(formData, 'schedules.0', '* * * * *')}`
+      '* * * * * *'
     ],
     students: students.map(d => d.valueItem) || [],
     teachers:  _.get(formData, 'teachers', []).map(d => d.value)
