@@ -245,7 +245,7 @@ class JobPage extends Component {
 
                                           {/* snapshot button */}
                                           {
-                                            _.get(thumb,'canSnapshot', false) ?
+                                            _.get(thumb,'canSnapshot') ?
                                               <button className="btn-camera" onClick={(event) => { this.openCardMask(event, thumb, 'snapshot'); toggle();}}>
                                                 <FaCamera/>
                                               </button>

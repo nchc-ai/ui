@@ -85,7 +85,9 @@ export function formatJob(datum) {
     privateip: _.get(datum, 'privateip'),
     sshkey: _.get(datum, 'sshkey'),
     vmname: _.get(datum, 'vmname'),
-    volume: _.get(datum, 'volume')
+    volume: _.get(datum, 'volume'),
+
+    canSnapshot: _.get(datum, 'canSnapshot')
   }
 }
 
