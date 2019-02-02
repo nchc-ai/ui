@@ -40,6 +40,16 @@ export const classroomDetailTpl = [
 
 export const courseCONTAINERDetailTpl = [
   {
+    key: 1,
+    name: 'level',
+    bulletUrl: bulletTriangle,
+    label: '課程程度',
+    type: 'boolean',
+    custom: {
+      trueText: '進階',
+      falseText: '基礎'
+    }
+  }, {
     key: 2,
     name: 'image',
     bulletUrl: bulletTriangle,
@@ -50,7 +60,7 @@ export const courseCONTAINERDetailTpl = [
     name: 'gpu',
     bulletUrl: bulletTriangle,
     label: 'GPU核心數',
-    type: 'text',
+    type: 'number',
     unit: '核心'
   }, {
     key: 4,
@@ -88,6 +98,16 @@ export const courseCONTAINERDetailTpl = [
 
 export const courseVMDetailTpl = [
   {
+    key: 1,
+    name: 'level',
+    bulletUrl: bulletTriangle,
+    label: '課程程度',
+    type: 'boolean',
+    custom: {
+      trueText: '進階',
+      falseText: '基礎'
+    }
+  }, {
     key: 2,
     name: 'image',
     radioLabel: 'image.label',

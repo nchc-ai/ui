@@ -21,6 +21,10 @@ const Label = styled.span`
 
 `;
 
+const Unit = styled.span`
+  padding-left: 10px;
+`;
+
 const Value = styled.span`
   display: inline-block;
   padding-left: 20px;
@@ -86,8 +90,14 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
 
               {/* Define different value here */}
               {
-                template.type === 'text' || template.type === 'number' ?
+                template.type === 'text' ?
                   <Value>{_.get(detailData, template.name, '尚無資料')}</Value>
+                : null
+              }
+
+              {
+                template.type === 'number' ?
+                  <Value>{_.get(detailData, template.name, 0)}</Value>
                 : null
               }
 
@@ -158,7 +168,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               }
               {
                 template.unit && _.get(detailData, template.name, "") ?
-                  <span>{ template.unit }</span>
+                  <Unit>{ template.unit }</Unit>
                 : null
               }
             </Col>

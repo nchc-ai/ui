@@ -70,36 +70,36 @@ const FormGroups = ({
   return (
   <div className="form-groups-comp">
     {
-      formData.map(d => (
-        <Row key={d.key} className={`form-group form-group-${d.name}`}>
-          <Col md={{ size: d.size || 12 }}>
+      formData.map(template => (
+        <Row key={template.key} className={`form-group form-group-${template.name}`}>
+          <Col md={{ size: template.size || 12 }}>
 
             {/* 標題 */}
             <label
-              className={`${d.isRequired ? 'required-label label' : 'label'} ${d.inputType === 'radio' ? 'radio-label-left' : ''} label-${d.name}`}
+              className={`${template.isRequired ? 'required-label label' : 'label'} ${template.inputType === 'radio' ? 'radio-label-left' : ''} label-${template.name}`}
             >
-              <span className="main-label">{d.mainLabel}</span>
-              {d.viceLabel}
+              <span className="main-label">{template.mainLabel}</span>
+              {template.viceLabel}
             </label>
 
             {/* 一般文字 */}
             {
-              d.inputType === 'text'
+              template.inputType === 'text'
               ?
                 <div className="form-input">
                   <Control
-                    type={d.inputType}
-                    className={`input-${d.name} text-input`}
-                    model={`.${d.name}`}
-                    validators={d.validators}
-                    placeholder={d.placeholder}
-                    style={d.suffix ? { width: '90%' } : null}
-                    disabled={d.isDisable}
+                    type={template.inputType}
+                    className={`input-${template.name} text-input`}
+                    model={`.${template.name}`}
+                    validators={template.validators}
+                    placeholder={template.placeholder}
+                    style={template.suffix ? { width: '90%' } : null}
+                    disabled={template.isDisable}
                   />
 
                   {/* Material Design */}
                   <i className="bar" />
-                  {d.suffix ? <span className="suffix-word">{d.suffix}</span> : null}
+                  {template.suffix ? <span className="suffix-word">{template.suffix}</span> : null}
                 </div>
               :
                 null
@@ -107,22 +107,22 @@ const FormGroups = ({
 
             {/* 密碼 */}
             {
-              d.inputType === 'password'
+              template.inputType === 'password'
               ?
                 <div className="form-input">
                   <Control
-                    type={d.inputType}
-                    className={`input-${d.name} text-input`}
-                    model={`.${d.name}`}
-                    validators={d.validators}
-                    placeholder={d.placeholder}
-                    style={d.suffix ? { width: '90%' } : null}
-                    disabled={d.isDisable}
+                    type={template.inputType}
+                    className={`input-${template.name} text-input`}
+                    model={`.${template.name}`}
+                    validators={template.validators}
+                    placeholder={template.placeholder}
+                    style={template.suffix ? { width: '90%' } : null}
+                    disabled={template.isDisable}
                   />
 
                   {/* Material Design */}
                   <i className="bar" />
-                  {d.suffix ? <span className="suffix-word">{d.suffix}</span> : null}
+                  {template.suffix ? <span className="suffix-word">{template.suffix}</span> : null}
                 </div>
               :
                 null
@@ -135,12 +135,12 @@ const FormGroups = ({
               *
               */}
             {
-              d.inputType === 'radio'
+              template.inputType === 'radio'
               ?
                 <div className="form-input-radio">
                   {
-                    d.options.map(opt => (
-                      <div key={opt.key} className={`radio-input-con ${d.className}`}>
+                    template.options.map(opt => (
+                      <div key={opt.key} className={`radio-input-con ${template.className}`}>
                         <label
                           htmlFor={`radio-input-${opt.radioKey}`}
                           className="radio-label"
@@ -150,8 +150,8 @@ const FormGroups = ({
                             type="radio"
                             className="radio-input"
                             value={opt.value}
-                            checked={_.get(targetForm, `${d.name}.value`) === opt.value}
-                            onChange={() => changeVal(opt, d.name, d.target)}
+                            checked={_.get(targetForm, `${template.name}.value`) === opt.value}
+                            onChange={() => changeVal(opt, template.name, template.target)}
                           />
                           <span>{opt.label}</span>
                         </label>
@@ -165,7 +165,7 @@ const FormGroups = ({
 
             {/* 日期格式 */}
             {
-              d.inputType === 'date'
+              template.inputType === 'date'
               ?
                 <div className="form-input">
                   <DatePicker
@@ -181,14 +181,14 @@ const FormGroups = ({
 
             {/* 大型寫字框 */}
             {
-              d.inputType === 'textarea'
+              template.inputType === 'textarea'
               ?
                 <div className="form-input">
                   <Control.textarea
-                    className={`input-${d.name} text-input`}
-                    model={`.${d.name}`}
-                    validators={d.validators}
-                    placeholder={d.placeholder}
+                    className={`input-${template.name} text-input`}
+                    model={`.${template.name}`}
+                    validators={template.validators}
+                    placeholder={template.placeholder}
                     style={{ width: '400px', height: '200px', marginBottom: '40px' }}
                   />
                 </div>
@@ -198,21 +198,21 @@ const FormGroups = ({
 
             {/* 下拉式選單 */}
             {
-              d.inputType === 'select'
+              template.inputType === 'select'
               ?
               <div>
                 <div className="form-input">
                   <Select
                     name="form-field-name"
-                    value={_.get(targetForm, d.name)}
-                    onChange={val => changeVal(val, d.name, d.target)}
-                    options={d.options}
-                    placeholder={d.placeholder}
+                    value={_.get(targetForm, template.name)}
+                    onChange={val => changeVal(val, template.name, template.target)}
+                    options={template.options}
+                    placeholder={template.placeholder}
                     searchable={false}
                     clearable={false}
                   />
                 </div>
-                <span className="fl">{d.unit || ''}</span>
+                <span className="fl">{template.unit || ''}</span>
               </div>
               :
                 null
@@ -220,19 +220,19 @@ const FormGroups = ({
 
             {/* Async下拉式選單 */}
             {
-              d.inputType === 'async-select'
+              template.inputType === 'async-select'
               ?
                 <div className="form-input">
                   <Select.Async
                     name="form-field-name"
                     key={asyncSelectKey || ''}
-                    value={_.get(targetForm, d.name)}
-                    placeholder={d.placeholder}
-                    onChange={val => changeVal(val, d.name, d.target)}
-                    loadOptions={input => loadOptsMethod(input, d.name)}
+                    value={_.get(targetForm, template.name)}
+                    placeholder={template.placeholder}
+                    onChange={val => changeVal(val, template.name, template.target)}
+                    loadOptions={input => loadOptsMethod(input, template.name)}
                     clearable={false}
-                    searchPromptText={d.promptText}
-                    loadingPlaceholder={d.loadingText}
+                    searchPromptText={template.promptText}
+                    loadingPlaceholder={template.loadingText}
                   />
                 </div>
               :
@@ -241,16 +241,16 @@ const FormGroups = ({
 
             {/* Async 多選 */}
             {
-              d.inputType === 'tags-input'
+              template.inputType === 'tags-input'
               ?
                 <div className="form-input">
                   <Select.Async
                     name="form-field-name"
-                    multi
-                    value={_.get(targetForm, d.name)}
-                    placeholder={d.placeholder}
-                    onChange={val => changeVal(val, d.name, d.target)}
+                    value={_.get(targetForm, template.name, [])}
+                    placeholder={template.placeholder}
+                    onChange={val => changeVal(val, template.name, template.target)}
                     loadOptions={input => loadTagsOptsMethod(input)}
+                    multi
                   />
                 </div>
               :
@@ -259,11 +259,11 @@ const FormGroups = ({
 
             {/* cron 輸入 */}
             {
-              d.inputType === 'cron-input'
+              template.inputType === 'cron-input'
               ?
                 <CronBuilder
                   cronExpression="* * * * * *"
-                  onChange={val => changeVal(val, d.name, d.target)}
+                  onChange={val => changeVal(val, template.name, template.target)}
                   showResult
                 />
               :
@@ -272,14 +272,14 @@ const FormGroups = ({
 
             {/* [副input] 下拉式input*/}
             {
-              d.subSelect
+              template.subSelect
               ?
                 <div className="select-container">
                   <Select.Async
                     name="form-field-name"
-                    value={_.get(targetForm, d.subSelect.name)}
-                    placeholder={d.subSelect.placeholder}
-                    onChange={val => changeVal(val, d.subSelect.name)}
+                    value={_.get(targetForm, template.subSelect.name)}
+                    placeholder={template.subSelect.placeholder}
+                    onChange={val => changeVal(val, template.subSelect.name)}
                     loadOptions={input => loadOptsMethod(input)}
                     clearable={false}
                     searchPromptText="請輸入郵遞區號搜尋"
@@ -292,24 +292,24 @@ const FormGroups = ({
 
             {/* Markdown */}
             {
-              d.inputType === 'markdown'
+              template.inputType === 'markdown'
               ?
                 <div className="form-input">
                   <MarkdownEditor
-                    value={_.get(targetForm, d.name)}
-                    onChange={val => changeVal(val, d.name, d.target)}
+                    value={_.get(targetForm, template.name)}
+                    onChange={val => changeVal(val, template.name, template.target)}
                   />
                   {/* <MarkdownEditor /> */}
 
                   {/* <ReactQuill
-                    value={_.get(targetForm, d.name)}
-                    onChange={val => changeVal(val, d.name, d.target)}
+                    value={_.get(targetForm, template.name)}
+                    onChange={val => changeVal(val, template.name, template.target)}
                   /> */}
-                  {/* <ReactMarkdown source={_.get(targetForm, d.name)} /> */}
+                  {/* <ReactMarkdown source={_.get(targetForm, template.name)} /> */}
                   {/* <MarkdownBlock /> */}
                   {/* <MarkdownShortcuts
-                    value={_.get(targetForm, d.name)}
-                    onMdChange={val => changeVal(val, d.name, d.target)}
+                    value={_.get(targetForm, template.name)}
+                    onMdChange={val => changeVal(val, template.name, template.target)}
                   /> */}
                 </div>
               :
@@ -318,12 +318,12 @@ const FormGroups = ({
 
             {/* Quill格式 */}
             {
-              d.inputType === 'html'
+              template.inputType === 'html'
               ?
                 <div className="form-input form-group-textarea">
                   <ReactQuill
-                    value={state[d.name]}
-                    onChange={content => changeVal(content, d.name)}
+                    value={state[template.name]}
+                    onChange={content => changeVal(content, template.name)}
                   />
                 </div>
               :
@@ -338,13 +338,13 @@ const FormGroups = ({
               *  - hideLabels {Boolean} Hide label or not.
               */}
             {
-              d.inputType === 'keyValue'
+              template.inputType === 'keyValue'
               ?
               <div className="form-input form-group-key-value">
                 <KeyValue
-                  rows={_.get(targetForm, d.name)}
-                  onChange={content => changeVal(content, d.name, d.target)}
-                  config={d.config}
+                  rows={_.get(targetForm, template.name)}
+                  onChange={content => changeVal(content, template.name, template.target)}
+                  config={template.config}
                 />
               </div>
               :
@@ -353,10 +353,10 @@ const FormGroups = ({
 
             {/* File */}
             {
-              d.inputType === 'file'
+              template.inputType === 'file'
               ?
               <div className="form-input form-group-csv">
-                <FileUpload onListChange={content => changeVal(content, d.name, d.target)}/>
+                <FileUpload onListChange={content => changeVal(content, template.name, template.target)}/>
               </div>
               :
                 null
@@ -370,9 +370,9 @@ const FormGroups = ({
                     {props.children}
                   </div>
               }
-              model={`.${d.name}`}
+              model={`.${template.name}`}
               show={field => field.touched && !field.focus}
-              messages={d.errorMessage}
+              messages={template.errorMessage}
             />
           </Col>
         </Row>
