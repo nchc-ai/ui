@@ -47,6 +47,40 @@ export const roomData = {
 
 
 /**
+ * RoomPage 教室細項
+ */
+export const courseInfoData = {
+  headers: [
+    {
+      key: 1,
+      text: '課程名稱'
+    }, {
+      key: 2,
+      text: '程度'
+    }, {
+      key: 3,
+      text: '課程建立時間'
+    }
+  ],
+  cols: [
+    {
+      key: 1,
+      type: 'link-detail',
+      value: 'name'
+    }, {
+      key: 2,
+      type: 'bool',
+      value: 'level'
+    }, {
+      key: 3,
+      type: 'date',
+      value: 'createAt'
+    }
+  ]
+};
+
+
+/**
  * RoomPage 開課列表
  */
 export const ongoingCourseData = {

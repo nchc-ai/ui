@@ -7,11 +7,14 @@ import bulletTriangle from '../assets/images/common/bullet-triangle.png';
 export const classroomDetailTpl = [
   {
     key: 1,
-    name: 'name',
-    label: '教室狀態',
+    name: 'public',
+    label: '課程狀態',
     bulletUrl: bulletTriangle,
-    type: 'date',
-    type: 'text'
+    type: 'boolean',
+    custom: {
+      trueText: '公開',
+      falseText: '非公開'
+    }
   }, {
     key: 2,
     name: 'schedules',

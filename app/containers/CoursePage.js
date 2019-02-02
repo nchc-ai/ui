@@ -128,9 +128,9 @@ class CoursePage extends Component {
           image: { label: _.get(course, 'image.label', ''), value: _.get(course, 'image.value', '') },
           flavor: { label: _.get(course, 'flavor.label', ''),value: _.get(course, 'flavor.value', '') },
           sshKey: { label: _.get(course, 'sshkey.label', ''), value: _.get(course, 'sshkey.value', '') },
-          associate: { value: course.associate === 'true' },
+          associate: { value: _.get(course, 'associate', false) === 'true' },
           extraPorts: _.get(course, 'extraports', ""),
-          mount: { value: course.mount === 'true' },
+          mount: { value: _.get(course, 'mount', false) === 'true'  },
           volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}GB`},
         }
       }

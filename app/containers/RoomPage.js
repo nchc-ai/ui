@@ -6,9 +6,11 @@ import _ from 'lodash';
 import { Button } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import Progress from 'react-progress-2';
+import ReactMarkdown from 'react-markdown';
+import styled from 'styled-components';
 import { Form, actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
-import { roomData } from '../constants/tableData';
+import { roomData, courseInfoData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
@@ -21,6 +23,13 @@ import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../const
 import { classroomDetailTpl } from '../constants/listData';
 import { decodeHtml } from '../libraries/utils';
 import { setStudentsField } from '../actions/Classroom';
+
+const TableContainer = styled.div`
+  width: 550px;
+`;
+
+
+
 class RoomPage extends Component {
 
   componentWillMount () {
@@ -277,12 +286,18 @@ class RoomPage extends Component {
               className="room-page-bg"
               pageTitle={_.get(roomDetail, 'data.name', '')}
             >
-              <h5 className="course-detail__intro">
-                {decodeHtml(_.get(roomDetail, 'data.description', ''))}
-              </h5>
+              {/* description */}
+              <ReactMarkdown source={_.get(roomDetail, 'data.description')} />
 
+              {/* course */}
+              <TableContainer>
+                <TableList
+                  data={_.get(roomDetail, 'data.courseInfo', [])}
+                  tableData={courseInfoData}
+                />
+              </TableContainer>
 
-
+              {/* status | scedule | studentCount | teachers */}
               <ListView
                 templateData={classroomDetailTpl}
                 detailData={roomDetail.data}
