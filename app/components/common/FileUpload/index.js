@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { KeyValue } from 'react-key-value';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../../../constants';
+import KeyValue from '../KeyValue/index';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
 
 class FileUpload extends Component {
@@ -20,12 +22,19 @@ class FileUpload extends Component {
     const csvFile = e.target.files[0];
     if (csvFile.name) {
       this.setState({ isUploadEnable: true })
+      notify.show('已加入檔案至上傳佇列', 'success', TOAST_TIMING);
     }
   }
 
   onListChange = (students) => {
     const studentsList = students.map(d => d.valueItem)
     this.props.onListChange(studentsList);
+  }
+
+  handleFileReset = () => {
+    // swap redux state > reset upload
+    this.setState({ isUploadEnable: true });
+    this.props.roomAction.resetStudentsField();
   }
 
   handleUploadFile = (e) => {
@@ -41,7 +50,7 @@ class FileUpload extends Component {
     formData.append('filename', files[0].name);
 
     // 上傳
-    this.props.roomAction.uploadStudentsCSV({
+    roomAction.uploadStudentsCSV({
       token,
       formData
     })
@@ -67,18 +76,19 @@ class FileUpload extends Component {
         }
         {
           students.length > 0 ?
-          <KeyValue
-            rows={students}
-            customAddButtonRenderer={ (handleAddNew) => (
-              <div>
-                <div onClick={ handleAddNew } >
-                  <span>+</span> 新增一筆
-                </div>
-              </div>
-            ) }
-            onChange={students => this.onListChange(students)}
-            hideLabels
-          />
+            <KeyValue
+              rows={students}
+              onChange={students => this.onListChange(students)}
+              config={{
+                headerText: 'Index | Student',
+                addText: '新增學生',
+                keyText: '順序',
+                valueText: '學生',
+                resetText: '重新上傳'
+              }}
+              handleReset={this.handleFileReset}
+              isReset
+            />
           :
           null
         }

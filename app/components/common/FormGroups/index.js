@@ -6,11 +6,10 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
-import { KeyValue } from 'react-key-value';
 import CronBuilder from  '../../../vendor/CronBuilder';
 import FileUpload from '../FileUpload/index';
 import MarkdownEditor from '../MarkdownEditor/index';
-
+import KeyValue from '../KeyValue/index';
 // import * as options from '../../constants/options';
 
 // 不要包Form進來比較有彈性，拿來組合用
@@ -344,15 +343,8 @@ const FormGroups = ({
               <div className="form-input form-group-key-value">
                 <KeyValue
                   rows={_.get(targetForm, d.name)}
-                  customAddButtonRenderer={ (handleAddNew) => (
-                    <div>
-                      <div onClick={ handleAddNew } >
-                        <span>+</span> 新增資料
-                      </div>
-                    </div>
-                  ) }
                   onChange={content => changeVal(content, d.name, d.target)}
-                  hideLabels
+                  config={d.config}
                 />
               </div>
               :

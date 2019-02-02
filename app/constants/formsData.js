@@ -245,18 +245,13 @@ export const courseConFormTwo = [
     target: 'courseCon',
     inputType: 'keyValue',
     mainLabel: '存取端口',
+    config: {
+      headerText: 'Name | Port',
+      addText: '新增端口',
+      keyText: '應用',
+      valueText: '端口'
+    },
     className: 'fl',
-    options: [
-      {
-        key: 1,
-        value: 'basic',
-        label: '基礎'
-      }, {
-        key: 2,
-        value: 'advance',
-        label: '進階'
-      }
-    ],
     validators: { required },
     errorMessage: {
       required: '您尚未輸入課程程度'
@@ -436,6 +431,7 @@ export const courseVMFormOne = [
     inputType: 'select',
     mainLabel: 'Volume',
     options: [
+      { label: '0 GB', value: '0' },
       { label: '10 GB', value: '10' },
       { label: '20 GB', value: '20' },
       { label: '30 GB', value: '30' },
