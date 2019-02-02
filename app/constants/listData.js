@@ -58,6 +58,9 @@ export const courseCONTAINERDetailTpl = [
     bulletUrl: bulletTriangle,
     label: '資料集',
     type: 'array',
+    custom: {
+      key: 'label'
+    },
     comma: ','
   }, {
     key: 5,

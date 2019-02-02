@@ -8,24 +8,6 @@ $list-view-li-margin: 30px;
     @include rect(initial, $list-view-li-height);
     margin-bottom: $list-view-li-margin;
 
-    .list-view__bullet {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      margin-top: -5px;
-      margin-right: 10px;
-      line-height: -40px;
-    }
-
-    span {
-      font-size: $list-view-font-size;
-    }
-
-    .col-grp {
-      display: inline-block;
-      line-height: $list-view-li-height;
-    }
-
     .col-icon {
       @include square(50px);
       text-align: center;
@@ -35,27 +17,6 @@ $list-view-li-margin: 30px;
         transform: translateY(-2px);
       }
     }
-    .col-value {
-      padding-left: 20px;
-
-      .list-view-arr-ul {
-        .list-view-arr-li {
-
-          .comma {
-            @include margin(5px);
-          }
-
-          &:nth-last-child(1) {
-            .comma {
-              display: none;
-            }
-          }
-        }
-      }
-
-
-    }
-
     .value-empty {
       color: $footer-info-gray;
     }

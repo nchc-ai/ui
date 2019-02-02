@@ -109,7 +109,7 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
   console.log('submitData', submitData)
 
   const finalSubmitData = {
-    id: _.get(submitData, 'id'),
+    id: _.get(submitData, 'id', ''),
     user: userInfo.username,
     name: submitData.name,
     accessType: submitData.accessType.value || 'NodePort',
@@ -117,7 +117,7 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
     image: submitData.image.value || '',
     level: submitData.level.value || '',
     GPU: parseInt(_.get(submitData, 'gpu.value', 0), 10),
-    datasets: _.get(submitData, 'datasets', []).map(d => d.value),
+    datasets: _.get(submitData, 'datasets', []),
     writablePath: isStringEmpty(submitData.writablePath) ? '' : submitData.writablePath || '',
     ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
