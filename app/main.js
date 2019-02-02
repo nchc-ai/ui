@@ -7,7 +7,6 @@ import 'react-select/dist/react-select.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './assets/styles/style.scss';
-import 'react-progress-2/main.css';
 import 'react-quill/dist/quill.snow.css';
 import 'font-awesome/css/font-awesome.min.css';
 
