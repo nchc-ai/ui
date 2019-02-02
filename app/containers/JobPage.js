@@ -42,20 +42,22 @@ class JobPage extends Component {
 
   }
 
-  openCardMask = (e, dataObj, optionType) => {
-
+  openCardMask = (e, dataObj, optionType, toggle) => {
     const {
       userInfo
     } = this.props;
 
-    console.log('dataObj', dataObj);
     this.setState({ optionType });
-    // console.log('service', service);
-    // // 在這邊要判斷是老師 && type 為 vm 才可以開
-    if (optionType === 'copy') {
-      this.setState({ copiedValue: dataObj.value });
-    } else if (optionType === 'snapshot') {
 
+    if (optionType === 'copy') {
+      if (dataObj.value !== '') {
+        toggle();
+        this.setState({ copiedValue: dataObj.value });
+      } else {
+        notify.show(`Oops... 此 Share Path 為空值`, 'error', TOAST_TIMING);
+      }
+    } else if (optionType === 'snapshot') {
+      toggle();
     }
   }
 
@@ -246,7 +248,7 @@ class JobPage extends Component {
                                           {/* snapshot button */}
                                           {
                                             _.get(thumb,'canSnapshot') ?
-                                              <button className="btn-camera" onClick={(event) => { this.openCardMask(event, thumb, 'snapshot'); toggle();}}>
+                                              <button className="btn-camera" onClick={(event) => { this.openCardMask(event, thumb, 'snapshot', () => toggle())}}>
                                                 <FaCamera/>
                                               </button>
                                             : null
@@ -270,7 +272,9 @@ class JobPage extends Component {
                                                   <span key={k} className="job-card-link">
                                                     {
                                                       service.label.toLowerCase() === 'share path' ?
-                                                        <span onClick={(event) => { this.openCardMask(event, service, 'copy'); toggle();}}>{service.label}</span>
+                                                        <span onClick={(event) => { this.openCardMask(event, service, 'copy', () => toggle() )}}>
+                                                          {service.label}
+                                                        </span>
                                                       :
                                                         <a
                                                           href={service.value}
