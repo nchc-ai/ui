@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styled from 'styled-components';
+import { notify } from 'react-notify-toast';
+import { TOAST_TIMING } from '../../../constants';
 
 const Comp = styled.div`
   width: 510px;
@@ -45,6 +47,7 @@ const RowItem = styled.span`
 `;
 
 const Input = styled.input`
+  padding-left: 6px;
   border: 1px solid #979797;
   background-color: #fff;
   outline: none;
@@ -80,7 +83,6 @@ const Add = styled.div`
   justify-self: flex-end;
 `;
 
-
 const Button = styled.button`
   padding: 5px 15px;
   opacity: 0.8;
@@ -102,16 +104,16 @@ const AddButton = styled(Button)`
   color: #fff;
 `;
 
+const DeleteButton = styled(Button)`
+  padding: 5px 5px;
+`;
+
 const c = 'key-value';
 
 export default class KeyValue extends React.Component {
   static displayName = 'KeyValue'
 
   static propTypes = {
-    rows: PropTypes.arrayOf(PropTypes.shape({
-      keyItem: PropTypes.string,
-      valueItem: PropTypes.string
-    })),
     onChange: PropTypes.func,
     customAddButtonRenderer: PropTypes.func,
     keyInputPlaceholder: PropTypes.string,
@@ -137,19 +139,38 @@ export default class KeyValue extends React.Component {
     };
   }
 
-  handleAddNew = () => {
-    this.setState({
-      rows: [
-        ...this.state.rows,
-        {
-          keyItem: '',
-          valueItem: ''
-        }
-      ],
-      length: this.state.rows.length
-    }, () => {
-      this.props.onChange([...this.state.rows]);
-    });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.rows !== this.props.rows) {
+      this.setState({
+        rows: [
+          ...nextProps.rows
+        ]
+      })
+    }
+  }
+
+  handleAddNew = (event) => {
+    event.preventDefault();
+
+
+    const isEmptyValueExist = _.some(this.state.rows, (item) => _.isEmpty(item.keyItem) && _.isEmpty(item.valueItem));
+
+    if (isEmptyValueExist) {
+      notify.show("存取端口不應該有空資料喔", 'custom', TOAST_TIMING, { background: '#F7B216' });
+    } else {
+      this.setState({
+        rows: [
+          ...this.state.rows,
+          {
+            keyItem: '',
+            valueItem: ''
+          }
+        ],
+        length: this.state.rows.length
+      }, () => {
+        this.props.onChange([...this.state.rows]);
+      });
+    }
   }
 
   handleKeyItemChange(index, value) {
@@ -184,13 +205,15 @@ export default class KeyValue extends React.Component {
     });
   }
 
-  handleRemove(index) {
-    if (index > 0) {
+  handleRemove(event, index) {
+    event.preventDefault();
       this.setState({
         rows: this.state.rows.filter((row, i) => i !== index)
       }, () => {
         this.props.onChange([...this.state.rows]);
       });
+    if (index === 0) {
+      notify.show("已清空存取端口資料", 'success', TOAST_TIMING);
     }
   }
 
@@ -256,11 +279,11 @@ export default class KeyValue extends React.Component {
             { this.renderValueItem(i, row.valueItem, valueText) }
           </RowItem>
           <Delete className={ `${c}-row-remove fl` }>
-            <Button
-              onClick={ () => this.handleRemove(i) }
+            <DeleteButton
+              onClick={ (e) => this.handleRemove(e, i) }
             >
               x
-            </Button>
+            </DeleteButton>
           </Delete>
         </DynamicRow>
       )
@@ -286,7 +309,7 @@ export default class KeyValue extends React.Component {
     }
     return (
       <AddButton
-        onClick={ this.handleAddNew }
+        onClick={ (e) => this.handleAddNew(e) }
       >
         {addText}
       </AddButton>

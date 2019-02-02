@@ -26,12 +26,14 @@ class FileUpload extends Component {
     }
   }
 
-  onListChange = (students) => {
+  onListChange = (e, students) => {
+    e.preventDefault();
     const studentsList = students.map(d => d.valueItem)
     this.props.onListChange(studentsList);
   }
 
-  handleFileReset = () => {
+  handleFileReset = (e) => {
+    e.preventDefault();
     // swap redux state > reset upload
     this.setState({ isUploadEnable: true });
     this.props.roomAction.resetStudentsField();
@@ -78,7 +80,7 @@ class FileUpload extends Component {
           students.length > 0 ?
             <KeyValue
               rows={students}
-              onChange={students => this.onListChange(students)}
+              onChange={(e) => this.onListChange(e, students)}
               config={{
                 headerText: 'Index | Student',
                 addText: '新增學生',
@@ -86,7 +88,7 @@ class FileUpload extends Component {
                 valueText: '學生',
                 resetText: '重新上傳'
               }}
-              handleReset={this.handleFileReset}
+              handleReset={(e) => this.handleFileReset(e)}
               isReset
             />
           :

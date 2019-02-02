@@ -105,23 +105,32 @@ class CoursePage extends Component {
    */
   initializeEditForm = ({ course, actionType, courseType }) => {
     // TODO: image and flavor
-    console.log('[initializeEditForm]', course, courseType);
+    console.log(`[initialize${actionType}Form]`, course, courseType);
     const confObj = {
       CONTAINER: {
         formName: 'courseCon',
-        formData: {
+        edit: {
           ...initialCourseConState,
           ...course,
-          gpu: actionType === 'edit' ? { label : `x${_.get(course,'gpu',"")}`, value : _.get(course,'gpu',"")} : _.get(course,'gpu',""),
-          datasets: _.get(course,'datasets',[]).map(d => ({ label: d.label, value: d.name })),
-          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port })),
+          image: { label: _.get(course, 'image.label', ''), value: _.get(course, 'image.value', '') },
+          gpu: { label : `x${_.get(course,'gpu',"")}`, value : _.get(course,'gpu',"")},
+          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
           level: { value: course.level },
           accessType: { value: course.accessType }
+        },
+        detail: {
+          ...initialCourseConState,
+          ...course,
+          image: _.get(course,'image'),
+          gpu: _.get(course,'gpu',""),
+          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
+          level: course.level,
+          accessType: course.accessType
         }
       },
       VM: {
         formName: 'courseVM',
-        formData: {
+        edit: {
           ...initialCourseVMState,
           ...course,
           level: { value: course.level },
@@ -131,15 +140,27 @@ class CoursePage extends Component {
           associate: { value: _.get(course, 'associate', false) === 'true' },
           extraPorts: _.get(course, 'extraports', ""),
           mount: { value: _.get(course, 'mount', false) === 'true'  },
-          volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}GB`},
+          volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}`},
+        },
+        detail: {
+          ...initialCourseVMState,
+          ...course,
+          level: course.level,
+          image: _.get(course,'image.label'),
+          flavor: { label: _.get(course, 'flavor.label', ''),value: _.get(course, 'flavor.value', '') },
+          sshKey: { label: _.get(course, 'sshkey.label', ''), value: _.get(course, 'sshkey.value', '') },
+          associate: { value: _.get(course, 'associate', false) === 'true' },
+          extraPorts: _.get(course, 'extraports', ""),
+          mount: { value: _.get(course, 'mount', false) === 'true'  },
+          volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}`},
         }
       }
     }
 
-    console.log('[initializeEditForm]confObj', confObj);
+    console.log(`[initialize${actionType}Form]confObj`, confObj);
     if (actionType === 'edit') {
       // console.log('a,b', confObj[courseType].formData, courseType === confObj[courseType].formName);
-      this.props.changeForm(confObj[courseType].formData, confObj[courseType].formName);
+      this.props.changeForm(confObj[courseType][actionType], confObj[courseType].formName);
     } else {
       this.resetBothForm(this.props);
     }
