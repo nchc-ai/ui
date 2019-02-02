@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
-import Progress from 'react-progress-2';
 import TableList from '../components/common/TableList';
 import { Form, actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';

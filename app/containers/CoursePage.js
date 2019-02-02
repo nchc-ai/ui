@@ -4,50 +4,20 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
-import { Value } from 'slate';
 import { actions as formActions, Form } from 'react-redux-form';
 import ReactMarkdown from 'react-markdown';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import CustomJumbotron from '../components/common/CustomJumbotron/index';
-import CourseDetail from '../components/Course/CourseDetail';
+import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
 import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import CommonPageContent from '../components/CommonPageContent';
-import { COURSE_CONTAINER } from '../constants';
-import { decodeHtml } from '../libraries/utils';
 import { initialCourseConState, initialCourseVMState } from '../constants/initialState';
-
-const initialMdValue = Value.fromJSON({
-  document: {
-    nodes: [
-      {
-        kind: 'block',
-        type: 'paragraph',
-        nodes: [
-          {
-            kind: 'text',
-            ranges: [
-              {
-                text: 'A line of text in a paragraph.'
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
-});
-
 class CoursePage extends Component {
-
-  state = {
-    mdValueVM: initialMdValue
-  }
 
   componentWillMount() {
     window.scrollTo(0, 0);
@@ -66,7 +36,7 @@ class CoursePage extends Component {
     const {
       courseAction,
       userInfo,
-      token
+      token,
     } = nextProps;
 
     const params = _.get(nextProps, 'match.params', {
@@ -76,7 +46,6 @@ class CoursePage extends Component {
     });
 
     this.resetBothForm(nextProps);
-
     if (/(detail)|(edit)/.test(params.action) && /(container)/.test(params.courseType)) {
       courseAction.getContainerCourseDetail({
         token,
@@ -177,20 +146,21 @@ class CoursePage extends Component {
       token,
       userInfo
     } = this.props;
-    // Progress.show();
     jobAction.launchCourseJob({
       user: userInfo.username,
       classroomId: '',
       courseId: data.id,
       token,
-      next: () => this.onLaunchCourseJobSuccess()
+      next: () => this.onAfterLaunchCourseJob()
     });
   }
 
-  onLaunchCourseJobSuccess = () => {
-    // Progress.hide();
-    this.props.history.push('/user/job/list');
-    notify.show('課程啟動成功', 'success', 1800);
+  onAfterLaunchCourseJob = (isSuccess) => {
+    this.props.endPorgressBar();
+    if (isSuccess) {
+      this.props.history.push('/user/job/list');
+      notify.show('課程啟動成功', 'success', 1800);
+    }
   }
 
   editCourse = (e, datum) => {
@@ -241,9 +211,10 @@ class CoursePage extends Component {
   onSubmitCourseSuccess = ({ actionType, courseType }) => {
     // Progress.hide();
     const {
-      history
+      history,
+      endPorgressBar
     } = this.props;
-
+    endPorgressBar()
     // reset all form
     this.resetBothForm(this.props);
 
@@ -263,9 +234,10 @@ class CoursePage extends Component {
     const {
       courseAction,
       token,
-      userInfo
+      userInfo,
+      startProgressBar
     } = this.props;
-
+    startProgressBar();
     if (courseType === 'container') {
       courseAction.submitContainerCourse({
         token,
@@ -469,7 +441,6 @@ class CoursePage extends Component {
                 >
                   {/* name | intro | level | image */}
                   <FormGroups
-                    state={this.state.mdValueVM}
                     targetForm={forms.courseVM}
                     formData={courseVMFormOne}
                     changeVal={changeValue}
@@ -587,7 +558,6 @@ class CoursePage extends Component {
                 >
                   {/* name | intro | level | image */}
                   <FormGroups
-                    state={this.state.mdValueVM}
                     targetForm={forms.courseVM}
                     formData={courseVMFormOne}
                     changeVal={changeValue}
@@ -683,5 +653,6 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
+  bindProgressBarHoc,
   withRouter
 )(CoursePage);

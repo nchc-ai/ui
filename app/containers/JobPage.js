@@ -10,7 +10,7 @@ import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
 // import { doubleRawList } from '../mock/jobData';
 import { TOAST_TIMING } from '../constants';
-import bindIntervalHoc from '../libraries/bindIntervalHoc';
+import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
@@ -378,5 +378,5 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
-  bindIntervalHoc
+  bindProgressBarHoc
 )(JobPage);

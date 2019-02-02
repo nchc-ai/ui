@@ -88,6 +88,14 @@ export default function Ui(state = InitialState, action) {
         progress: action.progress
       }
     };
+  case actionTypes.REMOVE_PROGRESS_BAR:
+    return {
+      ...state,
+      ProgressBar: {
+        isActive: false,
+        progress: 0
+      }
+    };
   default:
     return state;
   }

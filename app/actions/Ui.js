@@ -27,3 +27,7 @@ export const toggleProgressBar = ({ toggle, progress }) => ({
   toggle,
   progress
 });
+
+export const removeProgressBar = () => ({
+  type: types.REMOVE_PROGRESS_BAR
+});

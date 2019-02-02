@@ -6,7 +6,6 @@ import { compose } from 'redux';
 import Notifications, { notify } from 'react-notify-toast';
 // import ga from 'react-google-analytics';
 import LoadingBar from "react-top-loading-bar";
-import Progress from 'react-progress-2';
 import Header from './Header';
 import Dialog from '../components/common/Dialog/index';
 
@@ -59,7 +58,6 @@ class Global extends Component {
             />
           : null
         }
-        <Progress.Component/>
         <Notifications />
         <div className="global-body">
           {children}

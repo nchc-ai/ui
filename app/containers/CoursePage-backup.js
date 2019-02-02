@@ -4,7 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
-import Progress from 'react-progress-2';
 import { actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
@@ -69,14 +68,12 @@ class CoursePage extends Component {
       match
     } = this.props;
 
-    Progress.show();
     userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
   }
 
   onStartClassSuccess = () => {
 
     // console.log('create job success');
-    Progress.hide();
     notify.show('新增工作成功', 'success', 1800);
     this.props.history.push('/user/job');
   }

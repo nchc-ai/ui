@@ -70,8 +70,9 @@ export const launchCourseJob = ({ token, user, classroomId, courseId, next }) =>
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    next(false);
   } else if (next) {
-    next();
+    next(true);
   }
 };
 

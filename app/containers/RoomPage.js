@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Button } from 'reactstrap';
 import { notify } from 'react-notify-toast';
-import Progress from 'react-progress-2';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { Form, actions as formActions } from 'react-redux-form';
