@@ -27,6 +27,10 @@ const Value = styled.span`
   line-height: 50px;
 `;
 
+const EmptyValue = styled(Value)`
+  color: #9B9B9B;
+`
+
 const ListBullet = styled.img`
   display: inline-block !important;
   width: 20px;
@@ -115,11 +119,13 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                 template.type === 'array' ?
                   <Value>
                     {
-                      _.get(detailData, template.name, []).map((arrayItem, index) => (
-                        <ArrayItem key={`array-${index}`}>
-                          {`${template.custom ? _.get(arrayItem, template.custom.key, '') : arrayItem}`}
-                        </ArrayItem>
-                      ))
+                      _.get(detailData, template.name, []).length > 0 ?
+                        detailData[template.name].map((arrayItem, index) => (
+                          <ArrayItem key={`array-${index}`}>
+                            {`${template.custom ? _.get(arrayItem, template.custom.key, '') : arrayItem}`}
+                          </ArrayItem>
+                        ))
+                      : <EmptyValue>尚無資料</EmptyValue>
                     }
                   </Value>
                 : null
@@ -127,7 +133,11 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               {
                 template.type === 'boolean' ?
                   <Value>
-                    { _.get(detailData, template.name) === true || _.get(detailData, template.name) === 'true' ? `${_.get(template, 'custom.trueText', '是')}` : `${_.get(template, 'custom.falseText', '否')}` }
+                    { _.get(detailData, template.name) === true || _.get(detailData, template.name) === 'true' ?
+                      `${_.get(template, 'custom.trueText', '是')}`
+                      :
+                      `${_.get(template, 'custom.falseText', '否')}`
+                    }
                   </Value>
                 : null
               }
@@ -136,12 +146,12 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                   <Value>
                     {
                       _.get(detailData, template.name, []).length > 0 ?
-                        _.get(detailData, template.name, []).map((arrayItem, index) => (
+                        detailData[template.name].map((arrayItem, index) => (
                           <ArrayItem key={index}>
                             {`${_.get(arrayItem, "name")} : ${_.get(arrayItem, "port")}`}
                           </ArrayItem>
                         ))
-                      : '尚無資料'
+                      : <EmptyValue>尚無資料</EmptyValue>
                     }
                   </Value>
                 : null
