@@ -64,6 +64,5 @@ const mapStateToProps = ({ Auth }) => ({
 
 export default compose(
   withRouter,
-  connect(mapStateToProps),
-  withRouter
+  connect(mapStateToProps)
 )(RouteUser);

@@ -18,13 +18,13 @@ class AuthPage extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const {
-      match,
-    } = nextProps;
-    if (this.props.match !== match && match) {
-      window.scrollTo(0, 0);
-      this.props.resetForm();
-    }
+    // const {
+    //   match,
+    // } = nextProps;
+    // if (this.props.match !== match && match) {
+    //   window.scrollTo(0, 0);
+    //   this.props.resetForm();
+    // }
   }
 
   /**
