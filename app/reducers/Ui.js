@@ -24,6 +24,10 @@ const InitialState = {
   Status: {
     offline: false,
     isAdmin: false
+  },
+  ProgressBar: {
+    isActive: false,
+    progress: 0
   }
 };
 
@@ -74,6 +78,14 @@ export default function Ui(state = InitialState, action) {
       SideNav: {
         ...state.SideNav,
         isWrapHidden: !state.SideNav.isWrapHidden
+      }
+    };
+  case actionTypes.TOGGLE_PROGRESS_BAR:
+    return {
+      ...state,
+      ProgressBar: {
+        isActive: action.toggle,
+        progress: action.progress
       }
     };
   default:

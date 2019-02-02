@@ -3,9 +3,9 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 // import { translate } from 'react-i18next';
-import { notify } from 'react-notify-toast';
+import Notifications, { notify } from 'react-notify-toast';
 // import ga from 'react-google-analytics';
-import Notifications from 'react-notify-toast';
+import LoadingBar from "react-top-loading-bar";
 import Progress from 'react-progress-2';
 import Header from './Header';
 import Dialog from '../components/common/Dialog/index';
@@ -32,6 +32,8 @@ class Global extends Component {
       offline,
       dropDownPos,
       children,
+      isLoading,
+      progressBar,
       t,
     } = this.props;
     return (
@@ -47,6 +49,16 @@ class Global extends Component {
           match={match}
           t={t}
         />
+        {
+          progressBar.isActive ?
+            <LoadingBar
+              progress={progressBar.progress}
+              height={3}
+              color="red"
+              onLoaderFinished={() => {}}
+            />
+          : null
+        }
         <Progress.Component/>
         <Notifications />
         <div className="global-body">
@@ -62,7 +74,11 @@ const mapStateToProps = ({ Auth, Ui }) => ({
   userInfo: Auth.userInfo,
   isLogin: Auth.isLogin,
   dropDownPos: Ui.Dropdown.pos,
-  offline: Ui.Status.offline
+  offline: Ui.Status.offline,
+  progressBar: {
+    isActive: Ui.ProgressBar.isActive,
+    progress: Ui.ProgressBar.progress
+  }
 });
 
 export default compose(

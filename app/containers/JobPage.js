@@ -10,6 +10,7 @@ import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
 // import { doubleRawList } from '../mock/jobData';
 import { TOAST_TIMING } from '../constants';
+import bindIntervalHoc from '../libraries/bindIntervalHoc';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
@@ -107,17 +108,25 @@ class JobPage extends Component {
   }
 
   submitSnapshot = (submitData, thumb) => {
-    console.log('snapshot', submitData, thumb);
+    // console.log('snapshot', submitData, thumb);
     const {
       token,
-      jobAction
+      jobAction,
+      uiAction
     } = this.props;
 
     jobAction.snapshotVMJob({
       token,
       id: thumb.id,
-      name: submitData.name
+      name: submitData.name,
+      onSuccess: this.onSnapshotSuccess
     })
+    this.props.startProgressBar();
+  }
+
+  onSnapshotSuccess = (res) => {
+    this.props.endPorgressBar();
+    notify.show(_.get(res, "payload.message", "成功快照此 VM 工作"), 'success', TOAST_TIMING);
   }
 
   handlesubmitSnapshotFail = (submitData) => {
@@ -249,7 +258,7 @@ class JobPage extends Component {
                                                 {/* 下方按鈕 */}
                                                 <FormButtons
                                                   size={4}
-                                                  submitName="送出"
+                                                  submitName='送出'
                                                   showMode="submit_only"
                                                   isForm
                                                 />
@@ -369,4 +378,5 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
+  bindIntervalHoc
 )(JobPage);

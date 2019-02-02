@@ -89,7 +89,7 @@ const Button = styled.button`
   outline: none;
   cursor: pointer;
 
-  &:focus { outline:0; }
+
   &:hover { opacity: 1; }
   &:active{
     opacity: 0.8;

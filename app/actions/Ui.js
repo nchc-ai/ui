@@ -21,3 +21,9 @@ export const toggleSideNav = () => ({
 export const toggleHidden = () => ({
   type: types.TOGGLE_HIDDEN
 });
+
+export const toggleProgressBar = ({ toggle, progress }) => ({
+  type: types.TOGGLE_PROGRESS_BAR,
+  toggle,
+  progress
+});

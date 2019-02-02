@@ -439,7 +439,7 @@ $title-size: 27px;
 
 html{
   height: 100%;
-  
+
   body{
     height: 100%;
     // font-family: PingFangSC-Light, sans-serif;
@@ -447,13 +447,14 @@ html{
     // font-family: "Noto Sans", "Noto Sans CJK TC", sans-serif;
     font-family: "Lato","Helvetica Neue",Arial,Helvetica,sans-serif;
     font-weight: 400;
-    
+
     button,iframe{
       display: block;
       outline:none;
       border:none;
+      &:focus { outline:0; }
     }
-    
+
     h1{ font-size: 36px; }
     h2{ font-size: 30px; }
     h3{ font-size: 24px; }
@@ -462,8 +463,8 @@ html{
     h6{ font-size: 14px; }
     // span{ font-size: 14px; }
 
-    p{  
-      font-size: 12px; 
+    p{
+      font-size: 12px;
       margin: 0;
     }
 
