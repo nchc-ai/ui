@@ -79,7 +79,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                     template.type === 'array' ?
                       <span>
                         {
-                          _.get(detailData, template.name).map((arrayItem, index) => (
+                          _.get(detailData, template.name, []).map((arrayItem, index) => (
                             <span key={index} className="value col-value col-grp">
                               {`${index === 0 ? '' : ' , '} ${arrayItem}`}
                             </span>
