@@ -15,6 +15,10 @@ const InitialState = {
   List: {
     loading: true,
     data: []
+  },
+  snapshot: {
+    isContainerLoading: false,
+    isVMLoading: false,
   }
 };
 
@@ -75,6 +79,38 @@ export default function Job(state = InitialState, action) {
         ...state.List,
         loading: state.container.loading,
         data: _.unionBy(state.container, recievedVMData, 'id')
+      }
+    };
+  case actionTypes.SNAPSHOT_CONTAINER_JOB[LOADING]:
+    return {
+      ...state,
+      snapshot: {
+        ...state.snapshot,
+        isContainerLoading: true
+      }
+    };
+  case actionTypes.SNAPSHOT_CONTAINER_JOB[SUCCESS]:
+    return {
+      ...state,
+      snapshot: {
+        ...state.snapshot,
+        isContainerLoading: false
+      }
+    };
+  case actionTypes.SNAPSHOT_VM_JOB[LOADING]:
+    return {
+      ...state,
+      snapshot: {
+        ...state.snapshot,
+        isVMLoading: true
+      }
+    };
+  case actionTypes.SNAPSHOT_VM_JOB[SUCCESS]:
+    return {
+      ...state,
+      snapshot: {
+        ...state.snapshot,
+        isVMLoading: false
       }
     };
   default:

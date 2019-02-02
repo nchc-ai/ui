@@ -49,15 +49,15 @@ class JobPage extends Component {
 
     this.setState({ optionType });
 
-    if (optionType === 'copy') {
-      if (dataObj.value !== '') {
-        toggle();
-        this.setState({ copiedValue: dataObj.value });
-      } else {
-        notify.show(`Oops... 此 Share Path 為空值`, 'error', TOAST_TIMING);
-      }
-    } else if (optionType === 'snapshot') {
+    if (optionType === 'copy' && dataObj.value !== '') {
       toggle();
+      this.setState({ copiedValue: dataObj.value });
+    } else if (optionType === 'copy') {
+      notify.show(`Oops... 此 Share Path 為空值`, 'error', TOAST_TIMING);
+    } else if (optionType === 'snapshot' && userInfo.role === 'teacher') {
+      toggle();
+    } else {
+      notify.show(`請確認您是否具快照權限`, 'error', TOAST_TIMING);
     }
   }
 
@@ -104,6 +104,24 @@ class JobPage extends Component {
     //   token,
     //   job
     // })
+  }
+
+  submitSnapshot = (submitData, thumb) => {
+    console.log('snapshot', submitData, thumb);
+    const {
+      token,
+      jobAction
+    } = this.props;
+
+    jobAction.snapshotVMJob({
+      token,
+      id: thumb.id,
+      name: submitData.name
+    })
+  }
+
+  handlesubmitSnapshotFail = (submitData) => {
+    console.log('fail');
   }
 
   deleteJob(e, thumb) {
@@ -194,6 +212,7 @@ class JobPage extends Component {
                                           className={`job-card__mask ${ on ? '' : 'job-card__mask--open' }`}
                                           onMouseLeave={(event) => { this.leaveMask(); toggle();}}
                                         >
+                                          {/* copy */}
                                           {
                                             this.state.optionType === 'copy'?
                                             <ul className="job-card__mask-options">
@@ -210,12 +229,13 @@ class JobPage extends Component {
                                             :
                                             null
                                           }
+                                          {/* snapshot */}
                                           {
                                             this.state.optionType === 'snapshot'?
                                               <Form
                                                 model={`forms.snapshot`}
                                                 className="snapshot-form"
-                                                onSubmit={submitData => this.submitSnapshot(submitData)}
+                                                onSubmit={submitData => this.submitSnapshot(submitData, thumb)}
                                                 onSubmitFailed={submitData => this.handlesubmitSnapshotFail(submitData)}
                                               >
                                                 <h4>VM snapshot</h4>
