@@ -81,20 +81,14 @@ class CoursePage extends Component {
         edit: {
           ...initialCourseConState,
           ...course,
-          image: { label: _.get(course, 'image.label', ''), value: _.get(course, 'image.value', '') },
-          gpu: { label : `x${_.get(course,'gpu',"")}`, value : _.get(course,'gpu',"")},
-          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
-          level: { value: course.level },
-          accessType: { value: course.accessType }
+          level: { value: _.get(course, 'level')},
+          gpu: { label : `x${_.get(course,'gpu.label',"")}`, value : _.get(course,'gpu.value',"")},
+          datasets: _.get(course,'datasets',[]),
+          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() }))
         },
         detail: {
           ...initialCourseConState,
           ...course,
-          image: _.get(course,'image'),
-          gpu: _.get(course,'gpu',""),
-          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
-          level: course.level,
-          accessType: course.accessType
         }
       },
       VM: {
@@ -113,15 +107,7 @@ class CoursePage extends Component {
         },
         detail: {
           ...initialCourseVMState,
-          ...course,
-          level: course.level,
-          image: _.get(course,'image.label'),
-          flavor: { label: _.get(course, 'flavor.label', ''),value: _.get(course, 'flavor.value', '') },
-          sshKey: { label: _.get(course, 'sshkey.label', ''), value: _.get(course, 'sshkey.value', '') },
-          associate: { value: _.get(course, 'associate', false) === 'true' },
-          extraPorts: _.get(course, 'extraports', ""),
-          mount: { value: _.get(course, 'mount', false) === 'true'  },
-          volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}`},
+          ...course
         }
       }
     }

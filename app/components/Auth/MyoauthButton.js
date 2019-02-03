@@ -48,7 +48,6 @@ class MyoauthButton extends Component {
   }
 
   onAuthSuccess = (data) => {
-    console.log('data.code', data.code);
 
     if (!data.code) {
       return this.onFailure(new Error('\'code\' not found'));

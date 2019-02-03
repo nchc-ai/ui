@@ -7,9 +7,9 @@ import bulletTriangle from '../assets/images/common/bullet-triangle.png';
 export const classroomDetailTpl = [
   {
     key: 1,
+    bulletUrl: bulletTriangle,
     name: 'public',
     label: '課程狀態',
-    bulletUrl: bulletTriangle,
     type: 'boolean',
     custom: {
       trueText: '公開',
@@ -17,21 +17,21 @@ export const classroomDetailTpl = [
     }
   }, {
     key: 2,
-    name: 'schedules',
     bulletUrl: bulletTriangle,
+    name: 'schedules',
     label: '課程週期',
     type: 'text'
   }, {
     key: 3,
-    name: 'studentCount',
     bulletUrl: bulletTriangle,
+    name: 'studentCount',
     label: '學生人數',
     type: 'number',
     unit: '位'
   }, {
     key: 4,
-    name: 'teachers',
     bulletUrl: bulletTriangle,
+    name: 'teachers',
     label: '教課講師',
     type: 'array',
     comma: ','
@@ -41,8 +41,8 @@ export const classroomDetailTpl = [
 export const courseCONTAINERDetailTpl = [
   {
     key: 1,
-    name: 'level',
     bulletUrl: bulletTriangle,
+    name: 'level',
     label: '課程程度',
     type: 'boolean',
     custom: {
@@ -51,56 +51,49 @@ export const courseCONTAINERDetailTpl = [
     }
   }, {
     key: 2,
-    name: 'image',
     bulletUrl: bulletTriangle,
+    name: 'image',
     label: '映像檔',
-    type: 'text'
+    type: 'radio'
   }, {
     key: 3,
-    name: 'gpu',
     bulletUrl: bulletTriangle,
+    name: 'gpu',
     label: 'GPU核心數',
-    type: 'number',
+    type: 'radio',
     unit: '核心'
   }, {
     key: 4,
-    name: 'datasets',
     bulletUrl: bulletTriangle,
+    name: 'datasets',
     label: '資料集',
-    type: 'array',
-    custom: {
-      key: 'label'
-    },
-    comma: ','
+    type: 'tags',
   }, {
     key: 5,
-    name: 'accessType',
     bulletUrl: bulletTriangle,
+    name: 'accessType',
     label: '存取方式',
-    type: 'text',
-    comma: ','
+    type: 'text'
   }, {
     key: 6,
-    name: 'ports',
     bulletUrl: bulletTriangle,
+    name: 'ports',
     label: '存取端口',
-    type: 'key_value',
-    comma: ','
+    type: 'ports',
   }, {
     key: 7,
-    name: 'writablePath',
     bulletUrl: bulletTriangle,
+    name: 'writablePath',
     label: '工作目錄',
     type: 'text',
-    comma: ','
   }
 ];
 
 export const courseVMDetailTpl = [
   {
     key: 1,
-    name: 'level',
     bulletUrl: bulletTriangle,
+    name: 'level',
     label: '課程程度',
     type: 'boolean',
     custom: {
@@ -109,47 +102,48 @@ export const courseVMDetailTpl = [
     }
   }, {
     key: 2,
-    name: 'image',
-    radioLabel: 'image.label',
     bulletUrl: bulletTriangle,
+    name: 'image',
     label: '映像檔',
     type: 'radio'
   }, {
     key: 3,
-    name: 'flavor',
-    radioLabel: 'flavor.label',
     bulletUrl: bulletTriangle,
+    name: 'flavor',
     label: '資源規模',
     type: 'radio'
   }, {
     key: 4,
-    name: 'sshkey',
-    selectLabel: 'sshkey.label',
     bulletUrl: bulletTriangle,
+    name: 'sshkey',
     label: 'SSH Key',
-    type: 'select'
+    type: 'radio'
   },{
     key: 5,
-    name: 'associate',
     bulletUrl: bulletTriangle,
+    name: 'associate',
     label: 'Associate Floating IP',
-    type: 'boolean'
+    type: 'boolean',
+    custom: {
+      trueText: '是 (true)',
+      falseText: '否 (false)'
+    }
   }, {
     key: 6,
-    name: 'extraPorts',
     bulletUrl: bulletTriangle,
+    name: 'extraPorts',
     label: 'Extra Ports',
     type: 'text'
   }, {
     key: 7,
-    name: 'mount',
     bulletUrl: bulletTriangle,
+    name: 'mount',
     label: '是否掛載',
     type: 'boolean'
   }, {
     key: 8,
-    name: 'volume',
     bulletUrl: bulletTriangle,
+    name: 'volume',
     label: 'Volume',
     unit: 'GB',
     type: 'text'

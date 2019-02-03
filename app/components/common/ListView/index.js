@@ -103,7 +103,21 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
 
               {
                 template.type === 'radio' ?
-                  <Value>{_.get(detailData, template.radioLabel, '尚無資料')}</Value>
+                  <Value>{_.get(detailData, `${template.name}.label`, '尚無資料')}</Value>
+                : null
+              }
+
+              {
+                template.type === 'tags' ?
+                  <Value>
+                    {
+                      _.get(detailData, template.name, []).length > 0 ?
+                        detailData[template.name].map((datum, index) => (
+                          <ArrayItem key={`array-${index}`}>{_.get(datum, "label", '')}</ArrayItem>
+                        ))
+                      : <EmptyValue>尚無資料</EmptyValue>
+                    }
+                  </Value>
                 : null
               }
 
@@ -126,13 +140,13 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               }
 
               {
-                template.type === 'array' ?
+                template.type === 'ports' ?
                   <Value>
                     {
                       _.get(detailData, template.name, []).length > 0 ?
-                        detailData[template.name].map((arrayItem, index) => (
+                        detailData[template.name].map((datum, index) => (
                           <ArrayItem key={`array-${index}`}>
-                            {`${template.custom ? _.get(arrayItem, template.custom.key, '') : arrayItem}`}
+                            {`${_.get(datum, 'name', '')} : ${_.get(datum, 'port', '')}`}
                           </ArrayItem>
                         ))
                       : <EmptyValue>尚無資料</EmptyValue>
@@ -147,21 +161,6 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                       `${_.get(template, 'custom.trueText', '是')}`
                       :
                       `${_.get(template, 'custom.falseText', '否')}`
-                    }
-                  </Value>
-                : null
-              }
-              {
-                template.type === 'key_value' ?
-                  <Value>
-                    {
-                      _.get(detailData, template.name, []).length > 0 ?
-                        detailData[template.name].map((arrayItem, index) => (
-                          <ArrayItem key={index}>
-                            {`${_.get(arrayItem, "name")} : ${_.get(arrayItem, "port")}`}
-                          </ArrayItem>
-                        ))
-                      : <EmptyValue>尚無資料</EmptyValue>
                     }
                   </Value>
                 : null
