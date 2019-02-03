@@ -174,8 +174,8 @@ class CoursePage extends Component {
   /**
    * Back to previous page when clicking cancel button.
    */
-  backMethodCommon = (e) => {
-    e.preventDefault()
+  backMethodCommon = (event) => {
+    event.preventDefault()
     this.props.history.goBack();
   }
 

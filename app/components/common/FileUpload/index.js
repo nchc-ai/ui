@@ -26,9 +26,8 @@ class FileUpload extends Component {
     }
   }
 
-  onListChange = (e, students) => {
-    e.preventDefault();
-    const studentsList = students.map(d => d.valueItem)
+  onListChange = () => {
+    const studentsList = this.props.students.map(d => d.valueItem)
     this.props.onListChange(studentsList);
   }
 
@@ -80,7 +79,7 @@ class FileUpload extends Component {
           students.length > 0 ?
             <KeyValue
               rows={students}
-              onChange={(e) => this.onListChange(e, students)}
+              onChange={this.onListChange}
               config={{
                 headerText: 'Index | Student',
                 addText: '新增學生',

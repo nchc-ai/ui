@@ -6,7 +6,7 @@ import { notify } from 'react-notify-toast';
 import { TOAST_TIMING } from '../../../constants';
 
 const Comp = styled.div`
-  width: 510px;
+  width: 520px;
   color: #fff;
 `;
 
@@ -23,10 +23,25 @@ const Background = styled.div`
   padding: 20px 20px;
 `;
 
+const Info = styled.div`
+  width: 200px;
+  margin-bottom: 20px;
+  color: #000;
+  padding-left: 10px;
+  border-left: 4px solid #48d2a0;
+  text-align: left;
+  overflow: hidden;
+
+`
+
 const Container = styled.div`
   width: 100%;
+  height: 320px;
   overflow: hidden;
+  overflow-y: scroll;
   display: inline-block;
+
+  ::-webkit-scrollbar {display:none}
 `;
 
 const Row = styled.div`
@@ -149,13 +164,16 @@ export default class KeyValue extends React.Component {
     }
   }
 
+  scrollToBottom() {
+    this.messagesEnd.scrollTop = this.messagesEnd.scrollHeight;
+  }
+
   handleAddNew = (event) => {
     event.preventDefault();
-
-
     const isEmptyValueExist = _.some(this.state.rows, (item) => _.isEmpty(item.keyItem) && _.isEmpty(item.valueItem));
 
     if (isEmptyValueExist) {
+      this.scrollToBottom()
       notify.show("存取端口不應該有空資料喔", 'custom', TOAST_TIMING, { background: '#F7B216' });
     } else {
       this.setState({
@@ -169,6 +187,7 @@ export default class KeyValue extends React.Component {
         length: this.state.rows.length
       }, () => {
         this.props.onChange([...this.state.rows]);
+        this.scrollToBottom();
       });
     }
   }
@@ -322,6 +341,7 @@ export default class KeyValue extends React.Component {
       config,
       isReset
     } = this.props;
+
     return (
       <Comp className={ c }>
         <Header>
@@ -330,7 +350,13 @@ export default class KeyValue extends React.Component {
           </span>
         </Header>
         <Background>
-          <Container>
+          <Info>
+            <h5>共 {this.state.rows.length} 筆 </h5>
+            <p>請向下滾動，瀏覽更多。</p>
+          </Info>
+          <Container
+            ref={(el) => { this.messagesEnd = el; }}
+          >
             { this.renderRows(config) }
           </Container>
           <ButtonsGroup>
