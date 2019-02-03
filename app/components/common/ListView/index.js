@@ -102,13 +102,12 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               }
 
               {
-                template.type === 'radio' ?
+                template.type === 'single-select' ?
                   <Value>{_.get(detailData, `${template.name}.label`, '尚無資料')}</Value>
                 : null
               }
-
               {
-                template.type === 'tags' ?
+                template.type === 'multi-select' ?
                   <Value>
                     {
                       _.get(detailData, template.name, []).length > 0 ?
@@ -120,13 +119,6 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                   </Value>
                 : null
               }
-
-              {
-                template.type === 'select' ?
-                  <Value>{_.get(detailData, template.selectLabel, '尚無資料')}</Value>
-                : null
-              }
-
               {
                 template.type === 'html' ?
                   <Value>{decodeHtml(detailData[template.name])}</Value>

@@ -73,7 +73,7 @@ class CoursePage extends Component {
    * @param {Object} course Classroom object for initialization.
    */
   initializeEditForm = ({ course, actionType, courseType }) => {
-    // TODO: image and flavor
+    // TODO: courseVM to boolean
     console.log(`[initialize${actionType}Form]`, course, courseType);
     const confObj = {
       CONTAINER: {
@@ -81,9 +81,8 @@ class CoursePage extends Component {
         edit: {
           ...initialCourseConState,
           ...course,
-          level: { value: _.get(course, 'level')},
-          gpu: { label : `x${_.get(course,'gpu.label',"")}`, value : _.get(course,'gpu.value',"")},
-          datasets: _.get(course,'datasets',[]),
+          level: { value: _.get(course, 'level') },
+          accessType: { value: _.get(course,'accessType') },
           ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() }))
         },
         detail: {
@@ -96,14 +95,9 @@ class CoursePage extends Component {
         edit: {
           ...initialCourseVMState,
           ...course,
-          level: { value: course.level },
-          image: { label: _.get(course, 'image.label', ''), value: _.get(course, 'image.value', '') },
-          flavor: { label: _.get(course, 'flavor.label', ''),value: _.get(course, 'flavor.value', '') },
-          sshKey: { label: _.get(course, 'sshkey.label', ''), value: _.get(course, 'sshkey.value', '') },
+          level: { value: _.get(course, 'level') },
           associate: { value: _.get(course, 'associate', false) === 'true' },
-          extraPorts: _.get(course, 'extraports', ""),
-          mount: { value: _.get(course, 'mount', false) === 'true'  },
-          volume: { label:`${_.get(course,'volume',"")}GB`, value: `${_.get(course,'volume',"")}`},
+          mount: { value: _.get(course, 'mount', false) === 'true' },
         },
         detail: {
           ...initialCourseVMState,

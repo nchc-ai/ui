@@ -24,24 +24,29 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
         data.map((d, j) => (
           <tr key={j}>
             {
-              tableData.cols.map((datum) => (
-                <td key={datum.key}>
+              tableData.cols.map((template) => (
+                <td key={template.key}>
                     {
-                      datum.type === 'link-detail' ?
+                      template.type === 'link-detail' ?
                         <div>
-                          <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/detail/`}${_.get(d, 'id')}/${_.get(d, 'type', "").toLowerCase()}`}>
-                            {_.get(d, datum.value)}
-                          </Link>
+                          {
+                            _.get(template, 'isLinkDisabled', false) ?
+                              <span>{_.get(d, template.value)}</span>
+                            :
+                              <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/detail/`}${_.get(d, 'id')}/${_.get(d, 'type', "").toLowerCase()}`}>
+                                {_.get(d, template.value)}
+                              </Link>
+                          }
                         </div>
                       :
                         null
                     }
 
                     {
-                      datum.type === 'link-edit' ?
+                      template.type === 'link-edit' ?
                         <div>
                           <Link to={`${prefixUrl ? prefixUrl : `/user/ongoing-course/edit/`}${_.get(d, 'id')}/${_.get(d, 'type', "").toLowerCase()}`}>
-                            {_.get(d, datum.value)}
+                            {_.get(d, template.value)}
                           </Link>
                         </div>
                       :
@@ -49,50 +54,50 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     }
 
                     {
-                      datum.type === 'level' ?
+                      template.type === 'level' ?
                         <div>
-                          { _.get(d, datum.value, 'basic') === 'advance' ? '進階' : '基礎' }
+                          { _.get(d, template.value, 'basic') === 'advance' ? '進階' : '基礎' }
                         </div>
                       :
                         null
                     }
 
                     {
-                      datum.type === 'bool' ?
+                      template.type === 'boolean' ?
                         <div>
-                          { _.get(d, datum.value, false) ? '是' : '否' }
+                          { _.get(d, template.value, false) ? `${_.get(template, 'custom.trueText', '是')}` : `${_.get(template, 'custom.falseText', '否')}` }
                         </div>
                       :
                         null
                     }
                     {
-                      datum.type === 'array' ?
+                      template.type === 'array' ?
                         <div>
-                          {_.get(d, datum.value, []).map((arrItem, arrItemKey) => <p key={arrItemKey}>{arrItem}</p>)}
+                          {_.get(d, template.value, []).map((arrItem, arrItemKey) => <p key={arrItemKey}>{arrItem}</p>)}
                         </div>
                       :
                         null
                     }
                     {
-                      datum.type === 'date' ?
+                      template.type === 'date' ?
                         <div>
-                          <Moment format="YYYY/MM/DD" date={_.get(d, datum.value)} />
+                          <Moment format="YYYY/MM/DD" date={_.get(d, template.value)} />
                         </div>
                       :
                         null
                     }
                     {
-                      datum.type === 'start' ?
+                      template.type === 'start' ?
                         <div>
                           <button className="btn-start" onClick={e => startMethod(e, d)}>
-                            {_.get(d, datum.text)}
+                            {_.get(d, template.text)}
                           </button>
                         </div>
                       :
                         null
                     }
                     {
-                      datum.type === 'actions' ?
+                      template.type === 'actions' ?
                         <div>
                           {
                               <button className="action-open-btn">

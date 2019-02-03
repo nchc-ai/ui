@@ -354,7 +354,7 @@ export const courseVMFormOne = [
   export const courseVMFormThree = [{
     key: 6,
     size: 4,
-    name: 'sshKey',
+    name: 'sshkey',
     target: 'courseVM',
     placeholder: '請選擇SSH Key',
     inputType: 'async-select',

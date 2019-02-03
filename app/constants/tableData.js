@@ -31,7 +31,7 @@ export const roomData = {
       value: 'createAt'
     }, {
       key: 3,
-      type: 'bool',
+      type: 'boolean',
       value: 'public'
     }, {
       key: 4,
@@ -56,7 +56,7 @@ export const courseInfoData = {
       text: '課程名稱'
     }, {
       key: 2,
-      text: '程度'
+      text: '課程程度'
     }, {
       key: 3,
       text: '課程建立時間'
@@ -66,11 +66,16 @@ export const courseInfoData = {
     {
       key: 1,
       type: 'link-detail',
-      value: 'name'
+      value: 'name',
+      isLinkDisabled: true
     }, {
       key: 2,
-      type: 'bool',
-      value: 'level'
+      type: 'boolean',
+      value: 'level',
+      custom: {
+        trueText: '進階',
+        falseText: '基礎'
+      }
     }, {
       key: 3,
       type: 'date',

@@ -88,7 +88,6 @@ class RoomPage extends Component {
     const initialData = {
       ...classroom,
       courses: _.get(classroom, 'courseInfo', []).map(d => ({ label: d.name, value: d.id })),
-      teachers: _.get(classroom, 'teachers', []).map(d => ({ label: d, value: d })),
       students: [],
       public: classroom.public ? { label: '是', value: true } : { label: '否', value: false },
     }

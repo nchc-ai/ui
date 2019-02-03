@@ -33,8 +33,7 @@ export const classroomDetailTpl = [
     bulletUrl: bulletTriangle,
     name: 'teachers',
     label: '教課講師',
-    type: 'array',
-    comma: ','
+    type: 'multi-select'
   }
 ];
 
@@ -54,20 +53,20 @@ export const courseCONTAINERDetailTpl = [
     bulletUrl: bulletTriangle,
     name: 'image',
     label: '映像檔',
-    type: 'radio'
+    type: 'single-select'
   }, {
     key: 3,
     bulletUrl: bulletTriangle,
     name: 'gpu',
     label: 'GPU核心數',
-    type: 'radio',
+    type: 'single-select',
     unit: '核心'
   }, {
     key: 4,
     bulletUrl: bulletTriangle,
     name: 'datasets',
     label: '資料集',
-    type: 'tags',
+    type: 'multi-select',
   }, {
     key: 5,
     bulletUrl: bulletTriangle,
@@ -105,19 +104,19 @@ export const courseVMDetailTpl = [
     bulletUrl: bulletTriangle,
     name: 'image',
     label: '映像檔',
-    type: 'radio'
+    type: 'single-select'
   }, {
     key: 3,
     bulletUrl: bulletTriangle,
     name: 'flavor',
     label: '資源規模',
-    type: 'radio'
+    type: 'single-select'
   }, {
     key: 4,
     bulletUrl: bulletTriangle,
     name: 'sshkey',
     label: 'SSH Key',
-    type: 'radio'
+    type: 'single-select'
   },{
     key: 5,
     bulletUrl: bulletTriangle,
