@@ -64,7 +64,7 @@ export const decodeHtml = (htmlStr) =>
 // common container vm
 ----------------------------*/
 
-export function formatJob(datum) {
+export function formatJob(datum, type) {
   return {
     courseId: _.get(datum, 'course_id'),
     id: _.get(datum, 'id'),
@@ -87,7 +87,9 @@ export function formatJob(datum) {
     vmname: _.get(datum, 'vmname'),
     volume: _.get(datum, 'volume'),
 
-    canSnapshot: _.get(datum, 'canSnapshot')
+    canSnapshot: _.get(datum, 'canSnapshot'),
+
+    type
   }
 }
 

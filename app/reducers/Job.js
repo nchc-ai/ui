@@ -38,7 +38,7 @@ export default function Job(state = InitialState, action) {
       }
     };
   case actionTypes.GET_CON_JOB_LIST[SUCCESS]:
-    const recievedConData = _.map(action.payload.jobs, d => formatJob(d));
+    const recievedConData = _.map(action.payload.jobs, d => formatJob(d, 'CONTAINER'));
     const loadingCon = false;
 
     return {
@@ -66,7 +66,7 @@ export default function Job(state = InitialState, action) {
       }
     };
   case actionTypes.GET_VM_JOB_LIST[SUCCESS]:
-    const recievedVMData = _.map(action.payload.jobs, d => formatJob(d));
+    const recievedVMData = _.map(action.payload.jobs, d => formatJob(d, 'VM'));
     const loadingVM = false;
 
     return {

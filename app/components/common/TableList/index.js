@@ -65,7 +65,11 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     {
                       template.type === 'boolean' ?
                         <div>
-                          { _.get(d, template.value, false) ? `${_.get(template, 'custom.trueText', '是')}` : `${_.get(template, 'custom.falseText', '否')}` }
+                          { _.get(d, template.value, false) === (_.get(template, 'custom.positive') || true) ?
+                              `${_.get(template, 'custom.trueText', '是')}`
+                            :
+                              `${_.get(template, 'custom.falseText', '否')}`
+                          }
                         </div>
                       :
                         null

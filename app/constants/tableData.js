@@ -70,9 +70,10 @@ export const courseInfoData = {
       isLinkDisabled: true
     }, {
       key: 2,
-      type: 'boolean',
+      type: 'level',
       value: 'level',
       custom: {
+        positive: 'advance',
         trueText: '進階',
         falseText: '基礎'
       }

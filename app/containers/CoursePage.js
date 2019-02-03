@@ -131,7 +131,7 @@ class CoursePage extends Component {
       classroomId: '',
       courseId: data.id,
       token,
-      next: () => this.onAfterLaunchCourseJob()
+      next: this.onAfterLaunchCourseJob
     });
   }
 
