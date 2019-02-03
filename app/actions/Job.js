@@ -103,7 +103,7 @@ export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
  * @param {String} job - The job object for retrieving id and name.
  * @param {String} next - Callback.
  */
-export const snapshotContainerJob = ({ token, job, next }) => async (dispatch) => {
+export const snapshotContainerJob = ({ token, id, name, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/images/commit`,
@@ -112,21 +112,22 @@ export const snapshotContainerJob = ({ token, job, next }) => async (dispatch) =
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      body: JSON.stringify({ id: job.course_id, name: job.name }),
+      body: JSON.stringify({ id, name }),
       types: types.SNAPSHOT_CONTAINER_JOB
     }
   });
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
-  } else if (next) {
-    next();
   }
 
+  if (next) {
+    next({ response })
+  }
 };
 
 
-export const snapshotVMJob = ({ token, id, name, onSuccess }) => async (dispatch) => {
+export const snapshotVMJob = ({ token, id, name, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_VM_URL}/${API_VM_VERSION}/vm/snapshot`,
@@ -142,8 +143,10 @@ export const snapshotVMJob = ({ token, id, name, onSuccess }) => async (dispatch
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
-  } else if (onSuccess) {
-    onSuccess(response)
+  }
+
+  if (next) {
+    next({ response })
   }
 };
 

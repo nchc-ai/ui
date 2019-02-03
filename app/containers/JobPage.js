@@ -115,18 +115,30 @@ class JobPage extends Component {
       uiAction
     } = this.props;
 
-    jobAction.snapshotVMJob({
-      token,
-      id: thumb.id,
-      name: submitData.name,
-      onSuccess: this.onSnapshotSuccess
-    })
     this.props.startProgressBar();
+    if (thumb.type === 'CONTAINER') {
+      jobAction.snapshotContainerJob({
+        token,
+        id: thumb.id,
+        name: submitData.name,
+        next: this.onAfterSnapshot
+      })
+    } else if (thumb.type === 'VM') {
+      jobAction.snapshotVMJob({
+        token,
+        id: thumb.id,
+        name: submitData.name,
+        next: this.onAfterSnapshot
+      })
+    }
   }
 
-  onSnapshotSuccess = (res) => {
+  onAfterSnapshot = ({ response }) => {
     this.props.endPorgressBar();
-    notify.show(_.get(res, "payload.message", "成功快照此 VM 工作"), 'success', TOAST_TIMING);
+
+    if (!response.error) {
+      notify.show(_.get(response, "payload.message", "成功快照此 VM 工作"), 'success', TOAST_TIMING);
+    }
   }
 
   handlesubmitSnapshotFail = (submitData) => {

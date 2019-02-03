@@ -70,8 +70,8 @@ export const courseInfoData = {
       isLinkDisabled: true
     }, {
       key: 2,
-      type: 'level',
       value: 'level',
+      type: 'boolean',
       custom: {
         positive: 'advance',
         trueText: '進階',
@@ -112,8 +112,13 @@ export const ongoingCourseData = {
       value: 'name'
     }, {
       key: 2,
-      type: 'level',
-      value: 'level'
+      value: 'level',
+      type: 'boolean',
+      custom: {
+        positive: 'advance',
+        trueText: '進階',
+        falseText: '基礎'
+      }
     }, {
       key: 3,
       type: 'date',
@@ -150,8 +155,13 @@ export const classroomGroupData = {
       value: 'name'
     }, {
       key: 2,
-      type: 'level',
-      value: 'level'
+      value: 'level',
+      type: 'boolean',
+      custom: {
+        positive: 'advance',
+        trueText: '進階',
+        falseText: '基礎'
+      }
     }, {
       key: 3,
       type: 'date',
@@ -190,8 +200,13 @@ export const courseData = {
       value: 'name'
     }, {
       key: 2,
-      type: 'level',
-      value: 'level'
+      value: 'level',
+      type: 'boolean',
+      custom: {
+        positive: 'advance',
+        trueText: '進階',
+        falseText: '基礎'
+      }
     }, {
       key: 3,
       value: 'image'
@@ -230,8 +245,13 @@ export const userCourseData = {
       value: 'name'
     }, {
       key: 2,
-      type: 'level',
-      value: 'level'
+      value: 'level',
+      type: 'boolean',
+      custom: {
+        positive: 'advance',
+        trueText: '進階',
+        falseText: '基礎'
+      }
     }, {
       key: 3,
       type: 'date',
