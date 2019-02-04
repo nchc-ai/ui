@@ -64,11 +64,18 @@ export default function Classroom(state = InitialState, action) {
       }
     };
   case actionTypes.GET_PUBLIC_CLASSROOMS[SUCCESS]:
+    const modifiedRooms = action.payload.classrooms.map((room) => ({
+      ... room,
+      teachers: _.get(room,'teachers',[]).map((teacher) => ({
+        ...teacher,
+        label: teacher.value
+      }))
+    }))
     return {
       ...state,
       publicList: {
         isLoading: false,
-        data: action.payload.classrooms
+        data: modifiedRooms
       }
     };
   case actionTypes.UPLOAD_STUDENTS_CSV[LOADING]:
