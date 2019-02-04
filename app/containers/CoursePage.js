@@ -17,11 +17,31 @@ import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import CommonPageContent from '../components/CommonPageContent';
 import { initialCourseConState, initialCourseVMState } from '../constants/initialState';
+
 class CoursePage extends Component {
 
   componentWillMount() {
     window.scrollTo(0, 0);
     this.fetchData(this.props);
+
+    // 先設定非control元件
+    const validConArr = ['image', 'gpu']
+    validConArr.forEach((item) => {
+      this.props.setValidity(item, 'courseCon', {
+        required: false
+      });
+    })
+
+    const validVMArr = ['image', 'flavor', 'sshkey']
+    validVMArr.forEach((item) => {
+      this.props.setValidity(item, 'courseVM', {
+        required: false
+      });
+    })
+    this.props.setValidity('ports', 'courseCon', {
+      keyValRequired: false
+    });
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -218,6 +238,10 @@ class CoursePage extends Component {
       startProgressBar
     } = this.props;
     startProgressBar();
+
+
+    // this.props.validate('image', 'courseCon');
+
     if (courseType === 'container') {
       courseAction.submitContainerCourse({
         token,
@@ -255,7 +279,7 @@ class CoursePage extends Component {
       isLoading,
       courseDetail,
       courseList,
-      changeValue,
+      changeValue
     } = this.props;
     const courseType = _.get(match, 'params.type');
     return (
@@ -601,6 +625,11 @@ class CoursePage extends Component {
 
 
 const mapDispatchToProps = dispatch => ({
+  setValidity: (key, formName, validity) => dispatch(formActions.setValidity(
+    `forms.${formName}.${key}`, {
+      required: false
+    }
+  )),
   resetForm: (formName) => dispatch(formActions.reset(
     `forms.${formName}`
   )),

@@ -75,6 +75,19 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                         null
                     }
                     {
+                      template.type === 'multi-select' ?
+                        <div>
+                          {
+                            _.get(d, template.value, []).length > 0 ?
+                              d[template.value].map((datum, index) => (
+                                <p key={`array-${index}`}>{_.get(datum, "label", '')}</p>
+                              ))
+                            : <div>尚無資料</div>
+                          }
+                        </div>
+                      : null
+                    }
+                    {
                       template.type === 'array' ?
                         <div>
                           {_.get(d, template.value, []).map((arrItem, arrItemKey) => <p key={arrItemKey}>{arrItem}</p>)}

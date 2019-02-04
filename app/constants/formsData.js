@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  required, mailIsValid, atLeastSix, samePassword
+  required, mailIsValid, atLeastSix, samePassword, keyValRequired
 } from '../libraries/validation';
 
 // course container ----------------------------------------
@@ -76,12 +76,7 @@ export const classroomFormTwo = [
     target: 'classroom',
     inputType: 'file',
     mainLabel: '選擇加入此教室的學生',
-    placeholder: '請輸入欲上課學生',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未加入任何學生'
-    },
-    isRequired: false
+    placeholder: '請輸入欲上課學生'
   }, {
     key: 7,
     size: 8,
@@ -102,7 +97,12 @@ export const classroomFormTwo = [
         value: false,
         label: '否 (false)'
       }
-    ]
+    ],
+    isRequired: false,
+    validators: { required },
+    errorMessage: {
+      required: '您尚未加入任何學生'
+    }
   }
 ];
 
@@ -117,23 +117,18 @@ export const courseConForm = [
     inputType: 'text',
     mainLabel: '課程名稱',
     placeholder: '請輸入課程名稱',
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+      required: '您尚未輸入課程名稱'
+    }
   }, {
     key: 2,
     size: 8,
     name: 'introduction',
     target: 'courseCon',
     inputType: 'markdown',
-    mainLabel: '課程介紹',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+    mainLabel: '課程介紹'
   }, {
     key: 3,
     radioKey: 1,
@@ -156,11 +151,11 @@ export const courseConForm = [
         label: '進階'
       }
     ],
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入課程程度'
-    },
-    isRequired: true
+      required: '您尚未加入任何學生'
+    }
   }, {
     key: 4,
     size: 4,
@@ -169,11 +164,11 @@ export const courseConForm = [
     placeholder: '請選擇映像檔',
     inputType: 'async-select',
     mainLabel: '映像檔',
+    isRequired: true,
     validators: { required },
     errorMessage: {
       required: '您尚未選擇映像檔'
-    },
-    isRequired: true
+    }
   }, {
     key: 5,
     size: 4,
@@ -193,11 +188,11 @@ export const courseConForm = [
       { label: 'x7', value: 7 },
       { label: 'x8', value: 8 }
     ],
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '請輸入GPU核心數'
-    },
-    isRequired: true
+      required: '您尚未選擇 GPU 核心數'
+    }
   }, {
     key: 6,
     size: 4,
@@ -205,8 +200,7 @@ export const courseConForm = [
     target: 'courseCon',
     inputType: 'tags-input',
     placeholder: '請選擇資料集',
-    mainLabel: '資料集',
-    isRequired: false
+    mainLabel: '資料集'
   }
 ];
 
@@ -234,9 +228,10 @@ export const courseConFormTwo = [
         label: 'NodePort (不同工作透過不同埠存取)'
       }
     ],
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入存取方式'
+      required: '您尚未加入任何學生'
     }
   }, {
     key: 2,
@@ -252,11 +247,10 @@ export const courseConFormTwo = [
       valueText: '端口'
     },
     className: 'fl',
-    validators: { required },
+    isRequired: true,
     errorMessage: {
-      required: '您尚未輸入課程程度'
-    },
-    isRequired: true
+      required: '有尚未填寫的存取端口資料'
+    }
   }, {
     key: 3,
     size: 8,
@@ -264,7 +258,11 @@ export const courseConFormTwo = [
     inputType: 'text',
     mainLabel: '工作目錄',
     placeholder: '/tmp/work (絕對路徑)',
-    isRequired: false
+    isRequired: true,
+    validators: { required },
+    errorMessage: {
+      required: '您尚未加入任何工作目錄'
+    }
   }
 ];
 
@@ -278,11 +276,11 @@ export const courseVMFormOne = [
     inputType: 'text',
     mainLabel: '課程名稱',
     placeholder: '請輸入課程名稱',
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+      required: '您尚未輸入課程名稱'
+    }
   }, {
     key: 2,
     size: 8,
@@ -290,11 +288,11 @@ export const courseVMFormOne = [
     target: 'courseVM',
     inputType: 'markdown',
     mainLabel: '課程介紹',
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+      required: '您尚未輸入課程介紹'
+    }
   }, {
     key: 3,
     size: 8,
@@ -316,11 +314,11 @@ export const courseVMFormOne = [
         label: '進階'
       }
     ],
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入課程程度'
-    },
-    isRequired: true
+      required: '您尚未選擇課程程度'
+    }
   }, {
     key: 4,
     size: 4,
@@ -329,11 +327,11 @@ export const courseVMFormOne = [
     placeholder: '請選擇映像檔',
     inputType: 'async-select',
     mainLabel: '映像檔',
+    isRequired: true,
     validators: { required },
     errorMessage: {
       required: '您尚未選擇映像檔'
-    },
-    isRequired: true
+    }
   }]
 
   export const courseVMFormTwo = [{
@@ -344,11 +342,11 @@ export const courseVMFormOne = [
     placeholder: '請選擇資源規模',
     inputType: 'async-select',
     mainLabel: '資源規模',
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '請輸入資源規模'
-    },
-    isRequired: true
+      required: '您尚未選擇資源規模'
+    }
   }];
 
   export const courseVMFormThree = [{
@@ -359,10 +357,11 @@ export const courseVMFormOne = [
     placeholder: '請選擇SSH Key',
     inputType: 'async-select',
     mainLabel: 'SSH Key',
-    isRequired: false,
+    isRequired: true,
+    validators: { required },
     errorMessage: {
-      required: '您尚未選擇SSH KEY'
-    },
+      required: '您尚未填入任何 SSH Key'
+    }
   }];
 
   export const courseVMFormFour = [{
@@ -386,7 +385,11 @@ export const courseVMFormOne = [
         label: '否 (false)'
       }
     ],
-    isRequired: false
+    isRequired: true,
+    validators: { required },
+    errorMessage: {
+      required: '您尚未選擇是否啟用此功能'
+    }
   }];
 
   export const courseVMFormFive = [{
@@ -419,10 +422,11 @@ export const courseVMFormOne = [
         label: '否 (false)'
       }
     ],
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '請輸入所需容量'
-    },
+      required: '您尚未選擇是否啟用此功能'
+    }
   }, {
     key: 10,
     size: 3,
@@ -436,10 +440,11 @@ export const courseVMFormOne = [
       { label: '20 GB', value: '20' },
       { label: '30 GB', value: '30' },
     ],
+    isRequired: true,
     validators: { required },
     errorMessage: {
-      required: '請輸入所需容量'
-    },
+      required: '您尚未選擇 Volume'
+    }
   }
 ];
 

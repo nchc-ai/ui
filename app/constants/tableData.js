@@ -23,24 +23,24 @@ export const roomData = {
   cols: [
     {
       key: 1,
-      type: 'link-detail',
-      value: 'name'
+      value: 'name',
+      type: 'link-detail'
     }, {
       key: 2,
-      type: 'date',
-      value: 'createAt'
+      value: 'createAt',
+      type: 'date'
     }, {
       key: 3,
-      type: 'boolean',
-      value: 'public'
+      value: 'public',
+      type: 'boolean'
     }, {
       key: 4,
-      type: 'array',
-      value: 'teachers'
+      value: 'teachers',
+      type: 'multi-select'
     }, {
       key: 5,
-      type: 'actions',
-      value: ''
+      value: '',
+      type: 'actions'
     }
   ]
 };
