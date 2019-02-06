@@ -150,8 +150,8 @@ class CronBuilder extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-
+  componentWillUnmount() {
+    this.resetCronFormat();
   }
 
   selectTab = (selectMode) => {
@@ -164,6 +164,9 @@ class CronBuilder extends React.Component {
   }
 
   generateCronFormat = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
     const { selectMode } = this.state;
     const {
       forms
@@ -172,7 +175,6 @@ class CronBuilder extends React.Component {
     const periodAdvance = _.get(forms, 'classroomCron.periodAdvance', []);
     let periodWeekAdvance = "*";
 
-    e.preventDefault();
     if (periodAdvance.length > 0) {
       periodWeekAdvance = periodAdvance.map(datum => `${_.get(datum,'value', '')}`).join(',');
     }
@@ -185,7 +187,10 @@ class CronBuilder extends React.Component {
     this.props.changeValue([result], 'schedules', 'classroom');
   }
 
-  resetCronFormat = () => {
+  resetCronFormat = (e) => {
+    if (e) {
+      e.preventDefault();
+    }
     this.props.resetForm('classroomCron');
     this.props.changeValue([], 'schedules', 'classroom');
   }
