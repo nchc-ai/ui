@@ -10,6 +10,7 @@ import { notify } from 'react-notify-toast';
 import FormGroups from '../FormGroups/index';
 import FormButtons from '../FormButtons/index';
 import { classroomFormDatePeriod, classroomFormDateBasic, classroomFormDateAdvance } from '../../../constants/formsData';
+import { If, Then, Else, When, Unless } from 'react-if'
 
 import { TOAST_TIMING } from '../../../constants';
 
@@ -162,7 +163,7 @@ class CronBuilder extends React.Component {
 
   }
 
-  generateCronFormat = () => {
+  generateCronFormat = (e) => {
     const { selectMode } = this.state;
     const {
       forms
@@ -171,6 +172,7 @@ class CronBuilder extends React.Component {
     const periodAdvance = _.get(forms, 'classroomCron.periodAdvance', []);
     let periodWeekAdvance = "*";
 
+    e.preventDefault();
     if (periodAdvance.length > 0) {
       periodWeekAdvance = periodAdvance.map(datum => `${_.get(datum,'value', '')}`).join(',');
     }
@@ -217,7 +219,7 @@ class CronBuilder extends React.Component {
                     <Tab>自訂週期</Tab>
                 </TabList>
                 <TabPanel>
-                  {/*  */}
+
                   <FormGroups
                       formData={classroomFormDateBasic}
                       targetForm={forms.classroomCron}
@@ -233,10 +235,12 @@ class CronBuilder extends React.Component {
                 </TabPanel>
             </Tabs>
 
-            <div>
-              <h4>時間週期結果</h4>
-              <h5>{_.get(forms, 'classroom.schedules.0', "")}</h5>
-            </div>
+            <If condition={!_.isEmpty(_.get(forms, 'classroom.schedules.0', ""))}>
+              <Then>
+                <h4>時間週期結果</h4>
+                <h5>{_.get(forms, 'classroom.schedules.0', "")}</h5>
+              </Then>
+            </If>
 
             <FormButtons
               resetName="重置"
@@ -244,6 +248,7 @@ class CronBuilder extends React.Component {
               resetMethod={this.resetCronFormat}
               nextMethod={this.generateCronFormat}
               showMode="submit_reset"
+              isForm={false}
             />
           </TabContainer>
         </Background>

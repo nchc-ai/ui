@@ -48,10 +48,17 @@ class RolePage extends Component {
       roleAction,
       history
     } = this.props;
-    roleAction.startSubstituating(submitData.role)
+    const roleObj = submitData.role;
+
+    roleAction.startSubstituating(roleObj)
 
     const redirectUrl = redirectUrlWithRole({ role: submitData.role.role });
     history.push(redirectUrl);
+  }
+
+  backMethodCommon = (e) => {
+    e.preventDefault();
+    this.props.history.goBack();
   }
 
   render() {

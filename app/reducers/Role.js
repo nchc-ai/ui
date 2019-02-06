@@ -26,8 +26,8 @@ export default function Role(state = InitialState, action) {
       isSubstituating: true,
       userInfo: {
         ...state.userInfo,
-        username: action.role.value,
-        role: action.role.role
+        username: action.value,
+        role: action.role
       }
     }
   default:

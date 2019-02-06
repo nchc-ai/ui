@@ -32,9 +32,11 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
   };
 };
 
-export const startSubstituating = (role) => ({
+export const startSubstituating = ({ label, role, value }) => ({
   type: types.START_SUBSTITUATING,
-  role
+  label,
+  role,
+  value
 });
 
 
