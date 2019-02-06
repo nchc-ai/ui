@@ -43,7 +43,7 @@ export const retrieveAuthFromSession = ({ tokenObj, userInfo, isLogin }) => ({
 });
 
 // Health Check > check-database
-export const checkDatabase = () => async (dispatch) => {
+export const checkDatabase = ({ onFail }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/health/database`,
@@ -57,6 +57,7 @@ export const checkDatabase = () => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', '無法建立 DB 連線'), 'error', TOAST_TIMING);
+    onFail();
   }
 };
 

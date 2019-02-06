@@ -44,12 +44,105 @@ export const classroomFormOne = [
     size: 8,
     name: 'courses',
     target: 'classroom',
-    inputType: 'tags-input',
+    inputType: 'async-tags-input',
     mainLabel: '教室課程',
     placeholder: '請輸入教室課程',
     validators: { required },
     errorMessage: {
       required: '您尚未輸入課程'
+    },
+    isRequired: false
+  }
+];
+
+export const classroomFormDatePeriod = [
+  {
+    key: 1,
+    size: 8,
+    name: 'startDate',
+    target: 'classroomCron',
+    inputType: 'date',
+    mainLabel: '起始時間',
+  }, {
+    key: 2,
+    size: 8,
+    name: 'endDate',
+    target: 'classroomCron',
+    inputType: 'date',
+    mainLabel: '結束時間',
+  },
+
+]
+export const classroomFormDateBasic = [
+  {
+    key: 1,
+    size: 8,
+    name: 'periodBasic',
+    target: 'classroomCron',
+    inputType: 'radio',
+    mainLabel: '選擇教室時間',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        radioKey: '2-1',
+        value: '*',
+        label: '每日'
+      }, {
+        key: 2,
+        radioKey: '2-2',
+        value: '1-5',
+        label: '平日'
+      }, {
+        key: 3,
+        radioKey: '2-3',
+        value: '6-7',
+        label: '假日'
+      }
+    ],
+    isRequired: false,
+    validators: { required },
+    errorMessage: {
+      required: '您尚未選擇週期'
+    }
+  }
+];
+
+
+export const classroomFormDateAdvance = [
+  {
+    key: 5,
+    size: 8,
+    name: 'periodAdvance',
+    target: 'classroomCron',
+    inputType: 'tags-input',
+    mainLabel: '選擇教室時間',
+    placeholder: '可多選',
+    options: [{
+      label: '星期一',
+      value: '1'
+    }, {
+      label: '星期二',
+      value: '2'
+    }, {
+      label: '星期三',
+      value: '3'
+    }, {
+      label: '星期四',
+      value: '4'
+    }, {
+      label: '星期五',
+      value: '5'
+    }, {
+      label: '星期六',
+      value: '6'
+    }, {
+      label: '星期日',
+      value: '7'
+    }],
+    validators: { required },
+    errorMessage: {
+      required: '您尚未選擇任何時間'
     },
     isRequired: false
   }
@@ -61,7 +154,7 @@ export const classroomFormTwo = [
     size: 8,
     name: 'teachers',
     target: 'classroom',
-    inputType: 'tags-input',
+    inputType: 'async-tags-input',
     mainLabel: '選擇加入此教室的老師',
     placeholder: '請輸入老師名稱',
     validators: { required },
@@ -198,7 +291,7 @@ export const courseConForm = [
     size: 4,
     name: 'datasets',
     target: 'courseCon',
-    inputType: 'tags-input',
+    inputType: 'async-tags-input',
     placeholder: '請選擇資料集',
     mainLabel: '資料集'
   }

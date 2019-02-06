@@ -1,69 +1,94 @@
 import React from 'react';
 import { Row, Col } from 'reactstrap';
+import styled from 'styled-components';
+import { If, Then, Else, When, Unless } from 'react-if'
 
-const FormButtons = ({ size, isForm, showMode, cancelName, submitName, backMethod, nextMethod, resetMethod, isReset }) => (
-  <div className="submit-bg">
-    <Row className="form-buttons-container">
+const Component = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
-      {/* Next button */}
-      {
-        showMode === 'submit_only' || showMode === 'submit_back' ?
-          <Col md={{ size: size || 2 }}>
-            {
-              isForm ?
-                <button
-                  type="submit"
-                  className="next-btn btn-pair"
-                >
-                  {submitName || '繼續'}
-                </button>
-              :
-                <button
-                  type="submit"
-                  className="next-btn btn-pair"
-                  onClick={nextMethod}
-                >
-                  {submitName || '繼續'}
-                </button>
-            }
-          </Col>
-        : null
-      }
+const Button = styled.button`
+  margin-right: 20px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #fff;
+  opacity: 0.8;
+  outline: none;
+  cursor: pointer;
 
-      {/* Back button */}
-      {
-        showMode === 'back_only' || showMode === 'submit_back' ?
-          <Col md={{ size: size || 2 }}>
-            <button
-              className="back-btn btn-pair"
-              onClick={backMethod}
+
+  &:hover { opacity: 1; }
+  &:active{
+    opacity: 0.8;
+    transform: translateY(4px);
+    outline: none;
+  }
+`
+const Next = styled(Button)`
+  background-color: #2a9b9d;
+`
+
+const Back = styled(Button)`
+  background-color: #fff;
+  color: #9b9b9b;
+  border: 1px solid #9b9b9b;
+`
+
+const Reset = styled(Button)`
+  background-color: #DE576E;
+`
+
+
+
+const FormButtons = ({ size, isForm, showMode, cancelName, submitName, resetName, backMethod, nextMethod, resetMethod, isReset }) => (
+  <Component>
+    {/* Next button */}
+    <If condition={showMode === 'submit_only' || showMode === 'submit_back' || showMode === 'submit_reset'}>
+      <Then>
+        <If condition={isForm}>
+          <Then>
+            <Next
+              type="submit"
             >
-              {cancelName || '回上一步'}
-            </button>
-          </Col>
-        : null
-      }
+              {submitName || '繼續'}
+            </Next>
+          </Then>
 
+          <Else>
+            <Next
+              onClick={nextMethod}
+            >
+              {submitName || '繼續'}
+            </Next>
+          </Else>
+        </If>
+      </Then>
+    </If>
 
-      {/* Reset button */}
-      {
-        showMode === 'reset_only' ?
-          <Col md={{ size: size || 2, offset: 6 }}>
-            {
-              isReset ?
-                <button
-                  className="reset-btn btn-pair"
-                  onClick={resetMethod}
-                >
-                  重置
-                </button>
-              : null
-            }
-          </Col>
-        : null
-      }
-    </Row>
-  </div>
+    {/* Back button */}
+    <If condition={showMode === 'back_only' || showMode === 'submit_back'}>
+      <Then>
+        <Back
+          onClick={backMethod}
+        >
+          {cancelName || '回上一步'}
+        </Back>
+      </Then>
+    </If>
+
+    {/* Reset button */}
+    <If condition={showMode === 'reset_only' || showMode === 'submit_reset'}>
+      <Then>
+        <Reset
+          onClick={resetMethod}
+        >
+          {resetName || '重置'}
+        </Reset>
+      </Then>
+    </If>
+  </Component>
 );
 
 export default FormButtons;

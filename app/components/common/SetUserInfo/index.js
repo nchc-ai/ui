@@ -23,7 +23,7 @@ class SetUserInfo extends Component {
     // ga('send', 'pageview');
 
     // 2. DB health check
-    authAction.checkDatabase()
+    authAction.checkDatabase({ onFail: this.onCheckDBFailed })
 
     // 3. 同步 cookie 到登入 state
     authAction.setLoginState(isLogin);
@@ -54,6 +54,10 @@ class SetUserInfo extends Component {
     if (match.url !== '/') {
       history.push('/login');
     }
+  }
+
+  onCheckDBFailed = () => {
+    this.props.history.push('/login');
   }
 
   render = () => (<span className="dn" />);

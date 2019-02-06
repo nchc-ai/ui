@@ -6,7 +6,7 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
-import CronBuilder from  '../../../vendor/CronBuilder';
+import CronBuilder from  '../CronBuilder/index';
 import FileUpload from '../FileUpload/index';
 import MarkdownEditor from '../MarkdownEditor/index';
 import KeyValue from '../KeyValue/index';
@@ -169,9 +169,9 @@ const FormGroups = ({
               ?
                 <div className="form-input">
                   <DatePicker
-                    selected={moment(targetForm.birthday)}
-                    onChange={e => onDateChange(e)}
-                    dateFormat="YYYY / MM / DD"
+                    selected={_.get(targetForm, template.name)}
+                    onChange={val => changeVal(val, template.name, template.target)}
+                    dateFormat="yyyy / MM / dd"
                   />
                 </div>
               :
@@ -239,9 +239,27 @@ const FormGroups = ({
                 null
             }
 
-            {/* Async 多選 */}
+            {/* 一般多選 */}
             {
               template.inputType === 'tags-input'
+              ?
+                <div className="form-input">
+                  <Select
+                    name="form-field-name"
+                    value={_.get(targetForm, template.name, [])}
+                    placeholder={template.placeholder}
+                    onChange={val => changeVal(val, template.name, template.target)}
+                    options={template.options || []}
+                    multi
+                  />
+                </div>
+              :
+                null
+            }
+
+            {/* Async 多選 */}
+            {
+              template.inputType === 'async-tags-input'
               ?
                 <div className="form-input">
                   <Select.Async
@@ -262,9 +280,7 @@ const FormGroups = ({
               template.inputType === 'cron-input'
               ?
                 <CronBuilder
-                  cronExpression="* * * * * *"
                   onChange={val => changeVal(val, template.name, template.target)}
-                  showResult
                 />
               :
                 null

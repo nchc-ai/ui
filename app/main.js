@@ -9,6 +9,8 @@ import 'react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 import './assets/styles/style.scss';
 import 'react-quill/dist/quill.snow.css';
 import 'font-awesome/css/font-awesome.min.css';
+import "react-datepicker/dist/react-datepicker.css";
+import "react-tabs/style/react-tabs.css";
 
 import store from './store';
 import App from './App';

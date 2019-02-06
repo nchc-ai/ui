@@ -12,9 +12,17 @@ export const initialClassroomState = {
   description: '',
   schedules: [],
   courses: [],
+  schedules: [],
   teachers: [],
   students: [],
   public:  { label: '是(true)', value: true }
+};
+
+export const initialClassroomCronState = {
+  startDate: new Date(),
+  endDate: new Date(2020, 12, 31),
+  periodBasic: { label: '每日', value: '*' },
+  periodAdvance: []
 };
 
 export const initialCourseConState = {
