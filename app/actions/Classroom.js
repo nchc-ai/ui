@@ -85,7 +85,7 @@ export const updateClassroom = ({ token, students, formData, next }) => async (d
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/classroom/update`,
-      method: 'POST',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
