@@ -196,7 +196,7 @@ export const getClassroomDetail = ({ id, token, onSuccess }) => async (dispatch)
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   } else if (onSuccess) {
-    onSuccess(response.payload.classroom)
+    onSuccess(response.payload.classroom);
   }
 };
 

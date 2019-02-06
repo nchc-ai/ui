@@ -48,11 +48,25 @@ export default function Classroom(state = InitialState, action) {
       }
     };
   case actionTypes.GET_CLASSROOM_DETAIL[SUCCESS]:
+
+    const teachers = _.get(action,'payload.classroom.teachers',[]).map(teacher => ({
+      label: teacher.value,
+      value: teacher.value,
+    }));
+
+    // const students = _.get(action,'payload.classroom.students',[]).map(student => ({
+    //   label: student.value,
+    //   value: student.value,
+    // }));
+
     return {
       ...state,
       detail: {
         isLoading: false,
-        data: action.payload.classroom
+        data: {
+          ...action.payload.classroom,
+          teachers
+        }
       }
     };
   case actionTypes.GET_PUBLIC_CLASSROOMS[LOADING]:

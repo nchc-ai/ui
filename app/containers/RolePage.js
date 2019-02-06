@@ -20,14 +20,8 @@ class RolePage extends Component {
 
   }
 
-  componentWillReceiveProps(nextProps) {
-    const {
-      match,
-      resetForm
-    } = nextProps;
-    if (nextProps.match.params !== this.props.match.params) {
-      resetForm('role');
-    }
+  componentWillUnmount() {
+    this.props.resetForm('role');
   }
 
   loadUserOptsMethodRole = () => {

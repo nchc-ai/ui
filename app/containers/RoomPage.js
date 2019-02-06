@@ -38,15 +38,14 @@ class RoomPage extends Component {
 
   componentWillReceiveProps (nextProps) {
     if (nextProps.match.url !== this.props.match.url || nextProps.isSubstituating !== this.props.isSubstituating) {
-      window.scrollTo(0, 0);
-      nextProps.resetForm('classroom');
+      // window.scrollTo(0, 0);
       this.fetchData(nextProps);
     }
   }
 
   componentWillUnmount() {
     this.props.resetForm('classroom');
-
+    this.props.resetForm('classroomCron');
   }
 
   fetchData = (nextProps) => {
@@ -78,21 +77,23 @@ class RoomPage extends Component {
    * Initialize edit data for classroom form.
    * @param {Object} classroom Classroom object for initialization.
    */
-  initializeEditForm = (classroom) => {
+  initializeEditForm = () => {
 
     const {
       roomAction,
-      changeForm
+      changeForm,
+      roomDetail
     } = this.props;
 
     const initialData = {
-      ...classroom,
-      courses: _.get(classroom, 'courseInfo', []).map(d => ({ label: d.name, value: d.id })),
+      ...roomDetail.data,
+      courses: _.get(roomDetail, 'data.courseInfo', []).map(d => ({ label: d.name, value: d.id })),
       students: [],
-      public: classroom.public ? { label: '是', value: true } : { label: '否', value: false },
+      teachers: _.get(roomDetail, 'data.teachers', []),
+      public: roomDetail.data.public ? { label: '是', value: true } : { label: '否', value: false },
     }
 
-    const students = _.get(classroom, 'students', []).map((d, i) => ({ keyItem: i + 1, valueItem: d })) || [];
+    const students = _.get(roomDetail, 'data.students', []).map((d, i) => ({ keyItem: i + 1, valueItem: d.label })) || [];
     roomAction.setStudentsField({ students })
 
     changeForm(initialData, 'classroom');
