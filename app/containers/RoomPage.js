@@ -93,7 +93,7 @@ class RoomPage extends Component {
       public: roomDetail.data.public ? { label: '是', value: true } : { label: '否', value: false },
     }
 
-    const students = _.get(roomDetail, 'data.students', []).map((d, i) => ({ keyItem: i + 1, valueItem: d.label })) || [];
+    const students = _.get(roomDetail, 'data.students', []).map((d, i) => ({ keyItem: i + 1, valueItem: d.value })) || [];
     roomAction.setStudentsField({ students })
 
     changeForm(initialData, 'classroom');
