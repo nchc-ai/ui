@@ -20,7 +20,7 @@ export const initialClassroomState = {
 
 export const initialClassroomCronState = {
   startDate: new Date(),
-  endDate: new Date(2020, 12, 31),
+  endDate: new Date().setMonth(new Date().getMonth() + 2),
   periodBasic: { label: '每日', value: '*' },
   periodAdvance: []
 };
