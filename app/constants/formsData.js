@@ -85,17 +85,17 @@ export const classroomFormDateBasic = [
     options: [
       {
         key: 1,
-        radioKey: '2-1',
+        radioKey: 'periodBasic-1',
         label: '每日',
         value: '*'
       }, {
         key: 2,
-        radioKey: '2-2',
+        radioKey: 'periodBasic-2',
         label: '平日',
         value: '1-5'
       }, {
         key: 3,
-        radioKey: '2-3',
+        radioKey: 'periodBasic-3',
         label: '假日',
         value: '6-7'
       }
@@ -160,7 +160,7 @@ export const classroomFormDateUnlimit = [
     options: [
       {
         key: 1,
-        radioKey: '3-1',
+        radioKey: 'periodUnlimit-1',
         value: '不限時間',
         label: '不限時間'
       }
@@ -206,12 +206,12 @@ export const classroomFormTwo = [
     options: [
       {
         key: 1,
-        radioKey: '2-1',
+        radioKey: 'public-1',
         value: true,
         label: '是 (true)'
       }, {
         key: 2,
-        radioKey: '2-2',
+        radioKey: 'public-2',
         value: false,
         label: '否 (false)'
       }

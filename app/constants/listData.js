@@ -145,7 +145,7 @@ export const courseVMDetailTpl = [
     name: 'volume',
     label: 'Volume',
     unit: 'GB',
-    type: 'text'
+    type: 'single-select'
   }
 ];
 

@@ -10,6 +10,7 @@ export const initialClassroomState = {
   id: '',
   name: '',
   description: '',
+  calendar: [],
   schedules: [],
   scheduleDescription: '',
   courses: [],

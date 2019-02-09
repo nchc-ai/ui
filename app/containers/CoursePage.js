@@ -345,6 +345,7 @@ class CoursePage extends Component {
                 nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
+                isForm={false}
               />
             </CommonPageContent>
           </Route>
@@ -378,6 +379,7 @@ class CoursePage extends Component {
                 nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
+                isForm={false}
               />
             </CommonPageContent>
           </Route>

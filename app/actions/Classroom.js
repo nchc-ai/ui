@@ -25,7 +25,8 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
 
   console.log('[create] formData', formData);
   const submitData = {
-    ...formData
+    ...formData,
+    public: formData.public.value
   };
   console.log('[create] submitData', submitData);
 
@@ -61,7 +62,8 @@ export const updateClassroom = ({ token, students, formData, next }) => async (d
 
   console.log('[update] formData', formData);
   const submitData = {
-    ...formData
+    ...formData,
+    public: formData.public.value
   };
   console.log('[update] submitData', submitData);
 

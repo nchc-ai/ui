@@ -71,6 +71,16 @@ const CronTag = styled.span`
   margin-right:5px;
   border-radius: 5px;
 `
+const Info = styled.div`
+  width: 200px;
+  margin-bottom: 20px;
+  color: #000;
+  padding-left: 10px;
+  border-left: 4px solid #48d2a0;
+  text-align: left;
+  overflow: hidden;
+`
+
 
 class CronBuilder extends React.Component {
   static propTypes = {
@@ -264,6 +274,13 @@ class CronBuilder extends React.Component {
     return (
       <Comp>
         <Background>
+
+          <Info>
+            <h5>請注意</h5>
+            <p>選定日期 & 週期後</p>
+            <p>需按下 "產生時間格式" 輸出結果。</p>
+          </Info>
+
           {/* 時間選擇 */}
           <div>
             <FormGroups
