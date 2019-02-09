@@ -17,6 +17,18 @@ const InitialState = {
   students: {
     isLoading: false,
     data: []
+  },
+  calendar: {
+    isLoading: false,
+    data: [
+      {
+        start: '2019-01-01',
+        end: '2019-01-01',
+        eventClasses: 'custom-event-class',
+        title: ' 交大教室 ',
+        description: ''
+      }
+    ]
   }
 };
 
@@ -75,6 +87,10 @@ export default function Classroom(state = InitialState, action) {
       publicList: {
         ...state.publicList,
         isLoading: true
+      },
+      calendar: {
+        ...state.calendar,
+        isLoading: true
       }
     };
   case actionTypes.GET_PUBLIC_CLASSROOMS[SUCCESS]:
@@ -85,12 +101,39 @@ export default function Classroom(state = InitialState, action) {
         label: teacher.value
       }))
     }))
+
+    // 合併產生 calendar list
+
+    const calendarData = [];
+
+    action.payload.classrooms.forEach((classroom, index) => {
+      classroom.calendar.forEach((calendarItem, index) => {
+        const { startMonth, startDate, endDate } = calendarItem;
+        const month = startMonth >= 10 ? `${startMonth}` : `0${startMonth}`;
+        const sDate = startDate >= 10 ? `${startDate}` : `0${startDate}`;
+        const eDate = endDate >= 10 ? `${endDate}` : `0${endDate}`;
+
+        calendarData.push({
+          description: classroom.description,
+          end: `2019-${month}-${eDate}`,
+          eventClasses: "custom-event-class",
+          start: `2019-${month}-${sDate}`,
+          title: classroom.name
+        })
+      })
+    })
+
+    // console.log('calendarData', calendarData);
     return {
       ...state,
       publicList: {
         isLoading: false,
         data: modifiedRooms
-      }
+      },
+      calendar: {
+        isLoading: false,
+        data: calendarData
+      },
     };
   case actionTypes.UPLOAD_STUDENTS_CSV[LOADING]:
     return {

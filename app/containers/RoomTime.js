@@ -14,7 +14,7 @@ import ButtonToolbar from 'react-bootstrap/lib/ButtonToolbar';
 import Popover from 'react-bootstrap/lib/Popover';
 import Overlay from 'react-bootstrap/lib/Overlay';
 import Modal from 'react-bootstrap/lib/Modal';
-import CalendarData from '../constants/calendarData';
+import CalendarData from '../components/common/EventCalendar/calendarData';
 import SectionTitle from '../components/common/SectionTitle';
 import TitleIcon from '../assets/images/user/title-icon.png';
 import CommonPageContent from '../components/CommonPageContent'
@@ -48,6 +48,7 @@ class RoomTime extends Component {
   componentWillMount() {
     window.scrollTo(0, 0);
     this.fetchData(this.props);
+    moment.locale('zh-tw');
   }
 
   componentWillReceiveProps(nextProps) {
@@ -64,9 +65,8 @@ class RoomTime extends Component {
       token
     } = nextProps;
 
-    roomAction.getClassroomList({
-      token,
-      userInfo
+    roomAction.getPublicClassrooms({
+      token
     });
   }
 
@@ -137,10 +137,15 @@ class RoomTime extends Component {
   }
 
   getHumanDate() {
-    return [moment.months('MM', this.state.moment.month()), this.state.moment.year(), ].join(' ');
+    return [moment.months('MM', this.state.moment.month()), this.state.moment.year()].join(' ');
   }
 
   render() {
+
+    const {
+      Calendar
+    } = this.props;
+
     return (
       <CommonPageContent
           className="room-time-bg"
@@ -174,7 +179,7 @@ class RoomTime extends Component {
                     <ButtonToolbar>
                         <Button onClick={this.handlePreviousMonth}>&lt;</Button>
                         <Button onClick={this.handleNextMonth}>&gt;</Button>
-                        <Button onClick={this.handleToday}>Today</Button>
+                        <Button onClick={this.handleToday}>今天</Button>
                     </ButtonToolbar>
                 </Col>
                 <Col xs={6}>
@@ -187,7 +192,7 @@ class RoomTime extends Component {
                     <EventCalendar
                         month={this.state.moment.month()}
                         year={this.state.moment.year()}
-                        events={CalendarData.getEvents()}
+                        events={Calendar.data || []}
                         onEventClick={this.handleEventClick}
                         onEventMouseOver={this.handleEventMouseOver}
                         onEventMouseOut={this.handleEventMouseOut}
@@ -203,9 +208,13 @@ class RoomTime extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, Course }) => ({
+const mapStateToProps = ({ Auth, Course, Classroom }) => ({
   token: Auth.token,
   userInfo: Auth.userInfo,
+  Calendar: {
+    isLoading: Classroom.calendar.isLoading,
+    data: Classroom.calendar.data
+  }
 });
 
 const mapDispatchToProps = dispatch => ({

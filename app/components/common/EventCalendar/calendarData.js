@@ -57,6 +57,8 @@ export default {
             }
         });
 
+        console.log('events', events);
+
         return events;
     }
 };

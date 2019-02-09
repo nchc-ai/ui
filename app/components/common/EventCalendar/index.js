@@ -40,7 +40,7 @@ class EventCalendar extends React.Component {
 
     getCalendarDays() {
         return this.calendar.getCalendar(this.props.year, this.props.month).map((day) => {
-            day.eventSlots = Array(this.props.maxEventSlots).fill(false); 
+            day.eventSlots = Array(this.props.maxEventSlots).fill(false);
             return day;
         });
     }
@@ -110,12 +110,12 @@ class EventCalendar extends React.Component {
                          // Flag first day of event
                         eventData.isFirstDay = true;
                     }
-                    
+
                     if (dayIndex === eventLength - 1) {
                         // Flag last day of event
                         eventData.isLastDay = true;
                     }
-                    
+
                     if (!eventData.isFirstDay || !eventData.isLastDay) {
                         // Flag between day of event
                         eventData.isBetweenDay = true;
@@ -161,11 +161,11 @@ class EventCalendar extends React.Component {
     renderDaysOfTheWeek() {
         return this.props.daysOfTheWeek.map((title, index) => {
             return (
-                <CalendarTitle 
+                <CalendarTitle
                     key={'title_'+ index}
-                    title={title} 
+                    title={title}
                 />
-            )   
+            )
         });
     }
 
@@ -176,7 +176,7 @@ class EventCalendar extends React.Component {
 
         return eventSlots.map((eventData, index) => {
             return (
-                <CalendarEvent 
+                <CalendarEvent
                     key={'event_'+index+this.getSerializedDay(day)}
                     day={day}
                     eventData={eventData}
@@ -195,11 +195,11 @@ class EventCalendar extends React.Component {
             const events = this.renderEvents(day);
 
             return (
-                <CalendarDay 
+                <CalendarDay
                     key={'day_'+this.getSerializedDay(day)}
-                    day={day} 
+                    day={day}
                     events={events}
-                    isToday={isToday} 
+                    isToday={isToday}
                     onClick={this.props.onDayClick}
                     />
                 );
@@ -232,13 +232,13 @@ EventCalendar.propTypes = {
 
 EventCalendar.defaultProps = {
     daysOfTheWeek: [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
+        '星期日',
+        '星期一',
+        '星期二',
+        '星期三',
+        '星期四',
+        '星期五',
+        '星期六',
     ],
     events: [],
     wrapTitle: true,

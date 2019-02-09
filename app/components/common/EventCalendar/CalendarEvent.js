@@ -13,7 +13,7 @@ class CalendarEvent extends React.Component {
         // Bind methods
         this.handleClick = this.handleClick.bind(this);
     }
-    
+
     componentWillReceiveProps(nextProps) {
       this.sharedArguments = [null, this, nextProps.eventData, nextProps.day];
     }
@@ -24,7 +24,7 @@ class CalendarEvent extends React.Component {
     }
 
     render() {
-        // Return a placeholder element if there is no event data 
+        // Return a placeholder element if there is no event data
         if(!this.props.eventData) {
             return <div className="event-slot"></div>;
         }
@@ -48,7 +48,7 @@ class CalendarEvent extends React.Component {
                 onMouseOver={this.props.onMouseOver.bind(...this.sharedArguments)}
             >
                 <div className="event-title">
-                    {title}    
+                    {title}
                 </div>
             </div>
         );
