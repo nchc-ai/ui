@@ -86,18 +86,18 @@ export const classroomFormDateBasic = [
       {
         key: 1,
         radioKey: '2-1',
-        value: '*',
-        label: '每日'
+        label: '每日',
+        value: '*'
       }, {
         key: 2,
         radioKey: '2-2',
-        value: '1-5',
-        label: '平日'
+        label: '平日',
+        value: '1-5'
       }, {
         key: 3,
         radioKey: '2-3',
-        value: '6-7',
-        label: '假日'
+        label: '假日',
+        value: '6-7'
       }
     ],
     isRequired: false,
@@ -145,6 +145,31 @@ export const classroomFormDateAdvance = [
       required: '您尚未選擇任何時間'
     },
     isRequired: false
+  }
+];
+
+export const classroomFormDateUnlimit = [
+  {
+    key: 1,
+    size: 8,
+    name: 'periodUnlimit',
+    target: 'classroomCron',
+    inputType: 'radio',
+    mainLabel: '選擇教室時間',
+    className: 'fl',
+    options: [
+      {
+        key: 1,
+        radioKey: '3-1',
+        value: '不限時間',
+        label: '不限時間'
+      }
+    ],
+    isRequired: false,
+    validators: { required },
+    errorMessage: {
+      required: '您尚未選擇週期'
+    }
   }
 ];
 

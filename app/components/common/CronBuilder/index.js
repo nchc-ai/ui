@@ -11,7 +11,7 @@ import cronParser from 'cron-parser';
 import { notify } from 'react-notify-toast';
 import FormGroups from '../FormGroups/index';
 import FormButtons from '../FormButtons/index';
-import { classroomFormDatePeriod, classroomFormDateBasic, classroomFormDateAdvance } from '../../../constants/formsData';
+import { classroomFormDatePeriod, classroomFormDateBasic, classroomFormDateAdvance, classroomFormDateUnlimit } from '../../../constants/formsData';
 import { If, Then, Else, When, Unless } from 'react-if'
 
 import { TOAST_TIMING } from '../../../constants';
@@ -38,79 +38,12 @@ const Background = styled.div`
   padding: 20px 20px;
 `;
 
-const Info = styled.div`
-  width: 200px;
-  margin-bottom: 20px;
-  color: #000;
-  padding-left: 10px;
-  border-left: 4px solid #48d2a0;
-  text-align: left;
-  overflow: hidden;
-
-`
-
-const Container = styled.div`
-  width: 100%;
-  max-height: 320px;
-  overflow: hidden;
-  overflow-y: scroll;
-  display: inline-block;
-
-  ::-webkit-scrollbar {display:none}
-`;
-
 const Row = styled.div`
   display: flex;
   align-items: center;
   height: 50px;
   background-color: #fff;
   margin-bottom: 15px;
-`;
-
-const RowActive = styled(Row)`
-  box-shadow: 2px 2px 7px 0 rgba(0, 0, 0, 0.21);
-`;
-
-
-const RowItem = styled.span`
-  padding-left: 20px;
-`;
-
-const Input = styled.input`
-  padding-left: 6px;
-  border: 1px solid #979797;
-  background-color: #fff;
-  outline: none;
-`;
-
-const Label = styled.label`
-  margin-bottom: 0px;
-  color: #000;
-  font-size: 14px;
-`;
-
-const LabelText = styled.span`
-  font-size: 14px;
-  padding-right: 10px;
-`;
-
-const Delete = styled.div`
-  width: 20px;
-  padding-left: 10px;
-`;
-
-
-const ButtonsGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-const Reset = styled.div`
-  justify-self: flex-start;
-`;
-
-const Add = styled.div`
-  justify-self: flex-end;
 `;
 
 const Button = styled.button`
@@ -127,17 +60,6 @@ const Button = styled.button`
     outline: none;
   }
 `
-
-const AddButton = styled(Button)`
-  background-color: #000;
-  border-radius: 5px;
-  color: #fff;
-`;
-
-const DeleteButton = styled(Button)`
-  padding: 5px 5px;
-`;
-
 
 const Crons = styled.h5`
   line-height: 40px;
@@ -160,7 +82,7 @@ class CronBuilder extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selectMode: 0
+      tabMode: 0
     };
   }
 
@@ -168,9 +90,9 @@ class CronBuilder extends React.Component {
     this.resetCronFormat();
   }
 
-  selectTab = (selectMode) => {
+  selectTab = (tabMode) => {
     this.setState({
-      selectMode
+      tabMode
     })
 
     this.resetCronFormat();
@@ -181,71 +103,91 @@ class CronBuilder extends React.Component {
     if (e) {
       e.preventDefault();
     }
-    const { selectMode } = this.state;
-    const {
-      forms
-    } = this.props;
+    const { tabMode } = this.state;
+    const { forms } = this.props;
 
-    // 階段 1
-    // 先把 week 格式算出來
+    // 階段 1 =================
+
+
+    // 先抓到起迄時間
+
+    const startDateStr = moment(_.get(forms, 'classroomCron.startDate', '')).format('YYYY / MM / DD')
+    const endDateStr = moment(_.get(forms, 'classroomCron.endDate', '')).format('YYYY / MM / DD')
+
+    // 把 '固定期間每週開課' 格式算出來
     const periodAdvance = _.get(forms, 'classroomCron.periodAdvance', []);
-    let periodWeekAdvance = "*";
-
-    if (periodAdvance.length > 0) {
-      periodWeekAdvance = periodAdvance.map(datum => `${_.get(datum,'value', '')}`).join(',');
-    }
+    const periodWeekAdvanceObj = {
+        description: periodAdvance
+        .map(datum => `${_.get(datum,'label', '')}`)
+        .join(' ') || '尚無資料',
+        cron: periodAdvance
+        .map(datum => `${_.get(datum,'value', '')}`)
+        .join(',') || '*'
+      }
 
     // 先暫時生成 week 的格式
-    const week = selectMode === 0 ?
-        _.get(forms, 'classroomCron.periodBasic.value', '*')
-      :
-        periodWeekAdvance;
+    const calendarCronObj = {
+      '0': {
+        descripition: `${_.get(forms, 'classroomCron.periodBasic.label', '')}`,
+        cron: `0 0 8 * * ${_.get(forms, 'classroomCron.periodBasic.value', '*')}`
+      },
+      '1': {
+        descripition: `固定每週 ${periodWeekAdvanceObj.description}`,
+        cron: `0 0 8 * * ${periodWeekAdvanceObj.cron}`
+      },
+      '2': {
+        descripition: `區間內 不限時間`,
+        cron: '* * * * * *'
+      }
+    }
+    const selectedCron = calendarCronObj[`${tabMode}`];
+
+    // 先生成語意式 cron 敘述
+    this.props.changeValue(`${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}`, 'schedulesDescription', 'classroom');
+
 
     // 先生成 timeArr
-
     const rawTimeArr = [];
     const resultTimeArr = [];
+    if (selectedCron.cron !== '* * * * * *') {
+       // parse cron format
+      const {
+        startDate,
+        endDate
+      } = forms.classroomCron
 
-    // start cron parse
-
-    let limit = 0;
-    const {
-      startDate,
-      endDate
-    } = forms.classroomCron
-    try {
-      var interval = cronParser.parseExpression(
-        `0 0 8 * * ${week}`,
-        {
-          currentDate: new Date(startDate),
-          endDate: new Date(endDate),
-          iterator: true
+      try {
+        var interval = cronParser.parseExpression(
+          selectedCron.cron,
+          {
+            currentDate: new Date(startDate),
+            endDate: new Date(endDate),
+            iterator: true
+          }
+        );
+        while (true) {
+          try {
+            var obj = interval.next();
+            const timeStr = obj.value.toString();
+            rawTimeArr.push({
+              rawTime: timeStr,
+              moment: moment(timeStr).format('L'),
+              month: moment(timeStr).month() + 1,
+              date: moment(timeStr).date()
+            });
+            console.log('value:', moment(obj.value.toString()).format('L'), 'done:', obj.done);
+          } catch (e) {
+            break;
+          }
         }
-      );
-      while (true) {
-        try {
-
-          limit = limit + 1;
-          var obj = interval.next();
-          const timeStr = obj.value.toString();
-          rawTimeArr.push({
-            rawTime: timeStr,
-            moment: moment(timeStr).format('L'),
-            month: moment(timeStr).month() + 1,
-            date: moment(timeStr).date()
-          });
-          console.log('value:', moment(obj.value.toString()).format('L'), 'done:', obj.done);
-        } catch (e) {
-          break;
-        }
+      } catch (err) {
+        console.log('Error: ' + err.message);
       }
-    } catch (err) {
-      console.log('Error: ' + err.message);
     }
 
     console.log('rawTimeArr', rawTimeArr);
 
-    // 產生 for 教室時間的格式
+    // 批次產生教室時間的格式
     rawTimeArr.forEach((current, index) => {
       // 先列出 current 跟 previous
       const previous = rawTimeArr[index - 1];
@@ -273,27 +215,29 @@ class CronBuilder extends React.Component {
       })
     })
 
-    // 把結果塞入
+
+    // 階段２ =================
+
+
+    // 把結果按照月份分開
     const monthObj = _.groupBy(resultArr, 'startMonth');
 
     // 再轉成最後 cron 格式
-
-    const cronElementArr = _.map(monthObj, (array, index) => {
+    let cronArr = _.map(monthObj, (array, index) => {
       return {
         cronMonth: `${_.get(array, '0.startMonth')}`,
         cronDate: array.map((datum) => datum.cronDate).join(",")
       }
-    })
+    }).map(d => `* * ${d.cronDate} ${d.cronMonth} * *`);
 
-    const cronArr = cronElementArr.map(d => `* * ${d.cronDate} ${d.cronMonth} * *`);
+    if (cronArr.length === 0) {
+      cronArr = ['* * * * * *']
+    }
 
-
-
-    // result
-    console.log('resultArr', resultArr, monthObj, cronElementArr,  cronArr);
-
+    // 置入 redux state
     this.props.changeValue(cronArr, 'schedules', 'classroom');
 
+    console.log('resultArr', resultArr, monthObj, cronArr);
 
 
 
@@ -334,20 +278,28 @@ class CronBuilder extends React.Component {
                 <TabList>
                     <Tab>單次一日至連續多日課程</Tab>
                     <Tab>固定期間每週開課</Tab>
+                    <Tab>不限時間</Tab>
                 </TabList>
                 <TabPanel>
 
                   <FormGroups
-                      formData={classroomFormDateBasic}
-                      targetForm={forms.classroomCron}
-                      changeVal={changeValue}
+                    formData={classroomFormDateBasic}
+                    targetForm={forms.classroomCron}
+                    changeVal={changeValue}
                   />
                 </TabPanel>
                 <TabPanel>
                   <FormGroups
-                      formData={classroomFormDateAdvance}
-                      targetForm={forms.classroomCron}
-                      changeVal={changeValue}
+                    formData={classroomFormDateAdvance}
+                    targetForm={forms.classroomCron}
+                    changeVal={changeValue}
+                  />
+                </TabPanel>
+                <TabPanel>
+                  <FormGroups
+                    formData={classroomFormDateUnlimit}
+                    targetForm={forms.classroomCron}
+                    changeVal={changeValue}
                   />
                 </TabPanel>
             </Tabs>
@@ -355,9 +307,7 @@ class CronBuilder extends React.Component {
             <If condition={!_.isEmpty(_.get(forms, 'classroom.schedules.0', ""))}>
               <Then>
                 <h4>時間週期結果</h4>
-                <Crons>{_.get(forms, 'classroom.schedules', []).map(d => (
-                  <CronTag> {d} </CronTag>
-                ))}</Crons>
+                <Crons>{_.get(forms, 'classroom.schedulesDescription', '')}</Crons>
               </Then>
             </If>
 

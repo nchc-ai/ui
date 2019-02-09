@@ -98,7 +98,7 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                     {
                       template.type === 'date' ?
                         <div>
-                          <Moment format="YYYY/MM/DD" date={_.get(d, template.value)} />
+                          <Moment format="YYYY / MM / DD" date={_.get(d, template.value)} />
                         </div>
                       :
                         null

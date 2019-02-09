@@ -11,6 +11,7 @@ export const initialClassroomState = {
   name: '',
   description: '',
   schedules: [],
+  schedulesDescription: '',
   courses: [],
   schedules: [],
   teachers: [],
@@ -22,7 +23,8 @@ export const initialClassroomCronState = {
   startDate: new Date(),
   endDate: new Date().setMonth(new Date().getMonth() + 2),
   periodBasic: { label: '每日', value: '*' },
-  periodAdvance: []
+  periodAdvance: [],
+  periodUnlimit: { label: '不限時間', value: '不限時間' }
 };
 
 export const initialCourseConState = {
