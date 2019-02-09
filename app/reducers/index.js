@@ -6,7 +6,6 @@ import Auth from './Auth';
 import Ui from './Ui';
 import Course from './Course';
 import Job from './Job';
-import User from './User';
 import Role from './Role';
 import Classroom from './Classroom';
 
@@ -17,6 +16,7 @@ import {
   initialCourseConState,
   initialCourseVMState,
   initialProfileState,
+  initialPasswordState,
   initialRoleState,
   initialSnapshotState
 } from '../constants/initialState';
@@ -29,6 +29,7 @@ const rootReducer = combineReducers({
     courseCon: modelReducer('courseCon', initialCourseConState),
     courseVM: modelReducer('courseVM', initialCourseVMState),
     profile: modelReducer('profile', initialProfileState),
+    password: modelReducer('password', initialPasswordState),
     role: modelReducer('role', initialRoleState),
     snapshot: modelReducer('snapshot', initialSnapshotState),
   }, 'forms'),
@@ -36,7 +37,6 @@ const rootReducer = combineReducers({
   Classroom,
   Course,
   Job,
-  User,
   Role,
   Ui
 });

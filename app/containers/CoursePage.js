@@ -66,6 +66,7 @@ class CoursePage extends Component {
     });
 
     this.resetBothForm(nextProps);
+
     if (/(detail)|(edit)/.test(params.action) && /(container)/.test(params.courseType)) {
       courseAction.getContainerCourseDetail({
         token,

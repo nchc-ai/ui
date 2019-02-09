@@ -36,7 +36,7 @@ class Index extends Component {
       >
         <div>
           <DogTag
-            data={userInfo}
+            userInfo={userInfo}
             isSubstituating={isSubstituating}
           />
           {/* 各自版本 */}

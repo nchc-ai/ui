@@ -569,57 +569,47 @@ export const courseVMFormOne = [
 export const profileForm = [
   {
     key: 1,
-    size: 8,
+    size: 4,
     name: 'username',
     inputType: 'text',
     mainLabel: '帳號',
-    placeholder: '請輸入您的信箱',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true,
     isDisable: true
   }, {
     key: 2,
-    size: 8,
+    size: 4,
     name: 'cName',
     inputType: 'text',
     mainLabel: '中文姓名',
     placeholder: '請輸入中文姓名',
     validators: { required },
     errorMessage: {
-      required: '您尚未輸入字元'
+      required: '您尚未輸入中文姓名'
     },
     isRequired: true
   }, {
     key: 3,
-    size: 8,
+    size: 4,
     name: 'company',
     inputType: 'text',
     mainLabel: '公司名稱',
     placeholder: '請輸入公司名稱',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
+    isRequired: false
   }, {
     key: 4,
-    size: 8,
+    size: 4,
     name: 'phone',
     inputType: 'text',
     mainLabel: '手機',
-    placeholder: '請輸入號碼',
-    validators: { required },
+    placeholder: '請輸入手機號碼',
+    validators: { },
     errorMessage: {
-      required: '您尚未輸入字元'
+      required: '您尚未輸入手機號碼'
     },
-    isRequired: true
+    isRequired: false
   }, {
     key: 5,
-    size: 8,
-    name: 'email',
+    size: 4,
+    name: 'email-1',
     inputType: 'text',
     mainLabel: '信箱',
     placeholder: '請輸入主要信箱',
@@ -631,16 +621,20 @@ export const profileForm = [
     isRequired: true
   }, {
     key: 6,
-    size: 8,
-    name: 'backupEmail',
+    size: 4,
+    name: 'email-2',
     inputType: 'text',
     mainLabel: '備用信箱',
     placeholder: '請輸入備用信箱',
+    validators: { mailIsValid },
+    errorMessage: {
+      mailIsValid: '此欄位應為信箱格式'
+    },
     isRequired: false
   }, {
     key: 7,
     size: 8,
-    name: 'applyReason',
+    name: 'text',
     inputType: 'textarea',
     mainLabel: '申請原因',
     placeholder: '請輸入申請用途',
@@ -700,7 +694,7 @@ export const passwordForm = [
     size: 8,
     name: 'confirmPassword',
     inputType: 'password',
-    mainLabel: '密碼確認',
+    mainLabel: '新密碼確認',
     placeholder: '請再次輸入您的密碼',
     validators: { required },
     errorMessage: {

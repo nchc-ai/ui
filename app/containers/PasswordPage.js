@@ -5,45 +5,41 @@ import { connect } from 'react-redux';
 import { actions as formActions, Form } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import { passwordForm } from '../constants/formsData';
+import { TOAST_TIMING } from '../constants';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 class PasswordPage extends Component {
-  componentWillMount() {
 
+  isPasswordValid = (formData) => {
+    return formData.password === formData.confirmPassword
   }
 
-  handleSubmitFailed = (formData) => {
-    // console.log('[handleSubmitFailed] formData', formData);
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
+  onProfileSubmitSuccess = () => {
+    notify.show('個人資料更新成功', 'success', 1800);
   }
 
-  handleSubmitPasswordFailed = (formData) => {
-    // console.log('[handleSubmitFailed] formData', formData);
-    notify.show('請確認密碼是否相同', 'error', 1800);
-  }
-
-  handleCancel = () => {
-    this.props.history.push('/user/course');
-  }
-
-  // Password
-  onPasswordUpdateSuccess = () => {
-    notify.show('您的密碼已更新成功', 'success', 1800);
-  }
-
-
-  onPasswordUpdate = (formData) => {
+  onPasswordSubmit = (formData) => {
     const {
       authAction,
       token,
-      userInfo
+      username
     } = this.props;
-    // console.log('update', userInfo);
-    authAction.updatePassword(userInfo.username, formData, token, this.onPasswordUpdateSuccess);
-  }
 
+    const isPasswordValid = this.isPasswordValid(formData);
+
+    if (isPasswordValid) {
+      authAction.updatePassword({
+        token,
+        username,
+        formData,
+        onSuccess: this.onPasswordSubmitSuccess
+      });
+    } else {
+      notify.show('請確認 "新密碼欄位" 與 "新密碼確認欄位" 是否一致', 'error', TOAST_TIMING);
+    }
+  }
 
   handleCancel = () => {
     this.props.history.push('/user/course');
@@ -63,22 +59,17 @@ class PasswordPage extends Component {
         <Form
           model="forms.password"
           className="signup-form-comp"
-          onSubmitFailed={this.handleSubmitPasswordFailed}
-          onSubmit={this.onPasswordUpdate}
+          onSubmit={submitData => this.onPasswordSubmit(submitData)}
         >
-          <div className="row-01">
-            <FormGroups
-              formData={passwordForm}
-              targetForm={forms.password}
-              changeVal={changeValue}
-            />
-          </div>
+          <FormGroups
+            formData={passwordForm}
+            targetForm={forms.password}
+            changeVal={changeValue}
+          />
 
           <FormButtons
-            cancelName="回課程列表"
-            submitName="修改"
-            backMethod={this.handleCancel}
-            showMode="submit_back"
+            submitName="更新密碼"
+            showMode="submit_only"
             isForm
           />
         </Form>
@@ -102,7 +93,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = ({ forms, Auth, Course }) => ({
   forms,
   token: Auth.token,
-  userInfo: Auth.userInfo,
+  username: Auth.userInfo.username,
 });
 
 export default compose(

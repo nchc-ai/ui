@@ -233,7 +233,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
 
 
 // Proxy > UpdataPassword
-export const updatePassword = (username, formData, token, next) => async (dispatch) => {
+export const updatePassword = ({ token, username, formData, onSuccess }) => async (dispatch) => {
 
   const tempData = {
     username,
@@ -256,12 +256,12 @@ export const updatePassword = (username, formData, token, next) => async (dispat
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
-  next();
+  onSuccess();
 };
 
 
 // Proxy > UserInfo
-export const getProfile = (token) => async (dispatch) => {
+export const getProfile = ({ token, onSuccess }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/query`,
@@ -275,8 +275,15 @@ export const getProfile = (token) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '獲取個人資料失敗'), 'error', TOAST_TIMING);
   }
+
+  if (onSuccess) {
+    onSuccess({
+      profile: response.payload
+    });
+  }
+
 };
 
 

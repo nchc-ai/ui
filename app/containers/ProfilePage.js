@@ -2,39 +2,47 @@ import React, { Component } from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import { Form, actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import Profile from '../components/User/Profile';
 import CommonPageContent from '../components/CommonPageContent';
+import FormGroups from '../components/common/FormGroups/index';
+import FormButtons from '../components/common/FormButtons/index';
+import { profileForm } from '../constants/formsData';
+
 class ProfilePage extends Component {
   componentWillMount() {
+    this.fetchData(this.props);
+  }
 
+  fetchData = (nextProps) => {
+    const {
+      authAction,
+      userInfo,
+      token,
+    } = nextProps;
+
+    authAction.getProfile({
+      token,
+      onSuccess: this.initializeEditForm
+    });
+  }
+
+  initializeEditForm = ({ profile }) => {
+    this.props.changeForm(profile, 'profile');
   }
 
   onProfileUpdateSuccess = () => {
     notify.show('個人資料更新成功', 'success', 1800);
+    // this.fetchData(this.props);
   }
 
-  onProfileUpdate = (formData) => {
+  onProfileSubmit = (formData) => {
     const {
       authAction,
       token
     } = this.props;
     authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
-  }
-
-  handleSubmitFailed = (formData) => {
-    // console.log('[handleSubmitFailed] formData', formData);
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
-  }
-
-  handleSubmitPasswordFailed = (formData) => {
-    // console.log('[handleSubmitFailed] formData', formData);
-    notify.show('請確認密碼是否相同', 'error', 1800);
-  }
-
-  handleCancel = () => {
-    this.props.history.push('/user/course');
   }
 
   render() {
@@ -48,13 +56,27 @@ class ProfilePage extends Component {
         className="profile-page-bg"
         pageTitle="個人資料"
       >
-        <Profile
-          targetForm={forms.profile}
-          changeValue={changeValue}
-          onSubmit={this.onProfileUpdate}
-          onSubmitFailed={this.handleSubmitFailed}
-          cancelEdit={this.handleCancel}
-        />
+        <div className="profile-comp">
+          <Form
+            model="forms.profile"
+            className="signup-form-comp"
+            onSubmit={submitData => this.onProfileSubmit(submitData)}
+          >
+            <div className="row-01">
+              <FormGroups
+                targetForm={forms.profile}
+                formData={profileForm}
+                changeVal={changeValue}
+              />
+            </div>
+
+            <FormButtons
+              submitName="更新個人資訊"
+              showMode="submit_only"
+              isForm
+            />
+          </Form>
+        </div>
       </CommonPageContent>
     );
   }
@@ -76,6 +98,7 @@ const mapStateToProps = ({ forms, Auth, Course }) => ({
   forms,
   token: Auth.token,
   userInfo: Auth.userInfo,
+  profile: Auth.profile
 });
 
 export default compose(
