@@ -110,14 +110,12 @@ export default function Classroom(state = InitialState, action) {
       classroom.calendar.forEach((calendarItem, index) => {
         const { startMonth, startDate, endDate } = calendarItem;
         const month = startMonth >= 10 ? `${startMonth}` : `0${startMonth}`;
-        const sDate = startDate >= 10 ? `${startDate}` : `0${startDate}`;
-        const eDate = endDate >= 10 ? `${endDate}` : `0${endDate}`;
 
         calendarData.push({
           description: classroom.description,
-          end: `2019-${month}-${eDate}`,
           eventClasses: "custom-event-class",
-          start: `2019-${month}-${sDate}`,
+          end: endDate,
+          start: startDate,
           title: classroom.name
         })
       })

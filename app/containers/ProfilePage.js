@@ -21,7 +21,10 @@ class ProfilePage extends Component {
       userInfo,
       token,
     } = nextProps;
-
+    authAction.getUserInfo({
+      token,
+      onSuccess: () => {}
+    })
     authAction.getProfile({
       token,
       onSuccess: this.initializeEditForm
@@ -34,7 +37,7 @@ class ProfilePage extends Component {
 
   onProfileUpdateSuccess = () => {
     notify.show('個人資料更新成功', 'success', 1800);
-    // this.fetchData(this.props);
+    this.fetchData(this.props);
   }
 
   onProfileSubmit = (formData) => {

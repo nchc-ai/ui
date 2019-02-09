@@ -164,12 +164,15 @@ class CronBuilder extends React.Component {
         endDate
       } = forms.classroomCron
 
+      const startDataForCron = new Date(startDate).setDate(new Date(startDate).getDate() - 1)
+      const endDateForCron = new Date(endDate);
+
       try {
         var interval = cronParser.parseExpression(
           selectedCron.cron,
           {
-            currentDate: new Date(startDate),
-            endDate: new Date(endDate),
+            currentDate: startDataForCron,
+            endDate: endDateForCron,
             iterator: true
           }
         );
@@ -181,7 +184,9 @@ class CronBuilder extends React.Component {
               rawTime: timeStr,
               moment: moment(timeStr).format('L'),
               month: moment(timeStr).month() + 1,
-              date: moment(timeStr).date()
+              dateInt: moment(timeStr).date(),
+              date: moment(timeStr).format('YYYY-MM-DD'),
+              rowDate: moment(timeStr)
             });
             // console.log('value:', moment(obj.value.toString()).format('L'), 'done:', obj.done);
           } catch (e) {
@@ -199,10 +204,12 @@ class CronBuilder extends React.Component {
       const previous = rawTimeArr[index - 1];
 
       // 比對決定是否塞入 resultArr
-      if (index === 0 || current.date - previous.date > 1 || current.month - previous.month === 1) {
+      if (index === 0 || current.dateInt - previous.dateInt > 1 || current.month - previous.month === 1) {
         resultTimeArr.push({
           startMonth: current.month,
+          startDateInt: current.dateInt,
           startDate: current.date,
+          rawStartDate: current.rowDate,
           length: 1
         })
       } else {
@@ -212,12 +219,13 @@ class CronBuilder extends React.Component {
 
     // 批次加入 endDate
     const resultArr = resultTimeArr.map((result, index) => {
-      const endMargin = result.startDate + result.length;
-      const endDate = endMargin - 1;
+      const endMargin = result.startDateInt + result.length;
+      const endDateInt = endMargin - 1;
       return ({
         ...result,
-        endDate,
-        cronDate: result.startDate === endDate ? `${result.startDate}` :`${result.startDate}-${endDate}`
+        endDateInt,
+        endDate: result.rawStartDate.add(result.length - 1, 'days').format('YYYY-MM-DD'),
+        cronDate: result.startDateInt === endDateInt ? `${result.startDateInt}` :`${result.startDateInt}-${endDateInt}`
       })
     })
 
