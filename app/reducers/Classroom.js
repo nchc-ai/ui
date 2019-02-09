@@ -145,7 +145,7 @@ export default function Classroom(state = InitialState, action) {
     };
   case actionTypes.UPLOAD_STUDENTS_CSV[SUCCESS]:
 
-    const data = action.payload.users.map((d, i) => ({ keyItem: `${i + 1}`, valueItem: d }))
+    const data = action.payload.users.map((d, i) => ({ keyItem: d.name, valueItem: d.email }))
     return {
       ...state,
       students: {

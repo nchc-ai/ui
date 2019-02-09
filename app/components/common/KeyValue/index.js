@@ -232,7 +232,7 @@ export default class KeyValue extends React.Component {
         this.props.onChange([...this.state.rows]);
       });
     if (index === 0) {
-      notify.show("已清空存取端口資料", 'success', TOAST_TIMING);
+      notify.show("已刪除此筆資料", 'success', TOAST_TIMING);
     }
   }
 

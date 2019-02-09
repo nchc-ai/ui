@@ -81,10 +81,10 @@ class FileUpload extends Component {
               rows={students}
               onChange={this.onListChange}
               config={{
-                headerText: 'Index | Student',
+                headerText: '姓名 | 信箱',
                 addText: '新增學生',
-                keyText: '順序',
-                valueText: '學生',
+                keyText: '姓名',
+                valueText: '信箱',
                 resetText: '重新上傳'
               }}
               handleReset={(e) => this.handleFileReset(e)}
