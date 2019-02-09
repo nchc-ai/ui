@@ -25,15 +25,7 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
 
   console.log('[create] formData', formData);
   const submitData = {
-    courses: _.get(formData, 'courses', []),
-    description: formData.description,
-    name: formData.name,
-    public: formData.public.value,
-    calendar: formData.calendar,
-    schedules: formData.schedules,
-    scheduleDescription: formData.scheduleDescription,
-    students: students.map(d => ({ label: d.valueItem.name, value: d.valueItem.email })) || [],
-    teachers:  _.get(formData, 'teachers', [])
+    ...formData
   };
   console.log('[create] submitData', submitData);
 
@@ -69,16 +61,7 @@ export const updateClassroom = ({ token, students, formData, next }) => async (d
 
   console.log('[update] formData', formData);
   const submitData = {
-    id: _.get(formData, 'id', ''),
-    courses: _.get(formData, 'courses', []),
-    description: formData.description,
-    name: formData.name,
-    public: formData.public.value,
-    calendar: formData.calendar,
-    schedules: formData.schedules,
-    scheduleDescription: formData.scheduleDescription,
-    students: students.map(d => ({ label: d.valueItem.name, value: d.valueItem.email })) || [],
-    teachers:  _.get(formData, 'teachers', [])
+    ...formData
   };
   console.log('[update] submitData', submitData);
 

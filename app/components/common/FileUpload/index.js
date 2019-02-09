@@ -27,8 +27,15 @@ class FileUpload extends Component {
   }
 
   onListChange = () => {
-    const studentsList = this.props.students.map(d => d.valueItem)
-    this.props.onListChange(studentsList);
+    const {
+      students,
+      onListChange
+    } = this.props;
+    const studentsToUpload = students.map(student => ({
+      label: student.keyItem,
+      value: student.valueItem
+    }))
+    onListChange(studentsToUpload);
   }
 
   handleFileReset = (e) => {
