@@ -2,9 +2,9 @@ import React from 'react';
 import {Calendar} from 'calendar-base';
 import classnames from 'classnames';
 
-import CalendarDay from './components/CalendarDay';
-import CalendarEvent from './components/CalendarEvent';
-import CalendarTitle from './components/CalendarTitle';
+import CalendarDay from './CalendarDay';
+import CalendarEvent from './CalendarEvent';
+import CalendarTitle from './CalendarTitle';
 
 import PropTypes from 'prop-types';
 
@@ -18,7 +18,7 @@ class EventCalendar extends React.Component {
         this.state = {
             today: this.getToday(),
         };
-        
+
         this.calendar = new Calendar({siblingMonths: true, });
 
         // Bind methods
@@ -170,7 +170,7 @@ class EventCalendar extends React.Component {
     }
 
     renderEvents(day) {
-        
+
         // Trim excess slots
         const eventSlots = day.eventSlots.slice(0, this.getLastIndexOfEvent(day.eventSlots) + 1)
 
@@ -193,7 +193,7 @@ class EventCalendar extends React.Component {
         return this.getDaysWithEvents().map((day, index) => {
             const isToday = Calendar.interval(day, this.state.today) === 1;
             const events = this.renderEvents(day);
-            
+
             return (
                 <CalendarDay 
                     key={'day_'+this.getSerializedDay(day)}

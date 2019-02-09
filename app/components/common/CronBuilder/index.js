@@ -106,11 +106,9 @@ class CronBuilder extends React.Component {
     const { tabMode } = this.state;
     const { forms } = this.props;
 
-    // 階段 1 =================
-
+    // Stage I ================
 
     // 先抓到起迄時間
-
     const startDateStr = moment(_.get(forms, 'classroomCron.startDate', '')).format('YYYY / MM / DD')
     const endDateStr = moment(_.get(forms, 'classroomCron.endDate', '')).format('YYYY / MM / DD')
 
@@ -128,7 +126,7 @@ class CronBuilder extends React.Component {
     // 先暫時生成 week 的格式
     const calendarCronObj = {
       '0': {
-        descripition: `${_.get(forms, 'classroomCron.periodBasic.label', '')}`,
+        descripition: `${_.get(forms, 'classroomCron.periodBasic.label', '')}時間`,
         cron: `0 0 8 * * ${_.get(forms, 'classroomCron.periodBasic.value', '*')}`
       },
       '1': {
@@ -142,8 +140,8 @@ class CronBuilder extends React.Component {
     }
     const selectedCron = calendarCronObj[`${tabMode}`];
 
-    // 先生成語意式 cron 敘述
-    this.props.changeValue(`${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}`, 'schedulesDescription', 'classroom');
+    // 塞入 語意式 cron 敘述
+    this.props.changeValue(tabMode !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}` : '完全不限時間', 'scheduleDescription', 'classroom');
 
 
     // 先生成 timeArr
@@ -175,7 +173,7 @@ class CronBuilder extends React.Component {
               month: moment(timeStr).month() + 1,
               date: moment(timeStr).date()
             });
-            console.log('value:', moment(obj.value.toString()).format('L'), 'done:', obj.done);
+            // console.log('value:', moment(obj.value.toString()).format('L'), 'done:', obj.done);
           } catch (e) {
             break;
           }
@@ -184,8 +182,6 @@ class CronBuilder extends React.Component {
         console.log('Error: ' + err.message);
       }
     }
-
-    console.log('rawTimeArr', rawTimeArr);
 
     // 批次產生教室時間的格式
     rawTimeArr.forEach((current, index) => {
@@ -216,9 +212,7 @@ class CronBuilder extends React.Component {
     })
 
 
-    // 階段２ =================
-
-
+    // Stage II =================
     // 把結果按照月份分開
     const monthObj = _.groupBy(resultArr, 'startMonth');
 
@@ -234,13 +228,20 @@ class CronBuilder extends React.Component {
       cronArr = ['* * * * * *']
     }
 
-    // 置入 redux state
+
+    // 生成 calendar 用的 array
+    const calendarArr = resultArr.map(d => _.pick(d, _.keys({
+      startMonth: null,
+      startDate: null,
+      endDate: null,
+      length: null,
+    })))
+
+    // 塞入 redux state
+    this.props.changeValue(calendarArr, 'calendar', 'classroom');
     this.props.changeValue(cronArr, 'schedules', 'classroom');
 
-    console.log('resultArr', resultArr, monthObj, cronArr);
-
-
-
+    console.log('cron all in one', rawTimeArr, resultArr, monthObj, cronArr, calendarArr);
   }
 
   resetCronFormat = (e) => {
@@ -307,7 +308,7 @@ class CronBuilder extends React.Component {
             <If condition={!_.isEmpty(_.get(forms, 'classroom.schedules.0', ""))}>
               <Then>
                 <h4>時間週期結果</h4>
-                <Crons>{_.get(forms, 'classroom.schedulesDescription', '')}</Crons>
+                <Crons>{_.get(forms, 'classroom.scheduleDescription', '')}</Crons>
               </Then>
             </If>
 

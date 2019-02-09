@@ -4,7 +4,7 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
-import EventCalendar from '../vendor/ReactEventCalendar';
+import EventCalendar from '../components/common/EventCalendar/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';

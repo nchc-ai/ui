@@ -11,7 +11,7 @@ export const initialClassroomState = {
   name: '',
   description: '',
   schedules: [],
-  schedulesDescription: '',
+  scheduleDescription: '',
   courses: [],
   schedules: [],
   teachers: [],

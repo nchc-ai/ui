@@ -25,15 +25,15 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
 
   console.log('[create] formData', formData);
   const submitData = {
-    courses: _.get(formData, 'courses', []).map(d => d.value),
+    courses: _.get(formData, 'courses', []),
     description: formData.description,
     name: formData.name,
     public: formData.public.value,
-    schedules: [
-      '* * * * * *'
-    ],
-    students: students.map(d => d.valueItem) || [],
-    teachers:  _.get(formData, 'teachers', []).map(d => d.value)
+    calendar: formData.calendar,
+    schedules: formData.schedules,
+    scheduleDescription: formData.scheduleDescription,
+    students: students.map(d => ({ label: d.valueItem.name, value: d.valueItem.email })) || [],
+    teachers:  _.get(formData, 'teachers', [])
   };
   console.log('[create] submitData', submitData);
 
@@ -51,7 +51,7 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '建立課程失敗'), 'error', TOAST_TIMING);
   }
 
   next('create');
@@ -70,15 +70,15 @@ export const updateClassroom = ({ token, students, formData, next }) => async (d
   console.log('[update] formData', formData);
   const submitData = {
     id: _.get(formData, 'id', ''),
-    courses: _.get(formData, 'courses', []).map(d => d.value),
+    courses: _.get(formData, 'courses', []),
     description: formData.description,
     name: formData.name,
     public: formData.public.value,
-    schedules: [
-      '* * * * * *'
-    ],
-    students: students.map(d => d.valueItem) || [],
-    teachers:  _.get(formData, 'teachers', []).map(d => d.value)
+    calendar: formData.calendar,
+    schedules: formData.schedules,
+    scheduleDescription: formData.scheduleDescription,
+    students: students.map(d => ({ label: d.valueItem.name, value: d.valueItem.email })) || [],
+    teachers:  _.get(formData, 'teachers', [])
   };
   console.log('[update] submitData', submitData);
 
@@ -96,7 +96,7 @@ export const updateClassroom = ({ token, students, formData, next }) => async (d
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '更新課程失敗'), 'error', TOAST_TIMING);
   }
 
   next('update');
