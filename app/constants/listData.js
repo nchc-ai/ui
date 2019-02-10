@@ -37,6 +37,23 @@ export const classroomDetailTpl = [
   }
 ];
 
+
+export const classroomGroupTpl = [
+  {
+    key: 1,
+    name: 'teachers',
+    label: '教課講師',
+    type: 'multi-select'
+  }, {
+    key: 2,
+    name: 'studentCount',
+    label: '學生人數',
+    type: 'number',
+    unit: '位'
+  }
+];
+
+
 export const courseCONTAINERDetailTpl = [
   {
     key: 1,

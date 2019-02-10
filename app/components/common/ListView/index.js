@@ -91,7 +91,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               {/* Define different value here */}
               {
                 template.type === 'text' ?
-                  <Value>{_.get(detailData, template.name, '尚無資料')}</Value>
+                  <Value>{_.get(detailData, template.name, '尚無資料') || '尚無資料'}</Value>
                 : null
               }
 
@@ -158,7 +158,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                 : null
               }
               {
-                template.unit && _.get(detailData, template.name, "") ?
+                template.unit && _.get(detailData, template.name, "") || _.get(detailData, template.name, "") === 0 ?
                   <Unit>{ template.unit }</Unit>
                 : null
               }

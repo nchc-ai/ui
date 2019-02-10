@@ -16,8 +16,9 @@ class PasswordPage extends Component {
     return formData.password === formData.confirmPassword
   }
 
-  onProfileSubmitSuccess = () => {
-    notify.show('個人資料更新成功', 'success', 1800);
+  onPasswordSubmitSuccess = () => {
+    this.props.resetForm('password');
+    notify.show('個人密碼更新成功', 'success', 1800);
   }
 
   onPasswordSubmit = (formData) => {
@@ -79,7 +80,9 @@ class PasswordPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  resetForm: () => dispatch(formActions.reset('forms.addCourse')),
+  resetForm: (formName) => dispatch(formActions.reset(
+    `forms.${formName}`
+  )),
   changeValue: (value, key, target) => dispatch(formActions.change(
     `forms.${target}.${key}`,
     value

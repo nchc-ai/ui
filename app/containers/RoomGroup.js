@@ -5,11 +5,13 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import TableList from '../components/common/TableList';
+import ListView from '../components/common/ListView/index';
 import { Form, actions as formActions } from 'react-redux-form';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import DataFrame from '../components/common/DataFrame/index';
 import CommonPageContent from '../components/CommonPageContent'
 import { classroomGroupData } from '../constants/tableData';
+import { classroomGroupTpl } from '../constants/listData';
 
 class RoomGroup extends Component {
 
@@ -146,17 +148,10 @@ class RoomGroup extends Component {
               <div key={index} className="classroom-card">
                 <div className="classroom-info">
                   <h3 className="classroom-name">{classroom.name}</h3>
-                  <h5 className="classroom-teachers">
-                    <span>老師：</span>
-                    {
-                      _.get(classroom,'teachers', []).length > 0 ?
-                        classroom.teachers.map((teacher, index) => (
-                          <span key={index}>{index !== 0 ? " , " : ""} {teacher}</span>
-                        ))
-                        : '暫無安排'
-                    }
-                  </h5>
-                  <h5>學生人數：{classroom.studentCount}</h5>
+                  <ListView
+                    templateData={classroomGroupTpl}
+                    detailData={classroom}
+                  />
                 </div>
                 <div className="course-list">
                   {
