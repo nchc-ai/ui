@@ -2,13 +2,17 @@ import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { actions as formActions } from 'react-redux-form';
+import { Form, actions as formActions } from 'react-redux-form';
 import { notify } from 'react-notify-toast';
 import Cookies from 'js-cookie';
 import { dayToSecond, redirectUrlWithRole } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import { signupForm } from '../constants/formsData';
 import Login from '../components/Auth/Login';
-import Signup from '../components/Auth/Signup';
+import SectionTitle from '../components/common/SectionTitle/index';
+import FormGroups from '../components/common/FormGroups/index';
+import FormButtons from '../components/common/FormButtons/index';
+import logoImg from '../../public/images/auth/login-logo.png';
 
 class AuthPage extends Component {
 
@@ -133,13 +137,45 @@ class AuthPage extends Component {
             />
           </Route>
           <Route exact path="/signup">
-            <Signup
-              targetForm={forms.signup}
-              changeValue={changeValue}
-              onSubmit={this.onSignupSubmit}
-              onSubmitFailed={this.onSignupFailed}
-              backMethod={this.onSignupCancel}
-            />
+            <div className="signup-comp">
+              <SectionTitle
+                isTitleImg
+                titleImgUrl={logoImg}
+                subTitle={'歡迎註冊 NCHC.ai 帳戶'}
+                isFloatLeft
+              />
+
+              <hr />
+
+              <div className="signup-card-bg">
+                <div className="signup-container container">
+                  <Form
+                    model="forms.signup"
+                    className="signup-form-comp"
+                    onSubmit={formData => this.onSignupSubmit(formData)}
+                  >
+                    <div className="row-01">
+                      <FormGroups
+                        targetForm={forms.signup}
+                        formData={signupForm}
+                        changeVal={changeValue}
+                      />
+
+                      {/* 下方按鈕 */}
+                      <FormButtons
+                        cancelName="取消"
+                        submitName="註冊"
+                        backMethod={this.onSignupCancel}
+                        showMode="submit_back"
+                        size={4}
+                        isForm
+                      />
+
+                    </div>
+                  </Form>
+                </div>
+              </div>
+            </div>
           </Route>
         </Switch>
       </div>

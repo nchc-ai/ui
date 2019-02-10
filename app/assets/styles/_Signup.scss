@@ -25,8 +25,8 @@
   }
 
   .row-01 {
-    @include rect-center(80%, initial);
-    margin-top: 40px;
+    @include rect-center(70%, initial);
+    padding: 50px 20px;
 
     .submit-bg {
       margin-bottom: 30px;

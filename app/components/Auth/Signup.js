@@ -26,7 +26,6 @@ const Signup = ({ targetForm, changeValue, onSubmit, onSubmitFailed, backMethod 
           onSubmit={formData => onSubmit(formData)}
         >
           <div className="row-01">
-    
             <FormGroups
               formData={signupForm}
               targetForm={targetForm}

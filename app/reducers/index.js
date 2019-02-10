@@ -10,6 +10,7 @@ import Role from './Role';
 import Classroom from './Classroom';
 
 import {
+  initialSignupState,
   initialGlobalSearchState,
   initialClassroomState,
   initialClassroomCronState,
@@ -23,6 +24,7 @@ import {
 
 const rootReducer = combineReducers({
   forms: combineForms({
+    signup: modelReducer('signup', initialSignupState),
     globalSearch: modelReducer('globalSearch', initialGlobalSearchState),
     classroom: modelReducer('classroom', initialClassroomState),
     classroomCron: modelReducer('classroomCron', initialClassroomCronState),
