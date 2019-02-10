@@ -18,8 +18,20 @@ export const signupForm = [
       required: '您尚未輸入字元'
     },
     isRequired: true
-  }, {
+  },  {
     key: 2,
+    size: 12,
+    name: 'cName',
+    inputType: 'text',
+    mainLabel: '中文姓名',
+    placeholder: '請輸入中文姓名',
+    validators: { required },
+    errorMessage: {
+      required: '您尚未輸入中文姓名'
+    },
+    isRequired: true
+  }, {
+    key: 3,
     size: 12,
     name: 'password',
     inputType: 'password',
@@ -31,7 +43,7 @@ export const signupForm = [
     },
     isRequired: true
   }, {
-    key: 3,
+    key: 4,
     size: 12,
     name: 'confirmPassword',
     inputType: 'password',
@@ -42,31 +54,6 @@ export const signupForm = [
       required: '密碼至少需為 6 個字元'
     },
     isRequired: true
-  }, {
-    key: 4,
-    size: 12,
-    name: 'role',
-    inputType: 'radio',
-    mainLabel: '選擇註冊身份',
-    className: 'fl',
-    options: [
-      {
-        key: 1,
-        radioKey: 'role-1',
-        label: '老師',
-        value: 'teacher'
-      }, {
-        key: 2,
-        radioKey: 'role-2',
-        label: '學生',
-        value: 'student'
-      }
-    ],
-    isRequired: false,
-    validators: { required },
-    errorMessage: {
-      required: '您尚未選擇身份'
-    }
   }
 ];
 
