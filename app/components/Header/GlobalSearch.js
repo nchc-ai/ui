@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Form, Control } from 'react-redux-form';
+import { actions as formActions, Form, Control } from 'react-redux-form';
 import bindActionCreatorHoc from '../../libraries/bindActionCreatorHoc';
 import searchBtnIcon from '../../../public/images/header/search-icon.png';
 
@@ -13,9 +13,11 @@ class GlobalSearch extends React.Component {
 
   onSubmit = (query) => {
     const {
-      history
+      history,
+      resetForm
     } = this.props;
-    history.push(`/course/search/${query.searchText}`);
+    history.push(`/search/${query.searchText}`);
+    resetForm('globalSearch');
   }
 
   render = () => {
@@ -43,12 +45,21 @@ class GlobalSearch extends React.Component {
 
 }
 
+const mapDispatchToProps = dispatch => ({
+  resetForm: (formName) => dispatch(formActions.reset(
+    `forms.${formName}`
+  ))
+});
+
 const mapStateToProps = ({ Auth }) => ({
   userInfo: Auth.userInfo,
   isLogin: Auth.isLogin
 });
 
 export default compose(
-  connect(mapStateToProps),
+  connect(
+    mapStateToProps,
+    mapDispatchToProps
+  ),
   bindActionCreatorHoc,
 )(withRouter(GlobalSearch));

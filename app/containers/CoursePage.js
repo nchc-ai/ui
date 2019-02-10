@@ -286,6 +286,24 @@ class CoursePage extends Component {
     return (
       <div className="course-bg">
         <Switch>
+
+          {/* 課程搜尋 */}
+
+          <Route exact path="/search/:courseName">
+            <span>123</span>
+            <TableList
+              data={courseList}
+              tableData={ongoingCourseData}
+              isLoading={isLoading}
+              isDialogOpen={true}
+              startMethod={this.launchCourseJob}
+              editMethod={this.editCourse}
+              deleteMethod={this.deleteCourse}
+              actionMode="full"
+            />
+          </Route>
+
+
           {/* [common] 開課列表 */}
           <Route path="/user/ongoing-course/list">
             <CommonPageContent

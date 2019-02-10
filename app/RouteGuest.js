@@ -9,6 +9,7 @@ import ContactPage from './containers/ContactPage';
 import AuthPage from './containers/AuthPage';
 import Logout from './containers/Logout';
 import IndexPage from './containers/IndexPage';
+import SearchPage from './containers/SearchPage';
 import StaticPage from './containers/StaticPage';
 import Footer from './components/Footer/Index';
 
@@ -35,6 +36,7 @@ class RouteGuest extends Component {
     return (
       <Global>
         <Switch>
+          <Route exact path="/search/:queryString" component={SearchPage} />
           <Route exact path="/intro/:page/:type" component={IntroPage} />
           <Route exact path="/intro/:page" component={IntroPage} />
           <Route exact path="/contact" component={ContactPage} />

@@ -21,7 +21,6 @@ import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdva
 class IntroPage extends Component {
 
   componentWillMount() {
-    
     // this.props.userAction.getCourseList('jimmy', token)
     window.scrollTo(0, 0);
     this.fetchData(this.props);

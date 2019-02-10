@@ -10,6 +10,24 @@ import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } f
 
 // Container 課程 ---------------------------------------------------
 
+export const getAllPublicCourseList = ({ token }) => async (dispatch) => {
+
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_URL}/${API_VERSION}/course/list`,
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.GET_ALL_PUBLIC_COURSE_LIST
+    }
+  });
+
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+  }
+};
 
 /**
  * Both container and vm course
