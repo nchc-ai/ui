@@ -13,6 +13,7 @@ const Signup = ({ targetForm, changeValue, onSubmit, onSubmitFailed, backMethod 
       isTitleImg
       titleImgUrl={logoImg}
       subTitle={'歡迎註冊 NCHC.ai 帳戶'}
+      isFloatLeft
     />
 
     <hr />

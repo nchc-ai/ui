@@ -11,6 +11,7 @@ const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, de
       <Col size={12}>
         <SectionTitle
           title={'課程列表'}
+          isFloatLeft
         />
 
         <hr />

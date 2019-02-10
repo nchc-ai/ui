@@ -11,6 +11,7 @@ const JobList = ({ data, addJob, deleteJob }) => (
     <SectionTitle
       title={'工作清單'}
       subTitle={'以下是您開始的課程中，正在執行的工作內容。'}
+      isFloatLeft
     />
     <DataFrame
       data={groupArray(data, 'name')}

@@ -10,6 +10,7 @@ const CommonPageContent = ({ className, pageTitle, children }) => (
       iconImgUrl={TitleIcon}
       isUnderline
       isIcon
+      isFloatLeft
     />
     <div className="user-content">
       {children}

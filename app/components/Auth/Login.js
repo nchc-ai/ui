@@ -1,6 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import MyoauthButton from './MyoauthButton';
 import { WEBSITE_URL } from '../../config/api';
 import SectionTitle from '../common/SectionTitle/index';
@@ -9,12 +10,18 @@ import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
 import githubBtnImg from '../../../public/images/auth/login-btn-github.png';
 
 
+const Comp = styled.div`
+  font-size: 18px;
+`;
+
+
 const Login = ({ match, onSuccess, onFailure }) => (
   <div className="login-comp">
     <SectionTitle
       isTitleImg
       titleImgUrl={logoImg}
       subTitle={'歡迎來到NCHC.ai'}
+      isFloatLeft={false}
     />
     <div className="line-h" />
 

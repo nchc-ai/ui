@@ -41,6 +41,7 @@ class IndexPage extends Component {
             isTitleImg
             titleImgUrl={section02Title}
             subTitle={models.indexPage.section02.subTitle}
+            isFloatLeft
           />
 
 
@@ -61,6 +62,7 @@ class IndexPage extends Component {
           <SectionTitle
             isTitleImg
             titleImgUrl={section03Title}
+            isFloatLeft
           />
 
           <Row className="section-03-container">
@@ -85,6 +87,7 @@ class IndexPage extends Component {
             isTitleImg
             titleImgUrl={section03Title02}
             subTitle={models.indexPage.section04.subTitle}
+            isFloatLeft
           />
 
           <Thumbnails
