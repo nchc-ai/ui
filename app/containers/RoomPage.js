@@ -309,9 +309,8 @@ class RoomPage extends Component {
               {/* TODO: 需在這判斷是否有開過課程決定submitName */}
               <FormButtons
                 cancelName="回教室管理"
-                submitName="開始課程"
                 backMethod={this.onCommonBackMethod}
-                showMode="submit_back"
+                showMode="back_only"
               />
             </CommonPageContent>
           </Route>
