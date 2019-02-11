@@ -1,5 +1,8 @@
 .static-bg {
+  overflow: hidden;
+  min-height: 450px;
   background-image: url(../images/static/static-bg.png);
+
   .static-container {
     @include rect-center(600px, initial);
     margin-top: 110px;
@@ -24,6 +27,5 @@
       text-align: center;
       color: $ailab-primary-dark-text;
     }
-   
   }
 }
