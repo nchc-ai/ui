@@ -174,7 +174,7 @@ export default class KeyValue extends React.Component {
 
     if (isEmptyValueExist) {
       this.scrollToBottom()
-      notify.show("存取端口不應該有空資料喔", 'custom', TOAST_TIMING, { background: '#F7B216' });
+      notify.show("此列表不應該有空資料喔", 'custom', TOAST_TIMING, { background: '#F7B216' });
     } else {
       this.setState({
         rows: [
