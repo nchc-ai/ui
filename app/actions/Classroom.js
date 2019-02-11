@@ -23,9 +23,10 @@ export const resetStudentsField = () => ({
  */
 export const createClassroom = ({ token, students, formData, next }) => async (dispatch) => {
 
-  console.log('[create] formData', formData);
+  console.log('[create] formData', formData, students);
   const submitData = {
     ...formData,
+    students: _.map(students, (student) => ({ label: student.keyItem, value: student.valueItem })),
     public: formData.public.value
   };
   console.log('[create] submitData', submitData);
@@ -60,9 +61,10 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
  */
 export const updateClassroom = ({ token, students, formData, next }) => async (dispatch) => {
 
-  console.log('[update] formData', formData);
+  console.log('[update] formData', formData, students);
   const submitData = {
     ...formData,
+    students: _.map(students, (student) => ({ label: student.keyItem, value: student.valueItem })),
     public: formData.public.value
   };
   console.log('[update] submitData', submitData);
