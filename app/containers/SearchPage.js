@@ -26,6 +26,13 @@ class SearchPage extends Component {
     this.fetchData(this.props);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.match.params.queryString !== this.props.match.params.queryString) {
+      window.scrollTo(0, 0);
+      this.fetchData(nextProps);
+    }
+  }
+
   fetchData = (nextProps) => {
 
     const {
@@ -39,6 +46,7 @@ class SearchPage extends Component {
   onBackButtonClick = () => {
     this.props.history.push('/');
   }
+
   render() {
     const {
       forms,

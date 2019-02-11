@@ -153,7 +153,8 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
 
   // response.error = true;  // DEBUG
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', '容器課程建立失敗'), 'error', TOAST_TIMING);
+    const actionName = actionType === 'create' ? '新增' : '更新';
+    notify.show(_.get(response, 'payload.response.message', `容器課程${actionName}失敗`), 'error', TOAST_TIMING);
     onFail({ actionType, courseType: 'container'  })
   } else if (onSuccess) {
     onSuccess({ actionType, courseType: 'container' });
@@ -195,7 +196,8 @@ export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', 'VM課程建立失敗'), 'error', TOAST_TIMING);
+    const actionName = actionType === 'create' ? '新增' : '更新';
+    notify.show(_.get(response, 'payload.response.message', `VM課程${actionName}失敗`), 'error', TOAST_TIMING);
     onFail({ actionType, courseType: 'vm' });
   } else if (onSuccess) {
     onSuccess({ actionType, courseType: 'vm' });
