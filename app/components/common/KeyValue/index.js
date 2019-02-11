@@ -224,16 +224,29 @@ export default class KeyValue extends React.Component {
     });
   }
 
+  handleReset(event, index) {
+
+    event.preventDefault();
+    this.setState({
+      rows: []
+    }, () => {
+      this.props.onChange([...this.state.rows]);
+      notify.show(`已清空列表`, 'success', TOAST_TIMING);
+      this.props.handleReset();
+    });
+  }
+
   handleRemove(event, index) {
     event.preventDefault();
-      this.setState({
-        rows: this.state.rows.filter((row, i) => i !== index)
-      }, () => {
-        this.props.onChange([...this.state.rows]);
-      });
-    if (index === 0) {
-      notify.show("已刪除此筆資料", 'success', TOAST_TIMING);
-    }
+
+    const deletedKeyItem = this.state.rows[index].keyItem;
+
+    this.setState({
+      rows: this.state.rows.filter((row, i) => i !== index)
+    }, () => {
+      this.props.onChange([...this.state.rows]);
+      notify.show(`已刪除${deletedKeyItem}`, 'success', 800);
+    });
   }
 
   toJSON() {
@@ -311,11 +324,11 @@ export default class KeyValue extends React.Component {
 
   renderResetButton({ resetText }) {
     if (typeof this.props.customAddButtonRenderer === 'function') {
-      return this.props.customAddButtonRenderer(this.props.handleReset);
+      return this.props.customAddButtonRenderer(this.handleReset);
     }
     return (
       <Button
-        onClick={ this.props.handleReset }
+        onClick={ (e) => this.handleReset(e) }
       >
         {resetText}
       </Button>

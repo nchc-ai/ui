@@ -22,6 +22,7 @@ import KeyValue from '../KeyValue/index';
  * @param {Array} state For slate input.
  * @param {Array} asyncSelectKey
  * @param {Function} changeVal
+ * @param {Function} changeFileList - Special define for file input
  * @param {Function} loadOptsMethod
  * @param {Function} loadTagsOptsMethod
  * @param {Function} onDateChange
@@ -59,6 +60,7 @@ const FormGroups = ({
   state,
   asyncSelectKey,
   changeVal,
+  changeFileList,
   loadOptsMethod,
   loadTagsOptsMethod,
   onDateChange,
@@ -372,7 +374,8 @@ const FormGroups = ({
               template.inputType === 'file'
               ?
               <div className="form-input form-group-csv">
-                <FileUpload onListChange={content => changeVal(content, template.name, template.target)}/>
+                <FileUpload
+                  onListChange={content => changeFileList(content, template.name, template.target)}/>
               </div>
               :
                 null

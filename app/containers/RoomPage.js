@@ -127,7 +127,19 @@ class RoomPage extends Component {
   }
 
   changeRoomValue() {
+  }
 
+  onStudentsChange = (students, key, formName) => {
+
+    const {
+      changeValue,
+      roomAction
+    } = this.props;
+
+    // change redux state
+    // roomAction.setStudentsField({ students });
+    // change form
+    changeValue(students, key, formName);
   }
 
   /**
@@ -191,18 +203,17 @@ class RoomPage extends Component {
       students,
       roomDetail
     } = this.props;
+
     if (!students.isLoading) {
       if (formType === 'create') {
         roomAction.createClassroom({
           token,
-          students: students.data,
           formData,
           next: this.onClassroomSubmitSuccess
         });
       } else {
         roomAction.updateClassroom({
           token,
-          students: students.data,
           formData,
           next: this.onClassroomSubmitSuccess
         });
@@ -341,6 +352,7 @@ class RoomPage extends Component {
                   targetForm={forms.classroom}
                   formData={classroomFormTwo}
                   changeVal={changeValue}
+                  changeFileList={this.onStudentsChange}
                   onFileChange={this.onFileSelected}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
                   handleUpload={this.uploadStudentCSV}
@@ -370,7 +382,7 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'update')}
               >
-
+                {/* name | description | schedules | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
@@ -378,10 +390,12 @@ class RoomPage extends Component {
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
                 />
 
+                {/* teachers | students */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormTwo}
                   changeVal={changeValue}
+                  changeFileList={this.onStudentsChange}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
                 />
 
@@ -405,7 +419,7 @@ const mapDispatchToProps = dispatch => ({
   resetForm: (formName) => dispatch(formActions.reset(
     `forms.${formName}`
   )),
-  changeValue: (value, key, formName) => dispatch(formActions.change(
+  changeValue: (value, key, formName) =>  dispatch(formActions.change(
     `forms.${formName}.${key}`,
     value
   )),

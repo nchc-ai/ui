@@ -21,15 +21,18 @@ export const resetStudentsField = () => ({
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const createClassroom = ({ token, students, formData, next }) => async (dispatch) => {
+export const createClassroom = ({ token, formData, next }) => async (dispatch) => {
 
-  console.log('[create] formData', formData, students);
+  // console.log('[create] formData', formData, students);
+  const students = _.get(formData,'students', []);
+
   const submitData = {
     ...formData,
-    students: _.map(students, (student) => ({ label: student.keyItem, value: student.valueItem })),
+    students,
+    studentCount: students.length,
     public: formData.public.value
   };
-  console.log('[create] submitData', submitData);
+  // console.log('[create] submitData', submitData);
 
   const response = await dispatch({
     [RSAA]: {
@@ -59,12 +62,16 @@ export const createClassroom = ({ token, students, formData, next }) => async (d
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const updateClassroom = ({ token, students, formData, next }) => async (dispatch) => {
+export const updateClassroom = ({ token, formData, next }) => async (dispatch) => {
 
   console.log('[update] formData', formData, students);
+
+  const students = _.get(formData,'students', []);
+
   const submitData = {
     ...formData,
-    students: _.map(students, (student) => ({ label: student.keyItem, value: student.valueItem })),
+    students,
+    studentCount: students.length,
     public: formData.public.value
   };
   console.log('[update] submitData', submitData);
