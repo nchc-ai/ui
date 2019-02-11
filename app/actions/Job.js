@@ -22,7 +22,7 @@ export const getConJobList = ({ user, token }) => async (dispatch) => {
     }
   });
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    notify.show(_.get(response, "payload.response.message", "get container job list fail"), 'error', TOAST_TIMING);
   }
 };
 
@@ -42,7 +42,7 @@ export const getVMJobList = ({ user, token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    notify.show(_.get(response, "payload.response.message", "get vm job list fail"), 'error', TOAST_TIMING);
   }
 };
 
@@ -69,7 +69,7 @@ export const launchCourseJob = ({ token, user, classroomId, courseId, next }) =>
   // console.log('[launchJob] response', response);
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    notify.show(_.get(response, "payload.response.message", "launch course job fail"), 'error', TOAST_TIMING);
     next(false);
   } else if (next) {
     next(true);
@@ -91,7 +91,7 @@ export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    notify.show(_.get(response, "payload.response.message", "delete job fail"), 'error', TOAST_TIMING);
   }
 
   next();
@@ -118,7 +118,7 @@ export const snapshotContainerJob = ({ token, id, name, next }) => async (dispat
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    notify.show(_.get(response, "payload.response.message", "snapshot container job fail"), 'error', TOAST_TIMING);
   }
 
   if (next) {
@@ -142,7 +142,7 @@ export const snapshotVMJob = ({ token, id, name, next }) => async (dispatch) => 
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, "payload.response.message", ""), 'error', TOAST_TIMING);
+    notify.show(_.get(response, "payload.response.message", "snapshot vm job fail"), 'error', TOAST_TIMING);
   }
 
   if (next) {
