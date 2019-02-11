@@ -25,12 +25,12 @@ class CoursePage extends Component {
     this.fetchData(this.props);
 
     // set additional validation to select input
-    const validConArr = ['image', 'gpu']
-    validConArr.forEach((item) => {
-      this.props.setValidity(item, 'courseCon', {
-        required: false
-      });
-    })
+    // const validConArr = ['image', 'gpu']
+    // validConArr.forEach((item) => {
+    //   this.props.setValidity(item, 'courseCon', {
+    //     required: false
+    //   });
+    // })
 
     // const validVMArr = ['image', 'flavor', 'sshkey']
     // validVMArr.forEach((item) => {
@@ -38,9 +38,9 @@ class CoursePage extends Component {
     //     required: false
     //   });
     // })
-    this.props.setValidity('ports', 'courseCon', {
-      keyValRequired: false
-    });
+    // this.props.setValidity('ports', 'courseCon', {
+    //   keyValRequired: false
+    // });
 
   }
 
