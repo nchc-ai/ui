@@ -36,7 +36,7 @@ const Login = ({ match, onSuccess, onFailure }) => (
 
       <Link to="#" className="btn-link">
         <button className="btn-signup btn-grp">
-          老師 or 管理員註冊
+          管理員 / 教師註冊
         </button>
       </Link>
 

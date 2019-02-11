@@ -96,8 +96,7 @@ export const initialRoleStudentState = {
 export const initialSignupState = {
   username: '',
   password: '',
-  confirmPassword: '',
-  role: { label: '老師', value: 'teacher' }
+  confirmPassword: ''
 };
 
 export const initialPasswordState = {
