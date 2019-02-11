@@ -21,6 +21,10 @@ class AuthPage extends Component {
     this.props.resetForm();
   }
 
+  componentWillUnmount() {
+    this.props.resetForm();
+  }
+
   componentWillReceiveProps(nextProps) {
     // const {
     //   match,
@@ -99,20 +103,27 @@ class AuthPage extends Component {
 
   // Signup
   onSignupSubmit = (formData) => {
+
+    const {
+      authAction,
+      resetForm
+    } = this.props;
+
     const submitData = {
       ...formData,
       role: "student"
     };
-    console.log('submitData', submitData, formData);
 
-    this.props.authAction.register({
+    resetForm();
+
+    authAction.register({
       submitData,
       next: this.onAfterSubmit
     });
   }
 
   onAfterSubmit = (response) => {
-    console.log('[signup] response', response);
+    // console.log('[signup] response', response);
     notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', 1800);
     this.props.history.push('/login');
   }
