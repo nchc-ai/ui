@@ -5,9 +5,6 @@ export default function bindProgressBarHoc(WrappedComponent) {
 
     componentWillUnmount() {
       clearInterval(this.interval);
-      if(this.timer){
-        clearTimeout(this.timer);
-    }
     }
 
     startProgressBar = () => {

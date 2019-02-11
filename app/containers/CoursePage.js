@@ -139,8 +139,12 @@ class CoursePage extends Component {
     const {
       jobAction,
       token,
-      userInfo
+      userInfo,
+      startProgressBar
     } = this.props;
+
+    startProgressBar();
+
     jobAction.launchCourseJob({
       user: userInfo.username,
       classroomId: '',
@@ -151,9 +155,15 @@ class CoursePage extends Component {
   }
 
   onAfterLaunchCourseJob = (isSuccess) => {
-    this.props.endPorgressBar();
+    const {
+      history,
+      endPorgressBar
+    } = this.props;
+
+    endPorgressBar();
+
     if (isSuccess) {
-      this.props.history.push('/user/job/list');
+      history.push('/user/job/list');
       notify.show('課程啟動成功', 'success', 1800);
     }
   }
