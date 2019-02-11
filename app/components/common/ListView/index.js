@@ -103,7 +103,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
 
               {
                 template.type === 'single-select' ?
-                  <Value>{_.get(detailData, `${template.name}.label`, '尚無資料')}</Value>
+                  <Value>{_.get(detailData, `${template.name}.label`, '尚無資料') || '尚無資料'}</Value>
                 : null
               }
               {

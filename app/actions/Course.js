@@ -55,7 +55,7 @@ export const getCourseListAll = ({ user, token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get all course list fail'), 'error', TOAST_TIMING);
   }
 };
 
@@ -76,7 +76,7 @@ export const getConImagesOpts = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get container images options fail'), 'error', TOAST_TIMING);
   }
 
   return {
@@ -103,7 +103,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get container datasets options'), 'error', TOAST_TIMING);
   }
 
   return {
@@ -172,18 +172,11 @@ export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail
   console.log('submitData', submitData)
 
   const finalSubmitData = {
-    id: _.get(submitData, 'id'),
+    ...submitData,
     user: userInfo.username,
-    name: submitData.name,
-    introduction: _.escape(_.get(submitData, 'introduction', "")),
-    level: _.get(submitData, 'level.value', ""),
-    image: _.get(submitData, 'image.value', ""),
-    flavor: submitData.flavor.value,
-    associate: _.get(submitData, 'associate.value', "").toString(),
-    extraports: _.get(submitData, 'extraPorts', ""),
-    sshkey: _.get(submitData, 'sshKey.value', ""),
-    mount: _.get(submitData, 'mount.value', "").toString(),
-    volume: _.get(submitData, 'volume.value', "")
+    level: _.get(submitData, 'level.value'),
+    associate: _.get(submitData, 'associate.value').toString(),
+    mount: _.get(submitData, 'mount.value')
   };
 
   if (actionType === 'edit') {
@@ -278,10 +271,20 @@ export const getImagesOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get VM images options fail'), 'error', TOAST_TIMING);
   }
+
+  // return {
+  //   options: response.payload.images,
+  //   complete: response.payload.images
+  // };
+
+  // TODO: retrieve back after backend repaired
+
   return {
-    options: response.payload.images,
+    options: [
+      {label: 'image-1', value: 'image-1'}
+    ],
     complete: response.payload.images
   };
 };
@@ -303,7 +306,7 @@ export const getFlavorsOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get VM flavors options fail'), 'error', TOAST_TIMING);
   }
   return {
     options: response.payload.flavors,
@@ -327,7 +330,7 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get VM sshkeys options fail'), 'error', TOAST_TIMING);
   }
 
   return {
@@ -449,7 +452,7 @@ export const searchCourse = query => async (dispatch) => {
   // console.log('[searchCourse] response', response);
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'search course fail'), 'error', TOAST_TIMING);
   }
 };
 

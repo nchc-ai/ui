@@ -24,7 +24,7 @@ class CoursePage extends Component {
     window.scrollTo(0, 0);
     this.fetchData(this.props);
 
-    // 先設定非control元件
+    // set additional validation to select input
     const validConArr = ['image', 'gpu']
     validConArr.forEach((item) => {
       this.props.setValidity(item, 'courseCon', {
@@ -32,12 +32,12 @@ class CoursePage extends Component {
       });
     })
 
-    const validVMArr = ['image', 'flavor', 'sshkey']
-    validVMArr.forEach((item) => {
-      this.props.setValidity(item, 'courseVM', {
-        required: false
-      });
-    })
+    // const validVMArr = ['image', 'flavor', 'sshkey']
+    // validVMArr.forEach((item) => {
+    //   this.props.setValidity(item, 'courseVM', {
+    //     required: false
+    //   });
+    // })
     this.props.setValidity('ports', 'courseCon', {
       keyValRequired: false
     });
@@ -52,7 +52,6 @@ class CoursePage extends Component {
   }
 
   fetchData = (nextProps) => {
-
     const {
       courseAction,
       userInfo,
@@ -95,33 +94,28 @@ class CoursePage extends Component {
    */
   initializeEditForm = ({ course, actionType, courseType }) => {
     // TODO: courseVM to boolean
-    console.log(`[initialize${actionType}Form]`, course, courseType);
     const confObj = {
       CONTAINER: {
         formName: 'courseCon',
         edit: {
-          ...initialCourseConState,
           ...course,
           level: { value: _.get(course, 'level') },
           accessType: { value: _.get(course,'accessType') },
           ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() }))
         },
         detail: {
-          ...initialCourseConState,
           ...course,
         }
       },
       VM: {
         formName: 'courseVM',
         edit: {
-          ...initialCourseVMState,
           ...course,
           level: { value: _.get(course, 'level') },
           associate: { value: _.get(course, 'associate', false) === 'true' },
-          mount: { value: _.get(course, 'mount', false) === 'true' },
+          mount: { value: _.get(course, 'mount', false)},
         },
         detail: {
-          ...initialCourseVMState,
           ...course
         }
       }
@@ -207,6 +201,7 @@ class CoursePage extends Component {
 
   onSubmitCourseFail = ({ actionType, courseType }) => {
     this.resetBothForm(this.props);
+    this.props.endPorgressBar()
   }
 
   onSubmitCourseSuccess = ({ actionType, courseType }) => {
@@ -290,7 +285,6 @@ class CoursePage extends Component {
           {/* 課程搜尋 */}
 
           <Route exact path="/search/:courseName">
-            <span>123</span>
             <TableList
               data={courseList}
               tableData={ongoingCourseData}
