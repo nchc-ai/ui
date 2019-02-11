@@ -99,22 +99,22 @@ class AuthPage extends Component {
 
   // Signup
   onSignupSubmit = (formData) => {
-    console.log('formData', formData);
-    this.props.authAction.signup(formData, this.onAfterSubmit);
-  }
+    const submitData = {
+      ...formData,
+      role: "student"
+    };
+    console.log('submitData', submitData, formData);
 
-  onSignupFailed = (formData) => {
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
+    this.props.authAction.register({
+      submitData,
+      next: this.onAfterSubmit
+    });
   }
 
   onAfterSubmit = (response) => {
     console.log('[signup] response', response);
-    if (response.error) {
-      notify.show(`註冊失敗 失敗原因：${response.payload.response.message}`, 'error', 2700);
-    } else {
-      notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', 1800);
-      this.props.history.push('/login');
-    }
+    notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', 1800);
+    this.props.history.push('/login');
   }
 
   onSignupCancel = () => {

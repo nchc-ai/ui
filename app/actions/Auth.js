@@ -181,16 +181,13 @@ export const logout = ({ token, next }) => async (dispatch) => {
 };
 
 // Proxy > Register
-export const signup = (formData, next) => async (dispatch) => {
-
-  // const tempData = tempfyData(formData);
-  // console.log('tempData', tempData);
+export const register = ({ submitData, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/proxy/register`,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(formData),
+      body: JSON.stringify(submitData),
       types: types.SIGNUP
     }
   });
@@ -198,10 +195,11 @@ export const signup = (formData, next) => async (dispatch) => {
   console.log('[signup] payload', response)
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', '註冊失敗'), 'error', TOAST_TIMING);
+  } else {
+    next(response);
   }
 
-  next(response);
 };
 
 

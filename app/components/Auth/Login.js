@@ -9,12 +9,6 @@ import logoImg from '../../../public/images/auth/login-logo.png';
 import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
 import githubBtnImg from '../../../public/images/auth/login-btn-github.png';
 
-
-const Comp = styled.div`
-  font-size: 18px;
-`;
-
-
 const Login = ({ match, onSuccess, onFailure }) => (
   <div className="login-comp">
     <SectionTitle
@@ -34,9 +28,15 @@ const Login = ({ match, onSuccess, onFailure }) => (
       </MyoauthButton>
       <h4>OR</h4>
 
-      <Link to="/signup">
+      <Link to="/signup" className="btn-link">
         <button className="btn-signup btn-grp">
-          立即註冊
+          學生註冊
+        </button>
+      </Link>
+
+      <Link to="#" className="btn-link">
+        <button className="btn-signup btn-grp">
+          老師 or 管理員註冊
         </button>
       </Link>
 
