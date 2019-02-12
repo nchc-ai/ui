@@ -39,13 +39,13 @@ class RoomPage extends Component {
   componentWillReceiveProps (nextProps) {
     if (nextProps.match.url !== this.props.match.url || nextProps.isSubstituating !== this.props.isSubstituating) {
       // window.scrollTo(0, 0);
+      this.resetForm();
       this.fetchData(nextProps);
     }
   }
 
   componentWillUnmount() {
-    this.props.resetForm('classroom');
-    this.props.resetForm('classroomCron');
+    this.resetForm();
   }
 
   fetchData = (nextProps) => {
@@ -82,7 +82,8 @@ class RoomPage extends Component {
     const {
       roomAction,
       changeForm,
-      roomDetail
+      roomDetail,
+      match
     } = this.props;
 
     const initialData = {
@@ -93,11 +94,19 @@ class RoomPage extends Component {
       teachers: _.get(roomDetail, 'data.teachers', []),
       public: roomDetail.data.public ? { label: '是', value: true } : { label: '否', value: false },
     }
-
     const students = _.get(roomDetail, 'data.students', []).map((d, i) => ({ keyItem: d.label, valueItem: d.value })) || [];
-    roomAction.setStudentsField({ students })
 
-    changeForm(initialData, 'classroom');
+    if (_.get(match,'params.action') !== 'create') {
+      roomAction.setStudentsField({ students })
+      changeForm(initialData, 'classroom');
+    } else {
+      this.resetForm();
+    }
+  }
+
+  resetForm = () => {
+    this.props.resetForm('classroom');
+    this.props.resetForm('classroomCron');
   }
 
   startCourse = () => {
