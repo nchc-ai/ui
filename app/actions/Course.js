@@ -271,17 +271,8 @@ export const getImagesOptsVM = token => async (dispatch) => {
     notify.show(_.get(response, 'payload.response.message', 'get VM images options fail'), 'error', TOAST_TIMING);
   }
 
-  // return {
-  //   options: response.payload.images,
-  //   complete: response.payload.images
-  // };
-
-  // TODO: retrieve back after backend repaired
-
   return {
-    options: [
-      {label: 'image-1', value: 'image-1'}
-    ],
+    options: response.payload.images,
     complete: response.payload.images
   };
 };
