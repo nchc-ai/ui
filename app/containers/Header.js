@@ -117,16 +117,19 @@ class Header extends Component {
       authAction,
       token
     } = this.props;
+
     authAction.logout({ token, next: this.afterLogout });
   }
 
   afterLogout = () => {
     const {
       authAction,
+      roleAction,
       history,
     } = this.props;
 
     authAction.resetAuth();
+    roleAction.toggleSubstituating(false);
 
     Cookies.set('is_login', false);
     Cookies.set('user_info', {});
