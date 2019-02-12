@@ -132,7 +132,6 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
     user: userInfo.username,
     accessType: _.get(submitData, 'accessType.value', 'NodePort'),
     level: _.get(submitData, 'level.value', 'basic'),
-    GPU: parseInt(_.get(submitData, 'gpu.value', 0), 10),
     ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
 

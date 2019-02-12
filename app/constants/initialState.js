@@ -34,7 +34,7 @@ export const initialCourseConState = {
   introduction: '',
   image: '',
   level: { label: '基礎', value: 'basic' },
-  gpu: '',
+  gpu: { label: 'x0', value: 0 },
   ports: [
     {
       keyItem: '',
