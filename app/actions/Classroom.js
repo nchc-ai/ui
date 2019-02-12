@@ -141,7 +141,7 @@ export const getClassroomList = ({ token, userInfo, next }) => async (dispatch) 
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get classroom list fail'), 'error', TOAST_TIMING);
   }
 };
 
@@ -164,7 +164,7 @@ export const getPublicClassrooms = ({ token }) => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get public classroom fail'), 'error', TOAST_TIMING);
   }
 };
 
@@ -188,7 +188,7 @@ export const getClassroomDetail = ({ id, token, onSuccess }) => async (dispatch)
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'get detail of classroom fail'), 'error', TOAST_TIMING);
   } else if (onSuccess) {
     onSuccess(response.payload.classroom);
   }
@@ -215,7 +215,7 @@ export const deleteClassroom = ({ id, token, onSuccess }) => async (dispatch) =>
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'delete classroom fail'), 'error', TOAST_TIMING);
   } else if(onSuccess) {
     notify.show('刪除教室成功', 'success', TOAST_TIMING);
     onSuccess();
@@ -238,7 +238,7 @@ export const loadCourseTagsForRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'load course options fail'), 'error', TOAST_TIMING);
   }
 
   return {
@@ -263,7 +263,7 @@ export const loadTeacherTagsForRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'load teacher options fail'), 'error', TOAST_TIMING);
   }
 
   return {
@@ -288,7 +288,7 @@ export const loadStudentTagsForRoomCreate = token => async (dispatch) => {
   });
 
   if (_.isUndefined(response) || response.error) {
-    notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
+    notify.show(_.get(response, 'payload.response.message', 'load students options fail'), 'error', TOAST_TIMING);
   }
 
   return {
