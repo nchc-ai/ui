@@ -336,10 +336,10 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ forms, Auth, User, Job }) => ({
+const mapStateToProps = ({ forms, Auth, User, Role, Job }) => ({
   forms,
   token: Auth.token,
-  userInfo: Auth.userInfo,
+  userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   container: {
     loading: Job.container.loading,
     data: Job.container.data
