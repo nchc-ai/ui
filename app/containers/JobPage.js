@@ -73,42 +73,11 @@ class JobPage extends Component {
     notify.show(`已成功複製 ${this.state.copiedValue}`, 'success', TOAST_TIMING);
   }
 
-  addJob() {
-    console.log('add');
-    // const {
-    //   token,
-    //   userInfo,
-    //   userAction
-    // } = this.props;
-
-    // Progress.show();
-
-    // // console.log('userInfo.username, courseId, token', userInfo.username, courseId, token);
-    // userAction.launchJob(userInfo.username, courseId, token, this.onAddJobSuccess);
-  }
-
-  onAddJobSuccess = () => {
-    // this.fetchData();
-    // Progress.hide();
-    // notify.show('工作新增成功', 'success', 1800);
-    // this.props.history.push('/user/job');
-  }
-
-  leaveMask = (e, job) => {
+  leaveMask = () => {
     this.props.resetForm('snapshot');
-    // const {
-    //   jobAction,
-    //   token,
-    // } = this.props;
-
-    // jobAction.snapshotJob({
-    //   token,
-    //   job
-    // })
   }
 
   submitSnapshot = (submitData, thumb) => {
-    // console.log('snapshot', submitData, thumb);
     const {
       token,
       jobAction,
@@ -151,7 +120,6 @@ class JobPage extends Component {
       token,
       jobAction
     } = this.props;
-    // Progress.show();
 
     jobAction.deleteJob({
       jobId: thumb.id,
@@ -161,8 +129,6 @@ class JobPage extends Component {
   }
 
   onDeleteJobSuccess = () => {
-    // this.fetchData();
-    // Progress.hide();
     notify.show('工作刪除成功', 'success', 1800);
     this.fetchData(this.props);
   }
