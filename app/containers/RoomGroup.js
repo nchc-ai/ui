@@ -57,11 +57,12 @@ class RoomGroup extends Component {
     const {
       jobAction,
       token,
-      userInfo
+      userInfo,
+      myUserInfo
     } = this.props;
     // Progress.show();
     jobAction.launchCourseJob({
-      user: userInfo.username,
+      user: myUserInfo.username,
       classroomId: data.roomId,
       courseId: data.id,
       token,
@@ -183,6 +184,7 @@ const mapStateToProps = ({ Auth, Role, Course, forms, Classroom }) => ({
   addClassroom: forms.addClassroom,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
+  myUserInfo: Auth.userInfo,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data,

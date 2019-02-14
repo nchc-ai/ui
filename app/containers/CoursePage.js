@@ -140,13 +140,14 @@ class CoursePage extends Component {
       jobAction,
       token,
       userInfo,
+      myUserInfo,
       startProgressBar
     } = this.props;
 
     startProgressBar();
 
     jobAction.launchCourseJob({
-      user: userInfo.username,
+      user: myUserInfo.username,
       classroomId: '',
       courseId: data.id,
       token,
@@ -671,6 +672,7 @@ const mapDispatchToProps = dispatch => ({
 const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
   forms,
   token: Auth.token,
+  myUserInfo: Auth.userInfo,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
   isLoading: Course.courseCon.isLoading,
   courseList: Course.courseCon.data,
