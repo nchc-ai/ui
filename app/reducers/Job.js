@@ -37,9 +37,20 @@ export default function Job(state = InitialState, action) {
         loading: true
       }
     };
+  case actionTypes.UPDATE_CON_JOB_LIST[LOADING]:
+    return {
+      ...state,
+      container: {
+        ...state.container,
+        loading: false
+      },
+      List: {
+        ...state.List,
+        loading: false
+      }
+    };
   case actionTypes.GET_CON_JOB_LIST[SUCCESS]:
     const recievedConData = _.map(action.payload.jobs, d => formatJob(d, 'CONTAINER'));
-    const loadingCon = false;
 
     return {
       ...state,
@@ -63,6 +74,19 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: true
+      }
+    };
+  case actionTypes.UPDATE_VM_JOB_LIST[LOADING]:
+    console.log('here');
+    return {
+      ...state,
+      vm: {
+        ...state.vm,
+        loading: false
+      },
+      List: {
+        ...state.List,
+        loading: false
       }
     };
   case actionTypes.GET_VM_JOB_LIST[SUCCESS]:

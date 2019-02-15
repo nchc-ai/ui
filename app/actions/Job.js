@@ -7,7 +7,7 @@ import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } f
 
 
 // List
-export const getConJobList = ({ user, token }) => async (dispatch) => {
+export const getConJobList = ({ user, token, isRefetch }) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
@@ -18,7 +18,7 @@ export const getConJobList = ({ user, token }) => async (dispatch) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ user }),
-      types: types.GET_CON_JOB_LIST
+      types: isRefetch ? types.UPDATE_CON_JOB_LIST : types.GET_CON_JOB_LIST
     }
   });
   if (_.isUndefined(response) || response.error) {
@@ -26,8 +26,7 @@ export const getConJobList = ({ user, token }) => async (dispatch) => {
   }
 };
 
-export const getVMJobList = ({ user, token }) => async (dispatch) => {
-
+export const getVMJobList = ({ user, token, isRefetch }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_VM_URL}/${API_VM_VERSION}/job/list`,
@@ -37,7 +36,7 @@ export const getVMJobList = ({ user, token }) => async (dispatch) => {
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify({ user }),
-      types: types.GET_VM_JOB_LIST
+      types: isRefetch ? types.UPDATE_VM_JOB_LIST : types.GET_VM_JOB_LIST
     }
   });
 

@@ -8,7 +8,7 @@ import { Row, Col } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
-// import { doubleRawList } from '../mock/jobData';
+import { JOB_INTERVAL } from '../config/api';
 import { TOAST_TIMING } from '../constants';
 import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -23,15 +23,31 @@ class JobPage extends Component {
 
   state = {
     optionType: 'snapshot',
-    copiedValue: ""
+    copiedValue: "",
+    interval: ''
   }
 
   componentWillMount() {
     this.fetchData(this.props);
   }
 
-  fetchData = (nextProps) => {
+  componentDidMount() {
+    window.scrollTo(0, 0);
+    const interval = setInterval(this.updateJobList, JOB_INTERVAL);
+    this.setState({ interval });
+  }
 
+  componentWillUnmount() {
+    clearInterval(this.state.interval);
+  }
+
+  updateJobList = () => {
+    const { jobAction, token, userInfo } = this.props;
+    jobAction.getConJobList({ user: userInfo.username, token, isRefetch: true });
+    jobAction.getVMJobList({ user: userInfo.username, token, isRefetch: true });
+  }
+
+  fetchData = (nextProps) => {
     const {
       token,
       userInfo,

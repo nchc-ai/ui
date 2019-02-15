@@ -15,6 +15,6 @@ export const AUTH_PROVIDER_URL = 'http://140.110.16.191:30080';
 
 export const RETURN_ROUTE = '/user/classroom-manage';
 
-export const jobInterval = 10000;
+export const JOB_INTERVAL = 10000;
 
 export const pdfLink = 'https://drive.google.com/file/d/1MvfNxfLkBr4yvbxsJhh-D6PeaFsovNPl/view'
