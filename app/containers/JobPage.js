@@ -24,7 +24,18 @@ class JobPage extends Component {
   state = {
     optionType: 'snapshot',
     copiedValue: "",
-    interval: ''
+    interval: '',
+    doubleList: [
+      {
+        title: '容器課程',
+        loading: false,
+        data: []
+      }, {
+        title: 'VM課程',
+        loading: false,
+        data: []
+      }
+    ]
   }
 
   componentWillMount() {
@@ -127,7 +138,7 @@ class JobPage extends Component {
   }
 
   handlesubmitSnapshotFail = (submitData) => {
-    console.log('fail');
+    notify.show(_.get(response, "payload.message", "快照此 VM 工作失敗"), 'success', TOAST_TIMING);
   }
 
   deleteJob(e, thumb) {
@@ -162,22 +173,10 @@ class JobPage extends Component {
       changeValue,
       Job,
       userInfo,
+      doubleList,
       container,
       vm
     } = this.props;
-
-    const doubleList = [
-      {
-        title: '容器課程',
-        loading: container.loading,
-        data: container.data
-      }, {
-        title: 'VM課程',
-        loading: vm.loading,
-        data: vm.data
-      }
-    ];
-
     return (
       <div className="job-bg">
         <CommonPageContent
@@ -371,6 +370,7 @@ const mapStateToProps = ({ forms, Auth, User, Role, Job }) => ({
     loading: Job.vm.loading,
     data: Job.vm.data
   },
+  doubleList: Job.doubleList
 });
 
 export default compose(

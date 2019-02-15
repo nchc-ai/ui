@@ -19,7 +19,18 @@ const InitialState = {
   snapshot: {
     isContainerLoading: false,
     isVMLoading: false,
-  }
+  },
+  doubleList: [
+    {
+      title: '容器課程',
+      loading: false,
+      data: []
+    }, {
+      title: 'VM課程',
+      loading: false,
+      data: []
+    }
+  ]
 };
 
 // TODO: 在這邊去 format job
@@ -35,7 +46,15 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: true
-      }
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0],
+          loading: true
+        }, {
+          ...state.doubleList[1]
+        }
+      ]
     };
   case actionTypes.UPDATE_CON_JOB_LIST[LOADING]:
     return {
@@ -47,7 +66,15 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: false
-      }
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0],
+          loading: false
+        }, {
+          ...state.doubleList[1]
+        }
+      ]
     };
   case actionTypes.GET_CON_JOB_LIST[SUCCESS]:
     const recievedConData = _.map(action.payload.jobs, d => formatJob(d, 'CONTAINER'));
@@ -62,7 +89,40 @@ export default function Job(state = InitialState, action) {
         ...state.List,
         loading: state.vm.loading,
         data: _.unionBy(state.vm, recievedConData, 'id')
-      }
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0],
+          loading: false,
+          data: recievedConData
+        }, {
+          ...state.doubleList[1]
+        }
+      ]
+    };
+  case actionTypes.UPDATE_CON_JOB_LIST[SUCCESS]:
+    const recievedUpdateConData = _.map(action.payload.jobs, d => formatJob(d, 'CONTAINER'));
+
+    return {
+      ...state,
+      container: {
+        loading: false,
+        data: recievedUpdateConData
+      },
+      List: {
+        ...state.List,
+        loading: state.vm.loading,
+        data: _.unionBy(state.vm, recievedUpdateConData, 'id')
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0],
+          loading: false,
+          data: recievedUpdateConData
+        }, {
+          ...state.doubleList[1]
+        }
+      ]
     };
   case actionTypes.GET_VM_JOB_LIST[LOADING]:
     return {
@@ -74,7 +134,15 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: true
-      }
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0]
+        }, {
+          ...state.doubleList[1],
+          loading: true
+        }
+      ]
     };
   case actionTypes.UPDATE_VM_JOB_LIST[LOADING]:
     return {
@@ -86,11 +154,18 @@ export default function Job(state = InitialState, action) {
       List: {
         ...state.List,
         loading: false
-      }
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0]
+        }, {
+          ...state.doubleList[1],
+          loading: false
+        }
+      ]
     };
   case actionTypes.GET_VM_JOB_LIST[SUCCESS]:
     const recievedVMData = _.map(action.payload.jobs, d => formatJob(d, 'VM'));
-    const loadingVM = false;
 
     return {
       ...state,
@@ -102,7 +177,39 @@ export default function Job(state = InitialState, action) {
         ...state.List,
         loading: state.container.loading,
         data: _.unionBy(state.container, recievedVMData, 'id')
-      }
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0]
+        }, {
+          ...state.doubleList[1],
+          loading: false,
+          data: recievedVMData
+        }
+      ]
+    };
+  case actionTypes.UPDATE_VM_JOB_LIST[SUCCESS]:
+    const recievedUpdateVMData = _.map(action.payload.jobs, d => formatJob(d, 'VM'));
+    return {
+      ...state,
+      vm: {
+        loading: false,
+        data: recievedUpdateVMData
+      },
+      List: {
+        ...state.List,
+        loading: state.container.loading,
+        data: _.unionBy(state.container, recievedUpdateVMData, 'id')
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0]
+        }, {
+          ...state.doubleList[1],
+          loading: false,
+          data: recievedUpdateVMData
+        }
+      ]
     };
   case actionTypes.SNAPSHOT_CONTAINER_JOB[LOADING]:
     return {
