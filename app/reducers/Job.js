@@ -77,7 +77,6 @@ export default function Job(state = InitialState, action) {
       }
     };
   case actionTypes.UPDATE_VM_JOB_LIST[LOADING]:
-    console.log('here');
     return {
       ...state,
       vm: {

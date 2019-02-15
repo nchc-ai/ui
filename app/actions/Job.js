@@ -91,9 +91,10 @@ export const deleteJob = ({ jobId, token, next }) => async (dispatch) => {
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "delete job fail"), 'error', TOAST_TIMING);
+    next(fasle);
+  } else if (next) {
+    next(true);
   }
-
-  next();
 };
 
 /**

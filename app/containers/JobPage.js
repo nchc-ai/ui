@@ -131,21 +131,28 @@ class JobPage extends Component {
   }
 
   deleteJob(e, thumb) {
-
     const {
       token,
       jobAction
     } = this.props;
 
+    this.props.startProgressBar();
+
     jobAction.deleteJob({
       jobId: thumb.id,
       token,
-      next: this.onDeleteJobSuccess
+      next: this.onAfterDeleteJob
     });
   }
 
-  onDeleteJobSuccess = () => {
-    notify.show('工作刪除成功', 'success', 1800);
+  onAfterDeleteJob = (isSuccess) => {
+    if (isSuccess) {
+      notify.show('工作刪除成功', 'success', 1800);
+    } else {
+      notify.show('工作刪除失敗', 'error', 1800);
+    }
+
+    this.props.endPorgressBar();
     this.fetchData(this.props);
   }
 

@@ -165,7 +165,7 @@ class CoursePage extends Component {
 
     if (isSuccess) {
       history.push('/user/job/list');
-      notify.show('課程啟動成功', 'success', 1800);
+      notify.show('已發出啟動課程訊號', 'success', 1800);
     }
   }
 
