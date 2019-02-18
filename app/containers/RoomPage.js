@@ -211,19 +211,20 @@ class RoomPage extends Component {
       students
     } = this.props;
 
-    formData.students =  students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
-
     if (!students.isLoading) {
       if (formType === 'create') {
+        const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
         roomAction.createClassroom({
           token,
           formData,
+          students: mappedStudents,
           next: this.onClassroomSubmitSuccess
         });
       } else {
         roomAction.updateClassroom({
           token,
           formData,
+          students: formData.students,
           next: this.onClassroomSubmitSuccess
         });
       }

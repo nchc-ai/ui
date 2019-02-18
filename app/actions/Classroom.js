@@ -21,10 +21,9 @@ export const resetStudentsField = () => ({
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const createClassroom = ({ token, formData, next }) => async (dispatch) => {
+export const createClassroom = ({ token, formData, students, next }) => async (dispatch) => {
 
   // console.log('[create] formData', formData, students);
-  const students = _.get(formData,'students', []);
 
   const submitData = {
     ...formData,
@@ -62,11 +61,9 @@ export const createClassroom = ({ token, formData, next }) => async (dispatch) =
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const updateClassroom = ({ token, formData, next }) => async (dispatch) => {
+export const updateClassroom = ({ token, formData, students, next }) => async (dispatch) => {
 
   // console.log('[update] formData', formData, students);
-
-  const students = _.get(formData,'students', []);
 
   const submitData = {
     ...formData,
