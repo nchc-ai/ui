@@ -39,6 +39,7 @@ export function redirectUrlWithRole ({ role }) {
 export function formatStatus (str) {
 
   const conditionObj = {
+    Created: '已發出開啟訊號',
     Pending: '已發出開啟訊號',
     Ready: '已開啟',
     default: '已關閉'

@@ -48,6 +48,7 @@ class CoursePage extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
+      endPorgressBar();
     }
   }
 
