@@ -187,11 +187,11 @@ class RoomPage extends Component {
   }
 
   onFileSelected = (event) => {
-   console.log('onFileSelected', event, event.target);
+  //  console.log('onFileSelected', event, event.target);
   }
 
   uploadStudentCSV = (file) => {
-    console.log('uploadStudentCSV');
+    // console.log('uploadStudentCSV');
   }
 
   /**

@@ -44,7 +44,7 @@ class RoomGroup extends Component {
   }
   onGetClassroomListDone = (isSuccess) => {
     if (isSuccess) {
-      console.log('fail');
+      // console.log('fail');
     }
   }
 
@@ -95,30 +95,30 @@ class RoomGroup extends Component {
   }
 
   startRoom() {
-    console.log('start');
+    // console.log('start');
   }
 
   editRoom() {
-    console.log('start');
+    // console.log('start');
   }
 
   deleteRoom() {
-    console.log('start');
+    // console.log('start');
   }
   cancelRoomEdit() {
-    console.log('cancel');
+    // console.log('cancel');
   }
 
   startCourse () {
-    console.log('start course');
+    // console.log('start course');
   }
 
   editCourse () {
-    console.log('start course');
+    // console.log('start course');
   }
 
   deleteCourse () {
-    console.log('start course');
+    // console.log('start course');
   }
 
 

@@ -64,7 +64,7 @@ export const createClassroom = ({ token, formData, next }) => async (dispatch) =
  */
 export const updateClassroom = ({ token, formData, next }) => async (dispatch) => {
 
-  console.log('[update] formData', formData, students);
+  // console.log('[update] formData', formData, students);
 
   const students = _.get(formData,'students', []);
 
@@ -74,7 +74,7 @@ export const updateClassroom = ({ token, formData, next }) => async (dispatch) =
     studentCount: students.length,
     public: formData.public.value
   };
-  console.log('[update] submitData', submitData);
+  // console.log('[update] submitData', submitData);
 
   const response = await dispatch({
     [RSAA]: {

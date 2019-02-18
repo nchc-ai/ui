@@ -121,7 +121,7 @@ class CoursePage extends Component {
       }
     }
 
-    console.log(`[initialize${actionType}Form]confObj`, confObj);
+    // console.log(`[initialize${actionType}Form]confObj`, confObj);
     if (actionType === 'edit') {
       // console.log('a,b', confObj[courseType].formData, courseType === confObj[courseType].formName);
       this.props.changeForm(confObj[courseType][actionType], confObj[courseType].formName);

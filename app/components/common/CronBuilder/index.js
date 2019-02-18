@@ -194,7 +194,7 @@ class CronBuilder extends React.Component {
           }
         }
       } catch (err) {
-        console.log('Error: ' + err.message);
+        console.error('Time Error: ' + err.message);
       }
     }
 
@@ -259,7 +259,7 @@ class CronBuilder extends React.Component {
     this.props.changeValue(calendarArr, 'calendar', 'classroom');
     this.props.changeValue(cronArr, 'schedules', 'classroom');
 
-    console.log('cron all in one', rawTimeArr, resultArr, monthObj, cronArr, calendarArr);
+    // console.log('cron all in one', rawTimeArr, resultArr, monthObj, cronArr, calendarArr);
   }
 
   resetCronFormat = (e) => {

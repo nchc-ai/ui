@@ -92,7 +92,7 @@ class CoursePage extends Component {
     } = this.props;
     const courseType = _.get(match, 'params.type');
 
-    console.log('match inside', match);
+    // console.log('match inside', match);
 
     return (
       <div className="course-bg global-content">

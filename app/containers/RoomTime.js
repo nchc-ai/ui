@@ -104,7 +104,7 @@ class RoomTime extends Component {
   }
 
   handleEventClick(target, eventData, day) {
-    console.log('show');
+    // console.log('show');
     this.setState({
       showPopover: false,
       showModal: true,
