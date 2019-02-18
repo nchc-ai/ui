@@ -208,10 +208,10 @@ class RoomPage extends Component {
     const {
       roomAction,
       token,
-      userInfo,
-      students,
-      roomDetail
+      students
     } = this.props;
+
+    formData.students =  students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
 
     if (!students.isLoading) {
       if (formType === 'create') {
@@ -362,9 +362,7 @@ class RoomPage extends Component {
                   formData={classroomFormTwo}
                   changeVal={changeValue}
                   changeFileList={this.onStudentsChange}
-                  onFileChange={this.onFileSelected}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
-                  handleUpload={this.uploadStudentCSV}
                 />
 
                 <FormButtons

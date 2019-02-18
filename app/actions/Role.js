@@ -5,6 +5,18 @@ import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
 
+export const startSubstituating = ({ label, role, value }) => ({
+  type: types.START_SUBSTITUATING,
+  label,
+  role,
+  value
+});
+
+export const toggleSubstituating = (status) => ({
+  type: types.TOGGLE_SUBSTITUATING,
+  status
+});
+
 export const getUserListByRole = (role, token) => async (dispatch) => {
 
   const response = await dispatch({
@@ -32,15 +44,3 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
   };
 };
 
-export const startSubstituating = ({ label, role, value }) => ({
-  type: types.START_SUBSTITUATING,
-  label,
-  role,
-  value
-});
-
-
-export const toggleSubstituating = (status) => ({
-  type: types.TOGGLE_SUBSTITUATING,
-  status
-});
