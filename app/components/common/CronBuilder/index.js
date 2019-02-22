@@ -119,29 +119,29 @@ class CronBuilder extends React.Component {
     // Stage I ================
 
     // 先抓到起迄時間
-    const startDateStr = moment(_.get(forms, 'classroomCron.startDate', '')).format('YYYY / MM / DD')
-    const endDateStr = moment(_.get(forms, 'classroomCron.endDate', '')).format('YYYY / MM / DD')
+    const startDateStr = moment(_.get(forms, 'schedule.startDate', '')).format('YYYY / MM / DD')
+    const endDateStr = moment(_.get(forms, 'schedule.endDate', '')).format('YYYY / MM / DD')
 
-    // 把 '固定期間每週開課' 格式算出來
-    const periodAdvance = _.get(forms, 'classroomCron.periodAdvance', []);
-    const periodWeekAdvanceObj = {
-        description: periodAdvance
-        .map(datum => `${_.get(datum,'label', '')}`)
-        .join(' ') || '尚無資料',
-        cron: periodAdvance
-        .map(datum => `${_.get(datum,'value', '')}`)
-        .join(',') || '*'
-      }
+    // 把 [TAB 2] '固定期間每週開課' 格式算出來
+    // const periodAdvance = _.get(forms, 'schedule.periodAdvance', []);
+    // const periodWeekAdvanceObj = {
+    //     description: periodAdvance
+    //     .map(datum => `${_.get(datum,'label', '')}`)
+    //     .join(' ') || '尚無資料',
+    //     cron: periodAdvance
+    //     .map(datum => `${_.get(datum,'value', '')}`)
+    //     .join(',') || '*'
+    //   }
 
     // 先暫時生成 week 的格式
     const calendarCronObj = {
       '0': {
-        descripition: `${_.get(forms, 'classroomCron.periodBasic.label', '')}時間`,
-        cron: `0 0 8 * * ${_.get(forms, 'classroomCron.periodBasic.value', '*')}`
+        descripition: `${_.get(forms, 'schedule.selectedOption.label', '')}時間`,
+        cron: `0 0 8 * * ${_.get(forms, 'schedule.selectedOption.value', '*')}`
       },
       '1': {
-        descripition: `固定每週 ${periodWeekAdvanceObj.description}`,
-        cron: `0 0 8 * * ${periodWeekAdvanceObj.cron}`
+        descripition: `固定每週 ${_.get(forms, 'schedule.selectedOption.label', '')}`,
+        cron: `0 0 8 * * ${_.get(forms, 'schedule.selectedOption.value', '')}`
       },
       '2': {
         descripition: `區間內 不限時間`,
@@ -151,7 +151,7 @@ class CronBuilder extends React.Component {
     const selectedCron = calendarCronObj[`${tabMode}`];
 
     // 塞入 語意式 cron 敘述
-    this.props.changeValue(tabMode !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}` : '完全不限時間', 'scheduleDescription', 'classroom');
+    this.props.changeValue(tabMode !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}` : '完全不限時間', 'schedule.description', 'classroom');
 
 
     // 先生成 timeArr
@@ -162,7 +162,7 @@ class CronBuilder extends React.Component {
       const {
         startDate,
         endDate
-      } = forms.classroomCron
+      } = forms.schedule
 
       const startDataForCron = new Date(startDate).setDate(new Date(startDate).getDate() - 1)
       const endDateForCron = new Date(endDate);
@@ -257,7 +257,7 @@ class CronBuilder extends React.Component {
 
     // 塞入 redux state
     this.props.changeValue(calendarArr, 'calendar', 'classroom');
-    this.props.changeValue(cronArr, 'schedules', 'classroom');
+    this.props.changeValue(cronArr, 'schedule.cronFormat', 'classroom');
 
     // console.log('cron all in one', rawTimeArr, resultArr, monthObj, cronArr, calendarArr);
   }
@@ -266,8 +266,8 @@ class CronBuilder extends React.Component {
     if (e) {
       e.preventDefault();
     }
-    this.props.resetForm('classroomCron');
-    this.props.changeValue([], 'schedules', 'classroom');
+    this.props.resetForm('schedule');
+    this.props.changeValue([], 'schedule.cronFormat', 'classroom');
   }
 
   render() {
@@ -293,7 +293,7 @@ class CronBuilder extends React.Component {
           <div>
             <FormGroups
               formData={classroomFormDatePeriod}
-              targetForm={forms.classroomCron}
+              targetForm={forms.schedule}
               changeVal={changeValue}
             />
           </div>
@@ -310,30 +310,30 @@ class CronBuilder extends React.Component {
 
                   <FormGroups
                     formData={classroomFormDateBasic}
-                    targetForm={forms.classroomCron}
+                    targetForm={forms.schedule}
                     changeVal={changeValue}
                   />
                 </TabPanel>
                 <TabPanel>
                   <FormGroups
                     formData={classroomFormDateAdvance}
-                    targetForm={forms.classroomCron}
+                    targetForm={forms.schedule}
                     changeVal={changeValue}
                   />
                 </TabPanel>
                 <TabPanel>
                   <FormGroups
                     formData={classroomFormDateUnlimit}
-                    targetForm={forms.classroomCron}
+                    targetForm={forms.schedule}
                     changeVal={changeValue}
                   />
                 </TabPanel>
             </Tabs>
 
-            <If condition={!_.isEmpty(_.get(forms, 'classroom.schedules.0', ""))}>
+            <If condition={!_.isEmpty(_.get(forms, 'classroom.schedule.cronFormat.0', ""))}>
               <Then>
                 <h4>時間週期結果</h4>
-                <Crons>{_.get(forms, 'classroom.scheduleDescription', '')}</Crons>
+                <Crons>{_.get(forms, 'classroom.schedule.description', '')}</Crons>
               </Then>
             </If>
 

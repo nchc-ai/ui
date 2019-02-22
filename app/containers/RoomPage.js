@@ -90,7 +90,7 @@ class RoomPage extends Component {
       ...roomDetail.data,
       courses: _.get(roomDetail, 'data.courseInfo', []).map(d => ({ label: d.name, value: d.id })),
       students: _.get(roomDetail, 'data.students', []),
-      schedules: _.get(roomDetail, 'data.schedules', []),
+      schedule: _.get(roomDetail, 'data.schedule', {}),
       teachers: _.get(roomDetail, 'data.teachers', []),
       public: roomDetail.data.public ? { label: '是', value: true } : { label: '否', value: false },
     }
@@ -106,7 +106,7 @@ class RoomPage extends Component {
 
   resetForm = () => {
     this.props.resetForm('classroom');
-    this.props.resetForm('classroomCron');
+    this.props.resetForm('schedule');
   }
 
   startCourse = () => {
@@ -349,7 +349,7 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'create')}
               >
-                {/* name | description | schedules | courses */}
+                {/* name | description | schedule | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
@@ -390,7 +390,7 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'update')}
               >
-                {/* name | description | schedules | courses */}
+                {/* name | description | schedule | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
