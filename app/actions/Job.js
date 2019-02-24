@@ -46,7 +46,7 @@ export const getVMJobList = ({ user, token, isRefetch }) => async (dispatch) => 
 };
 
 
-// Launch
+// Launch: merged into single API already
 export const launchCourseJob = ({ token, user, classroomId, courseId, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
@@ -64,8 +64,6 @@ export const launchCourseJob = ({ token, user, classroomId, courseId, next }) =>
       types: types.LAUNCH_COURSE_JOB
     }
   });
-
-  // console.log('[launchJob] response', response);
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "launch course job fail"), 'error', TOAST_TIMING);

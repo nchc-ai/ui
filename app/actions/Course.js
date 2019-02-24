@@ -115,16 +115,13 @@ export const getConDatasetsOpts = token => async (dispatch) => {
 
 
 /**
- * Container Course
- * Called when clicking submit button to create container course.
+ * Create / Update container course
  * @param {Object} token - .
  * @param {Object} userInfo - .
  * @param {Object} submitData - .
  * @param {Object} onSuccess - .
  */
 export const submitContainerCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
-
-  // console.log('submitData', submitData)
 
   const finalSubmitData = {
     ...submitData,
@@ -135,18 +132,27 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
     ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
 
-  // console.log('finalSubmitData', finalSubmitData)
+  const conditionObj = {
+    create: {
+      method: 'POST',
+      types: types.CREATE_CONTAINER_COURSE
+    },
+    update: {
+      method: 'PUT',
+      types: types.UPDATE_CONTAINER_COURSE
+    }
+  }
 
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/course/${actionType}`,
-      method: actionType === 'create' ? 'POST' : 'PUT',
+      method: conditionObj[actionType].method,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(finalSubmitData),
-      types: types.CREATE_CONTAINER_COURSE
+      types: conditionObj[actionType].types
     }
   });
 
@@ -213,7 +219,7 @@ export const deleteCourseContainer = ({ courseId, token, next }) => async (dispa
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      types: types.DELETE_COURSE_CONTAINER
+      types: types.DELETE_CONTAINER_COURSE
     }
   });
   // console.log('[deleteCourse] response', response);

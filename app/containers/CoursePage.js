@@ -287,7 +287,8 @@ class CoursePage extends Component {
       isLoading,
       courseDetail,
       courseList,
-      changeValue
+      changeValue,
+      status
     } = this.props;
     const courseType = _.get(match, 'params.type');
     return (
@@ -295,7 +296,6 @@ class CoursePage extends Component {
         <Switch>
 
           {/* 課程搜尋 */}
-
           <Route exact path="/search/:courseName">
             <TableList
               data={courseList}
@@ -308,7 +308,6 @@ class CoursePage extends Component {
               actionMode="full"
             />
           </Route>
-
 
           {/* [common] 開課列表 */}
           <Route path="/user/ongoing-course/list">
@@ -370,6 +369,7 @@ class CoursePage extends Component {
                 nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
+                isLoading={status.isLaunchJobLoading}
                 isForm={false}
               />
             </CommonPageContent>
@@ -404,6 +404,7 @@ class CoursePage extends Component {
                 nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
+                isLoading={status.isLaunchJobLoading}
                 isForm={false}
               />
             </CommonPageContent>
@@ -447,6 +448,7 @@ class CoursePage extends Component {
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isCreateContainerCourseLoading}
                     isForm
                   />
 
@@ -517,6 +519,7 @@ class CoursePage extends Component {
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isCreateVMCourseLoading}
                     isForm
                   />
 
@@ -564,6 +567,7 @@ class CoursePage extends Component {
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isUpdateContainerCourseLoading}
                     isForm
                   />
 
@@ -634,6 +638,7 @@ class CoursePage extends Component {
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isUpdateVMCourseLoading}
                     isForm
                   />
 
@@ -670,7 +675,7 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
+const mapStateToProps = ({ forms, Auth, Role, Course, Job }) => ({
   forms,
   token: Auth.token,
   myUserInfo: Auth.userInfo,
@@ -681,7 +686,16 @@ const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
     data: Course.courseDetail.data,
     isLoading: Course.courseDetail.isLoading,
   },
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  status: {
+    isCreateContainerCourseLoading: Course.status.isCreateContainerCourseLoading,
+    isUpdateContainerCourseLoading: Course.status.isUpdateContainerCourseLoading,
+    isDeleteContainerCourseLoading: Course.status.isDeleteContainerCourseLoading,
+    isCreateVMCourseLoading: Course.status.isCreateVMCourseLoading,
+    isUpdateVMCourseLoading: Course.status.isUpdateVMCourseLoading,
+    isDeleteVMCourseLoading: Course.status.isDeleteVMCourseLoading,
+    isLaunchJobLoading: Job.status.isLaunchJobLoading
+  }
 });
 
 export default compose(

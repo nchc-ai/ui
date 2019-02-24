@@ -3,6 +3,14 @@ import * as actionTypes from '../actions/actionTypes';
 import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
 
 const InitialState = {
+  status: {
+    isCreateContainerCourseLoading: false,
+    isUpdateContainerCourseLoading: false,
+    isDeleteContainerCourseLoading: false,
+    isCreateVMCourseLoading: false,
+    isUpdateVMCourseLoading: false,
+    isDeleteVMCourseLoading: false
+  },
   coursesVM: {
     isLoading: false,
     data: []
@@ -31,6 +39,102 @@ const InitialState = {
 
 export default function Course(state = InitialState, action) {
   switch (action.type) {
+  case actionTypes.CREATE_CONTAINER_COURSE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isCreateContainerCourseLoading: true
+      }
+    };
+  case actionTypes.CREATE_CONTAINER_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isCreateContainerCourseLoading: false
+      }
+    };
+  case actionTypes.UPDATE_CONTAINER_COURSE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateContainerCourseLoading: true
+      }
+    };
+  case actionTypes.UPDATE_CONTAINER_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateContainerCourseLoading: false
+      }
+    };
+  case actionTypes.DELETE_CONTAINER_COURSE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteContainerCourseLoading: true
+      }
+    };
+  case actionTypes.DELETE_CONTAINER_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteContainerCourseLoading: false
+      }
+    };
+    case actionTypes.CREATE_VM_COURSE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isCreateVMCourseLoading: true
+      }
+    };
+  case actionTypes.CREATE_VM_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isCreateVMCourseLoading: false
+      }
+    };
+  case actionTypes.UPDATE_VM_COURSE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateVMCourseLoading: true
+      }
+    };
+  case actionTypes.UPDATE_VM_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateVMCourseLoading: false
+      }
+    };
+  case actionTypes.DELETE_VM_COURSE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteVMCourseLoading: true
+      }
+    };
+  case actionTypes.DELETE_VM_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteVMCourseLoading: false
+      }
+    };
   case actionTypes.GET_COURSE_LIST_VM[LOADING]:
     return {
       ...state,

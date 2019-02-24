@@ -4,6 +4,9 @@ import { LOADING, SUCCESS } from '../constants/apiActions';
 import { formatJob } from '../libraries/utils';
 
 const InitialState = {
+  status: {
+    isLaunchJobLoading: false
+  },
   container: {
     loading: true,
     data: []
@@ -36,6 +39,22 @@ const InitialState = {
 // TODO: 在這邊去 format job
 export default function Job(state = InitialState, action) {
   switch (action.type) {
+  case actionTypes.LAUNCH_COURSE_JOB[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isLaunchJobLoading: true
+      },
+    };
+  case actionTypes.LAUNCH_COURSE_JOB[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isLaunchJobLoading: false
+      },
+    };
   case actionTypes.GET_CON_JOB_LIST[LOADING]:
     return {
       ...state,
@@ -51,26 +70,6 @@ export default function Job(state = InitialState, action) {
         {
           ...state.doubleList[0],
           loading: true
-        }, {
-          ...state.doubleList[1]
-        }
-      ]
-    };
-  case actionTypes.UPDATE_CON_JOB_LIST[LOADING]:
-    return {
-      ...state,
-      container: {
-        ...state.container,
-        loading: false
-      },
-      List: {
-        ...state.List,
-        loading: false
-      },
-      doubleList: [
-        {
-          ...state.doubleList[0],
-          loading: false
         }, {
           ...state.doubleList[1]
         }
@@ -95,6 +94,26 @@ export default function Job(state = InitialState, action) {
           ...state.doubleList[0],
           loading: false,
           data: recievedConData
+        }, {
+          ...state.doubleList[1]
+        }
+      ]
+    };
+  case actionTypes.UPDATE_CON_JOB_LIST[LOADING]:
+    return {
+      ...state,
+      container: {
+        ...state.container,
+        loading: false
+      },
+      List: {
+        ...state.List,
+        loading: false
+      },
+      doubleList: [
+        {
+          ...state.doubleList[0],
+          loading: false
         }, {
           ...state.doubleList[1]
         }

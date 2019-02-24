@@ -61,6 +61,7 @@ const FormButtons = ({ size, isForm, showMode, cancelName, submitName, resetName
           <Else>
             <ButtonLoader
               onClick={nextMethod}
+              loading={isLoading || false}
             >
               {submitName || '繼續'}
             </ButtonLoader>
