@@ -2,6 +2,12 @@ import * as actionTypes from '../actions/actionTypes';
 import { LOADING, SUCCESS } from '../constants/apiActions';
 
 const InitialState = {
+  create: {
+    isLoading: false,
+  },
+  update: {
+    isLoading: false,
+  },
   list: {
     isLoading: false,
     data: []
@@ -34,7 +40,34 @@ const InitialState = {
 
 export default function Classroom(state = InitialState, action) {
   switch (action.type) {
-
+  case actionTypes.CREATE_CLASSROOM[LOADING]:
+    return {
+      ...state,
+      create: {
+        isLoading: true
+      }
+    };
+  case actionTypes.CREATE_CLASSROOM[SUCCESS]:
+    return {
+      ...state,
+      create: {
+        isLoading: false
+      }
+    };
+  case actionTypes.UPDATE_CLASSROOM[LOADING]:
+    return {
+      ...state,
+      update: {
+        isLoading: true
+      }
+    };
+  case actionTypes.UPDATE_CLASSROOM[SUCCESS]:
+    return {
+      ...state,
+      update: {
+        isLoading: false
+      }
+    };
   case actionTypes.GET_CLASSROOM_LIST[LOADING]:
     return {
       ...state,

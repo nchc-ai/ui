@@ -2,6 +2,7 @@ import React from 'react';
 import { Row, Col } from 'reactstrap';
 import styled from 'styled-components';
 import { If, Then, Else, When, Unless } from 'react-if'
+import { ButtonLoader } from '../LoadButton/index';
 
 const Component = styled.div`
   display: flex;
@@ -42,26 +43,27 @@ const Reset = styled(Button)`
 
 
 
-const FormButtons = ({ size, isForm, showMode, cancelName, submitName, resetName, backMethod, nextMethod, resetMethod, isReset }) => (
+const FormButtons = ({ size, isForm, showMode, cancelName, submitName, resetName, backMethod, nextMethod, resetMethod, isReset, isLoading }) => (
   <Component>
     {/* Next button */}
     <If condition={showMode === 'submit_only' || showMode === 'submit_back' || showMode === 'submit_reset'}>
       <Then>
         <If condition={isForm}>
           <Then>
-            <Next
+            <ButtonLoader
               type="submit"
+              loading={isLoading || false}
             >
               {submitName || '繼續'}
-            </Next>
+            </ButtonLoader>
           </Then>
 
           <Else>
-            <Next
+            <ButtonLoader
               onClick={nextMethod}
             >
               {submitName || '繼續'}
-            </Next>
+            </ButtonLoader>
           </Else>
         </If>
       </Then>

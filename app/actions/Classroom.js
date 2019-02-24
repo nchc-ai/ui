@@ -82,7 +82,7 @@ export const updateClassroom = ({ token, formData, students, next }) => async (d
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(submitData),
-      types: types.CREATE_CLASSROOM
+      types: types.UPDATE_CLASSROOM
     }
   });
 

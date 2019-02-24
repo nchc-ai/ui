@@ -265,7 +265,9 @@ class RoomPage extends Component {
       roomList,
       roomDetail,
       isSubstituating,
-      changeValue
+      changeValue,
+      isCreateLoading,
+      isUpdateLoading
     } = this.props;
 
     const courseType = _.get(match, 'params.type');
@@ -371,6 +373,7 @@ class RoomPage extends Component {
                   submitName="建立教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
+                  isLoading={isCreateLoading}
                   isForm
                 />
               </Form>
@@ -412,6 +415,7 @@ class RoomPage extends Component {
                   submitName="修改此教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
+                  isLoading={isUpdateLoading}
                   isForm
                 />
               </Form>
@@ -455,7 +459,9 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   isSubstituating: Role.isSubstituating,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  isCreateLoading: Classroom.create.isLoading,
+  isUpdateLoading: Classroom.update.isLoading
 });
 
 export default compose(
