@@ -578,8 +578,9 @@ export const courseVMFormOne = [
     },
     input: {
       inputType: 'select',
-      name: 'extraPorts',
       label: 'Volume Size',
+      name: 'volume',
+      target: 'courseVM',
       options: [
         { label: '0 GB', value: '0' },
         { label: '10 GB', value: '10' },
