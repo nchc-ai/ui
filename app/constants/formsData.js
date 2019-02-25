@@ -539,83 +539,53 @@ export const courseVMFormOne = [
   export const courseVMFormFour = [{
     key: 7,
     size: 8,
-    name: 'associate',
-    target: 'courseVM',
-    inputType: 'radio',
-    mainLabel: 'Associate Flooting IP',
-    className: 'fl',
-    options: [
-      {
-        key: 1,
-        radioKey: '4-1',
-        value: true,
-        label: '是 (true)'
-      }, {
-        key: 2,
-        radioKey: '4-2',
-        value: false,
-        label: '否 (false)'
-      }
-    ],
+    mainLabel: '建立浮動 IP',
     isRequired: true,
     validators: { required },
     errorMessage: {
       required: '您尚未選擇是否啟用此功能'
+    },
+    toggle: {
+      inputType: 'toggle-control-input',
+      name: 'associate',
+      target: 'courseVM',
+      onText: 'ON',
+      offText: 'OFF'
+    },
+    input: {
+      inputType: 'text',
+      name: 'extraPorts',
+      label: '額外網路埠',
+      placeholder: 'Ex: 8080#80#443',
     }
   }];
 
   export const courseVMFormFive = [{
     key: 8,
-    size: 8,
-    name: 'extraPorts',
-    target: 'courseVM',
-    inputType: 'text',
-    mainLabel: 'Extra Ports',
-    placeholder: 'ex: 8080#80#443',
-    isRequired: false
-  },  {
-    key: 9,
-    size: 8,
-    name: 'mount',
-    target: 'courseVM',
-    inputType: 'radio',
-    mainLabel: '是否 Mount',
-    className: 'fl',
-    options: [
-      {
-        key: 1,
-        radioKey: '5-1',
-        value: true,
-        label: '是 (true)'
-      }, {
-        key: 2,
-        radioKey: '5-2',
-        value: false,
-        label: '否 (false)'
-      }
-    ],
+    size: 4,
+    mainLabel: '卦載 Volume 空間',
     isRequired: true,
     validators: { required },
     errorMessage: {
       required: '您尚未選擇是否啟用此功能'
-    }
-  }, {
-    key: 10,
-    size: 3,
-    name: 'volume',
-    target: 'courseVM',
-    inputType: 'select',
-    mainLabel: 'Volume',
-    options: [
-      { label: '0 GB', value: '0' },
-      { label: '10 GB', value: '10' },
-      { label: '20 GB', value: '20' },
-      { label: '30 GB', value: '30' },
-    ],
-    isRequired: true,
-    validators: { required },
-    errorMessage: {
-      required: '您尚未選擇 Volume'
+    },
+    toggle: {
+      inputType: 'toggle-control-input',
+      name: 'mount',
+      target: 'courseVM',
+      onText: 'ON',
+      offText: 'OFF'
+    },
+    input: {
+      inputType: 'select',
+      name: 'extraPorts',
+      label: 'Volume Size',
+      options: [
+        { label: '0 GB', value: '0' },
+        { label: '10 GB', value: '10' },
+        { label: '20 GB', value: '20' },
+        { label: '30 GB', value: '30' },
+      ]
     }
   }
 ];

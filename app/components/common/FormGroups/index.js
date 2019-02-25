@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Control, Errors } from 'react-redux-form';
 import { Row, Col } from 'reactstrap';
+import Switch from "react-switch";
 import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
@@ -236,6 +237,87 @@ const FormGroups = ({
                     searchPromptText={template.promptText}
                     loadingPlaceholder={template.loadingText}
                   />
+                </div>
+              :
+                null
+            }
+
+            {/* Toggle */}
+            {
+              template.inputType === 'toggle'
+              ?
+                <div className="form-input">
+                  <label>
+                    <span>{template.offText}</span>
+                    <Switch
+                      onChange={val => changeVal(val, template.name, template.target)}
+                      checked={_.get(targetForm, template.name, false)}
+                    />
+                    <span>{template.onText}</span>
+                  </label>
+                </div>
+              :
+                null
+            }
+
+
+            {/* Toggle Select */}
+            {/* 一次載入兩個欄位 A 控制 B */}
+            {
+              template.toggle && template.toggle.inputType === 'toggle-control-input'
+              ?
+                <div className="form-input form-toggle">
+
+                  {/* main */}
+                  <label className="toggle-main-input">
+                    <span>{template.toggle.offText}</span>
+                    <Switch
+                      height={20}
+                      width={35}
+                      className={`toggle-${template.toggle.name} toggle-grp`}
+                      onChange={val => changeVal(val, template.toggle.name, template.toggle.target)}
+                      checked={_.get(targetForm, template.toggle.name, false)}
+                    />
+                    <span>{template.toggle.onText}</span>
+                  </label>
+
+                  {/* sub */}
+                  {
+                    _.get(targetForm, template.toggle.name, false) ?
+                    <div className="toggle-sub-input">
+                      <label>{template.input.label}</label>
+                      {
+                        template.input.inputType === 'text' ?
+                          <Control
+                            type={template.input.inputType}
+                            className={`input-${template.input.name} text-input`}
+                            model={`.${template.input.name}`}
+                            validators={template.input.validators}
+                            placeholder={template.input.placeholder}
+                            disabled={!_.get(targetForm, template.toggle.name)}
+                          />
+                        :
+                          null
+                      }
+
+                      {
+                        template.input.inputType === 'select' ?
+                          <Select
+                            name="form-field-name"
+                            value={_.get(targetForm, template.input.name)}
+                            onChange={val => changeVal(val, template.input.name, template.input.target)}
+                            options={template.input.options}
+                            placeholder={template.input.placeholder}
+                            searchable={false}
+                            clearable={false}
+                          />
+                        :
+                          null
+                      }
+                    </div>
+                    :
+                      null
+                  }
                 </div>
               :
                 null
