@@ -74,7 +74,11 @@ const FormGroups = ({
   <div className="form-groups-comp">
     {
       formData.map(template => (
-        <Row key={template.key} className={`form-group form-group-${template.name}`}>
+        <Row
+          key={template.key}
+          className={`form-group form-group-${template.name}`}
+          type={template.inputType}
+        >
           <Col md={{ size: template.size || 12 }}>
 
             {/* 標題 */}
@@ -275,7 +279,12 @@ const FormGroups = ({
                       height={20}
                       width={35}
                       className={`toggle-${template.toggle.name} toggle-grp`}
-                      onChange={val => changeVal(val, template.toggle.name, template.toggle.target)}
+                      onChange={val => {
+                        changeVal(val, template.toggle.name, template.target)
+                        if(!val) {
+                          changeVal('', template.input.name, template.target);
+                        }
+                      }}
                       checked={_.get(targetForm, template.toggle.name, false)}
                     />
                     <span>{template.toggle.onText}</span>
@@ -305,7 +314,7 @@ const FormGroups = ({
                           <Select
                             name="form-field-name"
                             value={_.get(targetForm, template.input.name)}
-                            onChange={val => changeVal(val, template.input.name, template.input.target)}
+                            onChange={val => changeVal(val, template.input.name, template.target)}
                             options={template.input.options}
                             placeholder={template.input.placeholder}
                             searchable={false}
