@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-
 import 'jquery';
 import 'react-select/dist/react-select.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
