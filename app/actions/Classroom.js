@@ -90,7 +90,7 @@ export const updateClassroom = ({ token, formData, students, next }) => async (d
     notify.show(_.get(response, 'payload.response.message', '更新課程失敗'), 'error', TOAST_TIMING);
   }
 
-  next('update');
+  next('edit');
 };
 
 /**

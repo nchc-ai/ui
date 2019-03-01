@@ -539,6 +539,7 @@ export const courseVMFormOne = [
   export const courseVMFormFour = [{
     key: 7,
     size: 8,
+    target: 'courseVM',
     mainLabel: '建立浮動 IP',
     isRequired: true,
     validators: { required },
@@ -548,13 +549,12 @@ export const courseVMFormOne = [
     toggle: {
       inputType: 'toggle-control-input',
       name: 'associate',
-      target: 'courseVM',
       onText: 'ON',
       offText: 'OFF'
     },
     input: {
       inputType: 'text',
-      name: 'extraPorts',
+      name: 'extraports',
       label: '額外網路埠',
       placeholder: 'Ex: 8080#80#443',
     }
@@ -563,6 +563,7 @@ export const courseVMFormOne = [
   export const courseVMFormFive = [{
     key: 8,
     size: 4,
+    target: 'courseVM',
     mainLabel: '卦載 Volume 空間',
     isRequired: true,
     validators: { required },
@@ -572,7 +573,6 @@ export const courseVMFormOne = [
     toggle: {
       inputType: 'toggle-control-input',
       name: 'mount',
-      target: 'courseVM',
       onText: 'ON',
       offText: 'OFF'
     },
@@ -580,9 +580,7 @@ export const courseVMFormOne = [
       inputType: 'select',
       label: 'Volume Size',
       name: 'volume',
-      target: 'courseVM',
       options: [
-        { label: '0 GB', value: '0' },
         { label: '10 GB', value: '10' },
         { label: '20 GB', value: '20' },
         { label: '30 GB', value: '30' },

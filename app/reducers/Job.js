@@ -1,6 +1,6 @@
 import _ , { map, assign, mapKeys } from 'lodash';
 import * as actionTypes from '../actions/actionTypes';
-import { LOADING, SUCCESS } from '../constants/apiActions';
+import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
 import { formatJob } from '../libraries/utils';
 
 const InitialState = {
@@ -48,6 +48,14 @@ export default function Job(state = InitialState, action) {
       },
     };
   case actionTypes.LAUNCH_COURSE_JOB[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isLaunchJobLoading: false
+      },
+    };
+  case actionTypes.LAUNCH_COURSE_JOB[FAIL]:
     return {
       ...state,
       status: {

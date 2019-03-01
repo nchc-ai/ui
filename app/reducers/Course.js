@@ -55,6 +55,14 @@ export default function Course(state = InitialState, action) {
         isCreateContainerCourseLoading: false
       }
     };
+  case actionTypes.CREATE_CONTAINER_COURSE[FAIL]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isCreateContainerCourseLoading: false
+      }
+    };
   case actionTypes.UPDATE_CONTAINER_COURSE[LOADING]:
     return {
       ...state,
@@ -96,6 +104,14 @@ export default function Course(state = InitialState, action) {
       }
     };
   case actionTypes.CREATE_VM_COURSE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isCreateVMCourseLoading: false
+      }
+    };
+  case actionTypes.CREATE_VM_COURSE[FAIL]:
     return {
       ...state,
       status: {

@@ -121,7 +121,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
  * @param {Object} submitData - .
  * @param {Object} onSuccess - .
  */
-export const submitContainerCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
+export const submitContainerCourse = ({ token, userInfo, submitData, condition, onFail, onSuccess }) => async (dispatch) => {
 
   const finalSubmitData = {
     ...submitData,
@@ -132,27 +132,16 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
     ports: submitData.ports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
 
-  const conditionObj = {
-    create: {
-      method: 'POST',
-      types: types.CREATE_CONTAINER_COURSE
-    },
-    update: {
-      method: 'PUT',
-      types: types.UPDATE_CONTAINER_COURSE
-    }
-  }
-
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/course/${actionType}`,
-      method: conditionObj[actionType].method,
+      endpoint: `${API_URL}/${API_VERSION}/course/${condition.apiAction}`,
+      method: condition.method,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(finalSubmitData),
-      types: conditionObj[actionType].types
+      types: condition.types
     }
   });
 
@@ -160,52 +149,44 @@ export const submitContainerCourse = ({ token, userInfo, submitData, actionType,
   if (_.isUndefined(response) || response.error) {
     const actionName = actionType === 'create' ? '新增' : '更新';
     notify.show(_.get(response, 'payload.response.message', `容器課程${actionName}失敗`), 'error', TOAST_TIMING);
-    onFail({ actionType, courseType: 'container'  })
+    onFail()
   } else if (onSuccess) {
-    onSuccess({ actionType, courseType: 'container' });
+    onSuccess(condition);
   }
 };
 
 
 
 // submit
-export const submitVMCourse = ({ token, userInfo, submitData, actionType, onFail, onSuccess }) => async (dispatch) => {
-
-  // console.log('submitData', submitData)
+export const submitVMCourse = ({ token, userInfo, submitData, condition, onFail, onSuccess }) => async (dispatch) => {
 
   const finalSubmitData = {
     ...submitData,
+    id: _.get(submitData, 'id', ''),
     user: userInfo.username,
     level: _.get(submitData, 'level.value'),
-    associate: _.get(submitData, 'associate.value').toString(),
-    mount: _.get(submitData, 'mount.value')
+    associate: _.get(submitData, 'associate', false).toString()
   };
-
-  if (actionType === 'edit') {
-    finalSubmitData.id = submitData.id
-  };
-
-  // console.log('finalSubmitData', finalSubmitData)
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/${actionType}`,
-      method:  actionType === 'create' ? 'POST' : 'PUT',
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/${condition.apiAction}`,
+      method:  condition.method,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(finalSubmitData),
-      types: types.SUBMIT_COURSE_VM
+      types: condition.types
     }
   });
 
   if (_.isUndefined(response) || response.error) {
-    const actionName = actionType === 'create' ? '新增' : '更新';
+    const actionName = condition.apiAction === 'create' ? '新增' : '更新';
     notify.show(_.get(response, 'payload.response.message', `VM課程${actionName}失敗`), 'error', TOAST_TIMING);
-    onFail({ actionType, courseType: 'vm' });
+    onFail();
   } else if (onSuccess) {
-    onSuccess({ actionType, courseType: 'vm' });
+    onSuccess(condition);
   }
 };
 
