@@ -20,7 +20,7 @@ import {
   initialPasswordState,
   initialRoleState,
   initialSnapshotState
-} from '../constants/initialState';
+} from 'constants/initialState';
 
 const rootReducer = combineReducers({
   forms: combineForms({

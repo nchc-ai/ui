@@ -1,5 +1,5 @@
-import * as actionTypes from '../actions/actionTypes';
-import { LOADING, SUCCESS } from '../constants/apiActions';
+import * as actionTypes from 'actions/actionTypes';
+import { LOADING, SUCCESS } from 'constants/apiActions';
 
 const InitialState = {
   create: {

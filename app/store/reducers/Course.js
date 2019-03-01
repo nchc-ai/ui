@@ -1,6 +1,6 @@
 import _ from 'lodash';
-import * as actionTypes from '../actions/actionTypes';
-import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
+import * as actionTypes from 'actions/actionTypes';
+import { LOADING, SUCCESS, FAIL } from 'constants/apiActions';
 
 const InitialState = {
   status: {

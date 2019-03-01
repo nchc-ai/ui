@@ -1,7 +1,7 @@
 import _ , { map, assign, mapKeys } from 'lodash';
-import * as actionTypes from '../actions/actionTypes';
-import { LOADING, SUCCESS, FAIL } from '../constants/apiActions';
-import { formatJob } from '../libraries/utils';
+import * as actionTypes from 'actions/actionTypes';
+import { LOADING, SUCCESS, FAIL } from 'constants/apiActions';
+import { formatJob } from '../../libraries/utils';
 
 const InitialState = {
   status: {

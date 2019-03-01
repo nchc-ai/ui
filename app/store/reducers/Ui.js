@@ -1,5 +1,5 @@
-import * as actionTypes from '../actions/actionTypes';
-import * as modalTypes from '../constants/types';
+import * as actionTypes from 'actions/actionTypes';
+import * as modalTypes from 'constants/types';
 
 const InitialState = {
   SideNav: {
