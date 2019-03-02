@@ -50,6 +50,11 @@ export const classroomGroupTpl = [
     label: '學生人數',
     type: 'number',
     unit: '位'
+  }, {
+    key: 3,
+    name: 'description',
+    label: '說明',
+    type: 'markdown'
   }
 ];
 
