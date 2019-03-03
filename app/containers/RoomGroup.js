@@ -12,6 +12,7 @@ import DataFrame from '../components/common/DataFrame/index';
 import CommonPageContent from '../components/CommonPageContent'
 import { classroomGroupData } from '../constants/tableData';
 import { classroomGroupTpl } from '../constants/listData';
+import ReactMarkdown from 'react-markdown';
 
 class RoomGroup extends Component {
 
@@ -149,6 +150,7 @@ class RoomGroup extends Component {
               <div key={index} className="classroom-card">
                 <div className="classroom-info">
                   <h3 className="classroom-name">{classroom.name}</h3>
+                  <ReactMarkdown source={_.get(classroom, 'description')} />
                   <ListView
                     templateData={classroomGroupTpl}
                     detailData={classroom}
