@@ -7,7 +7,6 @@ import Select from 'react-select';
 import DatePicker from 'react-datepicker';
 import ReactQuill from 'react-quill';
 import moment from 'moment';
-import CronBuilder from  '../CronBuilder/index';
 import FileUpload from '../FileUpload/index';
 import MarkdownEditor from '../MarkdownEditor/index';
 import KeyValue from '../KeyValue/index';
@@ -39,7 +38,6 @@ import KeyValue from '../KeyValue/index';
  * 6. 下拉式選單
  * 7. Async下拉式選單
  * 8. Async 多選
- * 9. cron 輸入
  * 10. sub 下拉式input
  * 11. Markdown
  * 12. Quill格式
@@ -357,17 +355,6 @@ const FormGroups = ({
                     multi
                   />
                 </div>
-              :
-                null
-            }
-
-            {/* cron 輸入 */}
-            {
-              template.inputType === 'cron-input'
-              ?
-                <CronBuilder
-                  onChange={val => changeVal(val, template.name, template.target)}
-                />
               :
                 null
             }

@@ -1,5 +1,5 @@
 import * as actionTypes from 'actions/actionTypes';
-import { LOADING, SUCCESS } from 'constants/apiActions';
+import { LOADING, SUCCESS, FAIL } from 'constants/apiActions';
 
 const InitialState = {
   create: {
@@ -54,6 +54,13 @@ export default function Classroom(state = InitialState, action) {
         isLoading: false
       }
     };
+  case actionTypes.CREATE_CLASSROOM[FAIL]:
+    return {
+      ...state,
+      create: {
+        isLoading: false
+      }
+    };
   case actionTypes.UPDATE_CLASSROOM[LOADING]:
     return {
       ...state,
@@ -62,6 +69,13 @@ export default function Classroom(state = InitialState, action) {
       }
     };
   case actionTypes.UPDATE_CLASSROOM[SUCCESS]:
+    return {
+      ...state,
+      update: {
+        isLoading: false
+      }
+    };
+  case actionTypes.UPDATE_CLASSROOM[FAIL]:
     return {
       ...state,
       update: {
@@ -82,6 +96,14 @@ export default function Classroom(state = InitialState, action) {
       list: {
         isLoading: false,
         data: action.payload.classrooms
+      }
+    };
+  case actionTypes.GET_CLASSROOM_LIST[FAIL]:
+    return {
+      ...state,
+      list: {
+        ...state.list,
+        isLoading: false
       }
     };
   case actionTypes.GET_CLASSROOM_DETAIL[LOADING]:

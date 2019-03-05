@@ -13,12 +13,13 @@ import { roomData, courseInfoData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
+import { CronInputs } from 'components'
 import DetailGroups from '../components/common/DetailGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
 import { classroomFrame } from '../constants/detailFrame';
-import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
+import { classroomFormOne, classroomFormTwo, cronFormData } from '../constants/formsData';
 import { classroomDetailTpl } from '../constants/listData';
 import { decodeHtml } from '../libraries/utils';
 import { setStudentsField } from '../actions/Classroom';
@@ -266,6 +267,7 @@ class RoomPage extends Component {
       roomDetail,
       isSubstituating,
       changeValue,
+      resetForm,
       isCreateLoading,
       isUpdateLoading
     } = this.props;
@@ -351,12 +353,20 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'create')}
               >
-                {/* name | description | schedule | courses */}
+                {/* name | description | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
                   changeVal={changeValue}
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
+                />
+
+                {/* schedule */}
+                <CronInputs
+                  targetForm={forms.classroom.schedule}
+                  template={cronFormData}
+                  changeValue={changeValue}
+                  resetForm={resetForm}
                 />
 
                 {/* teachers | students */}

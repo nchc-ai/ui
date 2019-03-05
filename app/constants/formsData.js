@@ -83,19 +83,6 @@ export const classroomFormOne = [
   }, {
     key: 3,
     size: 8,
-    name: 'schedule',
-    target: 'classroom',
-    inputType: 'cron-input',
-    mainLabel: '時間選擇',
-    placeholder: '可建立多個 cron 格式',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
-  }, {
-    key: 4,
-    size: 8,
     name: 'courses',
     target: 'classroom',
     inputType: 'async-tags-input',
@@ -109,30 +96,25 @@ export const classroomFormOne = [
   }
 ];
 
-export const classroomFormDatePeriod = [
-  {
-    key: 1,
+export const cronFormData = {
+  inputFirst: {
     size: 8,
     name: 'startDate',
-    target: 'schedule',
+    target: 'classroom.schedule',
     inputType: 'date',
     mainLabel: '起始時間',
-  }, {
-    key: 2,
+  },
+  inputSecond: {
     size: 8,
     name: 'endDate',
-    target: 'schedule',
+    target: 'classroom.schedule',
     inputType: 'date',
     mainLabel: '結束時間',
   },
-
-]
-export const classroomFormDateBasic = [
-  {
-    key: 1,
+  tabFirst: {
     size: 8,
     name: 'periodBasic',
-    target: 'schedule',
+    target: 'classroom.schedule',
     inputType: 'radio',
     mainLabel: '選擇教室時間',
     className: 'fl',
@@ -159,16 +141,12 @@ export const classroomFormDateBasic = [
     errorMessage: {
       required: '您尚未選擇週期'
     }
-  }
-];
-
-
-export const classroomFormDateAdvance = [
-  {
+  },
+  tabSecond: {
     key: 5,
     size: 8,
     name: 'periodAdvance',
-    target: 'schedule',
+    target: 'classroom.schedule',
     inputType: 'tags-input',
     mainLabel: '選擇教室時間',
     placeholder: '可多選',
@@ -199,15 +177,12 @@ export const classroomFormDateAdvance = [
       required: '您尚未選擇任何時間'
     },
     isRequired: false
-  }
-];
-
-export const classroomFormDateUnlimit = [
-  {
+  },
+  tabThird: {
     key: 1,
     size: 8,
     name: 'periodUnlimit',
-    target: 'schedule',
+    target: 'classroom.schedule',
     inputType: 'radio',
     mainLabel: '選擇教室時間',
     className: 'fl',
@@ -225,7 +200,7 @@ export const classroomFormDateUnlimit = [
       required: '您尚未選擇週期'
     }
   }
-];
+};
 
 export const classroomFormTwo = [
   {
