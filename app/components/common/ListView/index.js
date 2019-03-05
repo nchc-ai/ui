@@ -139,7 +139,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
 
                 {
                   template.type === 'markdown' ?
-                  <ReactMarkdown source={_.get(targetForm, template.name, '尚無資料')} />
+                  <ReactMarkdown source={_.get(detailData, template.name, '尚無資料')} />
                   : null
                 }
 

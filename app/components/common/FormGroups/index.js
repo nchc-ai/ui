@@ -48,13 +48,6 @@ import KeyValue from '../KeyValue/index';
  * - Hint
  */
 
-const styles = {
-  editor: {
-    border: '1px solid gray',
-    minHeight: '6em'
-  }
-};
-
 const FormGroups = ({
   formData,
   targetForm,

@@ -3,34 +3,50 @@ import { FormGroups } from 'components';
 /* eslint max-len: off */
 function getWrapper () {
     const props = {
-        title: 'PowerPoint-利用母片繪製相同底圖的圖片',
-        thumb: 'https://pic.pimg.tw/isvincent/1538094949-1955800924.png',
-        url: 'http://isvincent.pixnet.net/blog/post/48586071',
-        desc: '學校的工作中，有時候需要利用相同底圖繪製多張標示用途的圖片案',
-        gtmAction: ''
+        formData: [{
+            key: 1,
+            size: 8,
+            name: 'periodUnlimit',
+            target: 'schedule',
+            inputType: 'radio',
+            mainLabel: '選擇教室時間',
+            className: 'fl',
+            options: [
+              {
+                key: 1,
+                radioKey: 'periodUnlimit-1',
+                value: '不限時間',
+                label: '不限時間'
+              }
+            ],
+            isRequired: false,
+            errorMessage: {
+              required: '您尚未選擇週期'
+            }
+        }]
     };
 
     return render(<FormGroups {...props} />);
 }
 
 describe('FormGroups', () => {
-    describe('有 thumb 時，顯示 image', () => {
+    describe('input 需顯示欄位資料', () => {
         const wrapper = getWrapper();
 
-        it('should has image', () => {
-            expect(wrapper.find('img').length).toEqual(1);
+        it('should empty at first', () => {
+            expect(wrapper.find('.text-input').length).toEqual(0);
         });
 
-        it('should be equal PowerPoint-利用母片繪製相同底圖的圖片 for text', () => {
-            expect(wrapper.find('p').first().text()).toEqual('PowerPoint-利用母片繪製相同底圖的圖片');
-        });
+        // it('should be equal PowerPoint-利用母片繪製相同底圖的圖片 for text', () => {
+        //     expect(wrapper.find('p').first().text()).toEqual('PowerPoint-利用母片繪製相同底圖的圖片');
+        // });
 
-        it('should be equal http://isvincent.pixnet.net/blog/post/48586071 for link', () => {
-            expect($(wrapper, 'a').attr('href')).toEqual('http://isvincent.pixnet.net/blog/post/48586071');
-        });
+        // it('should be equal http://isvincent.pixnet.net/blog/post/48586071 for link', () => {
+        //     expect($(wrapper, 'a').attr('href')).toEqual('http://isvincent.pixnet.net/blog/post/48586071');
+        // });
 
-        it('should be match snapshot', () => {
-            expect(toJson(wrapper)).toMatchSnapshot();
-        });
+        // it('should be match snapshot', () => {
+        //     expect(toJson(wrapper)).toMatchSnapshot();
+        // });
     });
 });
