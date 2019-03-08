@@ -6,18 +6,13 @@ import _ from 'lodash';
 import { notify } from 'react-notify-toast';
 import { actions as formActions, Form } from 'react-redux-form';
 import ReactMarkdown from 'react-markdown';
+import { ListView, TableList, FormGroups, FormButtons, CommonPageContent } from 'components';
+import * as types from '../actions/actionTypes';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
-import TableList from '../components/common/TableList';
-import ListView from '../components/common/ListView/index';
-import FormGroups from '../components/common/FormGroups/index';
-import FormButtons from '../components/common/FormButtons/index';
-import CommonPageContent from '../components/CommonPageContent';
-import { initialCourseConState, initialCourseVMState } from '../constants/initialState';
-
 class CoursePage extends Component {
 
   componentWillMount() {
@@ -113,8 +108,8 @@ class CoursePage extends Component {
         edit: {
           ...course,
           level: { value: _.get(course, 'level') },
-          associate: { value: _.get(course, 'associate', false) === 'true' },
-          mount: { value: _.get(course, 'mount', false)},
+          associate: _.get(course, 'associate', false) === 'true',
+          mount: _.get(course, 'mount', false),
         },
         detail: {
           ...course
@@ -211,12 +206,12 @@ class CoursePage extends Component {
     nextProps.resetForm('courseVM');
   }
 
-  onSubmitCourseFail = ({ actionType, courseType }) => {
+  onSubmitCourseFail = () => {
     this.resetBothForm(this.props);
     this.props.endPorgressBar()
   }
 
-  onSubmitCourseSuccess = ({ actionType, courseType }) => {
+  onSubmitCourseSuccess = (condition) => {
     // Progress.hide();
     const {
       history,
@@ -229,7 +224,7 @@ class CoursePage extends Component {
     this.fetchData(this.props);
     this.props.history.push('/user/ongoing-course/list');
 
-    const actionName = actionType === 'create' ? '建立' : '更新';
+    const actionName = condition.apiAction === 'create' ? '建立' : '更新';
     notify.show(`課程${actionName}成功`, 'success', 1800);
   }
 
@@ -245,9 +240,38 @@ class CoursePage extends Component {
       userInfo,
       startProgressBar
     } = this.props;
+
     startProgressBar();
 
+    const conditionObj = {
+      container: {
+        create: {
+          apiAction: 'create',
+          method: 'POST',
+          types: types.CREATE_CONTAINER_COURSE
+        },
+        edit: {
+          apiAction: 'update',
+          method: 'PUT',
+          types: types.UPDATE_CONTAINER_COURSE
+        }
+      },
+      vm: {
+        create: {
+          apiAction: 'create',
+          method: 'POST',
+          types: types.CREATE_VM_COURSE
+        },
+        edit: {
+          apiAction: 'update',
+          method: 'PUT',
+          types: types.UPDATE_VM_COURSE
+        }
+      }
 
+    }
+
+    const condition = conditionObj[courseType][actionType];
     // this.props.validate('image', 'courseCon');
 
     if (courseType === 'container') {
@@ -255,7 +279,7 @@ class CoursePage extends Component {
         token,
         userInfo,
         submitData,
-        actionType,
+        condition,
         onFail: this.onSubmitCourseFail,
         onSuccess: this.onSubmitCourseSuccess
       });
@@ -264,7 +288,7 @@ class CoursePage extends Component {
         token,
         userInfo,
         submitData,
-        actionType,
+        condition,
         onFail: this.onSubmitCourseFail,
         onSuccess: this.onSubmitCourseSuccess
       });
@@ -287,7 +311,8 @@ class CoursePage extends Component {
       isLoading,
       courseDetail,
       courseList,
-      changeValue
+      changeValue,
+      status
     } = this.props;
     const courseType = _.get(match, 'params.type');
     return (
@@ -295,7 +320,6 @@ class CoursePage extends Component {
         <Switch>
 
           {/* 課程搜尋 */}
-
           <Route exact path="/search/:courseName">
             <TableList
               data={courseList}
@@ -308,7 +332,6 @@ class CoursePage extends Component {
               actionMode="full"
             />
           </Route>
-
 
           {/* [common] 開課列表 */}
           <Route path="/user/ongoing-course/list">
@@ -404,6 +427,7 @@ class CoursePage extends Component {
                 nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
+                isLoading={status.isLaunchJobLoading}
                 isForm={false}
               />
             </CommonPageContent>
@@ -447,6 +471,7 @@ class CoursePage extends Component {
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isCreateContainerCourseLoading}
                     isForm
                   />
 
@@ -517,6 +542,7 @@ class CoursePage extends Component {
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isCreateVMCourseLoading}
                     isForm
                   />
 
@@ -537,7 +563,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseCon`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'update', courseType: 'container' })}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'edit', courseType: 'container' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | introduction | level | image | GPU | datasets */}
@@ -564,6 +590,7 @@ class CoursePage extends Component {
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isUpdateContainerCourseLoading}
                     isForm
                   />
 
@@ -584,7 +611,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseVM`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'update', courseType: 'vm' })}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'edit', courseType: 'vm' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | intro | level | image */}
@@ -634,6 +661,7 @@ class CoursePage extends Component {
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isUpdateVMCourseLoading}
                     isForm
                   />
 
@@ -670,7 +698,7 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
+const mapStateToProps = ({ forms, Auth, Role, Course, Job }) => ({
   forms,
   token: Auth.token,
   myUserInfo: Auth.userInfo,
@@ -681,7 +709,16 @@ const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
     data: Course.courseDetail.data,
     isLoading: Course.courseDetail.isLoading,
   },
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  status: {
+    isCreateContainerCourseLoading: Course.status.isCreateContainerCourseLoading,
+    isUpdateContainerCourseLoading: Course.status.isUpdateContainerCourseLoading,
+    isDeleteContainerCourseLoading: Course.status.isDeleteContainerCourseLoading,
+    isCreateVMCourseLoading: Course.status.isCreateVMCourseLoading,
+    isUpdateVMCourseLoading: Course.status.isUpdateVMCourseLoading,
+    isDeleteVMCourseLoading: Course.status.isDeleteVMCourseLoading,
+    isLaunchJobLoading: Job.status.isLaunchJobLoading
+  }
 });
 
 export default compose(

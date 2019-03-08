@@ -31,12 +31,13 @@ const config = {
     chunkFilename: 'vendor_[name]_bundle.js',
     publicPath: '/'
   },
-
-  // resolve :{
-  //   alias: {
-  //     'react': bower_dir + '/react/react.production.min.js'
-  //   }
-  // },
+  resolve: {
+    modules: [path.resolve(__dirname, './app'), 'node_modules'],
+    extensions: ['.js', '.jsx', '.json'],
+    alias: {
+      components: path.resolve(__dirname, './app/components')
+    }
+  },
   // output: {
   //   path: __dirname + '/build',
   //   filename: 'index_bundle.js',

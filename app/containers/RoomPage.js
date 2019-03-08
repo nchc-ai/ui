@@ -13,12 +13,13 @@ import { roomData, courseInfoData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
+import { CronInputs } from 'components'
 import DetailGroups from '../components/common/DetailGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
 import { classroomFrame } from '../constants/detailFrame';
-import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
+import { classroomFormOne, classroomFormTwo, cronFormData } from '../constants/formsData';
 import { classroomDetailTpl } from '../constants/listData';
 import { decodeHtml } from '../libraries/utils';
 import { setStudentsField } from '../actions/Classroom';
@@ -90,7 +91,7 @@ class RoomPage extends Component {
       ...roomDetail.data,
       courses: _.get(roomDetail, 'data.courseInfo', []).map(d => ({ label: d.name, value: d.id })),
       students: _.get(roomDetail, 'data.students', []),
-      schedules: _.get(roomDetail, 'data.schedules', []),
+      schedule: _.get(roomDetail, 'data.schedule', {}),
       teachers: _.get(roomDetail, 'data.teachers', []),
       public: roomDetail.data.public ? { label: '是', value: true } : { label: '否', value: false },
     }
@@ -106,7 +107,7 @@ class RoomPage extends Component {
 
   resetForm = () => {
     this.props.resetForm('classroom');
-    this.props.resetForm('classroomCron');
+    this.props.resetForm('schedule');
   }
 
   startCourse = () => {
@@ -265,7 +266,10 @@ class RoomPage extends Component {
       roomList,
       roomDetail,
       isSubstituating,
-      changeValue
+      changeValue,
+      resetForm,
+      isCreateLoading,
+      isUpdateLoading
     } = this.props;
 
     const courseType = _.get(match, 'params.type');
@@ -349,12 +353,20 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'create')}
               >
-                {/* name | description | schedules | courses */}
+                {/* name | description | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
                   changeVal={changeValue}
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
+                />
+
+                {/* schedule */}
+                <CronInputs
+                  targetForm={forms.classroom.schedule}
+                  template={cronFormData}
+                  changeValue={changeValue}
+                  resetForm={resetForm}
                 />
 
                 {/* teachers | students */}
@@ -371,6 +383,7 @@ class RoomPage extends Component {
                   submitName="建立教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
+                  isLoading={isCreateLoading}
                   isForm
                 />
               </Form>
@@ -390,7 +403,7 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'update')}
               >
-                {/* name | description | schedules | courses */}
+                {/* name | description | schedule | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
@@ -412,6 +425,7 @@ class RoomPage extends Component {
                   submitName="修改此教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
+                  isLoading={isUpdateLoading}
                   isForm
                 />
               </Form>
@@ -455,7 +469,9 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   isSubstituating: Role.isSubstituating,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  isCreateLoading: Classroom.create.isLoading,
+  isUpdateLoading: Classroom.update.isLoading
 });
 
 export default compose(

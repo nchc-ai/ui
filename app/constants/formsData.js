@@ -83,19 +83,6 @@ export const classroomFormOne = [
   }, {
     key: 3,
     size: 8,
-    name: 'schedules',
-    target: 'classroom',
-    inputType: 'cron-input',
-    mainLabel: '時間選擇',
-    placeholder: '可建立多個 cron 格式',
-    validators: { required },
-    errorMessage: {
-      required: '您尚未輸入字元'
-    },
-    isRequired: true
-  }, {
-    key: 4,
-    size: 8,
     name: 'courses',
     target: 'classroom',
     inputType: 'async-tags-input',
@@ -109,30 +96,25 @@ export const classroomFormOne = [
   }
 ];
 
-export const classroomFormDatePeriod = [
-  {
-    key: 1,
+export const cronFormData = {
+  inputFirst: {
     size: 8,
     name: 'startDate',
-    target: 'classroomCron',
+    target: 'classroom.schedule',
     inputType: 'date',
     mainLabel: '起始時間',
-  }, {
-    key: 2,
+  },
+  inputSecond: {
     size: 8,
     name: 'endDate',
-    target: 'classroomCron',
+    target: 'classroom.schedule',
     inputType: 'date',
     mainLabel: '結束時間',
   },
-
-]
-export const classroomFormDateBasic = [
-  {
-    key: 1,
+  tabFirst: {
     size: 8,
     name: 'periodBasic',
-    target: 'classroomCron',
+    target: 'classroom.schedule',
     inputType: 'radio',
     mainLabel: '選擇教室時間',
     className: 'fl',
@@ -159,16 +141,12 @@ export const classroomFormDateBasic = [
     errorMessage: {
       required: '您尚未選擇週期'
     }
-  }
-];
-
-
-export const classroomFormDateAdvance = [
-  {
+  },
+  tabSecond: {
     key: 5,
     size: 8,
     name: 'periodAdvance',
-    target: 'classroomCron',
+    target: 'classroom.schedule',
     inputType: 'tags-input',
     mainLabel: '選擇教室時間',
     placeholder: '可多選',
@@ -199,15 +177,12 @@ export const classroomFormDateAdvance = [
       required: '您尚未選擇任何時間'
     },
     isRequired: false
-  }
-];
-
-export const classroomFormDateUnlimit = [
-  {
+  },
+  tabThird: {
     key: 1,
     size: 8,
     name: 'periodUnlimit',
-    target: 'classroomCron',
+    target: 'classroom.schedule',
     inputType: 'radio',
     mainLabel: '選擇教室時間',
     className: 'fl',
@@ -225,7 +200,7 @@ export const classroomFormDateUnlimit = [
       required: '您尚未選擇週期'
     }
   }
-];
+};
 
 export const classroomFormTwo = [
   {
@@ -539,83 +514,52 @@ export const courseVMFormOne = [
   export const courseVMFormFour = [{
     key: 7,
     size: 8,
-    name: 'associate',
     target: 'courseVM',
-    inputType: 'radio',
-    mainLabel: 'Associate Flooting IP',
-    className: 'fl',
-    options: [
-      {
-        key: 1,
-        radioKey: '4-1',
-        value: true,
-        label: '是 (true)'
-      }, {
-        key: 2,
-        radioKey: '4-2',
-        value: false,
-        label: '否 (false)'
-      }
-    ],
+    mainLabel: '建立浮動 IP',
     isRequired: true,
     validators: { required },
     errorMessage: {
       required: '您尚未選擇是否啟用此功能'
+    },
+    toggle: {
+      inputType: 'toggle-control-input',
+      name: 'associate',
+      onText: 'ON',
+      offText: 'OFF'
+    },
+    input: {
+      inputType: 'text',
+      name: 'extraports',
+      label: '額外網路埠',
+      placeholder: 'Ex: 8080#80#443',
     }
   }];
 
   export const courseVMFormFive = [{
     key: 8,
-    size: 8,
-    name: 'extraPorts',
+    size: 4,
     target: 'courseVM',
-    inputType: 'text',
-    mainLabel: 'Extra Ports',
-    placeholder: 'ex: 8080#80#443',
-    isRequired: false
-  },  {
-    key: 9,
-    size: 8,
-    name: 'mount',
-    target: 'courseVM',
-    inputType: 'radio',
-    mainLabel: '是否 Mount',
-    className: 'fl',
-    options: [
-      {
-        key: 1,
-        radioKey: '5-1',
-        value: true,
-        label: '是 (true)'
-      }, {
-        key: 2,
-        radioKey: '5-2',
-        value: false,
-        label: '否 (false)'
-      }
-    ],
+    mainLabel: '卦載 Volume 空間',
     isRequired: true,
     validators: { required },
     errorMessage: {
       required: '您尚未選擇是否啟用此功能'
-    }
-  }, {
-    key: 10,
-    size: 3,
-    name: 'volume',
-    target: 'courseVM',
-    inputType: 'select',
-    mainLabel: 'Volume',
-    options: [
-      { label: '0 GB', value: '0' },
-      { label: '10 GB', value: '10' },
-      { label: '20 GB', value: '20' },
-      { label: '30 GB', value: '30' },
-    ],
-    isRequired: true,
-    validators: { required },
-    errorMessage: {
-      required: '您尚未選擇 Volume'
+    },
+    toggle: {
+      inputType: 'toggle-control-input',
+      name: 'mount',
+      onText: 'ON',
+      offText: 'OFF'
+    },
+    input: {
+      inputType: 'select',
+      label: 'Volume Size',
+      name: 'volume',
+      options: [
+        { label: '10 GB', value: '10' },
+        { label: '20 GB', value: '20' },
+        { label: '30 GB', value: '30' },
+      ]
     }
   }
 ];

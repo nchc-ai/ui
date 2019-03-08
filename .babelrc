@@ -1,0 +1,18 @@
+{
+  "presets": [
+    "react",
+    "es2015",
+    "env",
+    "stage-2"
+  ],
+  "plugins": [
+    "transform-object-rest-spread",
+    ["module-resolver", {
+      "root": ["./app"],
+      "alias": {
+        "test": "./tests",
+        "components": "./app/components"
+      }
+    }]
+  ]
+}

@@ -3,7 +3,7 @@ import { If, Then, Else, When, Unless } from 'react-if'
 
 const Index = ({ title, subTitle, children, isUnderline, isTitleImg, isIcon, iconImgUrl, titleImgUrl, isFloatLeft, info }) => (
   <div className="common-title-con">
-    <If condition={isIcon}>
+    <If condition={!_.isUndefined(isIcon) && isIcon}>
       <Then>
         <div className={isFloatLeft ? "fl" : ""}>
           <img alt="" src={iconImgUrl} />
@@ -12,7 +12,7 @@ const Index = ({ title, subTitle, children, isUnderline, isTitleImg, isIcon, ico
     </If>
 
     <div className={isFloatLeft ? "fl" : ""}>
-      <If condition={isTitleImg}>
+      <If condition={!_.isUndefined(isTitleImg) && isTitleImg}>
         <Then>
           <img alt="" src={titleImgUrl} />
         </Then>
@@ -21,7 +21,7 @@ const Index = ({ title, subTitle, children, isUnderline, isTitleImg, isIcon, ico
         </Else>
       </If>
 
-      <If condition={subTitle}>
+      <If condition={!_.isUndefined(subTitle)}>
         <Then>
           <h6>{subTitle}</h6>
         </Then>
@@ -29,7 +29,7 @@ const Index = ({ title, subTitle, children, isUnderline, isTitleImg, isIcon, ico
 
       {children}
 
-      <If condition={isUnderline}>
+      <If condition={!_.isUndefined(isUnderline) && isUnderline}>
         <Then>
           <div className="common-title-underline" />
         </Then>

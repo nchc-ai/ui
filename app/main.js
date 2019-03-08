@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-
 import 'jquery';
 import 'react-select/dist/react-select.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -12,12 +11,12 @@ import 'font-awesome/css/font-awesome.min.css';
 import "react-datepicker/dist/react-datepicker.css";
 import "react-tabs/style/react-tabs.css";
 
-import store from './store';
+import createStore from './store';
 import App from './App';
 
 
 ReactDOM.render((
-  <Provider store={store}>
+  <Provider store={createStore}>
       <App />
   </Provider>
 ), document.getElementById('body'));

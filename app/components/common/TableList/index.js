@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
-import ToggleButton from 'react-toggle-button';
 import { MdMoreVert, MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import DataFrameTable from '../DataFrame/DataFrameTable';
 import DialogWrapper from '../Dialog/index';

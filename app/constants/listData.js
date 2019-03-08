@@ -147,7 +147,7 @@ export const courseVMDetailTpl = [
   }, {
     key: 6,
     bulletUrl: bulletTriangle,
-    name: 'extraPorts',
+    name: 'extraports',
     label: 'Extra Ports',
     type: 'text'
   }, {
