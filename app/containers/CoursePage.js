@@ -180,11 +180,21 @@ class CoursePage extends Component {
       token,
       userInfo
     } = this.props;
-    courseAction.deleteCourseContainer({
-      courseId: datum.id,
-      token,
-      next: () => this.onDeleteCourseSuccess()
-    });
+
+    if (datum.type === 'CONTAINER') {
+      courseAction.deleteCourseContainer({
+        courseId: datum.id,
+        token,
+        next: () => this.onDeleteCourseSuccess()
+      });
+    } else if (datum.type === 'VM') {
+      courseAction.deleteCourseVM({
+        courseId: datum.id,
+        token,
+        next: () => this.onDeleteCourseSuccess()
+      });
+    }
+    
   }
 
   onDeleteCourseSuccess = () => {
