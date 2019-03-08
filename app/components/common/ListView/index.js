@@ -99,83 +99,81 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               {/* Label */}
               <Label>{template.label}： </Label>
 
-              <ValueGroup>
-                {/* Define different value here */}
-                {
-                  template.type === 'text' ?
-                    <Value>{_.get(detailData, template.name, '尚無資料') || '尚無資料'}</Value>
-                  : null
-                }
+              {/* Define different value here */}
+              {
+                template.type === 'text' ?
+                  <Value>{_.get(detailData, template.name, '尚無資料') || '尚無資料'}</Value>
+                : null
+              }
 
-                {
-                  template.type === 'number' ?
-                    <Value>{_.get(detailData, template.name, 0)}</Value>
-                  : null
-                }
+              {
+                template.type === 'number' ?
+                  <Value>{_.get(detailData, template.name, 0)}</Value>
+                : null
+              }
 
-                {
-                  template.type === 'single-select' ?
-                    <Value>{_.get(detailData, `${template.name}.label`, '尚無資料') || '尚無資料'}</Value>
-                  : null
-                }
-                {
-                  template.type === 'multi-select' ?
-                    <Value>
-                      {
-                        _.get(detailData, template.name, []).length > 0 ?
-                          detailData[template.name].map((datum, index) => (
-                            <ArrayItem key={`array-${index}`}>{_.get(datum, "label", '')}</ArrayItem>
-                          ))
-                        : <EmptyValue>尚無資料</EmptyValue>
-                      }
-                    </Value>
-                  : null
-                }
-                {
-                  template.type === 'html' ?
-                    <Value>{decodeHtml(detailData[template.name])}</Value>
-                  : null
-                }
+              {
+                template.type === 'single-select' ?
+                  <Value>{_.get(detailData, `${template.name}.label`, '尚無資料') || '尚無資料'}</Value>
+                : null
+              }
+              {
+                template.type === 'multi-select' ?
+                  <Value>
+                    {
+                      _.get(detailData, template.name, []).length > 0 ?
+                        detailData[template.name].map((datum, index) => (
+                          <ArrayItem key={`array-${index}`}>{_.get(datum, "label", '')}</ArrayItem>
+                        ))
+                      : <EmptyValue>尚無資料</EmptyValue>
+                    }
+                  </Value>
+                : null
+              }
+              {
+                template.type === 'html' ?
+                  <Value>{decodeHtml(detailData[template.name])}</Value>
+                : null
+              }
 
-                {
-                  template.type === 'markdown' ?
-                  <ReactMarkdown source={_.get(detailData, template.name, '尚無資料')} />
-                  : null
-                }
+              {
+                template.type === 'markdown' ?
+                <ReactMarkdown source={_.get(detailData, template.name, '尚無資料')} />
+                : null
+              }
 
-                {
-                  template.type === 'ports' ?
-                    <Value>
-                      {
-                        _.get(detailData, template.name, []).length > 0 ?
-                          detailData[template.name].map((datum, index) => (
-                            <ArrayItem key={`array-${index}`}>
-                              {`${_.get(datum, 'name', '')} : ${_.get(datum, 'port', '')}`}
-                            </ArrayItem>
-                          ))
-                        : <EmptyValue>尚無資料</EmptyValue>
-                      }
-                    </Value>
-                  : null
-                }
-                {
-                  template.type === 'boolean' ?
-                    <Value>
-                      { _.get(detailData, template.name) === true || _.get(detailData, template.name) === 'true' ?
-                        `${_.get(template, 'custom.trueText', '是')}`
-                        :
-                        `${_.get(template, 'custom.falseText', '否')}`
-                      }
-                    </Value>
-                  : null
-                }
-                {
-                  template.unit && _.get(detailData, template.name, "") || _.get(detailData, template.name, "") === 0 ?
-                    <Unit>{ template.unit }</Unit>
-                  : null
-                }
-              </ValueGroup>
-            </Li>
+              {
+                template.type === 'ports' ?
+                  <Value>
+                    {
+                      _.get(detailData, template.name, []).length > 0 ?
+                        detailData[template.name].map((datum, index) => (
+                          <ArrayItem key={`array-${index}`}>
+                            {`${_.get(datum, 'name', '')} : ${_.get(datum, 'port', '')}`}
+                          </ArrayItem>
+                        ))
+                      : <EmptyValue>尚無資料</EmptyValue>
+                    }
+                  </Value>
+                : null
+              }
+              {
+                template.type === 'boolean' ?
+                  <Value>
+                    { _.get(detailData, template.name) === true || _.get(detailData, template.name) === 'true' ?
+                      `${_.get(template, 'custom.trueText', '是')}`
+                      :
+                      `${_.get(template, 'custom.falseText', '否')}`
+                    }
+                  </Value>
+                : null
+              }
+              {
+                template.unit && _.get(detailData, template.name, "") || _.get(detailData, template.name, "") === 0 ?
+                  <Unit>{ template.unit }</Unit>
+                : null
+              }
+            </Col>
           ))
         }
       </div>
