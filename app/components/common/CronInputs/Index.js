@@ -10,7 +10,6 @@ import { actions as formActions, Form } from 'react-redux-form';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import cronParser from 'cron-parser';
 import { notify } from 'react-notify-toast';
-import FormGroups from './index';
 import FormButtons from '../FormButtons/index';
 import { classroomFormDatePeriod, classroomFormDateBasic, classroomFormDateAdvance, classroomFormDateUnlimit } from '../../../constants/formsData';
 import { If, Then } from 'react-if'
@@ -37,6 +36,10 @@ const Background = styled.div`
   background-color: #f8f4f4;
   text-align: left;
   padding: 20px 20px;
+`;
+
+const FormGroups = styled.div`
+  min-height: 40px;
 `;
 
 const Row = styled.div`
@@ -289,20 +292,28 @@ class CronInputs extends React.Component {
 
           {/* 時間選擇 */}
           <div>
-            <div className="form-input">
+            <FormGroups className="form-group">
+              <label className="required-label label">
+                <span className="main-label">開始時間： </span>
+              </label>
               <DatePicker
-                selected={_.get(targetForm, template.inputFirst.name)}
+                className="text-input"
+                selected={_.get(targetForm, `startDate`)}
                 onChange={val => changeValue(val, template.inputFirst.name, template.inputFirst.target)}
                 dateFormat="yyyy / MM / dd"
               />
-            </div>
-            <div className="form-input">
+            </FormGroups>
+            <FormGroups className="form-group">
+              <label className="required-label label">
+                <span className="main-label">結束時間： </span>
+              </label>
               <DatePicker
-                selected={_.get(targetForm, template.inputSecond.name)}
+                className="text-input"
+                selected={_.get(targetForm, `endDate`)}
                 onChange={val => changeValue(val, template.inputSecond.name, template.inputSecond.target)}
                 dateFormat="yyyy / MM / dd"
               />
-            </div>
+            </FormGroups>
           </div>
 
           {/* 週期選擇 */}

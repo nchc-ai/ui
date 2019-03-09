@@ -14,8 +14,8 @@ export const initialClassroomState = {
   schedule: {
     cronFormat: [],
     descripition: '',
-    startAt: '',
-    endAt: '',
+    startDate: new Date(),
+    endDate: new Date().setMonth(new Date().getMonth() + 2),
     selectedType: 0,
     selectedOption: [{
       label: '每日',
@@ -26,20 +26,6 @@ export const initialClassroomState = {
   teachers: [],
   students: [],
   public:  { label: '是(true)', value: true }
-};
-
-export const initialScheduleState = {
-  cronFormat: [],
-  description: "",
-  startDate: new Date(),
-  endDate: new Date().setMonth(new Date().getMonth() + 2),
-  selectedType: 1,
-  selectedOption: [
-     {
-        label: "每日",
-        value: "*"
-     }
-  ]
 };
 
 export const initialCourseConState = {
