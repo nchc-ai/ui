@@ -199,7 +199,7 @@ class Header extends Component {
               }
 
               {
-                !isLogin?
+                !isLogin || (isLogin && loading)?
                   <Link to="/login">
                     <button>登入 / 註冊</button>
                   </Link>

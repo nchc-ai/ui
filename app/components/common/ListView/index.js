@@ -173,7 +173,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
                   <Unit>{ template.unit }</Unit>
                 : null
               }
-            </Col>
+            </Li>
           ))
         }
       </div>
