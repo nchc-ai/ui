@@ -11,11 +11,11 @@ const InitialState = {
   Dialog: {
     isOpen: false,
     title: '確認訊息',
-    info: '',
+    info: '詢問問題',
     target: '',
-    cancelText: '',
+    cancelText: '取消',
     cancelMethod: '',
-    submitText: '',
+    submitText: '確認',
     submitMethod: ''
   },
   Dropdown: {
@@ -33,29 +33,28 @@ const InitialState = {
 
 export default function Ui(state = InitialState, action) {
   switch (action.type) {
-  case actionTypes.CLOSE_DIALOG:
+  case actionTypes.TOGGLE_DIALOG:
     return {
       ...state,
       Dialog: {
         ...state.Dialog,
-        isOpen: false
+        isOpen: !state.Dialog.isOpen
       }
     };
-  case actionTypes.OPEN_DIALOG:
+  case actionTypes.SET_DIALOG_INFO:
     return {
       ...state,
       Dialog: {
-        isOpen: true,
-        title: action.request.title,
-        info: action.request.info,
-        target: action.request.target,
-        cancelText: action.request.cancelText,
-        cancelMethod: action.request.cancelMethod,
-        submitText: action.request.submitText,
-        submitMethod: action.request.submitMethod
+        ...state.Dialog,
+        title: action.dialogInfo.title,
+        info: action.dialogInfo.info,
+        target: action.dialogInfo.target,
+        cancelText: action.dialogInfo.cancelText,
+        cancelMethod: action.dialogInfo.cancelMethod,
+        submitText: action.dialogInfo.submitText,
+        submitMethod: action.dialogInfo.submitMethod
       }
     };
-
   case actionTypes.SET_DROPDOWN_POS:
     return {
       ...state,

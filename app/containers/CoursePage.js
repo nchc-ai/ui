@@ -11,8 +11,9 @@ import * as types from '../actions/actionTypes';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
+import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindDialogHOC from 'libraries/bindDialogHOC';
 class CoursePage extends Component {
 
   componentWillMount() {
@@ -132,23 +133,23 @@ class CoursePage extends Component {
    * @param {Object} data - .
    */
   launchCourseJob = (e, data) => {
-    const {
-      jobAction,
-      token,
-      userInfo,
-      myUserInfo,
-      startProgressBar
-    } = this.props;
+    // const {
+    //   jobAction,
+    //   token,
+    //   userInfo,
+    //   myUserInfo,
+    //   startProgressBar
+    // } = this.props;
 
-    startProgressBar();
+    // startProgressBar();
 
-    jobAction.launchCourseJob({
-      user: myUserInfo.username,
-      classroomId: '',
-      courseId: data.id,
-      token,
-      next: this.onAfterLaunchCourseJob
-    });
+    // jobAction.launchCourseJob({
+    //   user: myUserInfo.username,
+    //   classroomId: '',
+    //   courseId: data.id,
+    //   token,
+    //   next: this.onAfterLaunchCourseJob
+    // });
   }
 
   onAfterLaunchCourseJob = (isSuccess) => {
@@ -312,6 +313,7 @@ class CoursePage extends Component {
       courseDetail,
       courseList,
       changeValue,
+      toggleDialog,
       status
     } = this.props;
     const courseType = _.get(match, 'params.type');
@@ -357,6 +359,7 @@ class CoursePage extends Component {
                 startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
+                toggleDialog={toggleDialog}
                 actionMode="full"
               />
 
@@ -728,5 +731,6 @@ export default compose(
   ),
   bindActionCreatorHoc,
   bindProgressBarHoc,
+  bindDialogHOC,
   withRouter
 )(CoursePage);

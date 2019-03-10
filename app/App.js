@@ -7,9 +7,7 @@ import Cookies from 'js-cookie';
 
 import RouteUser from './RouteUser';
 import RouteGuest from './RouteGuest';
-import Global from './containers/Global';
 import StaticPage from './containers/StaticPage';
-import Dialog from './components/common/Dialog';
 import { metaObj } from './constants/models';
 import bindActionCreatorHoc from './libraries/bindActionCreatorHoc';
 

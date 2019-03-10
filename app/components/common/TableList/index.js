@@ -1,13 +1,13 @@
 import React from 'react';
 import _ from 'lodash';
+import { compose } from 'redux';
 import { Table } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import Moment from 'react-moment';
 import { MdMoreVert, MdAdd, MdEdit, MdDelete } from "react-icons/md";
 import DataFrameTable from '../DataFrame/DataFrameTable';
-import DialogWrapper from '../Dialog/index';
 
-const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, addJob, isLoading, actionMode }) => (
+const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, editMethod, deleteMethod, addJob, isLoading, actionMode, toggleDialog }) => (
   <Table className="table-list-comp" hover>
     <thead>
       <tr>
@@ -132,17 +132,17 @@ const TableList = ({ prefixUrl, data, tableData, isDialogOpen, startMethod, edit
                             }
 
                             {
-                              actionMode === 'edit_only' || actionMode === 'edit_delete' || actionMode === 'full'?
+                              actionMode === 'edit_only' || actionMode === 'edit_delete' || actionMode === 'full' ?
                               <li>
                                 <button className="action-btn" onClick={e => editMethod(e, d)}>
                                   <span className="action-word">編輯</span>
-                                  <MdEdit />
+                                  <MdEdit/>
                                 </button>
                               </li> : null
                             }
 
                             {
-                              actionMode === 'delete_only' || actionMode === 'edit_delete' || actionMode === 'full'?
+                              actionMode === 'delete_only' || actionMode === 'edit_delete' || actionMode === 'full' ?
                               <li>
                                 <button className="action-btn" onClick={e => deleteMethod(e, d)}>
                                   <span className="action-word">刪除</span>

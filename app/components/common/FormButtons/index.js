@@ -48,7 +48,7 @@ const FormButtons = ({ size, isForm, showMode, cancelName, submitName, resetName
     {/* Next button */}
     <If condition={showMode === 'submit_only' || showMode === 'submit_back' || showMode === 'submit_reset'}>
       <Then>
-        <If condition={isForm}>
+        <If condition={!_.isUndefined(isForm) && isForm}>
           <Then>
             <ButtonLoader
               type="submit"

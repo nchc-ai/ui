@@ -7,9 +7,11 @@ import Notifications, { notify } from 'react-notify-toast';
 // import ga from 'react-google-analytics';
 import LoadingBar from "react-top-loading-bar";
 import Header from './Header';
-import Dialog from '../components/common/Dialog/index';
+import Dialog from 'components/common/Dialog/index';
 
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+
+import bindDialogHOC from 'libraries/bindDialogHOC';
 
 // const GAInitiailizer = ga.Initializer;
 
@@ -33,6 +35,7 @@ class Global extends Component {
       children,
       isLoading,
       progressBar,
+      dialog,
       t,
     } = this.props;
     return (
@@ -62,7 +65,9 @@ class Global extends Component {
         <div className="global-body">
           {children}
         </div>
-        <Dialog />
+        <Dialog
+          dialog={dialog}
+        />
       </div>
     );
   }
@@ -76,11 +81,13 @@ const mapStateToProps = ({ Auth, Ui }) => ({
   progressBar: {
     isActive: Ui.ProgressBar.isActive,
     progress: Ui.ProgressBar.progress
-  }
+  },
+  dialog: Ui.Dialog
 });
 
 export default compose(
   connect(mapStateToProps),
-  bindActionCreatorHoc
+  bindActionCreatorHoc,
+  bindDialogHOC
 )(Global);
 
