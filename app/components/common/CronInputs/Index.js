@@ -279,7 +279,6 @@ class CronInputs extends React.Component {
     } = this.props;
 
     // let selectedIndex = _.get(targetForm, 'schedule.selectedType', 0);
-    console.log('here', _.get(targetForm, `selectedOption.0.value`), targetForm);
     return (
       <Comp>
         <Background>
