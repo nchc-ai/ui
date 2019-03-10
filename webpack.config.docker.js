@@ -15,7 +15,7 @@ const extractSass = new ExtractTextPlugin({
 const config = {
   mode: 'development',
   devtool: 'cheap-eval-source-map',
-  // entry: [ 
+  // entry: [
   //   'babel-polyfill',
   //   'webpack-hot-middleware/client?reload=true',
   //   './app/main.js'
@@ -35,7 +35,11 @@ const config = {
     modules: [path.resolve(__dirname, './app'), 'node_modules'],
     extensions: ['.js', '.jsx', '.json'],
     alias: {
-      components: path.resolve(__dirname, './app/components')
+      actions: path.resolve(__dirname, './app/actions'),
+      components: path.resolve(__dirname, './app/components'),
+      store: path.resolve(__dirname, './app/store'),
+      constants: path.resolve(__dirname, './app/constants'),
+      hoc: path.resolve(__dirname, './app/HOC')
     }
   },
   // output: {

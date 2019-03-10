@@ -39,6 +39,7 @@ const config = {
       components: path.resolve(__dirname, './app/components'),
       store: path.resolve(__dirname, './app/store'),
       constants: path.resolve(__dirname, './app/constants'),
+      hoc: path.resolve(__dirname, './app/HOC')
     }
   },
   // output: {
