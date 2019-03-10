@@ -1,5 +1,5 @@
 import * as actionTypes from 'actions/actionTypes';
-import * as modalTypes from 'constants/types';
+import * as dialogTypes from 'constants/dialogTypes';
 
 const InitialState = {
   SideNav: {
@@ -10,9 +10,9 @@ const InitialState = {
   },
   Dialog: {
     isOpen: false,
+    type: dialogTypes.CREATE,
     title: '確認訊息',
     info: '詢問問題',
-    target: '',
     cancelText: '取消',
     cancelMethod: '',
     submitText: '確認',
@@ -30,7 +30,6 @@ const InitialState = {
     progress: 0
   }
 };
-
 export default function Ui(state = InitialState, action) {
   switch (action.type) {
   case actionTypes.TOGGLE_DIALOG:
@@ -41,18 +40,18 @@ export default function Ui(state = InitialState, action) {
         isOpen: !state.Dialog.isOpen
       }
     };
-  case actionTypes.SET_DIALOG_INFO:
+  case actionTypes.OPEN_CUSTOM_DIALOG:
     return {
       ...state,
       Dialog: {
-        ...state.Dialog,
-        title: action.dialogInfo.title,
-        info: action.dialogInfo.info,
-        target: action.dialogInfo.target,
-        cancelText: action.dialogInfo.cancelText,
-        cancelMethod: action.dialogInfo.cancelMethod,
-        submitText: action.dialogInfo.submitText,
-        submitMethod: action.dialogInfo.submitMethod
+        isOpen: true,
+        type: action.config.type || state.Dialog.type,
+        title: action.config.title || state.Dialog.title,
+        info: action.config.info || state.Dialog.info,
+        cancelText: action.config.cancelText || state.Dialog.cancelText,
+        cancelMethod: action.config.cancelMethod || state.Dialog.cancelMethod,
+        submitText: action.config.submitText || state.Dialog.submitText,
+        submitMethod: action.config.submitMethod || state.Dialog.submitMethod
       }
     };
   case actionTypes.SET_DROPDOWN_POS:

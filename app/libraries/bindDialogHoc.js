@@ -7,23 +7,14 @@ export default function bindDialogHoc (WrappedComponent) {
       this.props.uiAction.toggleDialog();
     }
 
-    setDialogInfo = ({ title }) => {
-      this.props.uiAction.setDialogInfo({
-        info: {
-          title,
-          info: 'info',
-          target: 'target',
-          cancelText: 'cancel',
-          cancelMethod: 'cancelMethod',
-          submitText: 'submitText',
-          submitMethod: 'method'
-        }
-      });
+    openCustomDialog = (config) => {
+      this.props.uiAction.openCustomDialog(config);
     }
 
     render = () => (
       <WrappedComponent {...this.props}
         toggleDialog={this.toggleDialog}
+        openCustomDialog={this.openCustomDialog}
       />);
   }
 

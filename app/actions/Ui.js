@@ -4,9 +4,9 @@ export const toggleDialog = () => ({
   type: types.TOGGLE_DIALOG
 });
 
-export const setDialogInfo = ({ info }) => ({
-  type: types.SET_DIALOG_INFO,
-  info
+export const openCustomDialog = (config) => ({
+  type: types.OPEN_CUSTOM_DIALOG,
+  config
 });
 
 export const setDropdownPos = pos => ({

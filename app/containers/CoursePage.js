@@ -14,6 +14,8 @@ import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listDa
 import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
 import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
 import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
+
 class CoursePage extends Component {
 
   componentWillMount() {
@@ -44,7 +46,7 @@ class CoursePage extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
-      this.props.endPorgressBar();
+      // this.props.endPorgressBar();
     }
   }
 
@@ -133,37 +135,47 @@ class CoursePage extends Component {
    * @param {Object} data - .
    */
   launchCourseJob = (e, data) => {
-    // const {
-    //   jobAction,
-    //   token,
-    //   userInfo,
-    //   myUserInfo,
-    //   startProgressBar
-    // } = this.props;
-
-    // startProgressBar();
-
-    // jobAction.launchCourseJob({
-    //   user: myUserInfo.username,
-    //   classroomId: '',
-    //   courseId: data.id,
-    //   token,
-    //   next: this.onAfterLaunchCourseJob
-    // });
-  }
-
-  onAfterLaunchCourseJob = (isSuccess) => {
+    // TODO: 如有 launch 過就不要再 launch
     const {
-      history,
-      endPorgressBar
+      jobAction,
+      token,
+      myUserInfo,
+      startProgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
 
-    endPorgressBar();
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: '開始課程',
+      info: '請問確定要開始課程嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        jobAction.launchCourseJob({
+          user: myUserInfo.username,
+          classroomId: '',
+          courseId: data.id,
+          token,
+          next: (isSuccess) => {
+            const {
+              history,
+              endPorgressBar
+            } = this.props;
 
-    if (isSuccess) {
-      history.push('/user/job/list');
-      notify.show('已發出啟動課程訊號', 'success', 1800);
-    }
+            endPorgressBar();
+
+            if (isSuccess) {
+              history.push('/user/job/list');
+              notify.show('已發出啟動課程訊號', 'success', 1800);
+            }
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   editCourse = (e, datum) => {
@@ -172,21 +184,35 @@ class CoursePage extends Component {
 
   deleteCourse = (e, datum) => {
     const {
+      token,
       courseAction,
-      token,
-      userInfo
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
-    courseAction.deleteCourseContainer({
-      courseId: datum.id,
-      token,
-      next: () => this.onDeleteCourseSuccess()
-    });
-  }
 
-  onDeleteCourseSuccess = () => {
-    // Progress.hide();
-    this.fetchData(this.props);
-    notify.show('課程刪除成功', 'success', 1800);
+    openCustomDialog({
+      type: dialogTypes.DELETE,
+      title: '刪除課程',
+      info: '請問確定要刪除課程嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        courseAction.deleteCourseContainer({
+          courseId: datum.id,
+          token,
+          next: () => {
+            endPorgressBar();
+            this.fetchData(this.props);
+            notify.show('課程刪除成功', 'success', 1800);
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   // 共用 cb
@@ -239,10 +265,10 @@ class CoursePage extends Component {
       courseAction,
       token,
       userInfo,
-      startProgressBar
+      // startProgressBar
     } = this.props;
 
-    startProgressBar();
+    // startProgressBar();
 
     const conditionObj = {
       container: {
@@ -327,7 +353,6 @@ class CoursePage extends Component {
               data={courseList}
               tableData={ongoingCourseData}
               isLoading={isLoading}
-              isDialogOpen={true}
               startMethod={this.launchCourseJob}
               editMethod={this.editCourse}
               deleteMethod={this.deleteCourse}
