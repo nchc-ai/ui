@@ -246,7 +246,7 @@ class CoursePage extends Component {
         },
         edit: {
           courseText: '容器課程',
-          actionText: '編輯',
+          actionText: '更新',
           apiAction: 'update',
           method: 'PUT',
           types: types.UPDATE_CONTAINER_COURSE
@@ -262,7 +262,7 @@ class CoursePage extends Component {
         },
         edit: {
           courseText: 'VM課程',
-          actionText: '編輯',
+          actionText: '更新',
           apiAction: 'update',
           method: 'PUT',
           types: types.UPDATE_VM_COURSE
@@ -324,7 +324,7 @@ class CoursePage extends Component {
               this.fetchData(this.props);
 
               history.push('/user/ongoing-course/list');
-              notify.show(`${condition.actionText}${condition.courseText}`, 'success', TOAST_TIMING);
+              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
             },
             onFail: () => {
               endPorgressBar();

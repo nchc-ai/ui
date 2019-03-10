@@ -13,7 +13,11 @@ import CommonPageContent from '../components/CommonPageContent'
 import { classroomGroupData } from '../constants/tableData';
 import { classroomGroupTpl } from '../constants/listData';
 import ReactMarkdown from 'react-markdown';
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
+
 class RoomGroup extends Component {
 
   componentWillMount() {
@@ -28,9 +32,6 @@ class RoomGroup extends Component {
     }
   }
 
-  componentWillUnmount() {
-  }
-
   fetchData = (nextProps) => {
     const {
       roomAction,
@@ -38,14 +39,15 @@ class RoomGroup extends Component {
       userInfo
     } = nextProps;
     if (token) {
-      roomAction.getClassroomList({ token, userInfo, next: this.onGetClassroomListDone });
+      roomAction.getClassroomList({
+        token,
+        userInfo,
+        next: () => {
+
+        }
+      });
     } else {
       notify.show('您 token 有誤，請重新登入', 'error', TOAST_TIMING);
-    }
-  }
-  onGetClassroomListDone = (isSuccess) => {
-    if (isSuccess) {
-      // console.log('fail');
     }
   }
 
@@ -56,72 +58,43 @@ class RoomGroup extends Component {
    */
   launchCourseJob = (e, data) => {
     const {
+      token,
+      history,
       jobAction,
-      token,
-      userInfo,
-      myUserInfo
+      myUserInfo,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
-    // Progress.show();
-    jobAction.launchCourseJob({
-      user: myUserInfo.username,
-      classroomId: data.roomId,
-      courseId: data.id,
-      token,
-      next: () => this.onLaunchCourseJobSuccess()
+
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: '開始課程',
+      info: '請問確定要開始此課程嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+
+        jobAction.launchCourseJob({
+          user: myUserInfo.username,
+          classroomId: data.roomId,
+          courseId: data.id,
+          token,
+          next: (isSuccess) => {
+            endPorgressBar();
+            if (isSuccess) {
+              history.push('/user/job/list');
+              notify.show('已發出啟動課程訊號', 'success', TOAST_TIMING);
+            }
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
     });
   }
-
-  onLaunchCourseJobSuccess = () => {
-    // Progress.hide();
-    this.props.history.push('/user/job/list');
-    notify.show('已發出啟動課程訊號', 'success', TOAST_TIMING);
-  }
-
-  onStartClassSuccess = () => {
-
-    // console.log('create job success');
-    Progress.hide();
-    notify.show('新增工作成功', 'success', TOAST_TIMING);
-    this.props.history.push('/user/job');
-  }
-
-
-  backFromCourseDetail = (e) => {
-    e.preventDefault();
-    this.props.history.goBack();
-  }
-
-  changeRoomValue() {
-
-  }
-
-  startRoom() {
-    // console.log('start');
-  }
-
-  editRoom() {
-    // console.log('start');
-  }
-
-  deleteRoom() {
-    // console.log('start');
-  }
-  cancelRoomEdit() {
-    // console.log('cancel');
-  }
-
-  startCourse () {
-    // console.log('start course');
-  }
-
-  editCourse () {
-    // console.log('start course');
-  }
-
-  deleteCourse () {
-    // console.log('start course');
-  }
-
 
   render() {
     const {
@@ -206,5 +179,7 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
+  bindProgressBarHoc,
+  bindDialogHOC,
   withRouter
 )(RoomGroup);
