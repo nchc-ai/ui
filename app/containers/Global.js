@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 // import { translate } from 'react-i18next';
-import Notifications, { notify } from 'react-notify-toast';
+import Notifications, { notify } from 'components/common/NotifyToast';
 // import ga from 'react-google-analytics';
 import LoadingBar from "react-top-loading-bar";
 import Header from './Header';

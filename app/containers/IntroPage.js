@@ -3,7 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { actions as formActions } from 'react-redux-form';
 import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';

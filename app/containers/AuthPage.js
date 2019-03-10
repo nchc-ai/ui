@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Form, actions as formActions } from 'react-redux-form';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import Cookies from 'js-cookie';
 import { dayToSecond, redirectUrlWithRole } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';

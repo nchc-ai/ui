@@ -3,7 +3,7 @@ import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import Cookies from 'js-cookie';
 import * as types from './actionTypes';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../constants';
 import { API_URL, API_VERSION, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData, dayToSecond } from '../libraries/utils';

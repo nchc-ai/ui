@@ -3,7 +3,7 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { actions as formActions, Form } from 'react-redux-form';
 import ReactMarkdown from 'react-markdown';
 import { ListView, TableList, FormGroups, FormButtons, CommonPageContent } from 'components';

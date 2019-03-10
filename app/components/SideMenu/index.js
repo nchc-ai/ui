@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import BurgerMenu from 'react-burger-menu';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import bindActionCreatorHoc from '../../libraries/bindActionCreatorHoc';
 import { sideNavAdmin, sideNavTeacher, sideNavStudent, sideNavCommon } from '../../constants/navData';
 import LinkFormat from '../common/LinkFormat/index';

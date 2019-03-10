@@ -3,7 +3,7 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { Form, actions as formActions } from 'react-redux-form';
@@ -231,6 +231,8 @@ class RoomPage extends Component {
               students: mappedStudents,
               next: (formType) => {
 
+                endPorgressBar();
+
                 history.push('/user/classroom-manage/list');
                 notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
 
@@ -244,6 +246,8 @@ class RoomPage extends Component {
               formData,
               students: formData.students,
               next: (formType) => {
+
+                endPorgressBar();
 
                 history.push('/user/classroom-manage/list');
                 notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);

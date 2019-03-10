@@ -1,6 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 

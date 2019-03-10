@@ -9,7 +9,7 @@ import Select from 'react-select';
 import { actions as formActions, Form } from 'react-redux-form';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import cronParser from 'cron-parser';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import FormButtons from '../FormButtons/index';
 import { classroomFormDatePeriod, classroomFormDateBasic, classroomFormDateAdvance, classroomFormDateUnlimit } from '../../../constants/formsData';
 import { If, Then } from 'react-if'

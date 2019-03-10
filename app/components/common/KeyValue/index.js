@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styled from 'styled-components';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../../../constants';
 
 const Comp = styled.div`

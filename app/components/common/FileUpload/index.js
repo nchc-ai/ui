@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../../../constants';
 import KeyValue from '../KeyValue/index';
 import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';

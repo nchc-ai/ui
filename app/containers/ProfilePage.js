@@ -3,7 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Form, actions as formActions } from 'react-redux-form';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
@@ -59,7 +59,7 @@ class ProfilePage extends Component {
           token,
           () => {
             endPorgressBar();
-            notify.show('個人資料更新成功', 'success', 1800);
+            notify.show('個人資料更新成功', 'success', 180000);
             this.fetchData(this.props);
           }
         );

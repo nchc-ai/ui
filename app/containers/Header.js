@@ -7,7 +7,7 @@ import MyoauthButton from '../components/Auth/MyoauthButton';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Hover } from 'react-powerplug';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import Cookies from 'js-cookie';
 import SetUserInfo from '../components/common/SetUserInfo/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';

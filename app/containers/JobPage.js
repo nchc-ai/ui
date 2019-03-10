@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';;
 import { actions as formActions, Form } from 'react-redux-form';
 import { Row, Col } from 'reactstrap';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
 import { JOB_INTERVAL } from '../config/api';

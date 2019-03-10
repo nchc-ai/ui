@@ -3,7 +3,7 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { actions as formActions, Form } from 'react-redux-form';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { passwordForm } from '../constants/formsData';
 import { TOAST_TIMING } from '../constants';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
