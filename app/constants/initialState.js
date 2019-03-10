@@ -59,7 +59,7 @@ export const initialCourseVMState = {
   extraports: '',
   sshkey: '',
   mount: false,
-  volume: { label: '0 GB', value: '0' },
+  volume: { label: '10 GB', value: '10' },
   startAt: '',
   endAt: '',
 };
