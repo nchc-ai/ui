@@ -46,7 +46,6 @@ class CoursePage extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
-      // this.props.endPorgressBar();
     }
   }
 
@@ -137,10 +136,12 @@ class CoursePage extends Component {
   launchCourseJob = (e, data) => {
     // TODO: 如有 launch 過就不要再 launch
     const {
-      jobAction,
       token,
+      history,
+      jobAction,
       myUserInfo,
       startProgressBar,
+      endPorgressBar,
       openCustomDialog,
       toggleDialog
     } = this.props;
@@ -158,13 +159,7 @@ class CoursePage extends Component {
           courseId: data.id,
           token,
           next: (isSuccess) => {
-            const {
-              history,
-              endPorgressBar
-            } = this.props;
-
             endPorgressBar();
-
             if (isSuccess) {
               history.push('/user/job/list');
               notify.show('已發出啟動課程訊號', 'success', 1800);
@@ -233,51 +228,24 @@ class CoursePage extends Component {
     nextProps.resetForm('courseVM');
   }
 
-  onSubmitCourseFail = () => {
-    this.resetBothForm(this.props);
-    this.props.endPorgressBar()
-  }
-
-  onSubmitCourseSuccess = (condition) => {
-    // Progress.hide();
-    const {
-      history,
-      endPorgressBar
-    } = this.props;
-    endPorgressBar()
-    // reset all form
-    this.resetBothForm(this.props);
-
-    this.fetchData(this.props);
-    this.props.history.push('/user/ongoing-course/list');
-
-    const actionName = condition.apiAction === 'create' ? '建立' : '更新';
-    notify.show(`課程${actionName}成功`, 'success', 1800);
-  }
-
   /**
    * Container Course
    * Called when clicking submit button to create container course.
    * @param {Object} formData - The submit object.
    */
   onCourseSubmit = ({ submitData, actionType, courseType }) => {
-    const {
-      courseAction,
-      token,
-      userInfo,
-      // startProgressBar
-    } = this.props;
-
-    // startProgressBar();
-
     const conditionObj = {
       container: {
         create: {
+          courseText: '容器課程',
+          actionText: '新建',
           apiAction: 'create',
           method: 'POST',
           types: types.CREATE_CONTAINER_COURSE
         },
         edit: {
+          courseText: '容器課程',
+          actionText: '編輯',
           apiAction: 'update',
           method: 'PUT',
           types: types.UPDATE_CONTAINER_COURSE
@@ -285,11 +253,15 @@ class CoursePage extends Component {
       },
       vm: {
         create: {
+          courseText: 'VM課程',
+          actionText: '新建',
           apiAction: 'create',
           method: 'POST',
           types: types.CREATE_VM_COURSE
         },
         edit: {
+          courseText: 'VM課程',
+          actionText: '編輯',
           apiAction: 'update',
           method: 'PUT',
           types: types.UPDATE_VM_COURSE
@@ -297,29 +269,73 @@ class CoursePage extends Component {
       }
 
     }
-
     const condition = conditionObj[courseType][actionType];
-    // this.props.validate('image', 'courseCon');
 
-    if (courseType === 'container') {
-      courseAction.submitContainerCourse({
-        token,
-        userInfo,
-        submitData,
-        condition,
-        onFail: this.onSubmitCourseFail,
-        onSuccess: this.onSubmitCourseSuccess
-      });
-    } else if (courseType === 'vm') {
-      courseAction.submitVMCourse({
-        token,
-        userInfo,
-        submitData,
-        condition,
-        onFail: this.onSubmitCourseFail,
-        onSuccess: this.onSubmitCourseSuccess
-      });
-    }
+    const {
+      token,
+      history,
+      courseAction,
+      userInfo,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
+    } = this.props;
+
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: `${condition.actionText}${condition.courseText}`,
+      info: `請問確定要${condition.actionText}此課程嗎？`,
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+
+        if (courseType === 'container') {
+          courseAction.submitContainerCourse({
+            token,
+            userInfo,
+            submitData,
+            condition,
+            onSuccess: () => {
+              endPorgressBar();
+
+              this.resetBothForm(this.props);
+              this.fetchData(this.props);
+
+              history.push('/user/ongoing-course/list');
+              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', 1800);
+            },
+            onFail: () => {
+              endPorgressBar();
+              this.resetBothForm(this.props);
+            },
+          });
+        } else if (courseType === 'vm') {
+          courseAction.submitVMCourse({
+            token,
+            userInfo,
+            submitData,
+            condition,
+            onSuccess: () => {
+              endPorgressBar();
+
+              this.resetBothForm(this.props);
+              this.fetchData(this.props);
+
+              history.push('/user/ongoing-course/list');
+              notify.show(`${condition.actionText}${condition.courseText}`, 'success', 1800);
+            },
+            onFail: () => {
+              endPorgressBar();
+              this.resetBothForm(this.props);
+            },
+          });
+        }
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   loadOptsMethodCreateCon = () => this.props.courseAction.getConImagesOpts(this.props.token)

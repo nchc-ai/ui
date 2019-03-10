@@ -231,7 +231,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
 
 
 // Proxy > UpdataPassword
-export const updatePassword = ({ token, username, formData, onSuccess }) => async (dispatch) => {
+export const updatePassword = ({ token, username, formData, next }) => async (dispatch) => {
 
   const tempData = {
     username,
@@ -254,7 +254,7 @@ export const updatePassword = ({ token, username, formData, onSuccess }) => asyn
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
-  onSuccess();
+  next();
 };
 
 
