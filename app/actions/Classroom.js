@@ -5,6 +5,7 @@ import { notify } from 'react-notify-toast';
 import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
+import moment from 'moment';
 
 export const setStudentsField = ({ students }) => ({
   type: types.SET_STUDENTS_FIELD,
@@ -28,8 +29,13 @@ export const createClassroom = ({ token, formData, students, next }) => async (d
   const submitData = {
     ...formData,
     students,
+    schedule: {
+      ...formData.schedule,
+      startDate: moment(formData.schedule.startDate).format('YYYY-MM-DD'),
+      endDate: moment(formData.schedule.endDate).format('YYYY-MM-DD')
+    },
     studentCount: students.length,
-    public: formData.public.value
+    public: formData.public.value,
   };
   // console.log('[create] submitData', submitData);
 
@@ -68,6 +74,11 @@ export const updateClassroom = ({ token, formData, students, next }) => async (d
   const submitData = {
     ...formData,
     students,
+    schedule: {
+      ...formData.schedule,
+      startDate: moment(formData.schedule.startDate).format('YYYY-MM-DD'),
+      endDate: moment(formData.schedule.endDate).format('YYYY-MM-DD')
+    },
     studentCount: students.length,
     public: formData.public.value
   };

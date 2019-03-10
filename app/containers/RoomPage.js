@@ -3,33 +3,28 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Button } from 'reactstrap';
 import { notify } from 'react-notify-toast';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { Form, actions as formActions } from 'react-redux-form';
-import CourseDetail from '../components/Course/CourseDetail';
 import { roomData, courseInfoData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import { CronInputs } from 'components'
-import DetailGroups from '../components/common/DetailGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
-import { classroomFrame } from '../constants/detailFrame';
 import { classroomFormOne, classroomFormTwo, cronFormData } from '../constants/formsData';
 import { classroomDetailTpl } from '../constants/listData';
-import { decodeHtml } from '../libraries/utils';
-import { setStudentsField } from '../actions/Classroom';
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
 
 
 const TableContainer = styled.div`
   width: 550px;
 `;
-
-
 
 class RoomPage extends Component {
 
@@ -208,55 +203,64 @@ class RoomPage extends Component {
 
   onClassroomSubmit = (formData, formType) => {
     const {
-      roomAction,
       token,
-      students
-    } = this.props;
-
-    if (!students.isLoading) {
-      if (formType === 'create') {
-        const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
-        roomAction.createClassroom({
-          token,
-          formData,
-          students: mappedStudents,
-          next: this.onClassroomSubmitSuccess
-        });
-      } else {
-        roomAction.updateClassroom({
-          token,
-          formData,
-          students: formData.students,
-          next: this.onClassroomSubmitSuccess
-        });
-      }
-    } else {
-      notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', 1800);
-    }
-    // Progress.show();
-  }
-
-  onClassroomSubmitSuccess = (formType) => {
-    const {
       history,
       roomAction,
-      resetForm
+      resetForm,
+      students,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
 
-    history.push('/user/classroom-manage/list');
-    notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: '開始課程',
+      info: '請問確定要開始課程嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
 
-    // reset form
-    resetForm();
-    roomAction.resetStudentsField();
-  }
+        if (!students.isLoading) {
+          if (formType === 'create') {
+            const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
+            roomAction.createClassroom({
+              token,
+              formData,
+              students: mappedStudents,
+              next: (formType) => {
 
-  cancelClassroomDetail = () => {
+                history.push('/user/classroom-manage/list');
+                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
 
-  }
+                resetForm();
+                roomAction.resetStudentsField();
+              }
+            });
+          } else {
+            roomAction.updateClassroom({
+              token,
+              formData,
+              students: formData.students,
+              next: (formType) => {
 
-  submitClassroomDetail = () => {
+                history.push('/user/classroom-manage/list');
+                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
 
+                resetForm();
+                roomAction.resetStudentsField();
+              }
+            });
+          }
+        } else {
+          notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', 1800);
+        }
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   render() {
@@ -481,5 +485,7 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
+  bindProgressBarHoc,
+  bindDialogHOC,
   withRouter
 )(RoomPage);

@@ -137,22 +137,22 @@ class CronInputs extends React.Component {
     // 先暫時生成 week 的格式
     const calendarCronObj = {
       '0': {
-        descripition: `${_.get(targetForm, 'selectedOption.0.label', '')}時間`,
+        description: `${_.get(targetForm, 'selectedOption.0.label', '')}時間`,
         cron: `0 0 8 * * ${_.get(targetForm, 'selectedOption.0.value', '*')}`
       },
       '1': {
-        descripition: `固定每週 ${_.get(targetForm, 'selectedOption.0.label', '')}`,
+        description: `固定每週 ${_.get(targetForm, 'selectedOption.0.label', '')}`,
         cron: `0 0 8 * * ${_.get(targetForm, 'selectedOption.0.value', '')}`
       },
       '2': {
-        descripition: `區間內 不限時間`,
+        description: `區間內 不限時間`,
         cron: '* * * * * *'
       }
     }
     const selectedCron = calendarCronObj[`${selectedType}`];
     console.log('selectedCron', selectedCron);
     // 塞入 語意式 cron 敘述
-    this.props.changeValue(selectedType !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}` : '完全不限時間', 'description', 'classroom.schedule');
+    this.props.changeValue(selectedType !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.description}` : '完全不限時間', 'description', 'classroom.schedule');
 
 
     // 先生成 timeArr

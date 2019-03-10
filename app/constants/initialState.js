@@ -13,7 +13,7 @@ export const initialClassroomState = {
   calendar: [],
   schedule: {
     cronFormat: [],
-    descripition: '',
+    description: '',
     startDate: new Date(),
     endDate: new Date().setMonth(new Date().getMonth() + 2),
     selectedType: 0,
