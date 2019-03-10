@@ -169,9 +169,9 @@ class JobPage extends Component {
             endPorgressBar();
 
             if (isSuccess) {
-              notify.show('工作刪除成功', 'success', 1800);
+              notify.show('工作刪除成功', 'success', TOAST_TIMING);
             } else {
-              notify.show('工作刪除失敗', 'error', 1800);
+              notify.show('工作刪除失敗', 'error', TOAST_TIMING);
             }
 
             this.fetchData(this.props);

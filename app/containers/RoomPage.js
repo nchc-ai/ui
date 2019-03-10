@@ -20,6 +20,7 @@ import { classroomDetailTpl } from '../constants/listData';
 import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
+import { TOAST_TIMING } from '../constants';
 
 
 const TableContainer = styled.div`
@@ -122,7 +123,7 @@ class RoomPage extends Component {
 
     // console.log('create job success');
     Progress.hide();
-    notify.show('新增工作成功', 'success', 1800);
+    notify.show('新增工作成功', 'success', TOAST_TIMING);
     this.props.history.push('/user/job');
   }
 
@@ -234,7 +235,7 @@ class RoomPage extends Component {
                 endPorgressBar();
 
                 history.push('/user/classroom-manage/list');
-                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
+                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
 
                 resetForm();
                 roomAction.resetStudentsField();
@@ -250,7 +251,7 @@ class RoomPage extends Component {
                 endPorgressBar();
 
                 history.push('/user/classroom-manage/list');
-                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
+                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
 
                 resetForm();
                 roomAction.resetStudentsField();
@@ -258,7 +259,7 @@ class RoomPage extends Component {
             });
           }
         } else {
-          notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', 1800);
+          notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', TOAST_TIMING);
         }
       },
       cancelMethod: () => {

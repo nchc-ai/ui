@@ -13,7 +13,7 @@ import CommonPageContent from '../components/CommonPageContent'
 import { classroomGroupData } from '../constants/tableData';
 import { classroomGroupTpl } from '../constants/listData';
 import ReactMarkdown from 'react-markdown';
-
+import { TOAST_TIMING } from '../constants';
 class RoomGroup extends Component {
 
   componentWillMount() {
@@ -40,7 +40,7 @@ class RoomGroup extends Component {
     if (token) {
       roomAction.getClassroomList({ token, userInfo, next: this.onGetClassroomListDone });
     } else {
-      notify.show('您 token 有誤，請重新登入', 'error', 1800);
+      notify.show('您 token 有誤，請重新登入', 'error', TOAST_TIMING);
     }
   }
   onGetClassroomListDone = (isSuccess) => {
@@ -74,14 +74,14 @@ class RoomGroup extends Component {
   onLaunchCourseJobSuccess = () => {
     // Progress.hide();
     this.props.history.push('/user/job/list');
-    notify.show('已發出啟動課程訊號', 'success', 1800);
+    notify.show('已發出啟動課程訊號', 'success', TOAST_TIMING);
   }
 
   onStartClassSuccess = () => {
 
     // console.log('create job success');
     Progress.hide();
-    notify.show('新增工作成功', 'success', 1800);
+    notify.show('新增工作成功', 'success', TOAST_TIMING);
     this.props.history.push('/user/job');
   }
 

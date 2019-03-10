@@ -10,4 +10,4 @@ export const COURSE_VM = 'VM';
 
 /* ------ ROLES ------- */
 
-export const TOAST_TIMING = 3000;
+export const TOAST_TIMING = 20000;

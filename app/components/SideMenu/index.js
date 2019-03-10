@@ -8,11 +8,12 @@ import { sideNavAdmin, sideNavTeacher, sideNavStudent, sideNavCommon } from '../
 import LinkFormat from '../common/LinkFormat/index';
 import DogTag from '../common/DogTag';
 import { selfInfo } from '../../constants/models';
+import { TOAST_TIMING } from '../../constants';
 
 class Index extends Component {
 
   offlineWarning = () => {
-    notify.show('如對課程有興趣，可親洽AI_LAB', 'success', 1800);
+    notify.show('如對課程有興趣，可親洽AI_LAB', 'success',  TOAST_TIMING);
   }
 
   render() {

@@ -43,7 +43,7 @@ class PasswordPage extends Component {
             next: () => {
               endPorgressBar();
               resetForm('password');
-              notify.show('個人密碼更新成功', 'success', 1800);
+              notify.show('個人密碼更新成功', 'success', TOAST_TIMING);
             }
           });
         } else {

@@ -245,7 +245,7 @@ export default class KeyValue extends React.Component {
       rows: this.state.rows.filter((row, i) => i !== index)
     }, () => {
       this.props.onChange([...this.state.rows]);
-      notify.show(`已刪除${deletedKeyItem}`, 'success', 800);
+      notify.show(`已刪除${deletedKeyItem}`, 'success', TOAST_TIMING);
     });
   }
 

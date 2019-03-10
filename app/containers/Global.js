@@ -13,6 +13,8 @@ import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
 
 import bindDialogHOC from 'libraries/bindDialogHOC';
 
+import { TOAST_TIMING } from '../constants';
+
 // const GAInitiailizer = ga.Initializer;
 
 class Global extends Component {
@@ -22,7 +24,7 @@ class Global extends Component {
   }
 
   offlineWarning = () => {
-    notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', 1800);
+    notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', TOAST_TIMING);
   }
 
   render() {

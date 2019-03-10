@@ -17,7 +17,7 @@ import courseAdvanceBn from '../../public/images/course/course-advance-bn.png';
 
 import SectionList from '../components/common/SectionList/index';
 import { courseListBasic, courseListAdvance, courseDetailBasic, courseDetailAdvance } from '../constants/listData';
-
+import { TOAST_TIMING } from '../constants';
 class IntroPage extends Component {
 
   componentWillMount() {
@@ -76,7 +76,7 @@ class IntroPage extends Component {
   onStartClassSuccess = () => {
 
     // console.log('create job success');
-    notify.show('新增工作成功', 'success', 1800);
+    notify.show('新增工作成功', 'success', TOAST_TIMING);
     this.props.history.push('/user/job');
   }
 

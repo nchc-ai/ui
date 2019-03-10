@@ -14,6 +14,7 @@ const CloseButton = styled.button`
   outline: none;
   border-radius: 99em;
   background-color: transparent;
+  cursor: pointer;
 `;
 
 /* React Notification Component */
@@ -98,15 +99,15 @@ class Toast extends React.Component {
     }
 
     render() {
-        let {text} = this.props;
+        let {text, hideMethod} = this.props;
         let {containerStyle} = this.state;
 
         return (
             <div className="toast-notification" style={containerStyle}>
                 <span style={this.getToastStyle()}>
                     {text}
+                    <CloseButton onClick={hideMethod}>x</CloseButton>
                 </span>
-                <CloseButton>x</CloseButton>
             </div>
         );
     }

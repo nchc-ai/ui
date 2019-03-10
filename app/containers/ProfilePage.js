@@ -12,6 +12,7 @@ import { profileForm } from '../constants/formsData';
 import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
+import { TOAST_TIMING } from '../constants';
 class ProfilePage extends Component {
   componentWillMount() {
     this.fetchData(this.props);
@@ -59,7 +60,7 @@ class ProfilePage extends Component {
           token,
           () => {
             endPorgressBar();
-            notify.show('個人資料更新成功', 'success', 180000);
+            notify.show('個人資料更新成功', 'success', TOAST_TIMING);
             this.fetchData(this.props);
           }
         );

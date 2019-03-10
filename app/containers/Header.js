@@ -23,6 +23,7 @@ import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png'
 import iconLogoutBefore from '../../public/images/common/ic-nav-logout-default.png';
 import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png';
 // import IconList from './IconList';
+import { TOAST_TIMING } from '../constants';
 
 class Header extends Component {
 
@@ -41,7 +42,7 @@ class Header extends Component {
    */
   onGetCodeFail = (err) => {
     if (err.toString() !== 'Error: The popup was closed') {
-      notify.show('Error: code not found', 'error', 1800);
+      notify.show('Error: code not found', 'error', TOAST_TIMING);
     }
   }
 

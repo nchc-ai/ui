@@ -7,7 +7,7 @@ import {defaults} from './defaults';
 /* Render React component */
 function renderToast(text, type, timeout, color) {
     let target = document.getElementById(defaults.wrapperId);
-    ReactDOM.render(<Toast text={text} timeout={timeout} type={type} color={color}/>, target);
+    ReactDOM.render(<Toast text={text} timeout={timeout} type={type} color={color} hideMethod={hide} />, target);
 }
 
 /* Unmount React component */
@@ -32,6 +32,9 @@ function hide() {
  * }
  */
 function show(text, type, timeout, color) {
+
+    hide();
+
     if (!document.getElementById(defaults.wrapperId).hasChildNodes()) {
         // Use default timeout if not set.
         let renderTimeout = timeout || defaults.timeout;

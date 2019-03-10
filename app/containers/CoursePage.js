@@ -15,6 +15,7 @@ import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
 import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
+import { TOAST_TIMING } from '../constants';
 
 class CoursePage extends Component {
 
@@ -162,7 +163,7 @@ class CoursePage extends Component {
             endPorgressBar();
             if (isSuccess) {
               history.push('/user/job/list');
-              notify.show('已發出啟動課程訊號', 'success', 1800);
+              notify.show('已發出啟動課程訊號', 'success', TOAST_TIMING);
             }
           }
         });
@@ -200,7 +201,7 @@ class CoursePage extends Component {
           next: () => {
             endPorgressBar();
             this.fetchData(this.props);
-            notify.show('課程刪除成功', 'success', 1800);
+            notify.show('課程刪除成功', 'success', TOAST_TIMING);
           }
         });
       },
@@ -212,7 +213,7 @@ class CoursePage extends Component {
 
   // 共用 cb
   handleSubmitFailedCommon = (formData) => {
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
+    notify.show('請確認是否填妥表單資料', 'error', TOAST_TIMING);
   }
 
   /**
@@ -303,7 +304,7 @@ class CoursePage extends Component {
               this.fetchData(this.props);
 
               history.push('/user/ongoing-course/list');
-              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', 1800);
+              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
             },
             onFail: () => {
               endPorgressBar();
@@ -323,7 +324,7 @@ class CoursePage extends Component {
               this.fetchData(this.props);
 
               history.push('/user/ongoing-course/list');
-              notify.show(`${condition.actionText}${condition.courseText}`, 'success', 1800);
+              notify.show(`${condition.actionText}${condition.courseText}`, 'success', TOAST_TIMING);
             },
             onFail: () => {
               endPorgressBar();
