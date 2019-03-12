@@ -16,6 +16,7 @@ import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
+import {ENABLE_RFSTACK} from "../config/api";
 
 class CoursePage extends Component {
 
@@ -407,9 +408,13 @@ class CoursePage extends Component {
                 <button className="fl add-btn btn-pair" color="success">新增容器課程</button>
               </Link>
 
-              <Link to="/user/ongoing-course/create/vm" className="fl add-btn-con" style={{ marginLeft: '10px' }}>
-                <button className="fl add-btn btn-pair" color="success">新增 VM 課程</button>
-              </Link>
+              {
+                ENABLE_RFSTACK ?
+                  <Link to="/user/ongoing-course/create/vm" className="fl add-btn-con" style={{marginLeft: '10px'}}>
+                    <button className="fl add-btn btn-pair" color="success">新增 VM 課程</button>
+                  </Link> :
+                  null
+              }
 
 
               <TableList

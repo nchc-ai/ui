@@ -20,3 +20,5 @@ export const JOB_INTERVAL = 10000;
 export const pdfLink = 'https://drive.google.com/file/d/1MvfNxfLkBr4yvbxsJhh-D6PeaFsovNPl/view'
 
 export const APPLY_ADMIN_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSccwgqH5a0sA9-UriWS5atlmQ8X4uzdbYl57eLF8S-NbodHHg/viewform'
+
+export const ENABLE_RFSTACK = true
