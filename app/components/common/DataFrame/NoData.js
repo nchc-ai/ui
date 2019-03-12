@@ -11,6 +11,7 @@ const Comp = styled.div`
 const Container = styled.div`
   width: 200px;
   height: initial;
+  margin: auto;
   display: flex;
   align-content: center;
   justify-content: center;

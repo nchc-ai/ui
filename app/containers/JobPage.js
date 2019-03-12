@@ -1,25 +1,41 @@
 import React, { Component } from 'react';
-import { Switch, Route, withRouter } from 'react-router-dom';
-import { FaCopy, FaCamera } from "react-icons/fa";
 import { compose } from 'redux';
 import { connect } from 'react-redux';;
 import { actions as formActions, Form } from 'react-redux-form';
 import { Row, Col } from 'reactstrap';
-import { notify } from 'components/common/NotifyToast';
 import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
+import styled from 'styled-components';
+import { FaCopy, FaCamera, FaRegClone } from "react-icons/fa";
 import { JOB_INTERVAL } from '../config/api';
 import { TOAST_TIMING } from '../constants';
-import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import FormGroups from '../components/common/FormGroups/index';
-import FormButtons from '../components/common/FormButtons/index';
-import DataFrame from '../components/common/DataFrame/index';
-import { groupArray, formatStatus } from '../libraries/utils';
-import CommonPageContent from '../components/CommonPageContent';
-import { snapshotForm } from '../constants/formsData';
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+import { groupArray, formatStatus } from 'libraries/utils';
 import bindDialogHOC from 'libraries/bindDialogHOC';
+import CommonPageContent from 'components/CommonPageContent';
+import FormGroups from 'components/common/FormGroups/index';
+import FormButtons from 'components/common/FormButtons/index';
+import DataFrame from 'components/common/DataFrame/index';
+import { notify } from 'components/common/NotifyToast';
+import { snapshotForm } from 'constants/formsData';
 import * as dialogTypes from 'constants/dialogTypes';
+
+const SectionTitle = styled.h2`
+  height: 50px;
+  font-size: 20px;
+  line-height: 50px;
+  background-color: #f8f4f4;
+`;
+
+const IconContainer = styled.span`
+  display: inline-block;
+  margin-left: 15px;
+  margin-right: 10px;
+  color: #6ec7cf;
+  font-weight: bolder;
+  transform: translateY(3px);
+`;
 
 
 class JobPage extends Component {
@@ -204,7 +220,12 @@ class JobPage extends Component {
         {
           doubleList.map( (singleList, index) => (
             <div key={index}>
-              <h2>{singleList.title}</h2>
+              <SectionTitle>
+                <IconContainer>
+                  <FaRegClone />
+                </IconContainer>
+                {singleList.title}
+              </SectionTitle>
               <DataFrame
                 isLoading={singleList.loading}
                 data={groupArray(singleList.data, 'name')}
