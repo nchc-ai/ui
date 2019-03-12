@@ -121,7 +121,7 @@ export const getConDatasetsOpts = token => async (dispatch) => {
  * @param {Object} submitData - .
  * @param {Object} onSuccess - .
  */
-export const submitContainerCourse = ({ token, userInfo, submitData, condition, onFail, onSuccess }) => async (dispatch) => {
+export const submitContainerCourse = ({ token, userInfo, submitData, condition, next }) => async (dispatch) => {
 
   const finalSubmitData = {
     ...submitData,
@@ -149,16 +149,16 @@ export const submitContainerCourse = ({ token, userInfo, submitData, condition, 
   if (_.isUndefined(response) || response.error) {
     const actionName = actionType === 'create' ? '新增' : '更新';
     notify.show(_.get(response, 'payload.response.message', `容器課程${actionName}失敗`), 'error', TOAST_TIMING);
-    onFail()
-  } else if (onSuccess) {
-    onSuccess(condition);
+    next(false)
+  } else {
+    next(true);
   }
 };
 
 
 
 // submit
-export const submitVMCourse = ({ token, userInfo, submitData, condition, onFail, onSuccess }) => async (dispatch) => {
+export const submitVMCourse = ({ token, userInfo, submitData, condition, next }) => async (dispatch) => {
 
   const finalSubmitData = {
     ...submitData,
@@ -184,9 +184,9 @@ export const submitVMCourse = ({ token, userInfo, submitData, condition, onFail,
   if (_.isUndefined(response) || response.error) {
     const actionName = condition.apiAction === 'create' ? '新增' : '更新';
     notify.show(_.get(response, 'payload.response.message', `VM課程${actionName}失敗`), 'error', TOAST_TIMING);
-    onFail();
-  } else if (onSuccess) {
-    onSuccess(condition);
+    next(false)
+  } else {
+    next(true);
   }
 };
 

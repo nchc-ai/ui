@@ -322,19 +322,16 @@ class CoursePage extends Component {
             userInfo,
             submitData,
             condition,
-            onSuccess: () => {
-              endPorgressBar();
-
-              this.resetBothForm(this.props);
-              this.fetchData(this.props);
-
-              history.push('/user/ongoing-course/list');
-              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
-            },
-            onFail: () => {
+            next: (isSuccess) => {
               endPorgressBar();
               this.resetBothForm(this.props);
-            },
+
+              if (isSuccess) {
+                this.fetchData(this.props);
+                history.push('/user/ongoing-course/list');
+                notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
+              }
+            }
           });
         } else if (courseType === 'vm') {
           courseAction.submitVMCourse({
@@ -342,19 +339,16 @@ class CoursePage extends Component {
             userInfo,
             submitData,
             condition,
-            onSuccess: () => {
-              endPorgressBar();
-
-              this.resetBothForm(this.props);
-              this.fetchData(this.props);
-
-              history.push('/user/ongoing-course/list');
-              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
-            },
-            onFail: () => {
+            next: (isSuccess) => {
               endPorgressBar();
               this.resetBothForm(this.props);
-            },
+
+              if (isSuccess) {
+                this.fetchData(this.props);
+                history.push('/user/ongoing-course/list');
+                notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
+              }
+            }
           });
         }
       },
