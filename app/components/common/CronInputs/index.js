@@ -297,7 +297,7 @@ class CronInputs extends React.Component {
               </label>
               <DatePicker
                 className="text-input"
-                selected={_.get(targetForm, `startDate`)}
+                selected={new Date(_.get(targetForm, `startDate`))}
                 onChange={val => changeValue(val, template.inputFirst.name, template.inputFirst.target)}
                 dateFormat="yyyy / MM / dd"
               />
@@ -308,7 +308,7 @@ class CronInputs extends React.Component {
               </label>
               <DatePicker
                 className="text-input"
-                selected={_.get(targetForm, `endDate`)}
+                selected={new Date(_.get(targetForm, `endDate`))}
                 onChange={val => changeValue(val, template.inputSecond.name, template.inputSecond.target)}
                 dateFormat="yyyy / MM / dd"
               />
