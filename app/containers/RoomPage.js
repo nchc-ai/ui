@@ -164,18 +164,40 @@ class RoomPage extends Component {
    * @param {Object} datum One assigned datum in table list.
    */
   deleteClassroom = (e, datum) => {
+
     const {
+      token,
       roomAction,
-      token
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
 
-    roomAction.deleteClassroom({ token, id: datum.id, onSuccess: this.onDeleteClassroomSuccess });
+    openCustomDialog({
+      type: dialogTypes.DELETE,
+      title: '刪除教室',
+      info: '請問確定要刪除此教室嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        roomAction.deleteClassroom({
+          token,
+          id: datum.id,
+          next: (isSuccess) => {
+            endPorgressBar();
+            this.fetchData(this.props);
+            if (isSuccess) {
+              notify.show('教室刪除成功', 'success', TOAST_TIMING);
+            }
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
-
-  onDeleteClassroomSuccess = () => {
-    this.fetchData(this.props);
-  }
-
 
   /**
    * Edit - Called when clicking return buttton in room edit page.
