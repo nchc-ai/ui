@@ -145,9 +145,8 @@ export const submitContainerCourse = ({ token, userInfo, submitData, condition, 
     }
   });
 
-  // response.error = true;  // DEBUG
   if (_.isUndefined(response) || response.error) {
-    const actionName = actionType === 'create' ? '新增' : '更新';
+    const actionName = condition.apiAction === 'create' ? '新增' : '更新';
     notify.show(_.get(response, 'payload.response.message', `容器課程${actionName}失敗`), 'error', TOAST_TIMING);
     next(false)
   } else {
