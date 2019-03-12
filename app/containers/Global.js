@@ -4,19 +4,12 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 // import { translate } from 'react-i18next';
 import Notifications, { notify } from 'components/common/NotifyToast';
-// import ga from 'react-google-analytics';
 import LoadingBar from "react-top-loading-bar";
 import Header from './Header';
 import Dialog from 'components/common/Dialog/index';
-
 import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
-
 import bindDialogHOC from 'libraries/bindDialogHOC';
-
 import { TOAST_TIMING } from '../constants';
-
-// const GAInitiailizer = ga.Initializer;
-
 class Global extends Component {
 
   setDropdownPos = (pos) => {
@@ -57,8 +50,8 @@ class Global extends Component {
           progressBar.isActive ?
             <LoadingBar
               progress={progressBar.progress}
-              height={3}
-              color="red"
+              height={6}
+              color="#fa7564"
               onLoaderFinished={() => {}}
             />
           : null
