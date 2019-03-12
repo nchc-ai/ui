@@ -539,7 +539,7 @@ export const courseVMFormOne = [
     key: 8,
     size: 4,
     target: 'courseVM',
-    mainLabel: '卦載 Volume 空間',
+    mainLabel: '掛載 Volume 空間',
     isRequired: true,
     validators: { required },
     errorMessage: {
