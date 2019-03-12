@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function bindDialogHoc (WrappedComponent) {
+export default function bindDialogHOC (WrappedComponent) {
   class Wrapper extends React.Component {
 
     toggleDialog = () => {
