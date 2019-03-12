@@ -481,12 +481,12 @@ class CoursePage extends Component {
               {/* TODO: 需在這判斷是否有開過課程決定submitName */}
               <FormButtons
                 cancelName="上一頁"
-                submitName="開始課程"
-                nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
+                // submitName="開始課程"
+                // nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
-                showMode="submit_back"
-                isLoading={status.isLaunchJobLoading}
-                isForm={false}
+                showMode="back_only"
+                // isLoading={status.isLaunchJobLoading}
+                // isForm={false}
               />
             </CommonPageContent>
           </Route>
