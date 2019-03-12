@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import createReactClass from 'create-react-class';
 import { Row, Col } from 'reactstrap';
 import Thumbnails from '../components/common/Thumbnails/index';
 import SectionTitle from '../components/common/SectionTitle/index';

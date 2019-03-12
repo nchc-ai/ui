@@ -6,7 +6,7 @@ import { Row, Col } from 'reactstrap';
 import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
 import styled from 'styled-components';
-import { FaCopy, FaCamera, FaRegClone } from "react-icons/fa";
+import { FaCopy, FaCamera, FaRegClone, FaCube } from "react-icons/fa";
 import { JOB_INTERVAL } from '../config/api';
 import { TOAST_TIMING } from '../constants';
 import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
@@ -43,20 +43,7 @@ class JobPage extends Component {
   state = {
     optionType: 'snapshot',
     copiedValue: "",
-    interval: '',
-    doubleList: [
-      {
-        title: '容器課程',
-        type: 'container',
-        loading: false,
-        data: []
-      }, {
-        title: 'VM課程',
-        type: 'vm',
-        loading: false,
-        data: []
-      }
-    ]
+    interval: ''
   }
 
   componentWillMount() {
@@ -224,7 +211,7 @@ class JobPage extends Component {
             <div key={index}>
               <SectionTitle>
                 <IconContainer type={singleList.type}>
-                  <FaRegClone/>
+                  {  singleList.type === 'container' ? <FaRegClone/> :  <FaCube/> }
                 </IconContainer>
                 {singleList.title}
               </SectionTitle>

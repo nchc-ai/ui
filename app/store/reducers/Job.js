@@ -26,10 +26,12 @@ const InitialState = {
   doubleList: [
     {
       title: '容器課程',
+      type: 'container',
       loading: false,
       data: []
     }, {
       title: 'VM課程',
+      type: 'vm',
       loading: false,
       data: []
     }
