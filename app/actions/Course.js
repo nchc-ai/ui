@@ -315,8 +315,24 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
 };
 
 
-
-
+export const deleteCourseVM = ({ courseId, token, next }) => async (dispatch) => {
+  const response = await dispatch({
+    [RSAA]: {
+      endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/delete/${courseId}`,
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      types: types.DELETE_COURSE_VM
+    }
+  });
+  // console.log('[deleteCourse] response', response);
+  if (_.isUndefined(response) || response.error) {
+    notify.show(_.get(response, 'payload.response.message', '課程刪除失敗'), 'error', TOAST_TIMING);
+  }
+  next();
+};
 
 
 

@@ -188,6 +188,22 @@ class CoursePage extends Component {
       toggleDialog
     } = this.props;
 
+    if (datum.type === 'CONTAINER') {
+      courseAction.deleteCourseContainer({
+        courseId: datum.id,
+        token,
+        next: () => this.onDeleteCourseSuccess()
+      });
+    } else if (datum.type === 'VM') {
+      courseAction.deleteCourseVM({
+        courseId: datum.id,
+        token,
+        next: () => this.onDeleteCourseSuccess()
+      });
+    }
+    
+  }
+
     openCustomDialog({
       type: dialogTypes.DELETE,
       title: '刪除課程',
