@@ -218,8 +218,8 @@ class RoomPage extends Component {
     if (formData.schedule.cronFormat.length > 0) {
       openCustomDialog({
         type: dialogTypes.CREATE,
-        title: '開始課程',
-        info: '請問確定要開始課程嗎？',
+        title: `${formType === 'create' ? '建立' : '修改' }教室`,
+        info: `請問確定要${formType === 'create' ? '建立' : '修改' }課程嗎？`,
         submitMethod: () => {
           toggleDialog();
           startProgressBar();
