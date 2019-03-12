@@ -138,7 +138,7 @@ export const courseVMDetailTpl = [
     key: 5,
     bulletUrl: bulletTriangle,
     name: 'associate',
-    label: 'Associate Floating IP',
+    label: '建立浮動 IP',
     type: 'boolean',
     custom: {
       trueText: '是 (true)',
@@ -148,7 +148,7 @@ export const courseVMDetailTpl = [
     key: 6,
     bulletUrl: bulletTriangle,
     name: 'extraports',
-    label: 'Extra Ports',
+    label: '額外網路埠',
     type: 'text'
   }, {
     key: 7,
@@ -160,7 +160,7 @@ export const courseVMDetailTpl = [
     key: 8,
     bulletUrl: bulletTriangle,
     name: 'volume',
-    label: 'Volume',
+    label: 'Volume 空間',
     unit: 'GB',
     type: 'single-select'
   }

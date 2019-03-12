@@ -2,11 +2,10 @@ import * as actionTypes from 'actions/actionTypes';
 import { LOADING, SUCCESS, FAIL } from 'constants/apiActions';
 
 const InitialState = {
-  create: {
-    isLoading: false,
-  },
-  update: {
-    isLoading: false,
+  status: {
+    isCreateClassroomLoading: false,
+    isUpdateClassroomLoading: false,
+    isDeleteClassroomLoading: false,
   },
   list: {
     isLoading: false,
@@ -43,43 +42,73 @@ export default function Classroom(state = InitialState, action) {
   case actionTypes.CREATE_CLASSROOM[LOADING]:
     return {
       ...state,
-      create: {
-        isLoading: true
+      status: {
+        ...state.status,
+        isCreateClassroomLoading: true
       }
     };
   case actionTypes.CREATE_CLASSROOM[SUCCESS]:
     return {
       ...state,
-      create: {
-        isLoading: false
+      status: {
+        ...state.status,
+        isCreateClassroomLoading: false
       }
     };
   case actionTypes.CREATE_CLASSROOM[FAIL]:
     return {
       ...state,
-      create: {
-        isLoading: false
+      status: {
+        ...state.status,
+        isCreateClassroomLoading: false
       }
     };
   case actionTypes.UPDATE_CLASSROOM[LOADING]:
     return {
       ...state,
-      update: {
-        isLoading: true
+      status: {
+        ...state.status,
+        isUpdateClassroomLoading: true
       }
     };
   case actionTypes.UPDATE_CLASSROOM[SUCCESS]:
     return {
       ...state,
-      update: {
-        isLoading: false
+      status: {
+        ...state.status,
+        isUpdateClassroomLoading: false
       }
     };
   case actionTypes.UPDATE_CLASSROOM[FAIL]:
     return {
       ...state,
-      update: {
-        isLoading: false
+      status: {
+        ...state.status,
+        isUpdateClassroomLoading: false
+      }
+    };
+  case actionTypes.DELETE_CLASSROOM[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteClassroomLoading: true
+      }
+    };
+  case actionTypes.DELETE_CLASSROOM[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteClassroomLoading: false
+      }
+    };
+  case actionTypes.DELETE_CLASSROOM[FAIL]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteClassroomLoading: false
       }
     };
   case actionTypes.GET_CLASSROOM_LIST[LOADING]:

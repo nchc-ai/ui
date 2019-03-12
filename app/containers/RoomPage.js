@@ -107,27 +107,6 @@ class RoomPage extends Component {
     this.props.resetForm('schedule');
   }
 
-  startCourse = () => {
-    const {
-      userAction,
-      token,
-      userInfo,
-      match
-    } = this.props;
-
-    // Progress.show();
-    userAction.launchJob(userInfo.username, match.params.courseId, token, this.onStartClassSuccess);
-  }
-
-  onStartClassSuccess = () => {
-
-    // console.log('create job success');
-    Progress.hide();
-    notify.show('新增工作成功', 'success', TOAST_TIMING);
-    this.props.history.push('/user/job');
-  }
-
-
   backFromCourseDetail = (e) => {
     e.preventDefault();
     this.props.history.goBack();
@@ -171,8 +150,14 @@ class RoomPage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
+
+    if (status.isDeleteClassroomLoading) {
+      notify.show(`尚有課程刪除中，請稍後再刪除此課程`, 'error', TOAST_TIMING);
+      return;
+    }
 
     openCustomDialog({
       type: dialogTypes.DELETE,
@@ -506,8 +491,11 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
   searchResult: Course.searchResult.data,
-  isCreateLoading: Classroom.create.isLoading,
-  isUpdateLoading: Classroom.update.isLoading
+  status: {
+    isCreateClassroomLoading: Classroom.status.isCreateClassroomLoading,
+    isUpdateClassroomLoading: Classroom.status.isUpdateClassroomLoading,
+    isDeleteClassroomLoading: Classroom.status.isDeleteClassroomLoading
+  }
 });
 
 export default compose(

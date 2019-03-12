@@ -144,8 +144,14 @@ class CoursePage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
+
+    if (status.isLaunchJobLoading) {
+      notify.show(`尚有課程啟動中，請稍後再啟動此課程`, 'error', TOAST_TIMING);
+      return;
+    }
 
     openCustomDialog({
       type: dialogTypes.CREATE,
@@ -185,8 +191,14 @@ class CoursePage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
+
+    if (status.isDeleteContainerCourseLoading || status.isDeleteVMCourseLoading) {
+      notify.show(`尚有課程刪除中，請稍後再刪除此課程`, 'error', TOAST_TIMING);
+      return;
+    }
 
     openCustomDialog({
       type: dialogTypes.DELETE,
@@ -197,7 +209,7 @@ class CoursePage extends Component {
         startProgressBar();
 
         if (datum.type === 'CONTAINER') {
-          courseAction.deleteCourseContainer({
+          courseAction.deleteContainerCourse({
             courseId: datum.id,
             token,
             next: () => {
@@ -207,7 +219,7 @@ class CoursePage extends Component {
             }
           });
         } else if (datum.type === 'VM') {
-          courseAction.deleteCourseVM({
+          courseAction.deleteVMCourse({
             courseId: datum.id,
             token,
             next: () => {

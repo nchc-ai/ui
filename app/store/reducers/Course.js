@@ -151,6 +151,14 @@ export default function Course(state = InitialState, action) {
         isDeleteVMCourseLoading: false
       }
     };
+  case actionTypes.DELETE_VM_COURSE[FAIL]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteVMCourseLoading: false
+      }
+    };
   case actionTypes.GET_COURSE_LIST_VM[LOADING]:
     return {
       ...state,

@@ -1,10 +1,9 @@
 import React from 'react';
 import _ from 'lodash';
-import { Row, Col } from 'reactstrap';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import DataFrame from '../../common/DataFrame/index';
-import { formatValue, decodeHtml } from '../../../libraries/utils';
+import { decodeHtml } from '../../../libraries/utils';
 
 
 const Comp = styled.div`

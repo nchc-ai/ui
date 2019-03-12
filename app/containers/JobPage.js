@@ -32,7 +32,7 @@ const IconContainer = styled.span`
   display: inline-block;
   margin-left: 15px;
   margin-right: 10px;
-  color: #6ec7cf;
+  color: ${props => props.type === 'container' ? '#6ec7cf' : '#f5d600'};
   font-weight: bolder;
   transform: translateY(3px);
 `;
@@ -47,10 +47,12 @@ class JobPage extends Component {
     doubleList: [
       {
         title: '容器課程',
+        type: 'container',
         loading: false,
         data: []
       }, {
         title: 'VM課程',
+        type: 'vm',
         loading: false,
         data: []
       }
@@ -221,8 +223,8 @@ class JobPage extends Component {
           doubleList.map( (singleList, index) => (
             <div key={index}>
               <SectionTitle>
-                <IconContainer>
-                  <FaRegClone />
+                <IconContainer type={singleList.type}>
+                  <FaRegClone/>
                 </IconContainer>
                 {singleList.title}
               </SectionTitle>

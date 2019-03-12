@@ -191,7 +191,7 @@ export const submitVMCourse = ({ token, userInfo, submitData, condition, onFail,
 };
 
 // Course > Delete
-export const deleteCourseContainer = ({ courseId, token, next }) => async (dispatch) => {
+export const deleteContainerCourse = ({ courseId, token, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_URL}/${API_VERSION}/course/delete/${courseId}`,
@@ -315,7 +315,7 @@ export const getSshKeysOptsVM = token => async (dispatch) => {
 };
 
 
-export const deleteCourseVM = ({ courseId, token, next }) => async (dispatch) => {
+export const deleteVMCourse = ({ courseId, token, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
       endpoint: `${API_VM_URL}/${API_VM_VERSION}/course/delete/${courseId}`,
@@ -324,7 +324,7 @@ export const deleteCourseVM = ({ courseId, token, next }) => async (dispatch) =>
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       },
-      types: types.DELETE_COURSE_VM
+      types: types.DELETE_VM_COURSE
     }
   });
   // console.log('[deleteCourse] response', response);
