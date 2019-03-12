@@ -6,7 +6,7 @@ import styled from 'styled-components';
 
 import TableList from '../components/common/TableList/index';
 import FormButtons from '../components/common/FormButtons/index';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import CommonPageContent from '../components/CommonPageContent'
 import { courseResultData } from '../constants/tableData';
 
@@ -99,6 +99,6 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
   withRouter
 )(SearchPage);

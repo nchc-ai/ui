@@ -9,7 +9,7 @@ import * as Job from '../actions/Job';
 import * as Role from '../actions/Role';
 import * as Ui from '../actions/Ui';
 
-export default function bindActionCreatorHoc(WrappedComponent) {
+export default function bindActionCreatorHOC(WrappedComponent) {
   class Wrapper extends React.Component {
     render = () => (<WrappedComponent {...this.props} />);
   }

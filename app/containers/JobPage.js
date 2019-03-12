@@ -9,8 +9,8 @@ import styled from 'styled-components';
 import { FaCopy, FaCamera, FaRegClone, FaCube } from "react-icons/fa";
 import { JOB_INTERVAL } from '../config/api';
 import { TOAST_TIMING } from '../constants';
-import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
-import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
+import bindActionCreatorHOC from 'libraries/bindActionCreatorHOC';
 import { groupArray, formatStatus } from 'libraries/utils';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import CommonPageContent from 'components/CommonPageContent';
@@ -405,7 +405,7 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
-  bindProgressBarHoc,
+  bindActionCreatorHOC,
+  bindProgressBarHOC,
   bindDialogHOC
 )(JobPage);

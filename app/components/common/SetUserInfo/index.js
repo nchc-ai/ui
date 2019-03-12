@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../../../libraries/bindActionCreatorHOC';
 
 class SetUserInfo extends Component {
 
@@ -71,6 +71,6 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
   withRouter
 )(SetUserInfo);

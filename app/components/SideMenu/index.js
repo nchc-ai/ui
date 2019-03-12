@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import BurgerMenu from 'react-burger-menu';
 import { notify } from 'components/common/NotifyToast';
-import bindActionCreatorHoc from '../../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../../libraries/bindActionCreatorHOC';
 import { sideNavAdmin, sideNavTeacher, sideNavStudent, sideNavCommon } from '../../constants/navData';
 import LinkFormat from '../common/LinkFormat/index';
 import DogTag from '../common/DogTag';
@@ -92,5 +92,5 @@ const mapStateToProps = ({ Ui, Auth, Role }) => ({
 
 export default compose(
   connect(mapStateToProps),
-  bindActionCreatorHoc
+  bindActionCreatorHOC
 )(Index);

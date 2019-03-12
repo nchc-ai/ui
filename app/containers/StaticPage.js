@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { compose } from 'redux';
 import _ from 'lodash';
 import SectionTitle from '../components/common/SectionTitle/index';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 
 
 class StaticPage extends Component {
@@ -24,5 +24,5 @@ class StaticPage extends Component {
 }
 
 export default compose(
-  bindActionCreatorHoc
+  bindActionCreatorHOC
 )(StaticPage);

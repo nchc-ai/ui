@@ -7,13 +7,13 @@ import { notify } from 'components/common/NotifyToast';
 import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
 import { Form, actions as formActions } from 'react-redux-form';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import DataFrame from '../components/common/DataFrame/index';
 import CommonPageContent from '../components/CommonPageContent'
 import { classroomGroupData } from '../constants/tableData';
 import { classroomGroupTpl } from '../constants/listData';
 import ReactMarkdown from 'react-markdown';
-import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
@@ -178,8 +178,8 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
-  bindProgressBarHoc,
+  bindActionCreatorHOC,
+  bindProgressBarHOC,
   bindDialogHOC,
   withRouter
 )(RoomGroup);

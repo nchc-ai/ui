@@ -4,12 +4,12 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Form, actions as formActions } from 'react-redux-form';
 import { notify } from 'components/common/NotifyToast';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import { profileForm } from '../constants/formsData';
-import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
@@ -132,8 +132,8 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
-  bindProgressBarHoc,
+  bindActionCreatorHOC,
+  bindProgressBarHOC,
   bindDialogHOC,
   withRouter
 )(ProfilePage);

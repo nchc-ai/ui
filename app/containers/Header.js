@@ -10,7 +10,7 @@ import { Hover } from 'react-powerplug';
 import { notify } from 'components/common/NotifyToast';
 import Cookies from 'js-cookie';
 import SetUserInfo from '../components/common/SetUserInfo/index';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import NavBar from '../components/Header/NavBar';
 import { mainNav } from '../constants/navData';
 import logoImg from '../../public/images/header/header-logo.png';
@@ -226,6 +226,6 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
   withRouter
 )(Header);

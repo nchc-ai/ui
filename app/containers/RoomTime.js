@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import moment from 'moment';
 import EventCalendar from '../components/common/EventCalendar/index';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import Grid from 'react-bootstrap/lib/Grid';
 import Row from 'react-bootstrap/lib/Row';
 import Col from 'react-bootstrap/lib/Col';
@@ -226,5 +226,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
 )(RoomTime);

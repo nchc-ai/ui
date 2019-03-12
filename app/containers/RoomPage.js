@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { Form, actions as formActions } from 'react-redux-form';
 import { roomData, courseInfoData } from '../constants/tableData';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import { CronInputs } from 'components'
@@ -17,7 +17,7 @@ import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
 import { classroomFormOne, classroomFormTwo, cronFormData } from '../constants/formsData';
 import { classroomDetailTpl } from '../constants/listData';
-import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
@@ -503,8 +503,8 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
-  bindProgressBarHoc,
+  bindActionCreatorHOC,
+  bindProgressBarHOC,
   bindDialogHOC,
   withRouter
 )(RoomPage);

@@ -6,7 +6,7 @@ import { roleTeacherForm, roleStudentForm } from '../constants/formsData';
 import { redirectUrlWithRole } from '../libraries/utils';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import CommonPageContent from '../components/CommonPageContent'
 
 const options = [
@@ -126,5 +126,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
 )(RolePage);

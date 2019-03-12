@@ -11,8 +11,8 @@ import * as types from '../actions/actionTypes';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
-import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
-import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindActionCreatorHOC from 'libraries/bindActionCreatorHOC';
+import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
@@ -796,8 +796,8 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
-  bindProgressBarHoc,
+  bindActionCreatorHOC,
+  bindProgressBarHOC,
   bindDialogHOC,
   withRouter
 )(CoursePage);

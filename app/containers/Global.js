@@ -7,7 +7,7 @@ import Notifications, { notify } from 'components/common/NotifyToast';
 import LoadingBar from "react-top-loading-bar";
 import Header from './Header';
 import Dialog from 'components/common/Dialog/index';
-import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from 'libraries/bindActionCreatorHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import { TOAST_TIMING } from '../constants';
 class Global extends Component {
@@ -82,7 +82,7 @@ const mapStateToProps = ({ Auth, Ui }) => ({
 
 export default compose(
   connect(mapStateToProps),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
   bindDialogHOC
 )(Global);
 

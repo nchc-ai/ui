@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../../../constants';
 import KeyValue from '../KeyValue/index';
-import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../../../libraries/bindActionCreatorHOC';
 
 class FileUpload extends Component {
 
@@ -127,5 +127,5 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc
+  bindActionCreatorHOC
 )(FileUpload);;

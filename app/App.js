@@ -9,7 +9,7 @@ import RouteUser from './RouteUser';
 import RouteGuest from './RouteGuest';
 import StaticPage from './containers/StaticPage';
 import { metaObj } from './constants/models';
-import bindActionCreatorHoc from './libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from './libraries/bindActionCreatorHOC';
 
 
 const PrivateRoute = ({ component: Component, isLogin, ...rest }) => (
@@ -65,5 +65,5 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc
+  bindActionCreatorHOC
 )(App);

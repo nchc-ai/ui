@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import Cookies from 'js-cookie';
 import { removeToken } from '../libraries/utils';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 
 class Logout extends Component {
 
@@ -43,5 +43,5 @@ export default compose(
   connect(
     mapStateToProps
   ),
-  bindActionCreatorHoc
+  bindActionCreatorHOC
 )(Logout);

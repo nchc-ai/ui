@@ -9,7 +9,7 @@ import CourseDetail from '../components/Course/CourseDetail';
 import CourseList from '../components/Course/CourseList';
 import CourseIntro from '../components/Course/CourseIntro';
 import { courseData } from '../constants/tableData';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 
 import courseSearchBn from '../../public/images/course/course-search-bn.png';
 import courseBasicBn from '../../public/images/course/course-basic-bn.png';
@@ -209,6 +209,6 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
   withRouter
 )(IntroPage);

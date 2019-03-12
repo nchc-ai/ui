@@ -6,11 +6,11 @@ import { actions as formActions, Form } from 'react-redux-form';
 import { notify } from 'components/common/NotifyToast';
 import { passwordForm } from '../constants/formsData';
 import { TOAST_TIMING } from '../constants';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
-import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 class PasswordPage extends Component {
@@ -118,8 +118,8 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
-  bindProgressBarHoc,
+  bindActionCreatorHOC,
+  bindProgressBarHOC,
   bindDialogHOC,
   withRouter
 )(PasswordPage);

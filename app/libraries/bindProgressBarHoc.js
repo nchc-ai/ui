@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default function bindProgressBarHoc(WrappedComponent) {
+export default function bindProgressBarHOC(WrappedComponent) {
   class Wrapper extends React.Component {
 
     componentWillUnmount() {

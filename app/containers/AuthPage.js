@@ -6,7 +6,7 @@ import { Form, actions as formActions } from 'react-redux-form';
 import { notify } from 'components/common/NotifyToast';
 import Cookies from 'js-cookie';
 import { dayToSecond, redirectUrlWithRole } from '../libraries/utils';
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../libraries/bindActionCreatorHOC';
 import { signupForm } from '../constants/formsData';
 import Login from '../components/Auth/Login';
 import SectionTitle from '../components/common/SectionTitle/index';
@@ -213,5 +213,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc
+  bindActionCreatorHOC
 )(AuthPage);

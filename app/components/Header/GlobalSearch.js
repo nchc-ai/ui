@@ -4,7 +4,7 @@ import { compose } from 'redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { actions as formActions, Form, Control } from 'react-redux-form';
-import bindActionCreatorHoc from '../../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../../libraries/bindActionCreatorHOC';
 import searchBtnIcon from '../../../public/images/header/search-icon.png';
 
 class GlobalSearch extends React.Component {
@@ -61,5 +61,5 @@ export default compose(
     mapStateToProps,
     mapDispatchToProps
   ),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
 )(withRouter(GlobalSearch));

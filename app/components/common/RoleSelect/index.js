@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import bindActionCreatorHoc from '../../../libraries/bindActionCreatorHoc';
+import bindActionCreatorHOC from '../../../libraries/bindActionCreatorHOC';
 import { Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { FaKey, FaChalkboardTeacher, FaUserGraduate }  from 'react-icons/fa';
 import { userInfo } from 'os';
@@ -73,5 +73,5 @@ const mapStateToProps = ({ Auth, Role }) => ({
 
 export default compose(
   connect(mapStateToProps),
-  bindActionCreatorHoc,
+  bindActionCreatorHOC,
 )(RoleSelect);
