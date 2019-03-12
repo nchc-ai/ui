@@ -1,12 +1,12 @@
 import * as types from './actionTypes';
 
-export const closeDialog = () => ({
-  type: types.CLOSE_DIALOG
+export const toggleDialog = () => ({
+  type: types.TOGGLE_DIALOG
 });
 
-export const openDialog = request => ({
-  type: types.OPEN_DIALOG,
-  request
+export const openCustomDialog = (config) => ({
+  type: types.OPEN_CUSTOM_DIALOG,
+  config
 });
 
 export const setDropdownPos = pos => ({

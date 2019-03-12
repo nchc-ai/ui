@@ -3,31 +3,29 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { Button } from 'reactstrap';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import ReactMarkdown from 'react-markdown';
 import styled from 'styled-components';
 import { Form, actions as formActions } from 'react-redux-form';
-import CourseDetail from '../components/Course/CourseDetail';
 import { roomData, courseInfoData } from '../constants/tableData';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
-import DetailGroups from '../components/common/DetailGroups/index';
+import { CronInputs } from 'components'
 import FormButtons from '../components/common/FormButtons/index';
 import TableList from '../components/common/TableList';
 import ListView from '../components/common/ListView/index';
-import { classroomFrame } from '../constants/detailFrame';
-import { classroomFormOne, classroomFormTwo, classroomFormThree } from '../constants/formsData';
+import { classroomFormOne, classroomFormTwo, cronFormData } from '../constants/formsData';
 import { classroomDetailTpl } from '../constants/listData';
-import { decodeHtml } from '../libraries/utils';
-import { setStudentsField } from '../actions/Classroom';
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
+import { TOAST_TIMING } from '../constants';
+
 
 const TableContainer = styled.div`
   width: 550px;
 `;
-
-
 
 class RoomPage extends Component {
 
@@ -90,7 +88,7 @@ class RoomPage extends Component {
       ...roomDetail.data,
       courses: _.get(roomDetail, 'data.courseInfo', []).map(d => ({ label: d.name, value: d.id })),
       students: _.get(roomDetail, 'data.students', []),
-      schedules: _.get(roomDetail, 'data.schedules', []),
+      schedule: _.get(roomDetail, 'data.schedule', {}),
       teachers: _.get(roomDetail, 'data.teachers', []),
       public: roomDetail.data.public ? { label: '是', value: true } : { label: '否', value: false },
     }
@@ -106,7 +104,7 @@ class RoomPage extends Component {
 
   resetForm = () => {
     this.props.resetForm('classroom');
-    this.props.resetForm('classroomCron');
+    this.props.resetForm('schedule');
   }
 
   startCourse = () => {
@@ -125,7 +123,7 @@ class RoomPage extends Component {
 
     // console.log('create job success');
     Progress.hide();
-    notify.show('新增工作成功', 'success', 1800);
+    notify.show('新增工作成功', 'success', TOAST_TIMING);
     this.props.history.push('/user/job');
   }
 
@@ -206,55 +204,72 @@ class RoomPage extends Component {
 
   onClassroomSubmit = (formData, formType) => {
     const {
-      roomAction,
       token,
-      students
-    } = this.props;
-
-    if (!students.isLoading) {
-      if (formType === 'create') {
-        const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
-        roomAction.createClassroom({
-          token,
-          formData,
-          students: mappedStudents,
-          next: this.onClassroomSubmitSuccess
-        });
-      } else {
-        roomAction.updateClassroom({
-          token,
-          formData,
-          students: formData.students,
-          next: this.onClassroomSubmitSuccess
-        });
-      }
-    } else {
-      notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', 1800);
-    }
-    // Progress.show();
-  }
-
-  onClassroomSubmitSuccess = (formType) => {
-    const {
       history,
       roomAction,
-      resetForm
+      resetForm,
+      students,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
+    // 時間防呆
+    if (formData.schedule.cronFormat.length > 0) {
+      openCustomDialog({
+        type: dialogTypes.CREATE,
+        title: '開始課程',
+        info: '請問確定要開始課程嗎？',
+        submitMethod: () => {
+          toggleDialog();
+          startProgressBar();
 
-    history.push('/user/classroom-manage/list');
-    notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', 1800);
+          if (!students.isLoading) {
+            if (formType === 'create') {
+              const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
+              roomAction.createClassroom({
+                token,
+                formData,
+                students: mappedStudents,
+                next: (formType) => {
 
-    // reset form
-    resetForm();
-    roomAction.resetStudentsField();
-  }
+                  endPorgressBar();
 
-  cancelClassroomDetail = () => {
+                  history.push('/user/classroom-manage/list');
+                  notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
 
-  }
+                  resetForm();
+                  roomAction.resetStudentsField();
+                }
+              });
+            } else {
+              roomAction.updateClassroom({
+                token,
+                formData,
+                students: formData.students,
+                next: (formType) => {
 
-  submitClassroomDetail = () => {
+                  endPorgressBar();
 
+                  history.push('/user/classroom-manage/list');
+                  notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
+
+                  resetForm();
+                  roomAction.resetStudentsField();
+                }
+              });
+            }
+          } else {
+            notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', TOAST_TIMING);
+          }
+        },
+        cancelMethod: () => {
+          toggleDialog();
+        }
+      });
+    } else {
+      notify.show(`此教室無時間格式無法建立（請確認是否已按下 "產生時間格式" 按鈕）`, 'error', TOAST_TIMING);
+    }
   }
 
   render() {
@@ -265,7 +280,10 @@ class RoomPage extends Component {
       roomList,
       roomDetail,
       isSubstituating,
-      changeValue
+      changeValue,
+      resetForm,
+      isCreateLoading,
+      isUpdateLoading
     } = this.props;
 
     const courseType = _.get(match, 'params.type');
@@ -349,12 +367,20 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'create')}
               >
-                {/* name | description | schedules | courses */}
+                {/* name | description | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
                   changeVal={changeValue}
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
+                />
+
+                {/* schedule */}
+                <CronInputs
+                  targetForm={forms.classroom.schedule}
+                  template={cronFormData}
+                  changeValue={changeValue}
+                  resetForm={resetForm}
                 />
 
                 {/* teachers | students */}
@@ -371,6 +397,7 @@ class RoomPage extends Component {
                   submitName="建立教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
+                  isLoading={isCreateLoading}
                   isForm
                 />
               </Form>
@@ -390,7 +417,7 @@ class RoomPage extends Component {
                 className="room-create-form-comp"
                 onSubmit={formData => this.onClassroomSubmit(formData, 'update')}
               >
-                {/* name | description | schedules | courses */}
+                {/* name | description | schedule | courses */}
                 <FormGroups
                   targetForm={forms.classroom}
                   formData={classroomFormOne}
@@ -412,6 +439,7 @@ class RoomPage extends Component {
                   submitName="修改此教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
+                  isLoading={isUpdateLoading}
                   isForm
                 />
               </Form>
@@ -455,7 +483,9 @@ const mapStateToProps = ({ forms, Auth, Role, Course, Classroom }) => ({
   isSubstituating: Role.isSubstituating,
   courseList: Course.courseList.data,
   courseDetail: Course.courseDetail.data,
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  isCreateLoading: Classroom.create.isLoading,
+  isUpdateLoading: Classroom.update.isLoading
 });
 
 export default compose(
@@ -464,5 +494,7 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
+  bindProgressBarHoc,
+  bindDialogHOC,
   withRouter
 )(RoomPage);

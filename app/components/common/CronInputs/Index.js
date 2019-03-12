@@ -5,11 +5,11 @@ import _ from 'lodash';
 import styled from 'styled-components';
 import DatePicker from "react-datepicker";
 import moment from 'moment';
+import Select from 'react-select';
 import { actions as formActions, Form } from 'react-redux-form';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import cronParser from 'cron-parser';
-import { notify } from 'react-notify-toast';
-import FormGroups from '../FormGroups/index';
+import { notify } from 'components/common/NotifyToast';
 import FormButtons from '../FormButtons/index';
 import { classroomFormDatePeriod, classroomFormDateBasic, classroomFormDateAdvance, classroomFormDateUnlimit } from '../../../constants/formsData';
 import { If, Then } from 'react-if'
@@ -36,6 +36,10 @@ const Background = styled.div`
   background-color: #f8f4f4;
   text-align: left;
   padding: 20px 20px;
+`;
+
+const FormGroups = styled.div`
+  min-height: 40px;
 `;
 
 const Row = styled.div`
@@ -82,76 +86,73 @@ const Info = styled.div`
 `
 
 
-class CronBuilder extends React.Component {
-  static propTypes = {
-  }
+class CronInputs extends React.Component {
 
-  static defaultProps = {
-  }
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      tabMode: 0
-    };
+  state = {
+    tabIndex: 0
   }
 
   componentWillUnmount() {
     this.resetCronFormat();
   }
 
-  selectTab = (tabMode) => {
+  selectTab = (tabIndex) => {
     this.setState({
-      tabMode
+      tabIndex
     })
-
+    // this.props.changeValue(tabMode, 'selectedType', 'classroom.schedule');
     this.resetCronFormat();
-
   }
 
   generateCronFormat = (e) => {
     if (e) {
       e.preventDefault();
     }
-    const { tabMode } = this.state;
-    const { forms } = this.props;
+
+    const {
+      targetForm,
+      changeValue
+    } = this.props;
 
     // Stage I ================
-
+    // console.log('targetForm', targetForm);
+    const selectedType = _.get(targetForm, 'selectedType', 0);
     // 先抓到起迄時間
-    const startDateStr = moment(_.get(forms, 'classroomCron.startDate', '')).format('YYYY / MM / DD')
-    const endDateStr = moment(_.get(forms, 'classroomCron.endDate', '')).format('YYYY / MM / DD')
+    const startDateStr = moment(_.get(targetForm, 'startDate', '')).format('YYYY / MM / DD')
+    const endDateStr = moment(_.get(targetForm, 'endDate', '')).format('YYYY / MM / DD')
 
-    // 把 '固定期間每週開課' 格式算出來
-    const periodAdvance = _.get(forms, 'classroomCron.periodAdvance', []);
-    const periodWeekAdvanceObj = {
-        description: periodAdvance
-        .map(datum => `${_.get(datum,'label', '')}`)
-        .join(' ') || '尚無資料',
-        cron: periodAdvance
-        .map(datum => `${_.get(datum,'value', '')}`)
-        .join(',') || '*'
-      }
+    console.log('selectedType', selectedType, startDateStr, endDateStr, targetForm);
+
+    // 把 [TAB 2] '固定期間每週開課' 格式算出來
+    // const periodAdvance = _.get(targetForm, 'schedule.periodAdvance', []);
+    // const periodWeekAdvanceObj = {
+    //     description: periodAdvance
+    //     .map(datum => `${_.get(datum,'label', '')}`)
+    //     .join(' ') || '尚無資料',
+    //     cron: periodAdvance
+    //     .map(datum => `${_.get(datum,'value', '')}`)
+    //     .join(',') || '*'
+    //   }
 
     // 先暫時生成 week 的格式
     const calendarCronObj = {
       '0': {
-        descripition: `${_.get(forms, 'classroomCron.periodBasic.label', '')}時間`,
-        cron: `0 0 8 * * ${_.get(forms, 'classroomCron.periodBasic.value', '*')}`
+        description: `${_.get(targetForm, 'selectedOption.0.label', '')}時間`,
+        cron: `0 0 8 * * ${_.get(targetForm, 'selectedOption.0.value', '*')}`
       },
       '1': {
-        descripition: `固定每週 ${periodWeekAdvanceObj.description}`,
-        cron: `0 0 8 * * ${periodWeekAdvanceObj.cron}`
+        description: `固定每週 ${_.get(targetForm, 'selectedOption.0.label', '')}`,
+        cron: `0 0 8 * * ${_.get(targetForm, 'selectedOption.0.value', '')}`
       },
       '2': {
-        descripition: `區間內 不限時間`,
+        description: `區間內 不限時間`,
         cron: '* * * * * *'
       }
     }
-    const selectedCron = calendarCronObj[`${tabMode}`];
-
+    const selectedCron = calendarCronObj[`${selectedType}`];
+    console.log('selectedCron', selectedCron);
     // 塞入 語意式 cron 敘述
-    this.props.changeValue(tabMode !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.descripition}` : '完全不限時間', 'scheduleDescription', 'classroom');
+    this.props.changeValue(selectedType !== 2 ? `${startDateStr} 至 ${endDateStr} 的 ${selectedCron.description}` : '完全不限時間', 'description', 'classroom.schedule');
 
 
     // 先生成 timeArr
@@ -162,7 +163,7 @@ class CronBuilder extends React.Component {
       const {
         startDate,
         endDate
-      } = forms.classroomCron
+      } = targetForm
 
       const startDataForCron = new Date(startDate).setDate(new Date(startDate).getDate() - 1)
       const endDateForCron = new Date(endDate);
@@ -218,7 +219,7 @@ class CronBuilder extends React.Component {
     })
 
     // 批次加入 endDate
-    const resultArr = resultTimeArr.map((result, index) => {
+    const resultArr = resultTimeArr.map((result) => {
       const endMargin = result.startDateInt + result.length;
       const endDateInt = endMargin - 1;
       return ({
@@ -256,29 +257,28 @@ class CronBuilder extends React.Component {
     })))
 
     // 塞入 redux state
-    this.props.changeValue(calendarArr, 'calendar', 'classroom');
-    this.props.changeValue(cronArr, 'schedules', 'classroom');
+    changeValue(calendarArr, 'calendar', 'classroom');
+    changeValue(cronArr, 'cronFormat', 'classroom.schedule');
 
-    // console.log('cron all in one', rawTimeArr, resultArr, monthObj, cronArr, calendarArr);
   }
 
   resetCronFormat = (e) => {
     if (e) {
       e.preventDefault();
     }
-    this.props.resetForm('classroomCron');
-    this.props.changeValue([], 'schedules', 'classroom');
+    this.props.resetForm('schedule');
+    // this.props.changeValue([], 'cronFormat', 'classroom.schedule');
   }
 
   render() {
 
     const {
-      forms,
-      config,
-      isReset,
+      targetForm,
+      template,
       changeValue
     } = this.props;
 
+    // let selectedIndex = _.get(targetForm, 'schedule.selectedType', 0);
     return (
       <Comp>
         <Background>
@@ -291,49 +291,105 @@ class CronBuilder extends React.Component {
 
           {/* 時間選擇 */}
           <div>
-            <FormGroups
-              formData={classroomFormDatePeriod}
-              targetForm={forms.classroomCron}
-              changeVal={changeValue}
-            />
+            <FormGroups className="form-group">
+              <label className="required-label label">
+                <span className="main-label">開始時間： </span>
+              </label>
+              <DatePicker
+                className="text-input"
+                selected={_.get(targetForm, `startDate`)}
+                onChange={val => changeValue(val, template.inputFirst.name, template.inputFirst.target)}
+                dateFormat="yyyy / MM / dd"
+              />
+            </FormGroups>
+            <FormGroups className="form-group">
+              <label className="required-label label">
+                <span className="main-label">結束時間： </span>
+              </label>
+              <DatePicker
+                className="text-input"
+                selected={_.get(targetForm, `endDate`)}
+                onChange={val => changeValue(val, template.inputSecond.name, template.inputSecond.target)}
+                dateFormat="yyyy / MM / dd"
+              />
+            </FormGroups>
           </div>
 
           {/* 週期選擇 */}
           <TabContainer>
-            <Tabs onSelect={this.selectTab}>
+            <Tabs selectedIndex={this.state.tabIndex}  onSelect={this.selectTab}>
                 <TabList>
                     <Tab>單次一日至連續多日課程</Tab>
                     <Tab>固定期間每週開課</Tab>
                     <Tab>不限時間</Tab>
                 </TabList>
+                {/* 1. 單次一日至連續多日課程 */}
                 <TabPanel>
-
-                  <FormGroups
-                    formData={classroomFormDateBasic}
-                    targetForm={forms.classroomCron}
-                    changeVal={changeValue}
-                  />
+                  <div className="form-input-radio">
+                    {
+                      template.tabFirst.options.map(opt => (
+                        <div key={opt.key} className={`radio-input-con ${template.className}`}>
+                          <label
+                            htmlFor={`radio-input-${opt.radioKey}`}
+                            className="radio-label"
+                          >
+                            <input
+                              id={`radio-input-${opt.radioKey}`}
+                              type="radio"
+                              className="radio-input"
+                              value={opt.value}
+                              checked={_.get(targetForm, `selectedOption.0.value`) === opt.value}
+                              onChange={() => changeValue(opt, 'selectedOption.0', template.tabFirst.target)}
+                            />
+                            <span>{opt.label}</span>
+                          </label>
+                        </div>
+                      ))
+                    }
+                  </div>
                 </TabPanel>
+                {/* 2. 固定期間每週開課 */}
                 <TabPanel>
-                  <FormGroups
-                    formData={classroomFormDateAdvance}
-                    targetForm={forms.classroomCron}
-                    changeVal={changeValue}
-                  />
+                  <div className="form-input">
+                    <Select
+                      name="form-field-name"
+                      value={_.get(targetForm, template.tabSecond.name, [])}
+                      placeholder={template.tabSecond.placeholder}
+                      onChange={val => changeValue(val, template.tabSecond.name, template.tabSecond.target)}
+                      options={template.tabSecond.options || []}
+                      multi
+                    />
+                  </div>
                 </TabPanel>
+                {/* 3. 不限時間 */}
                 <TabPanel>
-                  <FormGroups
-                    formData={classroomFormDateUnlimit}
-                    targetForm={forms.classroomCron}
-                    changeVal={changeValue}
-                  />
+                  {
+                    template.tabThird.options.map(opt => (
+                      <div key={opt.key} className={`radio-input-con ${template.className}`}>
+                        <label
+                          htmlFor={`radio-input-${opt.radioKey}`}
+                          className="radio-label"
+                        >
+                          <input
+                            id={`radio-input-${opt.radioKey}`}
+                            type="radio"
+                            className="radio-input"
+                            value={opt.value}
+                            checked={_.get(targetForm, `selectedOption.0.value`) === opt.value}
+                            onChange={() => changeValue(opt, 'selectedOption.0', template.tabThird.target)}
+                          />
+                          <span>{opt.label}</span>
+                        </label>
+                      </div>
+                    ))
+                  }
                 </TabPanel>
             </Tabs>
 
-            <If condition={!_.isEmpty(_.get(forms, 'classroom.schedules.0', ""))}>
+            <If condition={!_.isEmpty(_.get(targetForm, 'cronFormat.0', ""))}>
               <Then>
                 <h4>時間週期結果</h4>
-                <Crons>{_.get(forms, 'classroom.scheduleDescription', '')}</Crons>
+                <Crons>{_.get(targetForm, 'description', '')}</Crons>
               </Then>
             </If>
 
@@ -352,25 +408,4 @@ class CronBuilder extends React.Component {
   }
 }
 
-const mapDispatchToProps = dispatch => ({
-  resetForm: (formName) => dispatch(formActions.reset(
-    `forms.${formName}`
-  )),
-  changeValue: (value, key, formName) => dispatch(formActions.change(
-    `forms.${formName}.${key}`,
-    value
-  )),
-  changeForm: (formObj, formName) => dispatch(formActions.change(
-    `forms.${formName}`,
-    formObj
-  ))
-});
-
-const mapStateToProps = ({ forms }) => ({
-  forms
-});
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(CronBuilder);
+export default CronInputs;

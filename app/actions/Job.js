@@ -1,6 +1,6 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VM_URL, AUTH_PROVIDER_URL, API_VERSION, API_VM_VERSION } from '../config/api';
@@ -46,7 +46,7 @@ export const getVMJobList = ({ user, token, isRefetch }) => async (dispatch) => 
 };
 
 
-// Launch
+// Launch: merged into single API already
 export const launchCourseJob = ({ token, user, classroomId, courseId, next }) => async (dispatch) => {
   const response = await dispatch({
     [RSAA]: {
@@ -64,8 +64,6 @@ export const launchCourseJob = ({ token, user, classroomId, courseId, next }) =>
       types: types.LAUNCH_COURSE_JOB
     }
   });
-
-  // console.log('[launchJob] response', response);
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, "payload.response.message", "launch course job fail"), 'error', TOAST_TIMING);

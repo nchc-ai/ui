@@ -7,7 +7,7 @@ import MyoauthButton from '../components/Auth/MyoauthButton';
 import { Link } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
 import { Hover } from 'react-powerplug';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import Cookies from 'js-cookie';
 import SetUserInfo from '../components/common/SetUserInfo/index';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -23,6 +23,7 @@ import iconMemberAfter from '../../public/images/common/ic-nav-member-hover.png'
 import iconLogoutBefore from '../../public/images/common/ic-nav-logout-default.png';
 import iconLogoutAfter from '../../public/images/common/ic-nav-logout-hover.png';
 // import IconList from './IconList';
+import { TOAST_TIMING } from '../constants';
 
 class Header extends Component {
 
@@ -41,7 +42,7 @@ class Header extends Component {
    */
   onGetCodeFail = (err) => {
     if (err.toString() !== 'Error: The popup was closed') {
-      notify.show('Error: code not found', 'error', 1800);
+      notify.show('Error: code not found', 'error', TOAST_TIMING);
     }
   }
 
@@ -199,7 +200,7 @@ class Header extends Component {
               }
 
               {
-                !isLogin?
+                !isLogin || (isLogin && loading)?
                   <Link to="/login">
                     <button>登入 / 註冊</button>
                   </Link>

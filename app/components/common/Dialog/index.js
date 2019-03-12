@@ -1,14 +1,46 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import { compose } from 'redux';
 import Modal from 'react-modal';
 import _ from 'lodash';
-import { Button } from 'reactstrap';
-import * as types from '../../../constants/types';
-import DialogHOC from '../../../HOC/DialogHOC';
+import styled from 'styled-components';
+import * as dialogTypes from 'constants/dialogTypes';
+
+const Button = styled.button`
+
+  width: 100px;
+  height: 40px;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #fff;
+  letter-spacing: 10px;
+  text-indent: 10px;
+  text-align: center;
+  background-color: #2a9b9d;
+  border-radius: 6px;
+  line-height: 38px;
+  float: left;
+  outline: none;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+`;
+
+const SubmitButton = styled(Button)`
+  background-color: ${props => props.type === dialogTypes.DELETE ? '#fa7564' : '#2a9b9d'};
+`
+
+const CancelButton = styled(Button)`
+  color: #000;
+  background-color: #EAEAEA;
+`
 
 
-const Index = ({ width, customStyle, dialog }) => (
+const Dialog = ({ width, customStyle, dialog }) => (
   <Modal
     style={{ content: { width: `${width ? width : '300'}px` } }}
     isOpen={dialog.isOpen}
@@ -30,19 +62,18 @@ const Index = ({ width, customStyle, dialog }) => (
       <div className="modal-button-bg">
         <div className="modal-button-con">
 
-          <button
-            className="submit-btn btn-grp"
-            onClick={e => dialog.submitMethod(dialog.target)}
+          <SubmitButton
+            type={dialog.type}
+            onClick={dialog.submitMethod}
           >
             {dialog.submitText}
-          </button>
+          </SubmitButton>
 
-          <button
-            className="cancel-btn btn-grp"
+          <CancelButton
             onClick={dialog.cancelMethod}
           >
             {dialog.cancelText}
-          </button>
+          </CancelButton>
 
         </div>
       </div>
@@ -51,74 +82,4 @@ const Index = ({ width, customStyle, dialog }) => (
   </Modal>
 );
 
-
-/* <div>
- {openButton
-      ?
-        <button
-          className="action-btn"
-          onClick={() => updateState({ open: !open })}
-        >
-          <span className="action-word">{openButton.text}</span>
-          {openButton.icon}
-        </button>
-      :
-        <Button
-          color="accent"
-          onClick={() => updateState({ open: !open })}
-          raised
-        >
-          Open Dialog
-        </Button>}
-  </div>
-*/
-
-// const DialogHOC = Component => (
-//   class extends React.Component {
-//     constructor(props) {
-//       super(props);
-
-//       // this.state = props.initialModel || { open: false };
-//     }
-
-//     updateState = updateState => this.setState(updateState);
-
-//     render() {
-//       return React.createElement(Component, {
-//         ...this.props,
-//         ...this.state,
-//         ...{ updateState: this.updateState }
-//       });
-//     }
-//   }
-// );
-
-// const mapProps = fn => Component => props => (
-//   React.createFactory(Component)(fn(props))
-// );
-
-// const compose = (propFn, highOrderComponent) => x => {
-//   return propFn(highOrderComponent(x));
-// };
-
-// const enhanceDialog = compose(
-//   mapProps(({ ...props }) => ({ ...props })),
-//   DialogHOC,
-// );
-
-// const DialogWrapper = enhanceDialog(DialogButton);
-
-
-const mapStateToProps = ({ Ui }) => ({
-  dialog: Ui.Dialog
-});
-
-export default compose(
-  connect(
-    mapStateToProps,
-    // mapDispatchToProps
-  ),
-  DialogHOC
-)(Index);
-
-// export default DialogWrapper;
+export default Dialog;

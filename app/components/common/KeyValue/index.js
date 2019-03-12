@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styled from 'styled-components';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../../../constants';
 
 const Comp = styled.div`
@@ -245,7 +245,7 @@ export default class KeyValue extends React.Component {
       rows: this.state.rows.filter((row, i) => i !== index)
     }, () => {
       this.props.onChange([...this.state.rows]);
-      notify.show(`已刪除${deletedKeyItem}`, 'success', 800);
+      notify.show(`已刪除${deletedKeyItem}`, 'success', TOAST_TIMING);
     });
   }
 

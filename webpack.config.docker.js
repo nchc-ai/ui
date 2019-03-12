@@ -15,7 +15,7 @@ const extractSass = new ExtractTextPlugin({
 const config = {
   mode: 'development',
   devtool: 'cheap-eval-source-map',
-  // entry: [ 
+  // entry: [
   //   'babel-polyfill',
   //   'webpack-hot-middleware/client?reload=true',
   //   './app/main.js'
@@ -31,12 +31,18 @@ const config = {
     chunkFilename: 'vendor_[name]_bundle.js',
     publicPath: '/'
   },
-
-  // resolve :{
-  //   alias: {
-  //     'react': bower_dir + '/react/react.production.min.js'
-  //   } 
-  // },
+  resolve: {
+    modules: [path.resolve(__dirname, './app'), 'node_modules'],
+    extensions: ['.js', '.jsx', '.json'],
+    alias: {
+      actions: path.resolve(__dirname, './app/actions'),
+      components: path.resolve(__dirname, './app/components'),
+      store: path.resolve(__dirname, './app/store'),
+      constants: path.resolve(__dirname, './app/constants'),
+      libraries: path.resolve(__dirname, './app/libraries'),
+      hoc: path.resolve(__dirname, './app/HOC'),
+    }
+  },
   // output: {
   //   path: __dirname + '/build',
   //   filename: 'index_bundle.js',

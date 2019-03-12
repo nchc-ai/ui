@@ -1,10 +1,11 @@
 import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import axios from 'axios';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../constants';
 import * as types from './actionTypes';
 import { API_URL, API_VERSION } from '../config/api';
+import moment from 'moment';
 
 export const setStudentsField = ({ students }) => ({
   type: types.SET_STUDENTS_FIELD,
@@ -28,8 +29,13 @@ export const createClassroom = ({ token, formData, students, next }) => async (d
   const submitData = {
     ...formData,
     students,
+    schedule: {
+      ...formData.schedule,
+      startDate: moment(formData.schedule.startDate).format('YYYY-MM-DD'),
+      endDate: moment(formData.schedule.endDate).format('YYYY-MM-DD')
+    },
     studentCount: students.length,
-    public: formData.public.value
+    public: formData.public.value,
   };
   // console.log('[create] submitData', submitData);
 
@@ -68,6 +74,11 @@ export const updateClassroom = ({ token, formData, students, next }) => async (d
   const submitData = {
     ...formData,
     students,
+    schedule: {
+      ...formData.schedule,
+      startDate: moment(formData.schedule.startDate).format('YYYY-MM-DD'),
+      endDate: moment(formData.schedule.endDate).format('YYYY-MM-DD')
+    },
     studentCount: students.length,
     public: formData.public.value
   };
@@ -82,7 +93,7 @@ export const updateClassroom = ({ token, formData, students, next }) => async (d
         'Authorization': `Bearer ${token}`
       },
       body: JSON.stringify(submitData),
-      types: types.CREATE_CLASSROOM
+      types: types.UPDATE_CLASSROOM
     }
   });
 
@@ -90,7 +101,7 @@ export const updateClassroom = ({ token, formData, students, next }) => async (d
     notify.show(_.get(response, 'payload.response.message', '更新課程失敗'), 'error', TOAST_TIMING);
   }
 
-  next('update');
+  next('edit');
 };
 
 /**

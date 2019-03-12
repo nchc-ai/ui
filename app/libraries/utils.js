@@ -3,7 +3,7 @@ import moment from 'moment';
 import { push } from 'react-router-redux';
 import _ from 'lodash';
 import Moment from 'react-moment';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 
 export function bindFunctions(functions) {
 	functions.forEach(f => {

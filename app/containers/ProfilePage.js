@@ -3,13 +3,16 @@ import { Switch, Route, withRouter } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Form, actions as formActions } from 'react-redux-form';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
 import CommonPageContent from '../components/CommonPageContent';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import { profileForm } from '../constants/formsData';
-
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
+import { TOAST_TIMING } from '../constants';
 class ProfilePage extends Component {
   componentWillMount() {
     this.fetchData(this.props);
@@ -35,17 +38,37 @@ class ProfilePage extends Component {
     this.props.changeForm(profile, 'profile');
   }
 
-  onProfileUpdateSuccess = () => {
-    notify.show('個人資料更新成功', 'success', 1800);
-    this.fetchData(this.props);
-  }
-
   onProfileSubmit = (formData) => {
     const {
+      token,
       authAction,
-      token
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
-    authAction.updateProfile(formData, token, this.onProfileUpdateSuccess);
+
+    openCustomDialog({
+      type: dialogTypes.UPDATE,
+      title: '更新個人資料',
+      info: '請問確定要更新嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        authAction.updateProfile(
+          formData,
+          token,
+          () => {
+            endPorgressBar();
+            notify.show('個人資料更新成功', 'success', TOAST_TIMING);
+            this.fetchData(this.props);
+          }
+        );
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   render() {
@@ -110,5 +133,7 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
+  bindProgressBarHoc,
+  bindDialogHOC,
   withRouter
 )(ProfilePage);

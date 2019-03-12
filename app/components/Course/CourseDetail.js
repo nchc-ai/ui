@@ -42,6 +42,7 @@ const CourseDetail = ({ submitMethod, cancelEdit, detail, isBanner }) => (
         backMethod={cancelEdit}
         nextMethod={submitMethod}
         showMode="submit_back"
+        isLoading={status.isLaunchJobLoading}
       />
 
     </div>

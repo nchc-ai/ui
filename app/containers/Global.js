@@ -3,13 +3,17 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 // import { translate } from 'react-i18next';
-import Notifications, { notify } from 'react-notify-toast';
+import Notifications, { notify } from 'components/common/NotifyToast';
 // import ga from 'react-google-analytics';
 import LoadingBar from "react-top-loading-bar";
 import Header from './Header';
-import Dialog from '../components/common/Dialog/index';
+import Dialog from 'components/common/Dialog/index';
 
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
+import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+
+import bindDialogHOC from 'libraries/bindDialogHOC';
+
+import { TOAST_TIMING } from '../constants';
 
 // const GAInitiailizer = ga.Initializer;
 
@@ -20,7 +24,7 @@ class Global extends Component {
   }
 
   offlineWarning = () => {
-    notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', 1800);
+    notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', TOAST_TIMING);
   }
 
   render() {
@@ -33,6 +37,7 @@ class Global extends Component {
       children,
       isLoading,
       progressBar,
+      dialog,
       t,
     } = this.props;
     return (
@@ -62,7 +67,9 @@ class Global extends Component {
         <div className="global-body">
           {children}
         </div>
-        <Dialog />
+        <Dialog
+          dialog={dialog}
+        />
       </div>
     );
   }
@@ -76,11 +83,13 @@ const mapStateToProps = ({ Auth, Ui }) => ({
   progressBar: {
     isActive: Ui.ProgressBar.isActive,
     progress: Ui.ProgressBar.progress
-  }
+  },
+  dialog: Ui.Dialog
 });
 
 export default compose(
   connect(mapStateToProps),
-  bindActionCreatorHoc
+  bindActionCreatorHoc,
+  bindDialogHOC
 )(Global);
 

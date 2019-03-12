@@ -5,7 +5,7 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';;
 import { actions as formActions, Form } from 'react-redux-form';
 import { Row, Col } from 'reactstrap';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import Clipboard from 'react-clipboard.js';
 import { State, Toggle } from 'react-powerplug'
 import { JOB_INTERVAL } from '../config/api';
@@ -18,6 +18,9 @@ import DataFrame from '../components/common/DataFrame/index';
 import { groupArray, formatStatus } from '../libraries/utils';
 import CommonPageContent from '../components/CommonPageContent';
 import { snapshotForm } from '../constants/formsData';
+import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
+
 
 class JobPage extends Component {
 
@@ -144,27 +147,41 @@ class JobPage extends Component {
   deleteJob(e, thumb) {
     const {
       token,
-      jobAction
+      jobAction,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
 
-    this.props.startProgressBar();
+    openCustomDialog({
+      type: dialogTypes.DELETE,
+      title: '刪除工作',
+      info: '請問確定要刪除此工作嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        jobAction.deleteJob({
+          jobId: thumb.id,
+          token,
+          next: (isSuccess) => {
 
-    jobAction.deleteJob({
-      jobId: thumb.id,
-      token,
-      next: this.onAfterDeleteJob
+            endPorgressBar();
+
+            if (isSuccess) {
+              notify.show('工作刪除成功', 'success', TOAST_TIMING);
+            } else {
+              notify.show('工作刪除失敗', 'error', TOAST_TIMING);
+            }
+
+            this.fetchData(this.props);
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
     });
-  }
-
-  onAfterDeleteJob = (isSuccess) => {
-    if (isSuccess) {
-      notify.show('工作刪除成功', 'success', 1800);
-    } else {
-      notify.show('工作刪除失敗', 'error', 1800);
-    }
-
-    this.props.endPorgressBar();
-    this.fetchData(this.props);
   }
 
   render() {
@@ -379,5 +396,6 @@ export default compose(
     mapDispatchToProps
   ),
   bindActionCreatorHoc,
-  bindProgressBarHoc
+  bindProgressBarHoc,
+  bindDialogHOC
 )(JobPage);

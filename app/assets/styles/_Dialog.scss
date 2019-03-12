@@ -116,57 +116,54 @@ $cancel-color: $ailab-grey-03;
 	}
 
 	.model-content-con{
-		p{
-			margin-top: 40px;
-			margin-left: 36px;
-			margin-right: 60px;
+		padding: 30px 40px;
+		p {
 			line-height: 33px;
 			font-size: 14px;
 			text-align: justify;
 			letter-spacing: 2px;
 			text-indent: 1px;
 		}
-	}	
+	}
 
 	.modal-button-bg{
 		position: relative;
 		width: 100%;
 		margin-top: 20px;
 		margin-bottom: 20px;
-		
 
 		.modal-button-con{
 			@include rect-center(240px,40px);
-			a, button{
+			// a, button{
 
-				@include rect(100px,40px);
-				@include margin(10px);
-				color: #fff;
-				letter-spacing: 10px;
-				text-indent: 10px;
-				text-align: center;
-				background-color:$dialog-primary-color;
-				border-radius: 6px;
-				line-height: 38px;
-				float: left;
-				outline: none;
-				cursor: pointer;
+			// 	@include rect(100px,40px);
+			// 	@include margin(10px);
+			// 	color: #fff;
+			// 	letter-spacing: 10px;
+			// 	text-indent: 10px;
+			// 	text-align: center;
+			// 	background-color:$dialog-primary-color;
+			// 	border-radius: 6px;
+			// 	line-height: 38px;
+			// 	float: left;
+			// 	outline: none;
+			// 	cursor: pointer;
 
-        &:focus {
-					outline: none;
-        }
+      //   &:focus {
+			// 		outline: none;
+      //   }
         
-				&:hover {
-					text-decoration: none;
-				}
+			// 	&:hover {
+			// 		text-decoration: none;
+			// 	}
 			
-			}
+			// }
 
-			.cancel-btn {
-				color: $primary-color;
-				background-color: $cancel-color;
-				// border: 1px solid $primary-color;
-			}
+			// .cancel-btn {
+			// 	color: $primary-color;
+			// 	background-color: $cancel-color;
+			// 	// border: 1px solid $primary-color;
+			// }
 		}
 	}
 }

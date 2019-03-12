@@ -16,7 +16,6 @@ const CourseList = ({ data, tableData, isDialogOpen, startMethod, editMethod, de
 
         <hr />
       </Col>
-     
     </Row>
     <Row>
       <Col className="col-second">

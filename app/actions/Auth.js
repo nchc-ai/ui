@@ -3,7 +3,7 @@ import { RSAA } from 'redux-api-middleware';
 import _ from 'lodash';
 import Cookies from 'js-cookie';
 import * as types from './actionTypes';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { TOAST_TIMING } from '../constants';
 import { API_URL, API_VERSION, AUTH_PROVIDER_URL } from '../config/api';
 import { makeUserRequest, setLocalStorageItem, getLocalStorageItem, resetLocalStorageItem, tempfyData, dayToSecond } from '../libraries/utils';
@@ -231,7 +231,7 @@ export const updateProfile = (formData, token, next) => async (dispatch) => {
 
 
 // Proxy > UpdataPassword
-export const updatePassword = ({ token, username, formData, onSuccess }) => async (dispatch) => {
+export const updatePassword = ({ token, username, formData, next }) => async (dispatch) => {
 
   const tempData = {
     username,
@@ -254,7 +254,7 @@ export const updatePassword = ({ token, username, formData, onSuccess }) => asyn
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', ''), 'error', TOAST_TIMING);
   }
-  onSuccess();
+  next();
 };
 
 

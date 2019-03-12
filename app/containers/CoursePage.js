@@ -3,20 +3,19 @@ import { Switch, Route, withRouter, Link } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import { actions as formActions, Form } from 'react-redux-form';
 import ReactMarkdown from 'react-markdown';
+import { ListView, TableList, FormGroups, FormButtons, CommonPageContent } from 'components';
+import * as types from '../actions/actionTypes';
 import { ongoingCourseData } from '../constants/tableData';
 import { courseConForm, courseConFormTwo, courseVMFormOne, courseVMFormTwo, courseVMFormThree, courseVMFormFour, courseVMFormFive } from '../constants/formsData';
 import { courseCONTAINERDetailTpl, courseVMDetailTpl } from '../constants/listData'
-import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
-import bindProgressBarHoc from '../libraries/bindProgressBarHoc';
-import TableList from '../components/common/TableList';
-import ListView from '../components/common/ListView/index';
-import FormGroups from '../components/common/FormGroups/index';
-import FormButtons from '../components/common/FormButtons/index';
-import CommonPageContent from '../components/CommonPageContent';
-import { initialCourseConState, initialCourseVMState } from '../constants/initialState';
+import bindActionCreatorHoc from 'libraries/bindActionCreatorHoc';
+import bindProgressBarHoc from 'libraries/bindProgressBarHoc';
+import bindDialogHOC from 'libraries/bindDialogHOC';
+import * as dialogTypes from 'constants/dialogTypes';
+import { TOAST_TIMING } from '../constants';
 
 class CoursePage extends Component {
 
@@ -48,7 +47,6 @@ class CoursePage extends Component {
     if (nextProps.match.url !== this.props.match.url) {
       window.scrollTo(0, 0);
       this.fetchData(nextProps);
-      this.props.endPorgressBar();
     }
   }
 
@@ -113,8 +111,8 @@ class CoursePage extends Component {
         edit: {
           ...course,
           level: { value: _.get(course, 'level') },
-          associate: { value: _.get(course, 'associate', false) === 'true' },
-          mount: { value: _.get(course, 'mount', false)},
+          associate: _.get(course, 'associate', false) === 'true',
+          mount: _.get(course, 'mount', false),
         },
         detail: {
           ...course
@@ -137,37 +135,43 @@ class CoursePage extends Component {
    * @param {Object} data - .
    */
   launchCourseJob = (e, data) => {
+    // TODO: 如有 launch 過就不要再 launch
     const {
-      jobAction,
       token,
-      userInfo,
-      myUserInfo,
-      startProgressBar
-    } = this.props;
-
-    startProgressBar();
-
-    jobAction.launchCourseJob({
-      user: myUserInfo.username,
-      classroomId: '',
-      courseId: data.id,
-      token,
-      next: this.onAfterLaunchCourseJob
-    });
-  }
-
-  onAfterLaunchCourseJob = (isSuccess) => {
-    const {
       history,
-      endPorgressBar
+      jobAction,
+      myUserInfo,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
 
-    endPorgressBar();
-
-    if (isSuccess) {
-      history.push('/user/job/list');
-      notify.show('已發出啟動課程訊號', 'success', 1800);
-    }
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: '開始課程',
+      info: '請問確定要開始課程嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        jobAction.launchCourseJob({
+          user: myUserInfo.username,
+          classroomId: '',
+          courseId: data.id,
+          token,
+          next: (isSuccess) => {
+            endPorgressBar();
+            if (isSuccess) {
+              history.push('/user/job/list');
+              notify.show('已發出啟動課程訊號', 'success', TOAST_TIMING);
+            }
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   editCourse = (e, datum) => {
@@ -176,9 +180,12 @@ class CoursePage extends Component {
 
   deleteCourse = (e, datum) => {
     const {
-      courseAction,
       token,
-      userInfo
+      courseAction,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
     } = this.props;
 
     if (datum.type === 'CONTAINER') {
@@ -197,15 +204,32 @@ class CoursePage extends Component {
     
   }
 
-  onDeleteCourseSuccess = () => {
-    // Progress.hide();
-    this.fetchData(this.props);
-    notify.show('課程刪除成功', 'success', 1800);
+    openCustomDialog({
+      type: dialogTypes.DELETE,
+      title: '刪除課程',
+      info: '請問確定要刪除課程嗎？',
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+        courseAction.deleteCourseContainer({
+          courseId: datum.id,
+          token,
+          next: () => {
+            endPorgressBar();
+            this.fetchData(this.props);
+            notify.show('課程刪除成功', 'success', TOAST_TIMING);
+          }
+        });
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   // 共用 cb
   handleSubmitFailedCommon = (formData) => {
-    notify.show('請確認是否填妥表單資料', 'error', 1800);
+    notify.show('請確認是否填妥表單資料', 'error', TOAST_TIMING);
   }
 
   /**
@@ -221,64 +245,114 @@ class CoursePage extends Component {
     nextProps.resetForm('courseVM');
   }
 
-  onSubmitCourseFail = ({ actionType, courseType }) => {
-    this.resetBothForm(this.props);
-    this.props.endPorgressBar()
-  }
-
-  onSubmitCourseSuccess = ({ actionType, courseType }) => {
-    // Progress.hide();
-    const {
-      history,
-      endPorgressBar
-    } = this.props;
-    endPorgressBar()
-    // reset all form
-    this.resetBothForm(this.props);
-
-    this.fetchData(this.props);
-    this.props.history.push('/user/ongoing-course/list');
-
-    const actionName = actionType === 'create' ? '建立' : '更新';
-    notify.show(`課程${actionName}成功`, 'success', 1800);
-  }
-
   /**
    * Container Course
    * Called when clicking submit button to create container course.
    * @param {Object} formData - The submit object.
    */
   onCourseSubmit = ({ submitData, actionType, courseType }) => {
-    const {
-      courseAction,
-      token,
-      userInfo,
-      startProgressBar
-    } = this.props;
-    startProgressBar();
+    const conditionObj = {
+      container: {
+        create: {
+          courseText: '容器課程',
+          actionText: '新建',
+          apiAction: 'create',
+          method: 'POST',
+          types: types.CREATE_CONTAINER_COURSE
+        },
+        edit: {
+          courseText: '容器課程',
+          actionText: '更新',
+          apiAction: 'update',
+          method: 'PUT',
+          types: types.UPDATE_CONTAINER_COURSE
+        }
+      },
+      vm: {
+        create: {
+          courseText: 'VM課程',
+          actionText: '新建',
+          apiAction: 'create',
+          method: 'POST',
+          types: types.CREATE_VM_COURSE
+        },
+        edit: {
+          courseText: 'VM課程',
+          actionText: '更新',
+          apiAction: 'update',
+          method: 'PUT',
+          types: types.UPDATE_VM_COURSE
+        }
+      }
 
-
-    // this.props.validate('image', 'courseCon');
-
-    if (courseType === 'container') {
-      courseAction.submitContainerCourse({
-        token,
-        userInfo,
-        submitData,
-        actionType,
-        onFail: this.onSubmitCourseFail,
-        onSuccess: this.onSubmitCourseSuccess
-      });
-    } else if (courseType === 'vm') {
-      courseAction.submitVMCourse({
-        token,
-        userInfo,
-        submitData,
-        actionType,
-        onFail: this.onSubmitCourseFail,
-        onSuccess: this.onSubmitCourseSuccess
-      });
     }
+    const condition = conditionObj[courseType][actionType];
+
+    const {
+      token,
+      history,
+      courseAction,
+      userInfo,
+      startProgressBar,
+      endPorgressBar,
+      openCustomDialog,
+      toggleDialog
+    } = this.props;
+
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: `${condition.actionText}${condition.courseText}`,
+      info: `請問確定要${condition.actionText}此課程嗎？`,
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+
+        if (courseType === 'container') {
+          courseAction.submitContainerCourse({
+            token,
+            userInfo,
+            submitData,
+            condition,
+            onSuccess: () => {
+              endPorgressBar();
+
+              this.resetBothForm(this.props);
+              this.fetchData(this.props);
+
+              history.push('/user/ongoing-course/list');
+              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
+            },
+            onFail: () => {
+              endPorgressBar();
+              this.resetBothForm(this.props);
+            },
+          });
+        } else if (courseType === 'vm') {
+          courseAction.submitVMCourse({
+            token,
+            userInfo,
+            submitData,
+            condition,
+            onSuccess: () => {
+              endPorgressBar();
+
+              this.resetBothForm(this.props);
+              this.fetchData(this.props);
+
+              history.push('/user/ongoing-course/list');
+              notify.show(`${condition.actionText}${condition.courseText}成功`, 'success', TOAST_TIMING);
+            },
+            onFail: () => {
+              endPorgressBar();
+              this.resetBothForm(this.props);
+            },
+          });
+        }
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   loadOptsMethodCreateCon = () => this.props.courseAction.getConImagesOpts(this.props.token)
@@ -297,7 +371,9 @@ class CoursePage extends Component {
       isLoading,
       courseDetail,
       courseList,
-      changeValue
+      changeValue,
+      toggleDialog,
+      status
     } = this.props;
     const courseType = _.get(match, 'params.type');
     return (
@@ -305,20 +381,17 @@ class CoursePage extends Component {
         <Switch>
 
           {/* 課程搜尋 */}
-
           <Route exact path="/search/:courseName">
             <TableList
               data={courseList}
               tableData={ongoingCourseData}
               isLoading={isLoading}
-              isDialogOpen={true}
               startMethod={this.launchCourseJob}
               editMethod={this.editCourse}
               deleteMethod={this.deleteCourse}
               actionMode="full"
             />
           </Route>
-
 
           {/* [common] 開課列表 */}
           <Route path="/user/ongoing-course/list">
@@ -344,6 +417,7 @@ class CoursePage extends Component {
                 startMethod={this.launchCourseJob}
                 editMethod={this.editCourse}
                 deleteMethod={this.deleteCourse}
+                toggleDialog={toggleDialog}
                 actionMode="full"
               />
 
@@ -414,6 +488,7 @@ class CoursePage extends Component {
                 nextMethod={(e) => this.launchCourseJob(e, courseDetail.data)}
                 backMethod={this.backMethodCommon}
                 showMode="submit_back"
+                isLoading={status.isLaunchJobLoading}
                 isForm={false}
               />
             </CommonPageContent>
@@ -457,6 +532,7 @@ class CoursePage extends Component {
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isCreateContainerCourseLoading}
                     isForm
                   />
 
@@ -527,6 +603,7 @@ class CoursePage extends Component {
                     submitName="建立課程"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isCreateVMCourseLoading}
                     isForm
                   />
 
@@ -547,7 +624,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseCon`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'update', courseType: 'container' })}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'edit', courseType: 'container' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | introduction | level | image | GPU | datasets */}
@@ -574,6 +651,7 @@ class CoursePage extends Component {
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isUpdateContainerCourseLoading}
                     isForm
                   />
 
@@ -594,7 +672,7 @@ class CoursePage extends Component {
                 <Form
                   model={`forms.courseVM`}
                   className={`course-edit-comp`}
-                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'update', courseType: 'vm' })}
+                  onSubmit={submitData => this.onCourseSubmit({ submitData, actionType: 'edit', courseType: 'vm' })}
                   onSubmitFailed={submitData => this.handleSubmitFailedCommon(submitData)}
                 >
                   {/* name | intro | level | image */}
@@ -644,6 +722,7 @@ class CoursePage extends Component {
                     submitName="儲存編輯"
                     backMethod={this.backMethodCommon}
                     showMode="submit_back"
+                    isLoading={status.isUpdateVMCourseLoading}
                     isForm
                   />
 
@@ -680,7 +759,7 @@ const mapDispatchToProps = dispatch => ({
   ))
 });
 
-const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
+const mapStateToProps = ({ forms, Auth, Role, Course, Job }) => ({
   forms,
   token: Auth.token,
   myUserInfo: Auth.userInfo,
@@ -691,7 +770,16 @@ const mapStateToProps = ({ forms, Auth, Role, Course }) => ({
     data: Course.courseDetail.data,
     isLoading: Course.courseDetail.isLoading,
   },
-  searchResult: Course.searchResult.data
+  searchResult: Course.searchResult.data,
+  status: {
+    isCreateContainerCourseLoading: Course.status.isCreateContainerCourseLoading,
+    isUpdateContainerCourseLoading: Course.status.isUpdateContainerCourseLoading,
+    isDeleteContainerCourseLoading: Course.status.isDeleteContainerCourseLoading,
+    isCreateVMCourseLoading: Course.status.isCreateVMCourseLoading,
+    isUpdateVMCourseLoading: Course.status.isUpdateVMCourseLoading,
+    isDeleteVMCourseLoading: Course.status.isDeleteVMCourseLoading,
+    isLaunchJobLoading: Job.status.isLaunchJobLoading
+  }
 });
 
 export default compose(
@@ -701,5 +789,6 @@ export default compose(
   ),
   bindActionCreatorHoc,
   bindProgressBarHoc,
+  bindDialogHOC,
   withRouter
 )(CoursePage);

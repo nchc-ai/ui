@@ -13,6 +13,8 @@ import SearchPage from './containers/SearchPage';
 import StaticPage from './containers/StaticPage';
 import Footer from './components/Footer/Index';
 
+import { TOAST_TIMING } from './constants';
+
 class RouteGuest extends Component {
 
   setDropdownPos = (pos) => {
@@ -20,7 +22,7 @@ class RouteGuest extends Component {
   }
 
   offlineWarning = () => {
-    notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', 1800);
+    notify.show('如對課程有興趣，可親洽NCHC-AI', 'success', TOAST_TIMING);
   }
 
   render = () => {

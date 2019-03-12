@@ -73,6 +73,20 @@ $form-group-row-margin: 20px;
 
 	}
 
+	.form-toggle {
+		height: 110px;
+	}
+
+	.toggle-main-input, .toggle-sub-input {
+		color: grey;
+	}
+
+	.toggle-grp {
+		color: grey;
+		padding: 0 10px;
+    transform: translateY(3px);
+	}
+
 	.errors{
 		span{
 			font-size: 12px;

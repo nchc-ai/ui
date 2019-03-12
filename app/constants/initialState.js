@@ -11,21 +11,21 @@ export const initialClassroomState = {
   name: '',
   description: '',
   calendar: [],
-  schedules: [],
-  scheduleDescription: '',
+  schedule: {
+    cronFormat: [],
+    description: '',
+    startDate: new Date(),
+    endDate: new Date().setMonth(new Date().getMonth() + 2),
+    selectedType: 0,
+    selectedOption: [{
+      label: '每日',
+      value: '*'
+    }]
+  },
   courses: [],
-  schedules: [],
   teachers: [],
   students: [],
   public:  { label: '是(true)', value: true }
-};
-
-export const initialClassroomCronState = {
-  startDate: new Date(),
-  endDate: new Date().setMonth(new Date().getMonth() + 2),
-  periodBasic: { label: '每日', value: '*' },
-  periodAdvance: [],
-  periodUnlimit: { label: '不限時間', value: '不限時間' }
 };
 
 export const initialCourseConState = {
@@ -55,11 +55,11 @@ export const initialCourseVMState = {
   level: { label: '基礎', value: 'basic' },
   image: '',
   flavor: '',
-  associate: { label: '否(false)', value: false },
-  extraPorts: '',
+  associate: false,
+  extraports: '',
   sshkey: '',
-  mount: { label: '否(false)', value: false },
-  volume: { label: '0 GB', value: '0' },
+  mount: false,
+  volume: { label: '10 GB', value: '10' },
   startAt: '',
   endAt: '',
 };

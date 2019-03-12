@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { Form, actions as formActions } from 'react-redux-form';
-import { notify } from 'react-notify-toast';
+import { notify } from 'components/common/NotifyToast';
 import Cookies from 'js-cookie';
 import { dayToSecond, redirectUrlWithRole } from '../libraries/utils';
 import bindActionCreatorHoc from '../libraries/bindActionCreatorHoc';
@@ -13,7 +13,7 @@ import SectionTitle from '../components/common/SectionTitle/index';
 import FormGroups from '../components/common/FormGroups/index';
 import FormButtons from '../components/common/FormButtons/index';
 import logoImg from '../../public/images/auth/login-logo.png';
-
+import { TOAST_TIMING } from '../constants';
 class AuthPage extends Component {
 
   componentWillMount() {
@@ -49,7 +49,7 @@ class AuthPage extends Component {
    */
   onGetCodeFail = (err) => {
     if (err.toString() !== 'Error: The popup was closed') {
-      notify.show('Error: code not found', 'error', 1800);
+      notify.show('Error: code not found', 'error', TOAST_TIMING);
     }
   }
 
@@ -124,7 +124,7 @@ class AuthPage extends Component {
 
   onAfterSubmit = (response) => {
     // console.log('[signup] response', response);
-    notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', 1800);
+    notify.show('註冊成功 請輸入帳號密碼進行登入', 'success', TOAST_TIMING);
     this.props.history.push('/login');
   }
 
