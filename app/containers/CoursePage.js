@@ -113,7 +113,7 @@ class CoursePage extends Component {
         edit: {
           ...course,
           level: { value: _.get(course, 'level') },
-          associate: _.get(course, 'associate', false) === 'true',
+          associate: _.get(course, 'associate', false),
           extraports: _.get(course, 'extraports', [{ name: '',  port: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
           mount: _.get(course, 'mount', false),
         },
