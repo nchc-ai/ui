@@ -95,8 +95,6 @@ class CoursePage extends Component {
   initializeEditForm = ({ course, actionType, courseType }) => {
     // TODO: courseVM to boolean
 
-    const extraports = [{ name: '埠號I', port: 3010 }, { name: '埠號II', port: 3000 }]
-
     const confObj = {
       CONTAINER: {
         formName: 'courseCon',
@@ -116,7 +114,7 @@ class CoursePage extends Component {
           ...course,
           level: { value: _.get(course, 'level') },
           associate: _.get(course, 'associate', false) === 'true',
-          extraports: extraports.map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
+          extraports: _.get(course, 'extraports', [{ name: '',  port: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
           mount: _.get(course, 'mount', false),
         },
         detail: {
