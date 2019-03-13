@@ -131,16 +131,16 @@ export default class KeyValue extends React.Component {
   static propTypes = {
     onChange: PropTypes.func,
     customAddButtonRenderer: PropTypes.func,
-    keyInputPlaceholder: PropTypes.string,
-    valueInputPlaceholder: PropTypes.string,
+    keyItemPlaceholder: PropTypes.string,
+    valueItemPlaceholder: PropTypes.string,
     hideLabels: PropTypes.bool
   }
 
   static defaultProps = {
     rows: [],
     onChange: () => {},
-    keyInputPlaceholder: '',
-    valueInputPlaceholder: '',
+    keyItemPlaceholder: '',
+    valueItemPlaceholder: '',
     hideLabels: false
   }
 
@@ -275,7 +275,7 @@ export default class KeyValue extends React.Component {
         <Input
           type="text"
           value={ value }
-          placeholder={ this.props.keyInputPlaceholder }
+          placeholder={ _.get(this.props.config, 'keyPlaceholder', '') }
           onChange={ (e) => this.handleKeyItemChange(index, e.currentTarget.value) }
         />
       </Label>
@@ -289,7 +289,7 @@ export default class KeyValue extends React.Component {
         <Input
           type="text"
           value={ value }
-          placeholder={ this.props.valueInputPlaceholder }
+          placeholder={ _.get(this.props.config, 'valuePlaceholder', '') }
           onChange={ (e) => this.handleValueItemChange(index, e.currentTarget.value) }
         />
       </Label>

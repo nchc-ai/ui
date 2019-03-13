@@ -93,8 +93,11 @@ class FileUpload extends Component {
                 headerText: '姓名 | 信箱',
                 addText: '新增學生',
                 keyText: '姓名',
+                keyPlaceholder: '王聰明',
                 valueText: '信箱',
+                valuePlaceholder: 'smartwang@gmail.com',
                 resetText: '重新上傳'
+
               }}
               handleReset={this.handleFileReset}
               isReset

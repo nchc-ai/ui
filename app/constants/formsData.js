@@ -391,7 +391,9 @@ export const courseConFormTwo = [
       headerText: 'Name | Port',
       addText: '新增端口',
       keyText: '應用',
-      valueText: '端口'
+      keyPlaceholder: 'jupyter',
+      valueText: '端口',
+      valuePlaceholder: '8888'
     },
     className: 'fl',
     isRequired: true,
@@ -539,7 +541,9 @@ export const courseVMFormOne = [
         headerText: 'Name | Port',
         addText: '新增埠號',
         keyText: '名稱',
-        valueText: '埠號'
+        keyPlaceholder: 'http',
+        valueText: '埠號',
+        valuePlaceholder: '80'
       },
       className: 'fl',
       errorMessage: {

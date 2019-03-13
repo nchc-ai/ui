@@ -447,6 +447,8 @@ const FormGroups = ({
                   rows={_.get(targetForm, template.name)}
                   onChange={content => changeVal(content, template.name, template.target)}
                   config={template.config}
+                  keyItemPlaceholder="key"
+                  valueItemPlaceholder="value"
                 />
               </div>
               :

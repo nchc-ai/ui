@@ -160,7 +160,7 @@ export const courseVMDetailTpl = [
     key: 8,
     bulletUrl: bulletTriangle,
     name: 'volume',
-    label: 'Volume 空間',
+    label: 'Volume Size',
     unit: 'GB',
     type: 'single-select'
   }
