@@ -356,23 +356,23 @@ export const courseConFormTwo = [
   {
     key: 1,
     radioKey: 2,
-    size: 8,
+    size: 12,
     name: 'accessType',
     target: 'courseCon',
     inputType: 'radio',
     mainLabel: '存取方式',
-    className: 'fl',
+    className: 'input-access-type',
     options: [
       {
         key: 1,
         radioKey: '2-1',
         value: 'Ingress',
-        label: 'Ingress (不同工作透過同一個埠存取，但映象檔需修改)'
+        label: 'Ingress 所處環境只允許存取80/443埠的網頁，請務必選用Ingress。(映像檔需做相對應設定)'
       }, {
         key: 2,
         radioKey: '2-2',
         value: 'NodePort',
-        label: 'NodePort (不同工作透過不同埠存取)'
+        label: 'NodePort 所處環境沒有存取網頁的限制，可選用NodePort。'
       }
     ],
     isRequired: true,
