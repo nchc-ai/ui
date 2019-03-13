@@ -64,7 +64,7 @@ export const initialCourseVMState = {
   ],
   sshkey: '',
   mount: false,
-  volume: { label: '10 GB', value: '10' },
+  volume: { label: '0 GB', value: '0' },
   startAt: '',
   endAt: '',
 };

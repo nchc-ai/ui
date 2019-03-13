@@ -531,6 +531,7 @@ export const courseVMFormOne = [
       inputType: 'keyValue',
       name: 'extraports',
       label: '額外網路埠',
+      initialValue: [],
       config: {
         headerText: 'Name | Port',
         addText: '新增埠號',
@@ -564,6 +565,10 @@ export const courseVMFormOne = [
       inputType: 'select',
       label: 'Volume Size',
       name: 'volume',
+      initialValue: {
+        label: '0 GB',
+        value: '0'
+      },
       options: [
         { label: '10 GB', value: '10' },
         { label: '20 GB', value: '20' },

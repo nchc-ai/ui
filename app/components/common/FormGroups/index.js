@@ -273,7 +273,7 @@ const FormGroups = ({
                       onChange={val => {
                         changeVal(val, template.toggle.name, template.target)
                         if(!val) {
-                          changeVal('', template.input.name, template.target);
+                          changeVal(template.input.initialValue, template.input.name, template.target);
                         }
                       }}
                       checked={_.get(targetForm, template.toggle.name, false)}
