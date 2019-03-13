@@ -149,7 +149,7 @@ export const courseVMDetailTpl = [
     bulletUrl: bulletTriangle,
     name: 'extraports',
     label: '額外網路埠',
-    type: 'text'
+    type: 'ports',
   }, {
     key: 7,
     bulletUrl: bulletTriangle,
