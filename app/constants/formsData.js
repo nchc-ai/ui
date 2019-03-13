@@ -435,7 +435,7 @@ export const courseVMFormOne = [
     target: 'courseVM',
     inputType: 'markdown',
     mainLabel: '課程介紹',
-    isRequired: true,
+    isRequired: false,
     validators: { required },
     errorMessage: {
       required: '您尚未輸入課程介紹'

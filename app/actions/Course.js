@@ -164,7 +164,8 @@ export const submitVMCourse = ({ token, userInfo, submitData, condition, next })
     id: _.get(submitData, 'id', ''),
     user: userInfo.username,
     level: _.get(submitData, 'level.value'),
-    associate: _.get(submitData, 'associate', false).toString()
+    associate: _.get(submitData, 'associate', false).toString(),
+    extraports: submitData.extraports.map(d => ({ name: d.keyItem, port: parseInt(d.valueItem) })) || [],
   };
 
   const response = await dispatch({
