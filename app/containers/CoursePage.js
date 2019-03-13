@@ -94,6 +94,9 @@ class CoursePage extends Component {
    */
   initializeEditForm = ({ course, actionType, courseType }) => {
     // TODO: courseVM to boolean
+
+    const extraports = [{ name: '埠號I', port: 3010 }, { name: '埠號II', port: 3000 }]
+
     const confObj = {
       CONTAINER: {
         formName: 'courseCon',
@@ -113,6 +116,7 @@ class CoursePage extends Component {
           ...course,
           level: { value: _.get(course, 'level') },
           associate: _.get(course, 'associate', false) === 'true',
+          extraports: extraports.map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
           mount: _.get(course, 'mount', false),
         },
         detail: {
@@ -525,7 +529,7 @@ class CoursePage extends Component {
                     loadTagsOptsMethod={this.loadTagsOptsMethodCreateCon}
                   />
 
-                  {/* accessType | port | writablePath */}
+                  {/* accessType | ports | writablePath */}
                   <FormGroups
                     formData={courseConFormTwo}
                     targetForm={forms.courseCon}
@@ -598,7 +602,7 @@ class CoursePage extends Component {
                     changeVal={changeValue}
                   />
 
-                  {/* extra port | mount | volume */}
+                  {/* extraports | mount | volume */}
                   <FormGroups
                     targetForm={forms.courseVM}
                     formData={courseVMFormFive}
@@ -709,7 +713,7 @@ class CoursePage extends Component {
                     loadOptsMethod={this.loadSshKeysOptsCreateVM}
                   />
 
-                 {/* associate */}
+                 {/* associate | extra port */}
 
                  <FormGroups
                     targetForm={forms.courseVM}
@@ -717,7 +721,7 @@ class CoursePage extends Component {
                     changeVal={changeValue}
                   />
 
-                  {/* extra port | mount | volume */}
+                  {/* mount | volume */}
                   <FormGroups
                     targetForm={forms.courseVM}
                     formData={courseVMFormFive}

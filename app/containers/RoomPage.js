@@ -432,6 +432,14 @@ class RoomPage extends Component {
                   loadTagsOptsMethod={this.loadCourseTagsCreateRoom}
                 />
 
+                {/* schedule */}
+                <CronInputs
+                  targetForm={forms.classroom.schedule}
+                  template={cronFormData}
+                  changeValue={changeValue}
+                  resetForm={resetForm}
+                />
+
                 {/* teachers | students */}
                 <FormGroups
                   targetForm={forms.classroom}

@@ -314,6 +314,19 @@ const FormGroups = ({
                         :
                           null
                       }
+
+                      {
+                        template.input.inputType === 'keyValue' ?
+                          <div className="form-input form-group-key-value">
+                            <KeyValue
+                              rows={_.get(targetForm, template.input.name)}
+                              onChange={content => changeVal(content, template.input.name, template.target)}
+                              config={template.input.config}
+                            />
+                          </div>
+                        :
+                          null
+                      }
                     </div>
                     :
                       null

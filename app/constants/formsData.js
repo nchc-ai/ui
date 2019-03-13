@@ -528,10 +528,19 @@ export const courseVMFormOne = [
       offText: 'OFF'
     },
     input: {
-      inputType: 'text',
+      inputType: 'keyValue',
       name: 'extraports',
       label: '額外網路埠',
-      placeholder: 'Ex: 8080#80#443',
+      config: {
+        headerText: 'Name | Port',
+        addText: '新增埠號',
+        keyText: '名稱',
+        valueText: '埠號'
+      },
+      className: 'fl',
+      errorMessage: {
+        required: '有尚未填寫的網路埠'
+      }
     }
   }];
 

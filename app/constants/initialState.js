@@ -56,7 +56,12 @@ export const initialCourseVMState = {
   image: '',
   flavor: '',
   associate: false,
-  extraports: '',
+  extraports: [
+    {
+      keyItem: '',
+      valueItem: ''
+    }
+  ],
   sshkey: '',
   mount: false,
   volume: { label: '10 GB', value: '10' },
