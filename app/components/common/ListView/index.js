@@ -18,7 +18,20 @@ const TableContainer = styled.div`
 const Li = styled.div`
   overflow: hidden;
   width: 100%;
-  margin-bottom: ${props => props.type == 'multi-select' ? '0px' : '30px'};
+  margin-bottom: ${props => {
+
+    if (props.length > 0) {
+      if (props.type === 'multi-select') {
+        return '0px';
+      } else if (props.type === 'ports') {
+        return '10px';
+      } else {
+        return '30px';
+      }
+    }
+
+    return '30px';
+  }}
 `;
 
 
@@ -87,6 +100,7 @@ const ListView = ({ isLoading, templateData, detailData, size }) => {
               key={template.key}
               md={{ size: size ? 12 / size : 12 }}
               type={template.type}
+              length={_.get(detailData,template.name,[]).length}
             >
               {/* Bullet */}
               {
