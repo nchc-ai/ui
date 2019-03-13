@@ -289,8 +289,7 @@ class RoomPage extends Component {
       isSubstituating,
       changeValue,
       resetForm,
-      isCreateLoading,
-      isUpdateLoading
+      status
     } = this.props;
 
     const courseType = _.get(match, 'params.type');
@@ -404,7 +403,7 @@ class RoomPage extends Component {
                   submitName="建立教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
-                  isLoading={isCreateLoading}
+                  isLoading={status.isCreateClassroomLoading}
                   isForm
                 />
               </Form>
@@ -454,7 +453,7 @@ class RoomPage extends Component {
                   submitName="修改此教室"
                   backMethod={this.onCommonBackMethod}
                   showMode="submit_back"
-                  isLoading={isUpdateLoading}
+                  isLoading={status.isUpdateClassroomLoading}
                   isForm
                 />
               </Form>
