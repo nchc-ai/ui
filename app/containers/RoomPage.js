@@ -221,62 +221,69 @@ class RoomPage extends Component {
       openCustomDialog,
       toggleDialog
     } = this.props;
-    // 時間防呆
-    if (formData.schedule.cronFormat.length > 0) {
-      openCustomDialog({
-        type: dialogTypes.CREATE,
-        title: `${formType === 'create' ? '建立' : '修改' }教室`,
-        info: `請問確定要${formType === 'create' ? '建立' : '修改' }課程嗎？`,
-        submitMethod: () => {
-          toggleDialog();
-          startProgressBar();
 
-          if (!students.isLoading) {
-            if (formType === 'create') {
-              const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
-              roomAction.createClassroom({
-                token,
-                formData,
-                students: mappedStudents,
-                next: (formType) => {
-
-                  endPorgressBar();
-
-                  history.push('/user/classroom-manage/list');
-                  notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
-
-                  resetForm();
-                  roomAction.resetStudentsField();
-                }
-              });
-            } else {
-              roomAction.updateClassroom({
-                token,
-                formData,
-                students: formData.students,
-                next: (formType) => {
-
-                  endPorgressBar();
-
-                  history.push('/user/classroom-manage/list');
-                  notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
-
-                  resetForm();
-                  roomAction.resetStudentsField();
-                }
-              });
-            }
-          } else {
-            notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', TOAST_TIMING);
-          }
-        },
-        cancelMethod: () => {
-          toggleDialog();
-        }
-      });
-    } else {
+    // console.log('formData', formData);
+    if (formData.schedule.cronFormat.length === 0) {
       notify.show(`此教室無時間格式無法建立（請確認是否已按下 "產生時間格式" 按鈕）`, 'error', TOAST_TIMING);
+      return;
+    } else if (formData.schedule.selectedType === 1 && formData.schedule.selectedOption.length === 0) {
+      notify.show(`請確認是否填妥 "固定期間每週開課" 欄位`, 'error', TOAST_TIMING);
+      return;
     }
+
+
+
+    openCustomDialog({
+      type: dialogTypes.CREATE,
+      title: `${formType === 'create' ? '建立' : '修改' }教室`,
+      info: `請問確定要${formType === 'create' ? '建立' : '修改' }課程嗎？`,
+      submitMethod: () => {
+        toggleDialog();
+        startProgressBar();
+
+        if (!students.isLoading) {
+          if (formType === 'create') {
+            const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
+            roomAction.createClassroom({
+              token,
+              formData,
+              students: mappedStudents,
+              next: (formType) => {
+
+                endPorgressBar();
+
+                history.push('/user/classroom-manage/list');
+                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
+
+                resetForm();
+                roomAction.resetStudentsField();
+              }
+            });
+          } else {
+            roomAction.updateClassroom({
+              token,
+              formData,
+              students: formData.students,
+              next: (formType) => {
+
+                endPorgressBar();
+
+                history.push('/user/classroom-manage/list');
+                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
+
+                resetForm();
+                roomAction.resetStudentsField();
+              }
+            });
+          }
+        } else {
+          notify.show("目前還未存取學生清單，請稍候再送出表單", 'error', TOAST_TIMING);
+        }
+      },
+      cancelMethod: () => {
+        toggleDialog();
+      }
+    });
   }
 
   render() {

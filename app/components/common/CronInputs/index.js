@@ -98,7 +98,9 @@ const initialState = {
       label: '不限時間',
       value: '不限時間'
     }
-  ]
+  ],
+  startDate: new Date(moment().format('YYYY-MM-DD')),
+  endDate: new Date(moment().add(2, 'months').format('YYYY-MM-DD'))
 }
 class CronInputs extends React.Component {
 
@@ -106,23 +108,32 @@ class CronInputs extends React.Component {
 
   componentWillMount () {
     window.scrollTo(0, 0);
-
-    const {
-      selectedType,
-      selectedOption
-    } = this.props.targetForm;
-
-    this.selectValue({ selectedType, selectedOption: selectedOption[0] })
+    this.updatePeriod(this.props.targetForm)
   }
 
   componentWillUnmount() {
     this.resetCronFormat();
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.targetForm !== this.props.targetForm) {
+      this.updatePeriod(nextProps.targetForm)
+    }
+  }
+
   selectTab = (tabIndex) => {
     this.setState({
       tabIndex
     });
+  }
+
+  selectTime = ({ type, val }) => {
+    if ( type === 'startDate') {
+      this.setState({ startDate: val })
+    } else {
+      this.setState({ endDate: val })
+    }
+    // this.generateCronFormat();
   }
 
   selectValue = ({ selectedType, selectedOption }) => {
@@ -136,6 +147,16 @@ class CronInputs extends React.Component {
     });
   }
 
+  updatePeriod = (targetForm) => {
+    const startDate = new Date(targetForm.startDate);
+    const endDate = new Date(targetForm.endDate);
+    const { selectedType } = targetForm;
+    const selectedOption = selectedType === 1 ? targetForm.selectedOption : targetForm.selectedOption[0];
+
+    this.setState({ startDate, endDate });
+    this.selectValue({ selectedType, selectedOption });
+  }
+
   generateCronFormat = (e) => {
     if (e) { e.preventDefault(); }
 
@@ -144,24 +165,25 @@ class CronInputs extends React.Component {
       changeValue
     } = this.props;
 
-    const {
+    let {
       tabIndex,
-      tabData
+      tabData,
+      startDate,
+      endDate
     } = this.state
 
-    if (moment(targetForm.startDate) > moment(targetForm.endDate)) {
+    if (moment(startDate) > moment(endDate)) {
       notify.show('請確認 "結束時間" 是否在 "起始時間" 之後', 'error', 3000);
       return;
     }
 
     if (tabIndex === 1 && tabData[tabIndex].length === 0) {
       notify.show('請確認是否填妥 "固定期間每週開課" 欄位', 'error', 3000);
-
       return;
     }
 
-    const startDateStr = moment(_.get(targetForm, 'startDate', '')).format('YYYY / MM / DD')
-    const endDateStr = moment(_.get(targetForm, 'endDate', '')).format('YYYY / MM / DD')
+    const startDateStr = moment(startDate).format('YYYY / MM / DD')
+    const endDateStr = moment(endDate).format('YYYY / MM / DD')
 
     const calendarCronObj = {
       '0': {
@@ -186,7 +208,7 @@ class CronInputs extends React.Component {
       const {
         startDate,
         endDate
-      } = targetForm
+      } = this.state;
 
       const startDataForCron = new Date(startDate).setDate(new Date(startDate).getDate() - 1)
       const endDateForCron = new Date(endDate);
@@ -248,15 +270,15 @@ class CronInputs extends React.Component {
     })
 
     const monthObj = _.groupBy(resultArr, 'startMonth');
-    let cronArr = _.map(monthObj, (array, index) => {
+    let cronFormat = _.map(monthObj, (array, index) => {
       return {
         cronMonth: `${_.get(array, '0.startMonth')}`,
         cronDate: array.map((datum) => datum.cronDate).join(",")
       }
     }).map(d => `* * ${d.cronDate} ${d.cronMonth} * *`);
 
-    if (cronArr.length === 0) {
-      cronArr = ['* * * * * *']
+    if (cronFormat.length === 0) {
+      cronFormat = ['* * * * * *']
     }
 
     const calendarArr = resultArr.map(d => _.pick(d, _.keys({
@@ -265,10 +287,20 @@ class CronInputs extends React.Component {
       endDate: null,
       length: null,
     })))
+    console.log('tabData[tabIndex]', tabData[tabIndex]);
+    const secheduleObj = {
+      cronFormat,
+      description,
+      startDate,
+      endDate,
+      selectedType: tabIndex,
+      selectedOption: tabIndex === 1 ? tabData[tabIndex] : [tabData[tabIndex]]
+    }
 
-    changeValue(description, 'description', 'classroom.schedule');
-    changeValue(cronArr, 'cronFormat', 'classroom.schedule');
+    changeValue(secheduleObj, 'schedule', 'classroom');
     changeValue(calendarArr, 'calendar', 'classroom');
+
+    notify.show('已成功產生時間格式', 'success', 2000);
   }
 
   resetCronFormat = (e) => {
@@ -286,7 +318,9 @@ class CronInputs extends React.Component {
 
     let {
       tabIndex,
-      tabData
+      tabData,
+      startDate,
+      endDate
     } = this.state;
 
     return (
@@ -307,8 +341,8 @@ class CronInputs extends React.Component {
               </label>
               <DatePicker
                 className="text-input"
-                selected={new Date(_.get(targetForm, `startDate`))}
-                onChange={val => changeValue(val, template.inputFirst.name, template.inputFirst.target)}
+                selected={startDate}
+                onChange={val => this.selectTime({ type: 'startDate', val })}
                 dateFormat="yyyy / MM / dd"
               />
             </FormGroups>
@@ -318,8 +352,8 @@ class CronInputs extends React.Component {
               </label>
               <DatePicker
                 className="text-input"
-                selected={new Date(_.get(targetForm, `endDate`))}
-                onChange={val => changeValue(val, template.inputSecond.name, template.inputSecond.target)}
+                selected={endDate}
+                onChange={val => this.selectTime({ type: 'endDate', val })}
                 dateFormat="yyyy / MM / dd"
               />
             </FormGroups>

@@ -18,7 +18,7 @@ export const classroomDetailTpl = [
   }, {
     key: 2,
     bulletUrl: bulletTriangle,
-    name: 'scheduleDescription',
+    name: 'schedule.description',
     label: '課程週期',
     type: 'text'
   }, {
