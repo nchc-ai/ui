@@ -149,9 +149,14 @@ class CronInputs extends React.Component {
       tabData
     } = this.state
 
+    if (moment(targetForm.startDate) > moment(targetForm.endDate)) {
+      notify.show('請確認 "結束時間" 是否在 "起始時間" 之後', 'error', 3000);
+      return;
+    }
+
     if (tabIndex === 1 && tabData[tabIndex].length === 0) {
       notify.show('請確認是否填妥 "固定期間每週開課" 欄位', 'error', 3000);
-      this.resetCronFormat();
+
       return;
     }
 
