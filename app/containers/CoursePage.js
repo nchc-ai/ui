@@ -312,9 +312,14 @@ class CoursePage extends Component {
     } = this.props;
 
     // console.log('submitData', submitData);
-    if (courseType === 'vm' && submitData.mount && submitData.volume.value.toString() === "0") {
-      notify.show(`請確認掛載 Volume 大小必須大於 0 GB`, 'error', TOAST_TIMING);
-      return;
+    if (courseType === 'vm') {
+      if (submitData.mount && submitData.volume.value.toString() === "0") {
+        notify.show(`請確認掛載 Volume 大小必須大於 0 GB`, 'error', TOAST_TIMING);
+        return;
+      } else if (submitData.associate && submitData.extraports.filter(datum => (datum.keyItem !== '' && datum.valueItem !== '')).length === 0) {
+        notify.show(`請確認 "額外網路埠" 是否有空值`, 'error', TOAST_TIMING);
+        return;
+      }
     }
 
     openCustomDialog({
