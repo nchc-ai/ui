@@ -114,7 +114,7 @@ class CoursePage extends Component {
           ...course,
           level: { value: _.get(course, 'level') },
           associate: _.get(course, 'associate', false),
-          extraports: _.get(course, 'extraports', [{ name: '',  port: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
+          extraports: _.get(course, 'extraports', [{ keyItem: '',  valueItem: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
           mount: _.get(course, 'mount', false),
         },
         detail: {
@@ -311,7 +311,7 @@ class CoursePage extends Component {
       toggleDialog
     } = this.props;
 
-    // console.log('submitData', submitData);
+    console.log('submitData', submitData);
     if (courseType === 'vm') {
       if (submitData.mount && submitData.volume.value.toString() === "0") {
         notify.show(`請確認掛載 Volume 大小必須大於 0 GB`, 'error', TOAST_TIMING);

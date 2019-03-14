@@ -534,8 +534,8 @@ export const courseVMFormOne = [
       name: 'extraports',
       label: '額外網路埠',
       initialValue: [{
-        name: '',
-        port: ''
+        keyValue: '',
+        valueItem: ''
       }],
       config: {
         headerText: 'Name | Port',
