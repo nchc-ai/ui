@@ -311,7 +311,7 @@ class CoursePage extends Component {
       toggleDialog
     } = this.props;
 
-    console.log('submitData', submitData);
+    // console.log('submitData', submitData);
     if (courseType === 'vm') {
       if (submitData.mount && submitData.volume.value.toString() === "0") {
         notify.show(`請確認掛載 Volume 大小必須大於 0 GB`, 'error', TOAST_TIMING);
