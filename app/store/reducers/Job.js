@@ -5,7 +5,8 @@ import { formatJob } from '../../libraries/utils';
 
 const InitialState = {
   status: {
-    isLaunchJobLoading: false
+    isLaunchJobLoading: false,
+    isDeleteJobLoading: false
   },
   container: {
     loading: true,
@@ -63,6 +64,30 @@ export default function Job(state = InitialState, action) {
       status: {
         ...state.status,
         isLaunchJobLoading: false
+      },
+    };
+  case actionTypes.DELETE_JOB[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteJobLoading: true
+      },
+    };
+  case actionTypes.DELETE_JOB[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteJobLoading: false
+      },
+    };
+  case actionTypes.DELETE_JOB[FAIL]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isDeleteJobLoading: false
       },
     };
   case actionTypes.GET_CON_JOB_LIST[LOADING]:

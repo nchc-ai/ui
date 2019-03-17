@@ -65,8 +65,14 @@ class RoomGroup extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
+
+    if (status.isLaunchJobLoading) {
+      notify.show(`尚有課程開始中，請稍後再試`, 'error', TOAST_TIMING);
+      return;
+    }
 
     openCustomDialog({
       type: dialogTypes.CREATE,
@@ -155,7 +161,7 @@ class RoomGroup extends Component {
   }
 }
 
-const mapStateToProps = ({ Auth, Role, Course, forms, Classroom }) => ({
+const mapStateToProps = ({ Auth, Role, Course, forms, Classroom, Job }) => ({
   addClassroom: forms.addClassroom,
   token: Auth.token,
   userInfo: Role.isSubstituating ? Role.userInfo : Auth.userInfo,
@@ -166,6 +172,9 @@ const mapStateToProps = ({ Auth, Role, Course, forms, Classroom }) => ({
   roomList: {
     isLoading: Classroom.list.isLoading,
     data: Classroom.list.data
+  },
+  status: {
+    isLaunchJobLoading: Job.status.isLaunchJobLoading
   }
 });
 

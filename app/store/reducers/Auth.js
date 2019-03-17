@@ -2,6 +2,10 @@ import * as actionTypes from 'actions/actionTypes';
 import { LOADING, SUCCESS, FAIL } from 'constants/apiActions';
 
 const InitialState = {
+  status: {
+    isUpdatePasswordLoading: false,
+    isUpdateProfileLoading: false,
+  },
   loading: false,
   isLogin: false,
   data: [],
@@ -39,6 +43,54 @@ const InitialState = {
 
 export default function Auth(state = InitialState, action) {
   switch (action.type) {
+  case actionTypes.UPDATE_PASSWORD[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdatePasswordLoading: true
+      },
+    };
+  case actionTypes.UPDATE_PASSWORD[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdatePasswordLoading: false
+      },
+    };
+  case actionTypes.UPDATE_PASSWORD[FAIL]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdatePasswordLoading: false
+      },
+    };
+  case actionTypes.UPDATE_PROFILE[LOADING]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateProfileLoading: true
+      },
+    };
+  case actionTypes.UPDATE_PROFILE[SUCCESS]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateProfileLoading: false
+      },
+    };
+  case actionTypes.UPDATE_PROFILE[FAIL]:
+    return {
+      ...state,
+      status: {
+        ...state.status,
+        isUpdateProfileLoading: false
+      },
+    };
   case actionTypes.GET_PROFILE[SUCCESS]:
     return {
       ...state,

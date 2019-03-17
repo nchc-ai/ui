@@ -152,7 +152,7 @@ class CoursePage extends Component {
     } = this.props;
 
     if (status.isLaunchJobLoading) {
-      notify.show(`尚有課程啟動中，請稍後再啟動此課程`, 'error', TOAST_TIMING);
+      notify.show(`尚有課程啟動中，請稍後再試`, 'error', TOAST_TIMING);
       return;
     }
 
@@ -199,7 +199,7 @@ class CoursePage extends Component {
     } = this.props;
 
     if (status.isDeleteContainerCourseLoading || status.isDeleteVMCourseLoading) {
-      notify.show(`尚有課程刪除中，請稍後再刪除此課程`, 'error', TOAST_TIMING);
+      notify.show(`尚有課程刪除中，請稍後再試`, 'error', TOAST_TIMING);
       return;
     }
 
@@ -308,7 +308,8 @@ class CoursePage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
 
     // console.log('submitData', submitData);
@@ -320,6 +321,10 @@ class CoursePage extends Component {
         notify.show(`請確認 "額外網路埠" 是否有空值`, 'error', TOAST_TIMING);
         return;
       }
+    }
+
+    if (status.isCreateContainerCourseLoading || status.isUpdateContainerCourseLoading || status.isCreateVMCourseLoading || status.isUpdateVMCourseLoading) {
+      notify.show(`尚有課程動作進行中，請稍後再試`, 'error', TOAST_TIMING);
     }
 
     openCustomDialog({

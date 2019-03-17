@@ -156,8 +156,14 @@ class JobPage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
+
+    if (status.isDeleteJobLoading) {
+      notify.show(`尚有工作刪除中，請稍後再試`, 'error', TOAST_TIMING);
+      return;
+    }
 
     openCustomDialog({
       type: dialogTypes.DELETE,
@@ -397,7 +403,10 @@ const mapStateToProps = ({ forms, Auth, User, Role, Job }) => ({
     loading: Job.vm.loading,
     data: Job.vm.data
   },
-  doubleList: Job.doubleList
+  doubleList: Job.doubleList,
+  status: {
+    isDeleteJobLoading: Job.status.isDeleteJobLoading
+  }
 });
 
 export default compose(

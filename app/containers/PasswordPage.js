@@ -23,8 +23,14 @@ class PasswordPage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
+
+    if (status.isUpdatePasswordLoading) {
+      notify.show(`密碼更新中，請稍後再試`, 'error', TOAST_TIMING);
+      return;
+    }
 
     openCustomDialog({
       type: dialogTypes.UPDATE,
@@ -111,6 +117,9 @@ const mapStateToProps = ({ forms, Auth, Course }) => ({
   forms,
   token: Auth.token,
   username: Auth.userInfo.username,
+  status: {
+    isUpdatePasswordLoading: Auth.status.isUpdatePasswordLoading
+  }
 });
 
 export default compose(

@@ -21,6 +21,7 @@ import bindProgressBarHOC from 'libraries/bindProgressBarHOC';
 import bindDialogHOC from 'libraries/bindDialogHOC';
 import * as dialogTypes from 'constants/dialogTypes';
 import { TOAST_TIMING } from '../constants';
+import Job from '../store/reducers/Job';
 
 
 const TableContainer = styled.div`
@@ -155,7 +156,7 @@ class RoomPage extends Component {
     } = this.props;
 
     if (status.isDeleteClassroomLoading) {
-      notify.show(`尚有課程刪除中，請稍後再刪除此課程`, 'error', TOAST_TIMING);
+      notify.show(`尚有課程刪除中，請稍後再試`, 'error', TOAST_TIMING);
       return;
     }
 
@@ -219,7 +220,8 @@ class RoomPage extends Component {
       startProgressBar,
       endPorgressBar,
       openCustomDialog,
-      toggleDialog
+      toggleDialog,
+      status
     } = this.props;
 
     // console.log('formData', formData);
@@ -229,14 +231,15 @@ class RoomPage extends Component {
     } else if (formData.schedule.selectedType === 1 && formData.schedule.selectedOption.length === 0) {
       notify.show(`請確認是否填妥 "固定期間每週開課" 欄位`, 'error', TOAST_TIMING);
       return;
+    } else if (status.isCreateClassroomLoading || status.isUpdateClassroomLoading) {
+      notify.show(`尚有教室動作執行中，請稍後再試`, 'error', TOAST_TIMING);
+      return;
     }
-
-
 
     openCustomDialog({
       type: dialogTypes.CREATE,
       title: `${formType === 'create' ? '建立' : '修改' }教室`,
-      info: `請問確定要${formType === 'create' ? '建立' : '修改' }課程嗎？`,
+      info: `請問確定要${formType === 'create' ? '建立' : '修改' }教室嗎？`,
       submitMethod: () => {
         toggleDialog();
         startProgressBar();
