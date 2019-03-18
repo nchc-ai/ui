@@ -137,9 +137,9 @@ class CronInputs extends React.Component {
   }
 
   selectValue = ({ selectedType, selectedOption }) => {
+    // console.log('selectValue', selectedType, selectedOption);
     this.setState(state => {
       const tabData = state.tabData.map((d, i) => i === selectedType ? selectedOption : d);
-
       return {
         tabIndex: selectedType,
         tabData
@@ -152,7 +152,7 @@ class CronInputs extends React.Component {
     const endDate = new Date(targetForm.endDate);
     const { selectedType } = targetForm;
     const selectedOption = selectedType === 1 ? targetForm.selectedOption : targetForm.selectedOption[0];
-
+    // console.log('targetForm', targetForm);
     this.setState({ startDate, endDate });
     this.selectValue({ selectedType, selectedOption });
   }
@@ -287,7 +287,7 @@ class CronInputs extends React.Component {
       endDate: null,
       length: null,
     })))
-    console.log('tabData[tabIndex]', tabData[tabIndex]);
+    // console.log('tabData[tabIndex]', tabData[tabIndex]);
     const secheduleObj = {
       cronFormat,
       description,
@@ -322,7 +322,6 @@ class CronInputs extends React.Component {
       startDate,
       endDate
     } = this.state;
-
     return (
       <Comp>
         <Background>

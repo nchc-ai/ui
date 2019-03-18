@@ -26,20 +26,24 @@ class FileUpload extends Component {
     }
   }
 
-  onListChange = (changedRow) => {
-    const {
-      students,
-      onListChange
-    } = this.props;
+  // onListChange = (changedRow) => {
+  //   const {
+  //     students,
+  //     onListChange,
+  //     roomAction
+  //   } = this.props;
 
-    // console.log('changedRow', changedRow);
+  //   // console.log('changedRow', changedRow);
 
-    const studentsToUpload = changedRow.map(student => ({
-      label: student.keyItem,
-      value: student.valueItem
-    }))
-    onListChange(studentsToUpload);
-  }
+  //   const studentsToUpload = changedRow.map(student => ({
+  //     label: student.keyItem,
+  //     value: student.valueItem
+  //   }))
+
+  //   // console.log('studentsToUpload', studentsToUpload, changedRow);
+  //   roomAction.setStudentsField({ students: studentsToUpload })
+  //   // onListChange(studentsToUpload);
+  // }
 
   handleFileReset = () => {
     // swap redux state > reset upload
@@ -68,11 +72,29 @@ class FileUpload extends Component {
 
   render() {
     const {
-      students
+      students,
+      onFileListChange
     } = this.props;
 
     return(
       <div className="container form-group">
+
+        <KeyValue
+          rows={students}
+          onChange={onFileListChange}
+          config={{
+            headerText: '姓名 | 信箱',
+            addText: '新增學生',
+            keyText: '姓名',
+            keyPlaceholder: '王聰明',
+            valueText: '信箱',
+            valuePlaceholder: 'smartwang@gmail.com',
+            resetText: '重新上傳'
+
+          }}
+          handleReset={this.handleFileReset}
+          isReset
+        />
         {
           students.length === 0 ?
             <div>
@@ -83,27 +105,6 @@ class FileUpload extends Component {
                 type="file" />
             </div>
           : null
-        }
-        {
-          students.length > 0 ?
-            <KeyValue
-              rows={students}
-              onChange={this.onListChange}
-              config={{
-                headerText: '姓名 | 信箱',
-                addText: '新增學生',
-                keyText: '姓名',
-                keyPlaceholder: '王聰明',
-                valueText: '信箱',
-                valuePlaceholder: 'smartwang@gmail.com',
-                resetText: '重新上傳'
-
-              }}
-              handleReset={this.handleFileReset}
-              isReset
-            />
-          :
-          null
         }
         {
           students.length === 0 && this.state.isUploadEnable ?

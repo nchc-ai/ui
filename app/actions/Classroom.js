@@ -22,19 +22,17 @@ export const resetStudentsField = () => ({
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const createClassroom = ({ token, formData, students, next }) => async (dispatch) => {
-
-  // console.log('[create] formData', formData, students);
+export const createClassroom = ({ token, formData, rawStudents, next }) => async (dispatch) => {
 
   const submitData = {
     ...formData,
-    students,
+    students: rawStudents.map(d => ({ label: d.keyItem, value: d.valueItem })),
     schedule: {
       ...formData.schedule,
       startDate: moment(formData.schedule.startDate).format('YYYY-MM-DD'),
       endDate: moment(formData.schedule.endDate).format('YYYY-MM-DD')
     },
-    studentCount: students.length,
+    studentCount: rawStudents.length,
     public: formData.public.value,
   };
   // console.log('[create] submitData', submitData);
@@ -67,22 +65,19 @@ export const createClassroom = ({ token, formData, students, next }) => async (d
  * @param {Object} formData - .
  * @param {Function} next - .
  */
-export const updateClassroom = ({ token, formData, students, next }) => async (dispatch) => {
-
-  // console.log('[update] formData', formData, students);
+export const updateClassroom = ({ token, formData, rawStudents, next }) => async (dispatch) => {
 
   const submitData = {
     ...formData,
-    students,
+    students: rawStudents.map(d => ({ label: d.keyItem, value: d.valueItem })),
     schedule: {
       ...formData.schedule,
       startDate: moment(formData.schedule.startDate).format('YYYY-MM-DD'),
       endDate: moment(formData.schedule.endDate).format('YYYY-MM-DD')
     },
-    studentCount: students.length,
+    studentCount: rawStudents.length,
     public: formData.public.value
   };
-  // console.log('[update] submitData', submitData);
 
   const response = await dispatch({
     [RSAA]: {

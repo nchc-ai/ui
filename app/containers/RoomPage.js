@@ -123,10 +123,12 @@ class RoomPage extends Component {
       roomAction
     } = this.props;
 
+    console.log('students', students);
+
     // change redux state
-    // roomAction.setStudentsField({ students });
+    roomAction.setStudentsField({ students });
     // change form
-    changeValue(students, key, formName);
+    // changeValue(students, key, formName);
   }
 
   /**
@@ -235,7 +237,7 @@ class RoomPage extends Component {
       notify.show(`尚有教室動作執行中，請稍後再試`, 'error', TOAST_TIMING);
       return;
     }
-
+    console.log('formData', formData);
     openCustomDialog({
       type: dialogTypes.CREATE,
       title: `${formType === 'create' ? '建立' : '修改' }教室`,
@@ -246,11 +248,10 @@ class RoomPage extends Component {
 
         if (!students.isLoading) {
           if (formType === 'create') {
-            const mappedStudents = students.data.map(d => ({ label: d.keyItem, value: d.valueItem }));
             roomAction.createClassroom({
               token,
               formData,
-              students: mappedStudents,
+              rawStudents: students.data,
               next: (formType) => {
 
                 endPorgressBar();
@@ -266,7 +267,7 @@ class RoomPage extends Component {
             roomAction.updateClassroom({
               token,
               formData,
-              students: formData.students,
+              rawStudents: students.data,
               next: (formType) => {
 
                 endPorgressBar();
@@ -404,7 +405,7 @@ class RoomPage extends Component {
                   targetForm={forms.classroom}
                   formData={classroomFormTwo}
                   changeVal={changeValue}
-                  changeFileList={this.onStudentsChange}
+                  onFileListChange={this.onStudentsChange}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
                 />
 
@@ -454,7 +455,7 @@ class RoomPage extends Component {
                   targetForm={forms.classroom}
                   formData={classroomFormTwo}
                   changeVal={changeValue}
-                  changeFileList={this.onStudentsChange}
+                  onFileListChange={this.onStudentsChange}
                   loadTagsOptsMethod={this.loadTeacherTagsCreateRoom}
                 />
 

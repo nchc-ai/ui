@@ -27,7 +27,7 @@ import KeyValue from '../KeyValue/index';
  * @param {Function} loadTagsOptsMethod
  * @param {Function} onDateChange
  * @param {Function} onMdChange
- * @param {Function} onFileChange Select file as a sub object in event target
+ * @param {Function} onFileListChange Select file as a sub object in event target
  * @param {Function} handleUpload Upload selected file.
  *
  * 1. text 一般文字
@@ -52,13 +52,9 @@ const FormGroups = ({
   state,
   asyncSelectKey,
   changeVal,
-  changeFileList,
   loadOptsMethod,
   loadTagsOptsMethod,
-  onDateChange,
-  onMdChange,
-  onFileChange,
-  handleUpload
+  onFileListChange
 }) => {
 
   return (
@@ -461,7 +457,7 @@ const FormGroups = ({
               ?
               <div className="form-input form-group-csv">
                 <FileUpload
-                  onListChange={content => changeFileList(content, template.name, template.target)}/>
+                  onFileListChange={onFileListChange}/>
               </div>
               :
                 null
