@@ -9,6 +9,7 @@ import githubBtnImg from '../../../public/images/auth/login-btn-github.png';
 import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
 import {OAUTH_PROVIDER} from "../../config/api"
 
+
 const Login = ({match, onSuccess, onFailure}) => (
        
       
@@ -23,24 +24,33 @@ const Login = ({match, onSuccess, onFailure}) => (
     <div className="line-h"/>
 
     <div className="btn-container">
-    {
-       OAUTH_PROVIDER ===  "github-oauth" &&
-         <GithubOauthButton 
-            onSuccess={onSuccess} 
-            onFailure={onFailure} 
-         > 
+      {/* if-elseif-else in JSX
+       https://stackoverflow.com/questions/46665510/javascript-elseif-case-in-jsx
+      */}
+      {
+       OAUTH_PROVIDER ===  "github-oauth"  ? (
+         <GithubOauthButton
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+         >
              <img alt="" src={githubBtnImg}/>
-         </GithubOauthButton>  
-    } 
-    {
-       OAUTH_PROVIDER ===  "go-oauth" &&
+         </GithubOauthButton>
+       ) : OAUTH_PROVIDER ===  "go-oauth"  ? (
          <MyoauthButton
-            onSuccess={onSuccess} 
-            onFailure={onFailure} 
-         > 
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+         >
             <img alt="" src={localBtnImg}/>
-         </MyoauthButton>  
-    }
+         </MyoauthButton>
+       ): (
+         <MyoauthButton
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+         >
+            <img alt="" src={localBtnImg}/>
+         </MyoauthButton>
+       )
+      }
       <h4>OR</h4>
 
       <Link to="/signup" className="btn-link">
