@@ -1,12 +1,18 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import GithubOauthButton from './GithubOauthButton';
 import MyoauthButton from './MyoauthButton';
 import {APPLY_ADMIN_LINK} from '../../config/api';
 import SectionTitle from '../common/SectionTitle/index';
 import logoImg from '../../../public/images/auth/login-logo.png';
+import githubBtnImg from '../../../public/images/auth/login-btn-github.png';
 import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
+import {OAUTH_PROVIDER} from "../../config/api"
 
 const Login = ({match, onSuccess, onFailure}) => (
+       
+      
+
   <div className="login-comp">
     <SectionTitle
       isTitleImg
@@ -17,12 +23,24 @@ const Login = ({match, onSuccess, onFailure}) => (
     <div className="line-h"/>
 
     <div className="btn-container">
-      <MyoauthButton
-        onSuccess={onSuccess}
-        onFailure={onFailure}
-      >
-        <img alt="" src={localBtnImg}/>
-      </MyoauthButton>
+    {
+       OAUTH_PROVIDER ===  "github-oauth" &&
+         <GithubOauthButton 
+            onSuccess={onSuccess} 
+            onFailure={onFailure} 
+         > 
+             <img alt="" src={githubBtnImg}/>
+         </GithubOauthButton>  
+    } 
+    {
+       OAUTH_PROVIDER ===  "go-oauth" &&
+         <MyoauthButton
+            onSuccess={onSuccess} 
+            onFailure={onFailure} 
+         > 
+            <img alt="" src={localBtnImg}/>
+         </MyoauthButton>  
+    }
       <h4>OR</h4>
 
       <Link to="/signup" className="btn-link">
