@@ -102,7 +102,7 @@ class CoursePage extends Component {
           ...course,
           level: { value: _.get(course, 'level') },
           accessType: { value: _.get(course,'accessType') },
-          ports: _.get(course,'ports',[]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() }))
+          ports: _.get(course,'ports',[{ keyItem: '',  valueItem: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port }))
         },
         detail: {
           ...course,
@@ -114,7 +114,7 @@ class CoursePage extends Component {
           ...course,
           level: { value: _.get(course, 'level') },
           associate: _.get(course, 'associate', false),
-          extraports: _.get(course, 'extraports', [{ keyItem: '',  valueItem: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port.toString() })),
+          extraports: _.get(course, 'extraports', [{ keyItem: '',  valueItem: '' }]).map(d => ({ keyItem: d.name, valueItem: d.port })),
           mount: _.get(course, 'mount', false),
         },
         detail: {
