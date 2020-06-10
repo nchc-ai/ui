@@ -37,5 +37,5 @@ run-ui-docker:
 	docker run -ti --rm  -p 3010:3010  ogre0403/twgc:ui-$(TAG)
 
 run-inside-container:
-	docker run --name UI -ti -p 3010:3010 -v `pwd`:/src/gitlab.com/nchc-ai/aitrain-ui node:10.5.0-alpine sh || docker exec -ti UI sh
+	docker run --name UI -ti -p 3010:3010 -v `pwd`:/src/gitlab.com/nchc-ai/aitrain-ui node:10.5.0-alpine sh || docker start UI; docker exec -ti UI sh
 

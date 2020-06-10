@@ -652,11 +652,15 @@ export const profileForm = [
     isRequired: false
   }, {
     key: 7,
-    size: 8,
-    name: 'text',
-    inputType: 'textarea',
-    mainLabel: '申請原因',
-    placeholder: '請輸入申請用途',
+    size: 4,
+    name: 'repository',
+    inputType: 'text',
+    mainLabel: 'Dockerhub Repository',
+    placeholder: '請輸入個人Repository',
+    validators: { },
+    errorMessage: {
+      required: '您尚未輸入手機號碼'
+    },
     isRequired: false
   }
 ];
