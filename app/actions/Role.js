@@ -21,7 +21,7 @@ export const getUserListByRole = (role, token) => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/proxy/role/${role}`,
+      endpoint: `${API_URL}/${API_VERSION}/user/role/${role}`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

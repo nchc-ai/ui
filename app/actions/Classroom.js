@@ -255,7 +255,7 @@ export const loadTeacherTagsForRoomCreate = token => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/proxy/role/teacher`,
+      endpoint: `${API_URL}/${API_VERSION}/user/role/teacher`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -280,7 +280,7 @@ export const loadStudentTagsForRoomCreate = token => async (dispatch) => {
 
   const response = await dispatch({
     [RSAA]: {
-      endpoint: `${API_URL}/${API_VERSION}/proxy/role/student`,
+      endpoint: `${API_URL}/${API_VERSION}/user/role/student`,
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
