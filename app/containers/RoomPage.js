@@ -252,13 +252,14 @@ class RoomPage extends Component {
               token,
               formData,
               rawStudents: students.data,
-              next: (formType) => {
+              next: (formType, isSuccess) => {
 
                 endPorgressBar();
 
                 history.push('/user/classroom-manage/list');
-                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
-
+                if (isSuccess){
+                    notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
+                }
                 resetForm();
                 roomAction.resetStudentsField();
               }
@@ -268,13 +269,14 @@ class RoomPage extends Component {
               token,
               formData,
               rawStudents: students.data,
-              next: (formType) => {
+              next: (formType,isSuccess) => {
 
                 endPorgressBar();
 
                 history.push('/user/classroom-manage/list');
-                notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
-
+                if (isSuccess) {
+                    notify.show(`${formType === 'create' ? '新建' : '更新'}教室成功`, 'success', TOAST_TIMING);
+                }
                 resetForm();
                 roomAction.resetStudentsField();
               }

@@ -52,9 +52,11 @@ export const createClassroom = ({ token, formData, rawStudents, next }) => async
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', '建立課程失敗'), 'error', TOAST_TIMING);
+    next('create', false)
+    return
   }
 
-  next('create');
+  next('create', true);
 };
 
 
@@ -94,9 +96,11 @@ export const updateClassroom = ({ token, formData, rawStudents, next }) => async
 
   if (_.isUndefined(response) || response.error) {
     notify.show(_.get(response, 'payload.response.message', '更新課程失敗'), 'error', TOAST_TIMING);
+    next('edit', false)
+    return
   }
 
-  next('edit');
+  next('edit', true);
 };
 
 /**
