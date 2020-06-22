@@ -1,12 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import GithubOauthButton from './GithubOauthButton';
+import GoogleOauthButton from './GoogleOauthButton';
 import MyoauthButton from './MyoauthButton';
 import {APPLY_ADMIN_LINK} from '../../config/api';
 import SectionTitle from '../common/SectionTitle/index';
 import logoImg from '../../../public/images/auth/login-logo.png';
 import githubBtnImg from '../../../public/images/auth/login-btn-github.png';
 import localBtnImg from '../../../public/images/auth/login-btn-ailab.png';
+import googleBtnImg from '../../../public/images/auth/login-btn-google.png';
 import {OAUTH_PROVIDER} from "../../config/api"
 
 
@@ -42,6 +44,13 @@ const Login = ({match, onSuccess, onFailure}) => (
          >
             <img alt="" src={localBtnImg}/>
          </MyoauthButton>
+       ): OAUTH_PROVIDER ===  "google-oauth"  ? (
+         <GoogleOauthButton
+            onSuccess={onSuccess}
+            onFailure={onFailure}
+         >
+             <img alt="" height="60" width="400"  src={googleBtnImg}/>
+         </GoogleOauthButton>
        ): (
          <MyoauthButton
             onSuccess={onSuccess}

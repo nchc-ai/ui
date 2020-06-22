@@ -23,5 +23,5 @@ export const APPLY_ADMIN_LINK = 'https://docs.google.com/forms/d/e/1FAIpQLSccwgq
 
 export const ENABLE_RFSTACK = false
 
-// 'go-oauth or github-oauth'
+// 'go-oauth or github-oauth or google-oauth'
 export const OAUTH_PROVIDER = 'go-oauth'
