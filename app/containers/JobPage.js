@@ -20,6 +20,7 @@ import DataFrame from 'components/common/DataFrame/index';
 import { notify } from 'components/common/NotifyToast';
 import { snapshotForm } from 'constants/formsData';
 import * as dialogTypes from 'constants/dialogTypes';
+import {ENABLE_RFSTACK} from "../config/api";
 
 const SectionTitle = styled.h2`
   height: 50px;
@@ -63,7 +64,9 @@ class JobPage extends Component {
   updateJobList = () => {
     const { jobAction, token, userInfo } = this.props;
     jobAction.getConJobList({ user: userInfo.username, token, isRefetch: true });
-    jobAction.getVMJobList({ user: userInfo.username, token, isRefetch: true });
+    if (ENABLE_RFSTACK === true) {
+        jobAction.getVMJobList({ user: userInfo.username, token, isRefetch: true });
+    }
   }
 
   fetchData = (nextProps) => {
@@ -74,8 +77,9 @@ class JobPage extends Component {
     } = nextProps;
 
     jobAction.getConJobList({ user: userInfo.username, token });
-    jobAction.getVMJobList({ user: userInfo.username, token });
-
+    if (ENABLE_RFSTACK === true) {
+      jobAction.getVMJobList({ user: userInfo.username, token });
+    }
   }
 
   openCardMask = (e, dataObj, optionType, toggle) => {
