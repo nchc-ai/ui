@@ -280,7 +280,8 @@ class JobPage extends Component {
                                                 onSubmit={submitData => this.submitSnapshot(submitData, thumb)}
                                                 onSubmitFailed={submitData => this.handlesubmitSnapshotFail(submitData)}
                                               >
-                                                <h4>VM snapshot</h4>
+
+                                                <h4>建立 {thumb.type}  快照</h4>
 
                                                 <FormGroups
                                                   targetForm={forms.snapshot}
