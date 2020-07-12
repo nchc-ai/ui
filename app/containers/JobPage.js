@@ -219,6 +219,9 @@ class JobPage extends Component {
         {
           doubleList.map( (singleList, index) => (
             <div key={index}>
+              { 
+              singleList.type !== 'vm' || ENABLE_RFSTACK === true ?
+               <div>
               <SectionTitle>
                 <IconContainer type={singleList.type}>
                   {  singleList.type === 'container' ? <FaRegClone/> :  <FaCube/> }
@@ -373,8 +376,10 @@ class JobPage extends Component {
                   )
                 }
               </DataFrame>
+                </div> : null
+              }
             </div>
-          ))
+    ))
         }
           </CommonPageContent>
       </div>
