@@ -149,8 +149,8 @@ class JobPage extends Component {
     }
   }
 
-  handlesubmitSnapshotFail = (submitData) => {
-    notify.show(_.get(response, "payload.message", "快照此 VM 工作失敗"), 'success', TOAST_TIMING);
+  handlesubmitSnapshotFail = (response) => {
+    notify.show(_.get(response, "payload.message", "快照此 VM 工作失敗"), 'error', TOAST_TIMING);
   }
 
   deleteJob(e, thumb) {
