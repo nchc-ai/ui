@@ -191,8 +191,8 @@ class CronInputs extends React.Component {
         cron: `0 0 8 * * ${tabData[0].value}`
       },
       '1': {
-        description: `固定每週 ${tabData[1].map(d => d.label).join(', ')}`,
-        cron: `0 0 8 * * ${tabData[1].map(d => d.value).join(', ')}`
+        description: `固定每週 ${tabData[1].map(d => d.label).join(',')}`,
+        cron: `0 0 8 * * ${tabData[1].map(d => d.value).join(',')}`
       },
       '2': {
         description: `完全不限時間`,
