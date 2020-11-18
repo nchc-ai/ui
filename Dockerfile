@@ -9,6 +9,6 @@ WORKDIR /src/gitlab.com/nchc-ai/aitrain-ui
 
 COPY . .
 
-RUN if [  -d "/src/gitlab.com/nchc-ai/aitrain-ui/node_modules" ]; then  yarn install; fi
+RUN if [ ! -d "/src/gitlab.com/nchc-ai/aitrain-ui/node_modules" ]; then  yarn install; fi
 
 CMD ["sh", "-c","yarn docker"]
