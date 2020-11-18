@@ -230,6 +230,7 @@ class CronInputs extends React.Component {
               rawTime: timeStr,
               moment: moment(timeStr).format('L'),
               month: moment(timeStr).month() + 1,
+              year: moment(timeStr).year(),
               dateInt: moment(timeStr).date(),
               date: moment(timeStr).format('YYYY-MM-DD'),
               rowDate: moment(timeStr)
@@ -245,7 +246,7 @@ class CronInputs extends React.Component {
 
     rawTimeArr.forEach((current, index) => {
       const previous = rawTimeArr[index - 1];
-      if (index === 0 || current.dateInt - previous.dateInt > 1 || current.month - previous.month === 1) {
+      if (index === 0 || current.dateInt - previous.dateInt > 1 || current.month - previous.month === 1 || current.year - previous.year === 1) {
         resultTimeArr.push({
           startMonth: current.month,
           startDateInt: current.dateInt,
