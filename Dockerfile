@@ -1,4 +1,4 @@
-FROM node:10.5.0-alpine
+FROM node:10.5.0
 
 WORKDIR /src/gitlab.com/nchc-ai/aitrain-ui
 
