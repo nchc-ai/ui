@@ -1,0 +1,25 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.205.2/containers/alpine
+{
+	"name": "node.js",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": { 
+			// go version and arch
+			"NODE_VER": "16.20.2",
+			"NODE_ARCH": "bookworm"
+	 	}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/git:1": {}
+	},
+	"customizations":{
+		"vscode": {
+			"extensions": [
+				"GitHub.copilot",
+				"humao.rest-client",
+				"isudox.vscode-jetbrains-keybindings"
+			]
+		}
+	}
+}

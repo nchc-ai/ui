@@ -1,6 +1,6 @@
-FROM node:10.5.0
+FROM node:16.20.2-alpine
 
-WORKDIR /src/gitlab.com/nchc-ai/aitrain-ui
+WORKDIR /src/github.com/nchc-ai/aitrain-ui
 
 # COPY yarn.lock .
 # COPY package-lock.json .
@@ -9,6 +9,6 @@ WORKDIR /src/gitlab.com/nchc-ai/aitrain-ui
 
 COPY . .
 
-RUN if [ ! -d "/src/gitlab.com/nchc-ai/aitrain-ui/node_modules" ]; then  yarn install; fi
+RUN if [ ! -d "/src/github.com/nchc-ai/aitrain-ui/node_modules" ]; then  yarn install; fi
 
 CMD ["sh", "-c","yarn docker"]

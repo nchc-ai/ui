@@ -32,7 +32,7 @@ endif
 
 
 
-build-frontend-img:
+image:
 	docker build -t $(REPO)/$(IMAGE):$(TAG) .
 
 run-ui-docker:

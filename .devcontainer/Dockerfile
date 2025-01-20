@@ -1,0 +1,9 @@
+ARG NODE_VER=16.20.2
+ARG NODE_ARCH=bookworm
+
+FROM node:${NODE_VER}-${NODE_ARCH}
+
+
+
+
+
