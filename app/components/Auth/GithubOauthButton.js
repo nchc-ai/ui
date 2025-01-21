@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import PopupWindow from './PopWindow';
 import { toQuery } from '../../libraries/utils';
-import { WEBSITE_URL, AUTH_PROVIDER_URL, RETURN_ROUTE } from '../../config/api';
+import { WEBSITE_URL, OAUTH_CLIENT_ID, RETURN_ROUTE } from '../../config/api';
 
 class GithubOauthButton extends Component {
   static propTypes = {
@@ -32,7 +32,7 @@ class GithubOauthButton extends Component {
     });
     const popup = this.popup = PopupWindow.open(
       'github-oauth-authorize',
-      'https://github.com/login/oauth/authorize?access_type=online&client_id=8c7e2529d37a0855c8bc&response_type=code&scope=user&state=thisshouldberandom',
+      `https://github.com/login/oauth/authorize?access_type=online&client_id=${OAUTH_CLIENT_ID}&response_type=code&scope=user&state=thisshouldberandom`,
       { height: 1000, width: 600 }
     );
 

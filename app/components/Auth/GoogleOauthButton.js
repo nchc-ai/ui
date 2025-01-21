@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import PopupWindow from './PopWindow';
 import { toQuery } from '../../libraries/utils';
-import { WEBSITE_URL, AUTH_PROVIDER_URL, RETURN_ROUTE } from '../../config/api';
+import { WEBSITE_URL, RETURN_ROUTE, OAUTH_CLIENT_ID } from '../../config/api';
 
 class GoogleOauthButton extends Component {
   static propTypes = {
@@ -30,7 +30,7 @@ class GoogleOauthButton extends Component {
     });  
     const popup = this.popup = PopupWindow.open(
       'google-oauth-authorize',
-      `https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=294126750314-kilf7lm39n919kj1gss11nj1pph58iu2.apps.googleusercontent.com&include_granted_scopes=true&prompt=consent&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state=random&${search}`,
+      `https://accounts.google.com/o/oauth2/auth?access_type=offline&client_id=${OAUTH_CLIENT_ID}&include_granted_scopes=true&prompt=consent&response_type=code&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.profile+https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&state=random&${search}`,
       { height: 1000, width: 600 }
     );
 

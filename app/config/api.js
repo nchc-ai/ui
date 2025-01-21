@@ -25,3 +25,5 @@ export const ENABLE_RFSTACK = false
 
 // 'go-oauth or github-oauth or google-oauth'
 export const OAUTH_PROVIDER = 'go-oauth'
+
+export const OAUTH_CLIENT_ID = 'xxxxxx.apps.googleusercontent.com'
