@@ -22,7 +22,7 @@ endif
 ifeq ($(RET),0)
     TAG = $(shell git describe --contains $(COMMIT_HASH))$(IS_DIRTY)
 else
-	ifeq ($(BRANCH_NAME), master)
+	ifeq ($(BRANCH_NAME), main)
 		TAG = $(USER)-$(COMMIT_HASH)$(IS_DIRTY)
 	else
 		TAG = $(BRANCH_NAME)$(IS_DIRTY)
